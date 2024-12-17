@@ -1,0 +1,30 @@
+defaultPlacement: end
+enableVersioning: true
+entryTypes:
+  - 80634baf-dc43-47ea-8528-2e72e4a53d61 # Tarief
+handle: rates
+maxAuthors: 1
+name: Tariefformule
+previewTargets:
+  -
+    __assoc__:
+      -
+        - label
+        - 'Primary entry page'
+      -
+        - urlFormat
+        - '{url}'
+      -
+        - refresh
+        - '1'
+propagationMethod: all
+siteSettings:
+  359a39c5-8655-460f-a1b4-0c097ea0edb2: # users
+    enabledByDefault: true
+    hasUrls: false
+    template: null
+    uriFormat: null
+structure:
+  maxLevels: null
+  uid: f5d9f8e0-1aac-4cba-ad2d-0c99315e3677
+type: structure

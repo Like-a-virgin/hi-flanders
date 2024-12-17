@@ -1,0 +1,38 @@
+// Colors 
+$clr-primary: #FFCC22;
+$clr-secondary: #102438;
+$clr-tertiary: white; 
+
+// Border Radius
+$br: .625rem;
+
+// Font Families  
+$ff: "filson-pro", sans-serif;
+
+// Font Weights 
+$fw-regular: 400;
+$fw-medium: 500; 
+$fw-bold: 700;
+
+// Font Sizes 
+$fs-p: 1rem;
+$fs-p--mobile: 1rem;
+$fs-h1: 2rem;
+$fs-h1--mobile: 1.5rem;
+$fs-h2: 1.5rem;
+$fs-h2--mobile: 1.25rem;
+$fs-h3: 1.25rem;
+$fs-h3--mobile: 1.125rem;
+
+$fs-btn: 1rem;
+$fs-btn--mobile: 1rem; 
+
+// Breakpoints screen 
+$screen-xs: 480px; // mobile portrait
+$screen-s: 768px; // tablet portrait
+$screen-m: 1024px; // tablet landscape 
+$screen-l: 1280px; // small desktop 
+$screen-xl: 1440px; //large desktop 
+
+// Spacing 
+$spacing: 4rem;

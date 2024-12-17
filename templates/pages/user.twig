@@ -1,0 +1,74 @@
+<div class="box">
+    <div class="box__heading">
+        <h1>Mijn gegevens</h1>
+        <h2>Lidnummer: {{ user.id }}</h2>
+    </div>
+    <div class="box__content">
+        <div class="box__column box__column--2">            
+            <p>Naam</p>
+            <div class="box__info">
+                <p>{{ user.altFirstName|capitalize }}</p>
+            </div>
+        </div>
+        <div class="box__column box__column--2">            
+            <p>Familienaam</p>
+            <div class="box__info">
+                <p>{{ user.altLastName }}</p>
+            </div>
+        </div>
+        <div class="box__column box__column--2">            
+            <p>Email</p>
+            <div class="box__info">
+                <p>{{ user.email }}</p>
+            </div>
+        </div>
+        <div class="box__column box__column--2">            
+            <p>Geboortedatum</p>
+            <div class="box__info">
+                <p>{{ user.birthday|atom }}</p>
+            </div>
+        </div>
+        <div class="box__column box__column--2">            
+            <p>Land</p>
+            <div class="box__info">
+                <p>{{ user.country|capitalize }}</p>
+            </div>
+        </div>
+        <div class="box__column">            
+            <p>Postcode</p>
+            <div class="box__info">
+                <p>{{ user.postalCode }}</p>
+            </div>
+        </div>
+        <div class="box__column">            
+            <p>Stad</p>
+            <div class="box__info">
+                <p>{{ user.city|capitalize }}</p>
+            </div>
+        </div>
+        <div class="box__column box__column--2">            
+            <p>Straat</p>
+            <div class="box__info">
+                <p>{{ user.street|capitalize }}</p>
+            </div>
+        </div>
+        <div class="box__column">            
+            <p>Huisnummer</p>
+            <div class="box__info">
+                <p>{{ user.streetNr }}</p>
+            </div>
+        </div>
+        <div class="box__column">            
+            <p>Bus</p>
+            <div class="box__info">
+                <p>{{ user.bus }}</p>
+            </div>
+        </div>
+        <div class="box__column box__column--4">
+            <p>Lidmaatschap</p>
+            <div class="box__info">
+                <p>{{ user.bus }}</p>
+            </div>
+        </div>
+    </div>
+</div>

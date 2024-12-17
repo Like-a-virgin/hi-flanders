@@ -1,0 +1,276 @@
+tabs:
+  -
+    elementCondition: null
+    elements:
+      -
+        autocapitalize: true
+        autocomplete: false
+        autocorrect: true
+        class: null
+        dateAdded: '2024-12-16T16:10:15+00:00'
+        disabled: false
+        elementCondition: null
+        id: null
+        includeInCards: false
+        inputType: null
+        instructions: null
+        label: null
+        max: null
+        min: null
+        name: null
+        orientation: null
+        placeholder: null
+        providesThumbs: false
+        readonly: false
+        requirable: false
+        size: null
+        step: null
+        tip: null
+        title: null
+        type: craft\fieldlayoutelements\users\UsernameField
+        uid: c5c6ddfc-13f6-4237-b332-f5e1460d023a
+        userCondition: null
+        warning: null
+        width: 100
+      -
+        attribute: fullName
+        autocapitalize: true
+        autocomplete: false
+        autocorrect: true
+        class: null
+        dateAdded: '2024-12-16T16:10:15+00:00'
+        disabled: false
+        elementCondition: null
+        id: null
+        includeInCards: false
+        inputType: null
+        instructions: null
+        label: null
+        max: null
+        min: null
+        name: null
+        orientation: null
+        placeholder: null
+        providesThumbs: false
+        readonly: false
+        requirable: true
+        required: false
+        size: null
+        step: null
+        tip: null
+        title: null
+        type: craft\fieldlayoutelements\users\FullNameField
+        uid: cb06ff25-e418-4f03-bc9d-2e925c3a52ba
+        userCondition: null
+        warning: null
+        width: 100
+      -
+        dateAdded: '2024-12-16T16:10:15+00:00'
+        elementCondition: null
+        id: null
+        includeInCards: false
+        instructions: null
+        label: null
+        orientation: null
+        providesThumbs: false
+        requirable: false
+        tip: null
+        type: craft\fieldlayoutelements\users\PhotoField
+        uid: 7bbd049a-f60b-4b4a-a559-b819ef992254
+        userCondition: null
+        warning: null
+        width: 100
+      -
+        dateAdded: '2024-12-17T11:13:13+00:00'
+        elementCondition: null
+        fieldUid: aa21d2ca-e34c-4497-a6fa-49b5a7cc7f58 # Title
+        handle: altFirstName
+        includeInCards: false
+        instructions: null
+        label: Voornaam
+        providesThumbs: false
+        required: false
+        tip: null
+        type: craft\fieldlayoutelements\CustomField
+        uid: ce6736cd-f987-43c9-90cd-102a64414abe
+        userCondition: null
+        warning: null
+        width: 100
+      -
+        dateAdded: '2024-12-17T11:13:55+00:00'
+        elementCondition: null
+        fieldUid: aa21d2ca-e34c-4497-a6fa-49b5a7cc7f58 # Title
+        handle: altLastName
+        includeInCards: false
+        instructions: null
+        label: Achternaam
+        providesThumbs: false
+        required: false
+        tip: null
+        type: craft\fieldlayoutelements\CustomField
+        uid: 6ac0afe4-fc85-4b39-831c-b08f6b50bf5c
+        userCondition: null
+        warning: null
+        width: 100
+      -
+        dateAdded: '2024-12-17T11:03:11+00:00'
+        elementCondition: null
+        type: craft\fieldlayoutelements\HorizontalRule
+        uid: 91f914f5-4384-4449-b3bf-b1461383b45f
+        userCondition: null
+      -
+        autocapitalize: true
+        autocomplete: false
+        autocorrect: true
+        class: null
+        dateAdded: '2024-12-16T16:10:15+00:00'
+        disabled: false
+        elementCondition: null
+        id: null
+        includeInCards: false
+        inputType: null
+        instructions: null
+        label: null
+        max: null
+        min: null
+        name: null
+        orientation: null
+        placeholder: null
+        providesThumbs: false
+        readonly: false
+        requirable: false
+        size: null
+        step: null
+        tip: null
+        title: null
+        type: craft\fieldlayoutelements\users\EmailField
+        uid: eab3f0ef-44dc-4b55-89fa-074791157097
+        userCondition: null
+        width: 100
+      -
+        dateAdded: '2024-12-17T11:03:11+00:00'
+        elementCondition: null
+        type: craft\fieldlayoutelements\HorizontalRule
+        uid: 4f9a9ed0-9724-4d29-b9a8-4f977d92113c
+        userCondition: null
+      -
+        dateAdded: '2024-12-17T11:11:20+00:00'
+        elementCondition: null
+        fieldUid: aa21d2ca-e34c-4497-a6fa-49b5a7cc7f58 # Title
+        handle: country
+        includeInCards: false
+        instructions: null
+        label: 'Land '
+        providesThumbs: false
+        required: false
+        tip: null
+        type: craft\fieldlayoutelements\CustomField
+        uid: 1e9c4549-9019-4bd9-8652-b90976b53a30
+        userCondition: null
+        warning: null
+        width: 100
+      -
+        dateAdded: '2024-12-17T11:11:20+00:00'
+        elementCondition: null
+        fieldUid: aa21d2ca-e34c-4497-a6fa-49b5a7cc7f58 # Title
+        handle: street
+        includeInCards: false
+        instructions: null
+        label: Straat
+        providesThumbs: false
+        required: false
+        tip: null
+        type: craft\fieldlayoutelements\CustomField
+        uid: b283cd21-16ca-43bd-9495-48e0c7c630f3
+        userCondition: null
+        warning: null
+        width: 100
+      -
+        dateAdded: '2024-12-17T11:58:15+00:00'
+        elementCondition: null
+        fieldUid: aa21d2ca-e34c-4497-a6fa-49b5a7cc7f58 # Title
+        handle: streetNr
+        includeInCards: false
+        instructions: null
+        label: Nummer
+        providesThumbs: false
+        required: false
+        tip: null
+        type: craft\fieldlayoutelements\CustomField
+        uid: 811da2f6-b5e6-4fc3-b8d9-7f2f2e49a1c3
+        userCondition: null
+        warning: null
+        width: 100
+      -
+        dateAdded: '2024-12-17T11:11:20+00:00'
+        elementCondition: null
+        fieldUid: aa21d2ca-e34c-4497-a6fa-49b5a7cc7f58 # Title
+        handle: bus
+        includeInCards: false
+        instructions: null
+        label: Bus
+        providesThumbs: false
+        required: false
+        tip: null
+        type: craft\fieldlayoutelements\CustomField
+        uid: f9b78ac4-ee10-4870-94ff-d8e0670572d4
+        userCondition: null
+        warning: null
+        width: 100
+      -
+        dateAdded: '2024-12-17T11:11:20+00:00'
+        elementCondition: null
+        fieldUid: aa21d2ca-e34c-4497-a6fa-49b5a7cc7f58 # Title
+        handle: city
+        includeInCards: false
+        instructions: null
+        label: Stad
+        providesThumbs: false
+        required: false
+        tip: null
+        type: craft\fieldlayoutelements\CustomField
+        uid: d1a0b663-1b4f-4c51-94ea-64a8f09f1470
+        userCondition: null
+        warning: null
+        width: 100
+      -
+        dateAdded: '2024-12-17T11:58:15+00:00'
+        elementCondition: null
+        fieldUid: aa21d2ca-e34c-4497-a6fa-49b5a7cc7f58 # Title
+        handle: postalCode
+        includeInCards: false
+        instructions: null
+        label: Postcode
+        providesThumbs: false
+        required: false
+        tip: null
+        type: craft\fieldlayoutelements\CustomField
+        uid: 2db58625-40da-47d1-9cc8-5d92692652c3
+        userCondition: null
+        warning: null
+        width: 100
+      -
+        dateAdded: '2024-12-17T11:03:11+00:00'
+        elementCondition: null
+        type: craft\fieldlayoutelements\HorizontalRule
+        uid: 62267354-5510-4a90-aca8-660eda204ccf
+        userCondition: null
+      -
+        dateAdded: '2024-12-16T16:12:37+00:00'
+        elementCondition: null
+        fieldUid: 3261931d-97c8-4b0e-a83a-6d9ac4dee153 # Birthday
+        handle: null
+        includeInCards: false
+        instructions: null
+        label: null
+        providesThumbs: false
+        required: false
+        tip: null
+        type: craft\fieldlayoutelements\CustomField
+        uid: f5acb2b0-a296-43ec-80b0-87cf4dda0141
+        userCondition: null
+        warning: null
+        width: 100
+    name: Content
+    uid: ae013ac9-d044-4fc1-85a9-cdfa5bb71919
+    userCondition: null

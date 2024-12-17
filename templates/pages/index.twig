@@ -1,0 +1,16 @@
+{% extends "layouts/base.twig" %}
+
+{% requireLogin %}
+{% set user = user ?? currentUser %}
+{% set userGroup = user.getGroups()|first.handle %}
+
+{% block content %}
+    {% if currentUser %}
+        <a href="{{ logoutUrl }}">Logout</a>
+    {% endif %}
+    {% if userGroup is same as 'members' %}    
+        {% include "pages/user.twig" %}
+    {% elseif userGroup is same as 'membersAdmin' %}
+        {% include "pages/dashboard.twig" %}  
+    {% endif %}
+{% endblock %}

@@ -1,0 +1,51 @@
+color: null
+fieldLayouts:
+  ffc6d708-0818-476c-84d7-6d9c6fc7197a:
+    tabs:
+      -
+        elementCondition: null
+        elements:
+          -
+            autocapitalize: true
+            autocomplete: false
+            autocorrect: true
+            class: null
+            dateAdded: '2024-12-16T15:49:35+00:00'
+            disabled: false
+            elementCondition: null
+            id: null
+            includeInCards: false
+            inputType: null
+            instructions: null
+            label: null
+            max: null
+            min: null
+            name: null
+            orientation: null
+            placeholder: null
+            providesThumbs: false
+            readonly: false
+            required: true
+            size: null
+            step: null
+            tip: null
+            title: null
+            type: craft\fieldlayoutelements\entries\EntryTitleField
+            uid: c8ab94da-a715-4aea-b9b7-c43c66493ffc
+            userCondition: null
+            warning: null
+            width: 100
+        name: Content
+        uid: 0a2ee47f-b505-4f90-9ec3-cb6df787a1ce
+        userCondition: null
+handle: rate
+hasTitleField: true
+icon: null
+name: Tarief
+showSlugField: true
+showStatusField: true
+slugTranslationKeyFormat: null
+slugTranslationMethod: site
+titleFormat: null
+titleTranslationKeyFormat: null
+titleTranslationMethod: site

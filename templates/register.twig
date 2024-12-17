@@ -1,0 +1,146 @@
+{% extends "layouts/base.twig" %}
+
+{% macro errorList(errors) %}
+    {% if errors %}
+        {{ ul(errors, {class: 'errors'}) }}
+    {% endif %}
+{% endmacro %}
+
+{# `user` is defined if the form returns validation errors. #}
+{% set user = user ?? null %}
+
+{% block content %}
+    <div class="formbox">
+        <div class="formbox__heading">
+            <h2>Registreer</h2>
+        </div>
+        <form class="formbox__form"  method="post" accept-charset="UTF-8">
+            {{ csrfInput() }}
+            {{ actionInput('users/save-user') }}
+
+                        {% if errorMessage is defined %}
+                <div class="formbox__error">
+                    <p class="formbox__errorText">{{ errorMessage }}</p>
+                </div>
+            {% endif %}
+            {# In Craft 4, `firstName` and `lastName` were combined into a single property: #}
+            <div class="formbox__row">
+                <div>                
+                    <label class="formbox__label" for="alt-first-name">Voornaam</label>
+                    {{ input('text', 'fields[altFirstName]', user.textSingle ?? null, {
+                        id: 'alt-first-name',
+                        placeholder: 'Voornaam',
+                        required: true
+                    }) }}
+                </div>
+                <div>                
+                    <label class="formbox__label" for="alt-sur-namee">Naam</label>
+                    {{ input('text', 'fields[altLastName]', user.altLastName ?? null, {
+                        id: 'alt-sur-name',
+                        placeholder: 'Achternaam',
+                        required: true
+                    }) }}
+                </div>
+            </div>
+
+            <div class="formbox__row">    
+                <div>                
+                    <label class="formbox__label" for="email">Email</label>
+                    {{ input('email', 'email', user.email ?? null, {
+                        id: 'email',
+                        placeholder: 'email',
+                        required: true
+                    }) }}
+                </div> 
+                <div>                
+                    <label class="formbox__label" for="birthday">Geboortedatum</label>
+                    {{ input('date', 'fields[birthday]', null, {
+                        id: 'birthday',
+                        placeholder: 'Geboortedatum',
+                        onFocus: "(this.type = 'date')",
+                        required: true
+                    }) }}
+                </div>     
+            </div>
+
+            <div>
+                <label class="formbox__label" for="country">Land</label>
+                {{ input('text', 'fields[country]', user.country ?? null, {
+                    id: 'country',
+                    placeholder: 'Land',
+                    required: true
+                }) }}
+            </div>
+
+            <div class="formbox__row">
+                <div>
+                    <label class="formbox__label" for="street">Straat</label>
+                    {{ input('text', 'fields[street]', user.street ?? null, {
+                        id: 'street',
+                        placeholder: 'Straat',
+                        required: true
+                    }) }}
+                </div>
+                <div class="formbox__row">                
+                    <div>
+                        <label class="formbox__label" for="number">Nr</label>
+                        {{ input('text', 'fields[streetNr]', user.streetNr ?? null, {
+                            id: 'number',
+                            placeholder: 'Nr',
+                            required: true
+                        }) }}
+                    </div>
+                    <div>
+                        <label class="formbox__label" for="email">Bus</label>
+                        {{ input('text', 'fields[bus]', user.bus ?? null, {
+                            id: 'bus',
+                            placeholder: 'bus'
+                        }) }}
+                    </div>
+                </div>
+            </div>
+            <div class="formbox__row">
+                <div>
+                    <label class="formbox__label" for="postal-code">Postcode</label>
+                    {{ input('text', 'fields[postalCode]', user.postalCode ?? null, {
+                        id: 'postal-code',
+                        placeholder: 'Postcode',
+                        required: true
+                    }) }}
+                </div>
+                <div>
+                    <label class="formbox__label" for="city">Stad</label>
+                    {{ input('text', 'fields[city]', user.city ?? null, {
+                        id: 'city',
+                        placeholder: 'Stad',
+                        required: true
+                    }) }}
+                </div>
+            </div>
+
+            <div>            
+                <label class="formbox__label" for="password">Password</label>
+                {{ input('password', 'password', null, {
+                    id: 'password',
+                    placeholder: 'Kies een wachtwoord',
+                    required: true
+                }) }}
+            </div>
+
+            <div class="formbox__checkbox">
+                <label for="privacy-policy">
+                {{ input('checkbox', 'privacy-policy', null, {
+                    id: 'privacy-policy',
+                    required: true
+                }) }} Ik ga akkoord dat mijn gegevens gebruikt worden zoals beschreven in de <a class="formbox__link" href="https://www.hiflanders.be/nl/privacy-policy">privacy policy</a>.</label>
+            </div>
+
+            {{ input('hidden', 'fields[groups]', 'members') }}
+
+            <button class="formbox__button">Registreer</button>
+        </form>
+        <div class="formbox__options">
+            <a class="formbox__link" href="{{ url('login') }}">Al lid?</a>
+        </div>
+    </div>
+{% endblock %}

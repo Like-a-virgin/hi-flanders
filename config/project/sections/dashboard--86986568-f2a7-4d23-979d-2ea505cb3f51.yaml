@@ -1,0 +1,27 @@
+defaultPlacement: end
+enableVersioning: true
+entryTypes:
+  - e18619bb-8aea-4d89-bacb-e80261037c94 # Dashboard
+handle: dashboard
+maxAuthors: 1
+name: Dashboard
+previewTargets:
+  -
+    __assoc__:
+      -
+        - label
+        - 'Primary entry page'
+      -
+        - urlFormat
+        - '{url}'
+      -
+        - refresh
+        - '1'
+propagationMethod: all
+siteSettings:
+  359a39c5-8655-460f-a1b4-0c097ea0edb2: # users
+    enabledByDefault: true
+    hasUrls: true
+    template: pages/dashboard.twig
+    uriFormat: dashboard
+type: single

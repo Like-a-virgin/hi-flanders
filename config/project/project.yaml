@@ -1,0 +1,45 @@
+dateModified: 1734446170
+email:
+  fromEmail: lara@likeavirgin.be
+  fromName: users
+  transportType: craft\mail\transportadapters\Sendmail
+meta:
+  __names__:
+    00d6a85f-228e-4877-b53c-8725397c83d9: address # address
+    1d0447d2-95ba-4d14-95bd-e1f51bb4dd4c: users # users
+    4a63b33e-aa54-421b-b619-d4bc7f4888e7: Home # Home
+    9a41348d-b717-4688-9000-767870baae38: New # New
+    44d68bbb-dcd6-4519-9b6d-6e90d95d2563: Login # Login
+    50a6f7cb-84e7-4d68-9aa9-3af2d9001e79: Leden # Leden
+    359a39c5-8655-460f-a1b4-0c097ea0edb2: users # users
+    915a3019-dc60-443b-ab35-c471e10a8aed: Register # Register
+    80634baf-dc43-47ea-8528-2e72e4a53d61: Tarief # Tarief
+    3261931d-97c8-4b0e-a83a-6d9ac4dee153: Birthday # Birthday
+    5978149a-5b05-4ba3-95ff-72c6250597fe: Tariefformule # Tariefformule
+    86986568-f2a7-4d23-979d-2ea505cb3f51: Dashboard # Dashboard
+    aa21d2ca-e34c-4497-a6fa-49b5a7cc7f58: Title # Title
+    bbdfff72-14f8-4e5d-b59e-12d5b73c9a17: Home # Home
+    bcc31cfe-3e29-427b-89b2-8e771af767e9: Number # Number
+    c573f0bd-29d4-4985-8cff-271a6ee231a2: 'Leden admin' # Leden admin
+    db8cca95-36d6-43cd-977d-2c8d4ef17863: 'Contact Form' # Contact Form
+    e18619bb-8aea-4d89-bacb-e80261037c94: Dashboard # Dashboard
+plugins:
+  formie:
+    edition: standard
+    enabled: true
+    licenseKey: ZB80OHDNVOKXEFKE4AQEOXSU
+    schemaVersion: 3.4.7
+  sprig:
+    edition: standard
+    enabled: true
+    schemaVersion: 1.0.1
+  vite:
+    edition: standard
+    enabled: true
+    schemaVersion: 1.0.0
+system:
+  edition: pro
+  live: true
+  name: users
+  schemaVersion: 5.5.0.0
+  timeZone: America/Los_Angeles
