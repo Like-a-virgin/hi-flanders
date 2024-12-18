@@ -1,10 +1,10 @@
 defaultPlacement: end
 enableVersioning: true
 entryTypes:
-  - 0c156739-79ab-46b7-b364-734c05844fbe
-handle: login
+  - 9ed2f6cf-f594-490a-b852-acaac49be4fc # Activeer
+handle: activate
 maxAuthors: 1
-name: Login
+name: 'Activeer email'
 previewTargets:
   -
     __assoc__:
@@ -22,6 +22,6 @@ siteSettings:
   359a39c5-8655-460f-a1b4-0c097ea0edb2: # users
     enabledByDefault: true
     hasUrls: true
-    template: pages/login.twig
-    uriFormat: login
+    template: pages/activate.twig
+    uriFormat: activeer-email
 type: single

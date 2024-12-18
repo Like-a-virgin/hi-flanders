@@ -1,25 +1,34 @@
 {% set members = craft.users.group('members').all() %}
 
 <div class="box">
-    <div class="box__heading">
-        <input type="text" placeholder="Search">
+    <div class="box__heading box__heading--column">
+        <h1>Leden</h1>
     </div>
-    <table>
-        <thead>
-            <tr>
-                <th>Voornaam</th>
-                <th>Famillienaam</th>
-                <th>Lidnummer</th>
-                <th>Lidmaatschap</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for member in members %}
-            <tr>
-                <td>{{member.altFirstName}}</td>
-                <td>{{member.altLastName}}</td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+    <div class="table">
+        <div class="table__options">
+            <input class="table__search" type="text" placeholder="Search">
+        </div>    
+        <table class="table__table">
+            <thead>
+                <tr>
+                    <th>Voornaam</th>
+                    <th>Famillienaam</th>
+                    <th>Lidnummer</th>
+                    <th>Lidmaatschap</th>
+                    <th>Extra personen</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for member in members %}
+                <tr>
+                    <td>{{member.altFirstName}}</td>
+                    <td>{{member.altLastName}}</td>
+                    <td>008 {{member.id}}</td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
 </div>

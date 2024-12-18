@@ -8,12 +8,20 @@
     justify-content: center;
 }
 
+.box-container {
+    width: 100%;
+    max-width: $screen-l;
+
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
 .box {
     width: 100%;
     max-width: $screen-l;
     border-radius: $br;
     box-shadow: 0px 3px 6px 0px rgba(black, 0.16);
-    border: solid red;
 
     &__heading {
         background-color: $clr-primary;
@@ -26,11 +34,23 @@
         align-items: flex-end;
     }
 
+    &__heading--column {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+    }
+
     &__content {
         padding: 2rem;
+        display: flex;
+        flex-direction: column;
+        gap: 4rem;
+    }
+
+    &__wrapper {
         display: grid;
         grid-template-columns: 1fr 1fr 1fr 1fr;
-        row-gap: 2rem;
+        row-gap: 1.5rem;
         column-gap: 1rem;
     }
 
@@ -57,5 +77,91 @@
         font-size: .875rem;
         width: 100%;
         height: 100%;
+
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+    }
+
+    &__text p {
+        line-height: 1.5;
+        margin-bottom: 1.5rem;
+    }
+
+    &__text ul {
+        margin-left: 1rem;
+    }
+
+    &__text li, &__text ol {
+        margin-bottom: 0.75rem;
+    }
+
+    &__add {
+        border: none;
+        background-color: $clr-primary;
+        padding: 1rem 2rem;
+        border-radius: $br;
+        font-size: $fs-h2;
+        font-weight: $fw-bold;
+        text-align: left;
+        width: 100%;
+
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: flex-start;
+        gap: 1rem;
+
+        &:hover {
+            cursor: pointer;
+            background-color: $clr-secondary;
+            color: white;
+
+            .box__icon {
+                fill: white;
+            }
+        }
+    }
+
+    &__icon {
+        height: 1rem;
+        width: 1rem;
+        fill: $clr-secondary;
+    }
+
+    &__icon--add {
+        height: 1.25rem;
+        width: 1.25rem;
+    }
+}
+
+.box--small {
+    max-width: 50rem;
+}
+
+.box--member {
+    .box__heading {
+        border-radius: $br;
+        transition: 0.1s ease border-radius;
+
+        &:hover {
+            cursor: pointer;
+        }
+    }
+    .box__content {
+        padding-block: 0;
+        display: block;
+
+        &::before, &::after {
+            content: "";
+            height: 2rem;
+            display: block;
+        }
+    }
+}
+
+.box--member-open {
+    .box__heading {
+        border-radius: $br $br 0 0;
     }
 }

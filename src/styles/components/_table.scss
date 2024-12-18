@@ -1,0 +1,31 @@
+@use "../abstracts" as *;
+
+.table {
+    padding: 2rem;
+
+    &__options {
+        margin-bottom: 2rem;
+    }
+
+    &__search {
+        max-width: 40rem;
+    }
+
+    &__table {
+        width: 100%;
+        border-collapse: collapse;
+        text-align: left;
+
+        thead {
+            color: $clr-primary;
+        }
+
+        td, th {
+            padding: 0.75rem 1rem;
+        }
+
+        tbody tr:nth-child(odd){
+            background-color: rgba($clr-secondary, 0.04);
+        }
+    }
+}

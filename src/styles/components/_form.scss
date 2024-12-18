@@ -7,8 +7,8 @@
     box-shadow: 0px 3px 6px 0px rgba(black, 0.16);
 
     &__form {
-        display: flex;
-        flex-direction: column;
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
         gap: 1rem;
 
         padding: 2rem;
@@ -25,16 +25,22 @@
         border-radius: $br $br 0 0;
     }
 
-    &__row {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        column-gap: 1rem;
+    &__column {
+        grid-column: span 2;
+    }
+
+    &__column--full {
+        grid-column: span 4;
+    }
+
+    &__column--1-4 {
+        grid-column: span 1;
     }
 
     &__button {
         border: none;
-        background-color: $clr-secondary;
-        color: white;
+        background-color: $clr-primary;
+        color: $clr-secondary;
         padding: 1rem 2rem;
         border-radius: 5rem;
         font-family: $ff;
@@ -43,8 +49,8 @@
     }
 
     &__button--sec {
-        background-color: $clr-primary;
-        color: $clr-secondary;
+        background-color: $clr-secondary;
+        color: white;
         text-decoration: none;
         width: 100%;
         text-align: center;
@@ -65,8 +71,8 @@
     }
 
     &__error {
-        background-color: rgba(#E81313, 0.09);
-        color: #E81313;
+        background-color: $clr-error-bg;
+        color: $clr-error-text;
         border-radius: $br;
         padding: 1rem 2rem;
     }
@@ -102,30 +108,55 @@
         }
     }
 
-    input {
-        border: 0.075rem solid transparent;
-        background-color: #F7F7F7;
-        padding: 1rem 1.5rem;
-        border-radius: 5rem;
-        font-family: $ff;
-        font-size: .875rem;
+    &__password-options {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
         width: 100%;
+        padding: 0.4rem 0.75rem 0 0.75rem;
     }
 
-    input[type="date"]:before {
-        content: attr(placeholder) !important;
-        color: #aaa;
-    }
-    input[type="date"]:focus:before,
-    input[type="date"]:valid:before {
-        content: none;
-    }
+    &__column--pp {
+        padding: 0 0.75rem;
+        max-width: 25rem;
 
-    input[type="checkbox"] {
-        width: fit-content;
-        height: fit-content;
-        margin-right: 0.25rem;
-    }
+        input {
+            margin-top: 0.25rem;
+        }
 
+        label {
+            display: flex;
+            flex-direction: row;
+            align-items: flex-start;
+            gap: 0.25rem;
+        }
+    }
+}
+
+.formbox--wider {
+    width: 100%;
+    max-width: $screen-l;
+}
+
+.formbox--member-open {
+    .box__add {
+        border-radius: $br $br 0 0;
+    }
+}
+
+.formbox--member {
+
+    .formbox__form {
+        padding-block: 0;
+
+        &::before, &::after {
+            content: "";
+            height: 1rem;
+            width: 100%;
+            grid-column: span 4;
+            display: block;
+        }
+    }
 
 }

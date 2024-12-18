@@ -1,0 +1,30 @@
+@use "../abstracts" as *;
+
+input {
+    border: 0.075rem solid transparent;
+    background-color: #F7F7F7;
+    padding: 1rem 1.5rem;
+    border-radius: 5rem;
+    font-family: $ff;
+    font-size: .875rem;
+    width: 100%;
+}
+
+input[type="date"]:before {
+    content: attr(placeholder) !important;
+    color: #aaa;
+}
+input[type="date"]:focus:before,
+input[type="date"]:valid:before {
+    content: none;
+}
+
+input[type="checkbox"] {
+    width: fit-content;
+    height: fit-content;
+    margin-right: 0.25rem;
+}
+
+.input--white {
+    background-color: white;
+}

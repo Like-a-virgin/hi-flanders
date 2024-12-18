@@ -11,12 +11,12 @@
             {{ redirectInput('/') }}
 
             {% if errorMessage is defined %}
-                <div class="formbox__error">
+                <div class="formbox__error formbox__column--full">
                     <p class="formbox__errorText">{{ errorMessage }}</p>
                 </div>
             {% endif %}
 
-            <div>            
+            <div class="formbox__column--full">            
                 <label class="formbox__label" for="loginName">Email</label>
                 {{ input('text', 'loginName', craft.app.user.rememberedUsername, {
                     id: 'loginName',
@@ -25,17 +25,23 @@
                 }) }}
             </div>
 
-            <div class="formbox__password">            
+            <div class="formbox__password formbox__column--full">            
                 <label class="formbox__label" for="password">Password</label>
                 {{ input('password', 'password', null, {
                     id: 'password',
                     placeholder: 'wachtwoord'
                 }) }}
 
-                <a class="formbox__link formbox__link--small" href="{{ url('reset-password') }}">Wachtwoord vergeten?</a>
+                <div class="formbox__password-options">
+                    <label>
+                        {{ input('checkbox', 'rememberMe', '1') }}
+                        Remember me
+                    </label>
+                    <a class="formbox__link formbox__link--small" href="{{ url('reset-password') }}">Wachtwoord vergeten?</a>
+                </div>
             </div>
 
-            <button class="formbox__button">Login</button>
+            <button class="formbox__button formbox__column--full">Login</button>
         </form>
         <div class="formbox__options">
             <p class="formbox__or">Of</p>

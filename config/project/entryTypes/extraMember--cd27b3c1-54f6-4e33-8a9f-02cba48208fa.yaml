@@ -1,0 +1,101 @@
+color: null
+fieldLayouts:
+  df1c0b93-b050-46df-8dcb-0a82e19322cb:
+    tabs:
+      -
+        elementCondition: null
+        elements:
+          -
+            dateAdded: '2024-12-18T08:18:13+00:00'
+            elementCondition: null
+            fieldUid: aa21d2ca-e34c-4497-a6fa-49b5a7cc7f58 # Title
+            handle: altFirstName
+            includeInCards: false
+            instructions: null
+            label: Voornaam
+            providesThumbs: false
+            required: false
+            tip: null
+            type: craft\fieldlayoutelements\CustomField
+            uid: 504a3b5d-4274-49ad-8528-f1acfc9640e2
+            userCondition: null
+            warning: null
+            width: 100
+          -
+            dateAdded: '2024-12-18T08:18:13+00:00'
+            elementCondition: null
+            fieldUid: aa21d2ca-e34c-4497-a6fa-49b5a7cc7f58 # Title
+            handle: altLastName
+            includeInCards: false
+            instructions: null
+            label: Familienaam
+            providesThumbs: false
+            required: false
+            tip: null
+            type: craft\fieldlayoutelements\CustomField
+            uid: a036833a-17e8-48b3-9e94-a7309c917539
+            userCondition: null
+            warning: null
+            width: 100
+          -
+            dateAdded: '2024-12-18T08:18:13+00:00'
+            elementCondition: null
+            fieldUid: 3261931d-97c8-4b0e-a83a-6d9ac4dee153 # Birthday
+            handle: null
+            includeInCards: false
+            instructions: null
+            label: null
+            providesThumbs: false
+            required: false
+            tip: null
+            type: craft\fieldlayoutelements\CustomField
+            uid: 98c0cc75-98d9-4b0f-a747-c62dae9f611b
+            userCondition: null
+            warning: null
+            width: 100
+          -
+            dateAdded: '2024-12-18T08:18:13+00:00'
+            elementCondition: null
+            fieldUid: 93edcc59-32ca-4780-9d52-1d1fc486519a # Lid ouder
+            handle: null
+            includeInCards: false
+            instructions: null
+            label: null
+            providesThumbs: false
+            required: false
+            tip: null
+            type: craft\fieldlayoutelements\CustomField
+            uid: 7509cc76-ba33-432b-aa35-ae8a99d8a7de
+            userCondition: null
+            warning: null
+            width: 100
+          -
+            dateAdded: '2024-12-18T10:07:51+00:00'
+            elementCondition: null
+            fieldUid: aa21d2ca-e34c-4497-a6fa-49b5a7cc7f58 # Title
+            handle: parentId
+            includeInCards: false
+            instructions: null
+            label: 'Parent ID'
+            providesThumbs: false
+            required: false
+            tip: null
+            type: craft\fieldlayoutelements\CustomField
+            uid: 8313e01d-96d6-43d5-bf86-96f9c47405a7
+            userCondition: null
+            warning: null
+            width: 100
+        name: Content
+        uid: 8e882528-9d05-4508-bb00-f1cdae23b0be
+        userCondition: null
+handle: extraMember
+hasTitleField: false
+icon: user
+name: 'Extra lid'
+showSlugField: true
+showStatusField: true
+slugTranslationKeyFormat: null
+slugTranslationMethod: site
+titleFormat: '{object.altFirstName} {object.altLastName}'
+titleTranslationKeyFormat: null
+titleTranslationMethod: site

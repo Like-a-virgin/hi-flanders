@@ -1,69 +1,71 @@
 {% extends "layouts/base.twig" %}
 
-{% macro errorList(errors) %}
+{# `user` is defined if the form returns validation errors. #}
+
+{% block content %}
+    {% set user = user ?? null %}
+    {% set activationPage = craft.entries.section('activate').one().uri %}
+
+    {% macro errorList(errors) %}
     {% if errors %}
         {{ ul(errors, {class: 'errors'}) }}
     {% endif %}
-{% endmacro %}
+    {% endmacro %}
 
-{# `user` is defined if the form returns validation errors. #}
-{% set user = user ?? null %}
-
-{% block content %}
     <div class="formbox">
         <div class="formbox__heading">
             <h2>Registreer</h2>
         </div>
-        <form class="formbox__form"  method="post" accept-charset="UTF-8">
+        <form class="formbox__form" method="post" accept-charset="UTF-8">
             {{ csrfInput() }}
             {{ actionInput('users/save-user') }}
-
-                        {% if errorMessage is defined %}
-                <div class="formbox__error">
-                    <p class="formbox__errorText">{{ errorMessage }}</p>
+            {{ redirectInput(activationPage) }}
+            
+            {% if user %}
+                <pre>
+                    {{ dump(_self.errorList()) }}
+                </pre>
+                <div class="formbox__error formbox__column--full">
+                    {{ _self.errorList(user.getErrors('email')) }}
                 </div>
             {% endif %}
-            {# In Craft 4, `firstName` and `lastName` were combined into a single property: #}
-            <div class="formbox__row">
-                <div>                
-                    <label class="formbox__label" for="alt-first-name">Voornaam</label>
-                    {{ input('text', 'fields[altFirstName]', user.textSingle ?? null, {
-                        id: 'alt-first-name',
-                        placeholder: 'Voornaam',
-                        required: true
-                    }) }}
-                </div>
-                <div>                
-                    <label class="formbox__label" for="alt-sur-namee">Naam</label>
-                    {{ input('text', 'fields[altLastName]', user.altLastName ?? null, {
-                        id: 'alt-sur-name',
-                        placeholder: 'Achternaam',
-                        required: true
-                    }) }}
-                </div>
-            </div>
+            
 
-            <div class="formbox__row">    
-                <div>                
-                    <label class="formbox__label" for="email">Email</label>
-                    {{ input('email', 'email', user.email ?? null, {
-                        id: 'email',
-                        placeholder: 'email',
-                        required: true
-                    }) }}
-                </div> 
-                <div>                
-                    <label class="formbox__label" for="birthday">Geboortedatum</label>
-                    {{ input('date', 'fields[birthday]', null, {
-                        id: 'birthday',
-                        placeholder: 'Geboortedatum',
-                        onFocus: "(this.type = 'date')",
-                        required: true
-                    }) }}
-                </div>     
+            <div class="formbox__column">                
+                <label class="formbox__label" for="alt-first-name">Voornaam</label>
+                {{ input('text', 'fields[altFirstName]', user.altFirstName ?? null, {
+                    id: 'alt-first-name',
+                    placeholder: 'Voornaam',
+                    required: true
+                }) }}
             </div>
-
-            <div>
+            <div class="formbox__column">                
+                <label class="formbox__label" for="alt-sur-namee">Naam</label>
+                {{ input('text', 'fields[altLastName]', user.altLastName ?? null, {
+                    id: 'alt-sur-name',
+                    placeholder: 'Achternaam',
+                    required: true
+                }) }}
+            </div>
+            <div class="formbox__column">                
+                <label class="formbox__label" for="email">Email</label>
+                {{ input('email', 'email', user.email ?? null, {
+                    id: 'email',
+                    placeholder: 'email',
+                    required: true
+                }) }}
+                
+            </div> 
+            <div class="formbox__column">                
+                <label class="formbox__label" for="birthday">Geboortedatum</label>
+                {{ input('text', 'fields[birthday]', null, {
+                    id: 'birthday',
+                    placeholder: 'Geboortedatum',
+                    onFocus: "(this.type = 'date', this.placeholder = '')",
+                    required: true
+                }) }}
+            </div>     
+            <div class="formbox__column--full">
                 <label class="formbox__label" for="country">Land</label>
                 {{ input('text', 'fields[country]', user.country ?? null, {
                     id: 'country',
@@ -71,54 +73,46 @@
                     required: true
                 }) }}
             </div>
-
-            <div class="formbox__row">
-                <div>
-                    <label class="formbox__label" for="street">Straat</label>
-                    {{ input('text', 'fields[street]', user.street ?? null, {
-                        id: 'street',
-                        placeholder: 'Straat',
-                        required: true
-                    }) }}
-                </div>
-                <div class="formbox__row">                
-                    <div>
-                        <label class="formbox__label" for="number">Nr</label>
-                        {{ input('text', 'fields[streetNr]', user.streetNr ?? null, {
-                            id: 'number',
-                            placeholder: 'Nr',
-                            required: true
-                        }) }}
-                    </div>
-                    <div>
-                        <label class="formbox__label" for="email">Bus</label>
-                        {{ input('text', 'fields[bus]', user.bus ?? null, {
-                            id: 'bus',
-                            placeholder: 'bus'
-                        }) }}
-                    </div>
-                </div>
+            <div class="formbox__column">
+                <label class="formbox__label" for="postal-code">Postcode</label>
+                {{ input('text', 'fields[postalCode]', user.postalCode ?? null, {
+                    id: 'postal-code',
+                    placeholder: 'Postcode',
+                    required: true
+                }) }}
             </div>
-            <div class="formbox__row">
-                <div>
-                    <label class="formbox__label" for="postal-code">Postcode</label>
-                    {{ input('text', 'fields[postalCode]', user.postalCode ?? null, {
-                        id: 'postal-code',
-                        placeholder: 'Postcode',
-                        required: true
-                    }) }}
-                </div>
-                <div>
-                    <label class="formbox__label" for="city">Stad</label>
-                    {{ input('text', 'fields[city]', user.city ?? null, {
-                        id: 'city',
-                        placeholder: 'Stad',
-                        required: true
-                    }) }}
-                </div>
+            <div class="formbox__column">
+                <label class="formbox__label" for="city">Stad</label>
+                {{ input('text', 'fields[city]', user.city ?? null, {
+                    id: 'city',
+                    placeholder: 'Stad',
+                    required: true
+                }) }}
             </div>
-
-            <div>            
+            <div class="formbox__column">
+                <label class="formbox__label" for="street">Straat</label>
+                {{ input('text', 'fields[street]', user.street ?? null, {
+                    id: 'street',
+                    placeholder: 'Straat',
+                    required: true
+                }) }}
+            </div>
+            <div class="formbox__column--1-4">
+                <label class="formbox__label" for="number">Nr</label>
+                {{ input('text', 'fields[streetNr]', user.streetNr ?? null, {
+                    id: 'number',
+                    placeholder: 'Nr',
+                    required: true
+                }) }}
+            </div>
+            <div class="formbox__column--1-4">
+                <label class="formbox__label" for="email">Bus</label>
+                {{ input('text', 'fields[bus]', user.bus ?? null, {
+                    id: 'bus',
+                    placeholder: 'bus'
+                }) }}
+            </div>
+            <div class="formbox__column--full">            
                 <label class="formbox__label" for="password">Password</label>
                 {{ input('password', 'password', null, {
                     id: 'password',
@@ -126,21 +120,22 @@
                     required: true
                 }) }}
             </div>
-
-            <div class="formbox__checkbox">
+            <div class="formbox__checkbox formbox__column--pp formbox__column--full">
                 <label for="privacy-policy">
                 {{ input('checkbox', 'privacy-policy', null, {
                     id: 'privacy-policy',
                     required: true
-                }) }} Ik ga akkoord dat mijn gegevens gebruikt worden zoals beschreven in de <a class="formbox__link" href="https://www.hiflanders.be/nl/privacy-policy">privacy policy</a>.</label>
+                }) }} 
+                <p>Ik ga akkoord dat mijn gegevens gebruikt worden zoals beschreven in de <a class="formbox__link" href="https://www.hiflanders.be/nl/privacy-policy">privacy policy</a>.</label></p>
             </div>
 
             {{ input('hidden', 'fields[groups]', 'members') }}
 
-            <button class="formbox__button">Registreer</button>
+            <button class="formbox__button formbox__column--full">Registreer</button>
         </form>
         <div class="formbox__options">
-            <a class="formbox__link" href="{{ url('login') }}">Al lid?</a>
+            <p class="formbox__or">Of</p>
+            <a class="formbox__button formbox__button--sec" href="{{ url('login') }}">Log in</a>
         </div>
     </div>
 {% endblock %}

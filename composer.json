@@ -2,7 +2,9 @@
   "minimum-stability": "dev",
   "prefer-stable": true,
   "require": {
+    "craftcms/ckeditor": "^4.4.0",
     "craftcms/cms": "^5.0.0",
+    "craftcms/postmark": "^3.1.0",
     "nystudio107/craft-vite": "^5.0.1",
     "putyourlightson/craft-sprig": "^3.4.0",
     "verbb/formie": "^3.0.15",

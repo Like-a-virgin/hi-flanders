@@ -6,7 +6,7 @@
 
 {% block content %}
     {% if currentUser %}
-        <a href="{{ logoutUrl }}">Logout</a>
+        <a class="logout" href="{{ logoutUrl }}">Logout</a>
     {% endif %}
     {% if userGroup is same as 'members' %}    
         {% include "pages/user.twig" %}

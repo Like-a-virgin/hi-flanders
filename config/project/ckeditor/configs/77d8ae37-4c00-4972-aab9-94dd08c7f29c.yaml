@@ -1,0 +1,9 @@
+headingLevels: false
+name: SimpleText
+toolbar:
+  - heading
+  - '|'
+  - bulletedList
+  - bold
+  - italic
+  - link
