@@ -1,19 +1,15 @@
 columnSuffix: null
-handle: number
+handle: price
 instructions: null
-name: Nummer
+name: Prijs
 searchable: false
 settings:
-  decimals: 0
+  currency: EUR
   defaultValue: null
   max: null
   min: 0
-  prefix: null
-  previewCurrency: null
-  previewFormat: none
+  showCurrency: true
   size: null
-  step: null
-  suffix: null
 translationKeyFormat: null
 translationMethod: none
-type: craft\fields\Number
+type: craft\fields\Money

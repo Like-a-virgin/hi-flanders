@@ -17,7 +17,7 @@ fieldLayouts:
             includeInCards: false
             inputType: null
             instructions: null
-            label: null
+            label: 'Naam type'
             max: null
             min: null
             name: null
@@ -32,6 +32,54 @@ fieldLayouts:
             title: null
             type: craft\fieldlayoutelements\entries\EntryTitleField
             uid: c8ab94da-a715-4aea-b9b7-c43c66493ffc
+            userCondition: null
+            warning: null
+            width: 100
+          -
+            dateAdded: '2024-12-18T13:12:50+00:00'
+            elementCondition: null
+            fieldUid: 590f0cba-dbfa-4eda-882d-2fe3aac82a92 # Prijs
+            handle: null
+            includeInCards: false
+            instructions: null
+            label: null
+            providesThumbs: false
+            required: false
+            tip: null
+            type: craft\fieldlayoutelements\CustomField
+            uid: 99ca6b57-ba56-46fb-84f9-a2a17265b9e6
+            userCondition: null
+            warning: null
+            width: 100
+          -
+            dateAdded: '2024-12-18T13:12:50+00:00'
+            elementCondition: null
+            fieldUid: bcc31cfe-3e29-427b-89b2-8e771af767e9 # Nummer
+            handle: minAge
+            includeInCards: false
+            instructions: null
+            label: 'Min Leeftijd'
+            providesThumbs: false
+            required: false
+            tip: null
+            type: craft\fieldlayoutelements\CustomField
+            uid: 9ba8b0b9-1d2b-49c3-bb96-30d13ff71e3c
+            userCondition: null
+            warning: null
+            width: 100
+          -
+            dateAdded: '2024-12-18T13:12:50+00:00'
+            elementCondition: null
+            fieldUid: bcc31cfe-3e29-427b-89b2-8e771af767e9 # Nummer
+            handle: maxAge
+            includeInCards: false
+            instructions: null
+            label: 'Max leeftijd'
+            providesThumbs: false
+            required: false
+            tip: null
+            type: craft\fieldlayoutelements\CustomField
+            uid: d2ce123f-8937-42d1-893e-dbedc8dbf0dd
             userCondition: null
             warning: null
             width: 100

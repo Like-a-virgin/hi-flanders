@@ -1,4 +1,4 @@
-dateModified: 1734526010
+dateModified: 1734527570
 elementSources:
   craft\elements\Entry:
     -
@@ -90,6 +90,7 @@ meta:
     77d8ae37-4c00-4972-aab9-94dd08c7f29c: SimpleText # SimpleText
     93edcc59-32ca-4780-9d52-1d1fc486519a: 'Lid ouder' # Lid ouder
     359a39c5-8655-460f-a1b4-0c097ea0edb2: users # users
+    590f0cba-dbfa-4eda-882d-2fe3aac82a92: Prijs # Prijs
     915a3019-dc60-443b-ab35-c471e10a8aed: Register # Register
     80634baf-dc43-47ea-8528-2e72e4a53d61: Tarief # Tarief
     3261931d-97c8-4b0e-a83a-6d9ac4dee153: Birthday # Birthday
@@ -97,11 +98,12 @@ meta:
     15257075-d043-4ea1-a62e-1785e8ed7a5f: Tekst # Tekst
     aa21d2ca-e34c-4497-a6fa-49b5a7cc7f58: Title # Title
     bbdfff72-14f8-4e5d-b59e-12d5b73c9a17: Home # Home
-    bcc31cfe-3e29-427b-89b2-8e771af767e9: Number # Number
+    bcc31cfe-3e29-427b-89b2-8e771af767e9: Nummer # Nummer
     c573f0bd-29d4-4985-8cff-271a6ee231a2: 'Leden admin' # Leden admin
     c1614bab-5fdd-4eae-8e0b-f4eb393c25dd: Tekst # Tekst
     cd27b3c1-54f6-4e33-8a9f-02cba48208fa: 'Extra lid' # Extra lid
     db8cca95-36d6-43cd-977d-2c8d4ef17863: 'Contact Form' # Contact Form
+    dbf7ddea-4516-47d3-a072-3707a9c6d1fd: Min # Min
     e18619bb-8aea-4d89-bacb-e80261037c94: Dashboard # Dashboard
 plugins:
   ckeditor:

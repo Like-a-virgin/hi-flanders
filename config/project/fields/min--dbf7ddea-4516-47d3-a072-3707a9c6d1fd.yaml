@@ -1,7 +1,7 @@
 columnSuffix: null
-handle: number
+handle: min
 instructions: null
-name: Nummer
+name: Min
 searchable: false
 settings:
   decimals: 0

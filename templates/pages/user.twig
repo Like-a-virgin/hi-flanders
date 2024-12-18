@@ -1,4 +1,12 @@
 {% set extraMembers = craft.entries.section('extraMembers').authorID(user.id).all() %}
+{% set maxDate = now|date_modify('-3 years')|date("Y-m-d") %}
+{% set memberTypes = craft.entries.section('rates').all() %}
+
+{% set currentDate = now|date('Y-m-d') %}
+{% set userBirthDay = user.birthday|date('Y-m-d') %}
+{% set memberAge = (currentDate|date('Y') - userBirthDay|date('Y')) - (currentDate|date('md') < userBirthDay|date('md') ? 1 : 0) %}
+{% set memberTypeCurrent = memberTypes|filter(i => i.minAge <= memberAge and (i.maxAge is null or i.maxAge >= memberAge)) %}
+
 <div class="box">
     <div class="box__heading">
         <h1>Mijn gegevens</h1>
@@ -71,8 +79,8 @@
         </div>
         <div class="box__column box__column--4">
             <p>Lidmaatschap</p>
-            <div class="box__info">
-                <p>{{ user.bus }}</p>
+            <div class="box__info box__info--prim">
+                <p>{{ memberTypeCurrent|first.title }}</p>
             </div>
         </div>
     </div>
@@ -81,18 +89,13 @@
 <div class="box-container box-container--member">
     <h2>Extra leden</h2>
     {% for item in extraMembers %}
-        <form method="post" accept-charset="UTF-8">
-            {{ csrfInput() }}
-            {{ actionInput('entries/delete-entry') }}
-            {{ redirectInput('/') }}
-            {{ input('hidden', 'entryId', item.id) }}
-            <button type="submit" onclick="return confirm('Are you sure you want to delete this member?');">
-                Delete {{ item.title }}
-            </button>
-        </form>
+        {% set itemBirthday = item.birthday|date('Y-m-d') %}
+        {% set itemAge = (currentDate|date('Y') - userBirthDay|date('Y')) - (currentDate|date('md') < userBirthDay|date('md') ? 1 : 0) %}
+        {% set itemTypeCurrent = memberTypes|filter(i => i.minAge <= memberAge and (i.maxAge is null or i.maxAge >= memberAge)) %}
         <div class="box box--member" x-data="{openMember: false}" :class="openMember ? 'box--member-open' : ''">
-            <div @click="openMember = ! openMember" class="box__heading">
+            <div @click="openMember = ! openMember" class="box__heading box__heading--center">
                 <h3>{{item.title}}</h3>
+                {{ svg("assets/icons/chevron-down.svg")|attr({class: 'box__icon box__icon--chevron' }) }}
             </div>
             <div class="box__content" x-collapse x-show="openMember">
                 <div class="box__wrapper">
@@ -114,7 +117,22 @@
                             <p>{{ item.birthday|date("m/d/Y") }}</p>
                         </div>
                     </div>
+                    <div class="box__column box__column--2">            
+                        <p>Lidmaatschap</p>
+                        <div class="box__info box__info--prim">
+                            <p>{{ itemTypeCurrent|first.title }}</p>
+                        </div>
+                    </div>
                 </div>
+                <form class="box__delete" method="post" accept-charset="UTF-8">
+                    {{ csrfInput() }}
+                    {{ actionInput('entries/delete-entry') }}
+                    {{ redirectInput('/') }}
+                    {{ input('hidden', 'entryId', item.id) }}
+                    <button class="box__delete-button" type="submit" onclick="return confirm('Are you sure you want to delete this member?');">
+                        Verwijder {{ item.title }} als extra lid
+                    </button>
+                </form>
             </div>
         </div>
     {% endfor %}
@@ -152,7 +170,8 @@
                     id: 'birthday',
                     placeholder: 'Geboortedatum',
                     onFocus: "(this.type = 'date', this.placeholder = '')",
-                    required: true
+                    required: true,
+                    max: maxDate
                 }) }}
             </div>   
             

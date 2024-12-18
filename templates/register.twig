@@ -5,6 +5,7 @@
 {% block content %}
     {% set user = user ?? null %}
     {% set activationPage = craft.entries.section('activate').one().uri %}
+    {% set maxDate = now|date_modify('-3 years')|date("Y-m-d") %}
 
     {% macro errorList(errors) %}
     {% if errors %}
@@ -62,7 +63,8 @@
                     id: 'birthday',
                     placeholder: 'Geboortedatum',
                     onFocus: "(this.type = 'date', this.placeholder = '')",
-                    required: true
+                    required: true,
+                    max: maxDate
                 }) }}
             </div>     
             <div class="formbox__column--full">
