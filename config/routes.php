@@ -9,4 +9,6 @@
  * https://craftcms.com/docs/4.x/routing.html
  */
 
-return [];
+return [
+    'actions/entries/delete-entry' => 'entries/delete-entry',
+];

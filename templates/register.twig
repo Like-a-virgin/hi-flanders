@@ -41,7 +41,7 @@
                 }) }}
             </div>
             <div class="formbox__column">                
-                <label class="formbox__label" for="alt-sur-namee">Naam</label>
+                <label class="formbox__label" for="alt-sur-namee">Familienaam</label>
                 {{ input('text', 'fields[altLastName]', user.altLastName ?? null, {
                     id: 'alt-sur-name',
                     placeholder: 'Achternaam',
@@ -67,6 +67,14 @@
                     max: maxDate
                 }) }}
             </div>     
+            <div class="formbox__column--full">
+                <label class="formbox__label" for="country">Organisatie</label>
+                {{ input('text', 'fields[organisation]', user.organisation ?? null, {
+                    id: 'country',
+                    placeholder: 'Organisatie',
+                    required: true
+                }) }}
+            </div>
             <div class="formbox__column--full">
                 <label class="formbox__label" for="country">Land</label>
                 {{ input('text', 'fields[country]', user.country ?? null, {

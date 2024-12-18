@@ -148,6 +148,22 @@ tabs:
         userCondition: null
         width: 100
       -
+        dateAdded: '2024-12-18T14:41:34+00:00'
+        elementCondition: null
+        fieldUid: aa21d2ca-e34c-4497-a6fa-49b5a7cc7f58 # Title
+        handle: organisation
+        includeInCards: false
+        instructions: null
+        label: Organisatie
+        providesThumbs: false
+        required: false
+        tip: null
+        type: craft\fieldlayoutelements\CustomField
+        uid: 40949dc7-a01d-4e59-b8ce-d0579608613d
+        userCondition: null
+        warning: null
+        width: 100
+      -
         dateAdded: '2024-12-17T11:03:11+00:00'
         elementCondition: null
         type: craft\fieldlayoutelements\HorizontalRule

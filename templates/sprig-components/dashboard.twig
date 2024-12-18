@@ -1,34 +1,51 @@
-{% set members = craft.users.group('members').all() %}
+{% set query = query ?? '' %}
 
-<div class="box">
-    <div class="box__heading box__heading--column">
-        <h1>Leden</h1>
+{% set members = craft.users.group('members').all() %}
+{% set filteredMembers = members | filter(member =>
+    member.altFirstName is not empty and member.altFirstName|lower starts with query|lower or
+    member.altLastName is not empty and member.altLastName|lower starts with query|lower or
+    member.id|string starts with query
+) %}
+
+<div class="box-container table">
+    <h1>Leden</h1>
+    <div class="table__options">
+        <div class="table__option-search">
+            {{ svg("assets/icons/search.svg")|attr({class: 'table__icon-search' }) }}
+            <input sprig class="table__search" s-replace="#table-members" s-trigger="keyup changed" name="query" value="{{query}}" type="text" placeholder="Zoeken">
+        </div>
     </div>
-    <div class="table">
-        <div class="table__options">
-            <input class="table__search" type="text" placeholder="Search">
-        </div>    
-        <table class="table__table">
-            <thead>
-                <tr>
-                    <th>Voornaam</th>
-                    <th>Famillienaam</th>
-                    <th>Lidnummer</th>
-                    <th>Lidmaatschap</th>
-                    <th>Extra personen</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for member in members %}
+    <table class="table__table" id="table-members">
+        <thead>
+            <tr>
+                <th>Voornaam</th>
+                <th>Famillienaam</th>
+                <th>Lidnummer</th>
+                <th>Lidmaatschap</th>
+                <th>Extra personen</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% if query %}
+                {% set theMembers = filteredMembers %}
+            {% else %}
+                {% set theMembers = members %}
+            {% endif %}
+            {% for member in theMembers %}
+                {% set memberTypes = craft.entries.section('rates').all() %}
+                {% set currentDate = now|date('Y-m-d') %}
+                {% set memberBday = member.birthday|date('Y-m-d') %}
+                {% set memberAge = (currentDate|date('Y') - memberBday|date('Y')) - (currentDate|date('md') < memberBday|date('md') ? 1 : 0) %}
+                {% set memberType = memberTypes|filter(i => i.minAge <= memberAge and (i.maxAge is null or i.maxAge >= memberAge)) %}
+                {% set extraMembers = craft.entries.section('extraMembers').authorId(member.id).all() %}
                 <tr>
                     <td>{{member.altFirstName}}</td>
                     <td>{{member.altLastName}}</td>
                     <td>008 {{member.id}}</td>
-                    <td></td>
-                    <td></td>
+                    <td>{{ memberType|first }}</td>
+                    <td>{{ extraMembers|length }}</td>
                 </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-    </div>
+            {% endfor %}
+        </tbody>
+    </table>
 </div>

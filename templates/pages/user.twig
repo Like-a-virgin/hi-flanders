@@ -10,7 +10,7 @@
 <div class="box">
     <div class="box__heading">
         <h1>Mijn gegevens</h1>
-        <h2>Lidnummer: 008{{ user.id }}</h2>
+        <h2>Lidnummer: 008 {{ user.id }}</h2>
     </div>
     <div class="box__content">
         <div class="box__wrapper">        
@@ -77,10 +77,18 @@
                 </div>
             </div>
         </div>
-        <div class="box__column box__column--4">
-            <p>Lidmaatschap</p>
-            <div class="box__info box__info--prim">
-                <p>{{ memberTypeCurrent|first.title }}</p>
+        <div class="box__wrapper">        
+            <div class="box__column box__column--2">            
+                <p>Organisatie</p>
+                <div class="box__info">
+                    <p>{{ user.organisation }}</p>
+                </div>
+            </div>
+            <div class="box__column box__column--2">
+                <p class="box__text-bold">Lidmaatschap</p>
+                <div class="box__info box__info--prim">
+                    <p>{{ memberTypeCurrent|first.title }}</p>
+                </div>
             </div>
         </div>
     </div>
@@ -90,8 +98,8 @@
     <h2>Extra leden</h2>
     {% for item in extraMembers %}
         {% set itemBirthday = item.birthday|date('Y-m-d') %}
-        {% set itemAge = (currentDate|date('Y') - userBirthDay|date('Y')) - (currentDate|date('md') < userBirthDay|date('md') ? 1 : 0) %}
-        {% set itemTypeCurrent = memberTypes|filter(i => i.minAge <= memberAge and (i.maxAge is null or i.maxAge >= memberAge)) %}
+        {% set itemAge = (currentDate|date('Y') - itemBirthday|date('Y')) - (currentDate|date('md') < itemBirthday|date('md') ? 1 : 0) %}
+        {% set itemTypeCurrent = memberTypes|filter(i => i.minAge <= itemAge and (i.maxAge is null or i.maxAge >= itemAge)) %}
         <div class="box box--member" x-data="{openMember: false}" :class="openMember ? 'box--member-open' : ''">
             <div @click="openMember = ! openMember" class="box__heading box__heading--center">
                 <h3>{{item.title}}</h3>
@@ -124,12 +132,12 @@
                         </div>
                     </div>
                 </div>
-                <form class="box__delete" method="post" accept-charset="UTF-8">
+                <form class="box__delete" method="post">
                     {{ csrfInput() }}
-                    {{ actionInput('entries/delete-entry') }}
-                    {{ redirectInput('/') }}
+                    {{ actionInput('/entries/delete-entry') }}
                     {{ input('hidden', 'entryId', item.id) }}
                     <button class="box__delete-button" type="submit" onclick="return confirm('Are you sure you want to delete this member?');">
+                        {{ svg("assets/icons/trash.svg")|attr({class: 'box__icon-trash' }) }}
                         Verwijder {{ item.title }} als extra lid
                     </button>
                 </form>
