@@ -2,8 +2,11 @@
 $clr-primary: #FFCC22;
 $clr-secondary: #102438;
 $clr-tertiary: white; 
-$clr-error-bg: rgba(#E81313, 0.09);
-$clr-error-text: #E81313;
+$clr-error-text: #E74C3C;
+$clr-error-bg: rgba($clr-error-text, 0.09);
+$clr-succes-text: #28A745;
+$clr-succes-bg: rgba($clr-succes-text, 0.09);
+
 
 // Border Radius
 $br: .625rem;

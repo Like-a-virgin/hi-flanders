@@ -1,0 +1,23 @@
+@use "../abstracts" as *;
+
+.edit {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    row-gap: 1.5rem;
+    column-gap: 1rem;
+
+    input {
+        border-radius: $br;
+        padding: 1rem;
+        border: solid $clr-primary 0.075rem;
+    }
+
+    &__label {
+        margin-bottom: 0.5rem;
+        display: block;
+    }
+
+    &__column--2 {
+        grid-column: span 2;
+    }
+}

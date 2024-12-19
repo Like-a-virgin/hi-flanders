@@ -7,12 +7,14 @@
 {% set memberAge = (currentDate|date('Y') - userBirthDay|date('Y')) - (currentDate|date('md') < userBirthDay|date('md') ? 1 : 0) %}
 {% set memberTypeCurrent = memberTypes|filter(i => i.minAge <= memberAge and (i.maxAge is null or i.maxAge >= memberAge)) %}
 
+{% requireLogin %}
+
 <div class="box">
     <div class="box__heading">
         <h1>Mijn gegevens</h1>
         <h2>Lidnummer: 008 {{ user.id }}</h2>
     </div>
-    <div class="box__content">
+    <div class="box__content" x-data="{ edit: false }">
         <div class="box__wrapper">        
             <div class="box__column box__column--2">            
                 <p>Naam</p>
@@ -39,7 +41,7 @@
                 </div>
             </div>
         </div>
-        <div class="box__wrapper">        
+        <div class="box__wrapper" x-show="!edit">        
             <div class="box__column box__column--2">            
                 <p>Land</p>
                 <div class="box__info">
@@ -65,7 +67,7 @@
                 </div>
             </div>
             <div class="box__column">            
-                <p>Huisnummer</p>
+                <p>Nr</p>
                 <div class="box__info">
                     <p>{{ user.streetNr }}</p>
                 </div>
@@ -76,15 +78,71 @@
                     <p>{{ user.bus }}</p>
                 </div>
             </div>
+            <button @click="edit = true" class="box__function-btn">{{ svg("assets/icons/edit.svg")|attr({class: 'box__icon-option box__icon-edit' }) }} Bewerk gegevens</button>
         </div>
-        <div class="box__wrapper">        
-            <div class="box__column box__column--2">            
-                <p>Organisatie</p>
-                <div class="box__info">
-                    <p>{{ user.organisation }}</p>
-                </div>
+        <form x-show="edit" class="edit" method="post" accept-charset="UTF-8" enctype="multipart/form-data">
+            {{ csrfInput() }}
+            {{ actionInput('users/save-user') }}
+            {{ hiddenInput('userId', user.id) }}
+            <div class="edit__column--2">
+                <label class="edit__label" for="country">Land</label>
+                {{ input('text', 'fields[country]', user.country ?? null, {
+                    id: 'country',
+                    placeholder: 'Land',
+                    required: true
+                }) }}
             </div>
-            <div class="box__column box__column--2">
+            <div class="edit__column">
+                <label class="edit__label" for="postal-code">Postcode</label>
+                {{ input('text', 'fields[postalCode]', user.postalCode ?? null, {
+                    id: 'postal-code',
+                    placeholder: 'Postcode',
+                    required: true
+                }) }}
+            </div>
+            <div class="edit__column">
+                <label class="edit__label" for="city">Stad</label>
+                {{ input('text', 'fields[city]', user.city ?? null, {
+                    id: 'city',
+                    placeholder: 'Stad',
+                    required: true
+                }) }}
+            </div>
+            <div class="edit__column--2">
+                <label class="edit__label" for="street">Straat</label>
+                {{ input('text', 'fields[street]', user.street ?? null, {
+                    id: 'street',
+                    placeholder: 'Straat',
+                    required: true
+                }) }}
+            </div>
+            <div class="edit__column--1-4">
+                <label class="edit__label" for="number">Nr</label>
+                {{ input('text', 'fields[streetNr]', user.streetNr ?? null, {
+                    id: 'number',
+                    placeholder: 'Nr',
+                    required: true
+                }) }}
+            </div>
+            <div class="edit__column--1-4">
+                <label class="edit__label" for="email">Bus</label>
+                {{ input('text', 'fields[bus]', user.bus ?? null, {
+                    id: 'bus',
+                    placeholder: 'bus'
+                }) }}
+            </div>
+            <button @click="edit = false" class="box__function-btn box__function-btn--save">Save Profile</button>
+        </form>
+        <div class="box__wrapper">  
+            {% if user.organisation %}            
+                <div class="box__column box__column--2">            
+                    <p>Organisatie</p>
+                    <div class="box__info">
+                        <p>{{ user.organisation }}</p>
+                    </div>
+                </div>
+            {% endif %}
+            <div class="box__column {{user.organisation ? 'box__column--2' : 'box__column--4'}}">
                 <p class="box__text-bold">Lidmaatschap</p>
                 <div class="box__info box__info--prim">
                     <p>{{ memberTypeCurrent|first.title }}</p>
@@ -134,10 +192,10 @@
                 </div>
                 <form class="box__delete" method="post">
                     {{ csrfInput() }}
-                    {{ actionInput('/entries/delete-entry') }}
-                    {{ input('hidden', 'entryId', item.id) }}
-                    <button class="box__delete-button" type="submit" onclick="return confirm('Are you sure you want to delete this member?');">
-                        {{ svg("assets/icons/trash.svg")|attr({class: 'box__icon-trash' }) }}
+                    {{ actionInput('elements/delete') }}
+                    {{ input('hidden', 'elementId', item.id) }}
+                    <button class="box__function-btn box__function-btn--delete" type="submit" onclick="return confirm('Are you sure you want to delete this member?');">
+                        {{ svg("assets/icons/trash.svg")|attr({class: 'box__icon-option box__icon-trash' }) }}
                         Verwijder {{ item.title }} als extra lid
                     </button>
                 </form>
