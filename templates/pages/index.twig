@@ -5,12 +5,11 @@
 {% set userGroup = user.getGroups()|first.handle %}
 
 {% block content %}
-    {% if currentUser %}
-        <a class="logout" href="{{ logoutUrl }}">Logout</a>
-    {% endif %}
     {% if userGroup is same as 'members' %}    
         {% include "pages/user.twig" %}
     {% elseif userGroup is same as 'membersAdmin' %}
         {% include "pages/dashboard.twig" %}  
+    {% elseif userGroup is same as 'membersOrganisation' %}
+        {% include "pages/user-organisation.twig" %}  
     {% endif %}
 {% endblock %}

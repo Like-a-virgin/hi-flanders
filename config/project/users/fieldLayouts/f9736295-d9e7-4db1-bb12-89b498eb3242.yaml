@@ -82,7 +82,17 @@ tabs:
         width: 100
       -
         dateAdded: '2024-12-17T11:13:13+00:00'
-        elementCondition: null
+        elementCondition:
+          class: craft\elements\conditions\users\UserCondition
+          conditionRules:
+            -
+              class: craft\elements\conditions\users\GroupConditionRule
+              operator: in
+              uid: 749a2431-65ac-4770-aafd-339ae777afaf
+              values:
+                - 50a6f7cb-84e7-4d68-9aa9-3af2d9001e79 # Leden
+          elementType: craft\elements\User
+          fieldContext: global
         fieldUid: aa21d2ca-e34c-4497-a6fa-49b5a7cc7f58 # Title
         handle: altFirstName
         includeInCards: false
@@ -98,7 +108,17 @@ tabs:
         width: 100
       -
         dateAdded: '2024-12-17T11:13:55+00:00'
-        elementCondition: null
+        elementCondition:
+          class: craft\elements\conditions\users\UserCondition
+          conditionRules:
+            -
+              class: craft\elements\conditions\users\GroupConditionRule
+              operator: in
+              uid: 9dac14e9-ea42-4ad9-998d-744b022b467c
+              values:
+                - 50a6f7cb-84e7-4d68-9aa9-3af2d9001e79 # Leden
+          elementType: craft\elements\User
+          fieldContext: global
         fieldUid: aa21d2ca-e34c-4497-a6fa-49b5a7cc7f58 # Title
         handle: altLastName
         includeInCards: false
@@ -113,43 +133,18 @@ tabs:
         warning: null
         width: 100
       -
-        dateAdded: '2024-12-17T11:03:11+00:00'
-        elementCondition: null
-        type: craft\fieldlayoutelements\HorizontalRule
-        uid: 91f914f5-4384-4449-b3bf-b1461383b45f
-        userCondition: null
-      -
-        autocapitalize: true
-        autocomplete: false
-        autocorrect: true
-        class: null
-        dateAdded: '2024-12-16T16:10:15+00:00'
-        disabled: false
-        elementCondition: null
-        id: null
-        includeInCards: false
-        inputType: null
-        instructions: null
-        label: null
-        max: null
-        min: null
-        name: null
-        orientation: null
-        placeholder: null
-        providesThumbs: false
-        readonly: false
-        requirable: false
-        size: null
-        step: null
-        tip: null
-        title: null
-        type: craft\fieldlayoutelements\users\EmailField
-        uid: eab3f0ef-44dc-4b55-89fa-074791157097
-        userCondition: null
-        width: 100
-      -
         dateAdded: '2024-12-18T14:41:34+00:00'
-        elementCondition: null
+        elementCondition:
+          class: craft\elements\conditions\users\UserCondition
+          conditionRules:
+            -
+              class: craft\elements\conditions\users\GroupConditionRule
+              operator: in
+              uid: 560afdca-fe1a-4987-a728-e16d4abc3adf
+              values:
+                - 681b7955-a563-4518-9041-5fc91081c098 # Leden Organisatie
+          elementType: craft\elements\User
+          fieldContext: global
         fieldUid: aa21d2ca-e34c-4497-a6fa-49b5a7cc7f58 # Title
         handle: organisation
         includeInCards: false
@@ -164,11 +159,53 @@ tabs:
         warning: null
         width: 100
       -
-        dateAdded: '2024-12-17T11:03:11+00:00'
-        elementCondition: null
-        type: craft\fieldlayoutelements\HorizontalRule
-        uid: 4f9a9ed0-9724-4d29-b9a8-4f977d92113c
+        dateAdded: '2024-12-16T16:12:37+00:00'
+        elementCondition:
+          class: craft\elements\conditions\users\UserCondition
+          conditionRules:
+            -
+              class: craft\elements\conditions\users\GroupConditionRule
+              operator: in
+              uid: f8d21203-424b-421a-b995-54f0b71fa47f
+              values:
+                - 50a6f7cb-84e7-4d68-9aa9-3af2d9001e79 # Leden
+          elementType: craft\elements\User
+          fieldContext: global
+        fieldUid: 3261931d-97c8-4b0e-a83a-6d9ac4dee153 # Birthday
+        handle: null
+        includeInCards: false
+        instructions: null
+        label: null
+        providesThumbs: false
+        required: false
+        tip: null
+        type: craft\fieldlayoutelements\CustomField
+        uid: f5acb2b0-a296-43ec-80b0-87cf4dda0141
         userCondition: null
+        warning: null
+        width: 100
+      -
+        dateAdded: '2024-12-19T15:20:13+00:00'
+        elementCondition: null
+        fieldUid: ab51ff2a-5865-41c8-897f-008e0b288a70 # Date
+        handle: datePayment
+        includeInCards: false
+        instructions: null
+        label: 'Datum betaling'
+        providesThumbs: false
+        required: false
+        tip: null
+        type: craft\fieldlayoutelements\CustomField
+        uid: e7870079-b47e-440a-9075-ca69076ab9ef
+        userCondition: null
+        warning: null
+        width: 100
+    name: Content
+    uid: ae013ac9-d044-4fc1-85a9-cdfa5bb71919
+    userCondition: null
+  -
+    elementCondition: null
+    elements:
       -
         dateAdded: '2024-12-17T11:11:20+00:00'
         elementCondition: null
@@ -265,16 +302,81 @@ tabs:
         userCondition: null
         warning: null
         width: 100
+    name: Adres
+    uid: 2789db09-a9ad-4779-886b-ffbc97ff25c1
+    userCondition: null
+  -
+    elementCondition: null
+    elements:
       -
-        dateAdded: '2024-12-17T11:03:11+00:00'
-        elementCondition: null
-        type: craft\fieldlayoutelements\HorizontalRule
-        uid: 62267354-5510-4a90-aca8-660eda204ccf
+        dateAdded: '2024-12-19T15:50:07+00:00'
+        elementCondition:
+          class: craft\elements\conditions\users\UserCondition
+          conditionRules:
+            -
+              class: craft\elements\conditions\users\GroupConditionRule
+              operator: in
+              uid: ac976cbd-e673-4d83-b3db-e75e985c8afc
+              values:
+                - 681b7955-a563-4518-9041-5fc91081c098 # Leden Organisatie
+          elementType: craft\elements\User
+          fieldContext: global
+        fieldUid: aa21d2ca-e34c-4497-a6fa-49b5a7cc7f58 # Title
+        handle: contactPerson
+        includeInCards: false
+        instructions: null
+        label: Contactpersoon
+        providesThumbs: false
+        required: false
+        tip: null
+        type: craft\fieldlayoutelements\CustomField
+        uid: da184061-da82-42ee-a38c-41bd3934583f
         userCondition: null
+        warning: null
+        width: 100
       -
-        dateAdded: '2024-12-16T16:12:37+00:00'
+        autocapitalize: true
+        autocomplete: false
+        autocorrect: true
+        class: null
+        dateAdded: '2024-12-16T16:10:15+00:00'
+        disabled: false
         elementCondition: null
-        fieldUid: 3261931d-97c8-4b0e-a83a-6d9ac4dee153 # Birthday
+        id: null
+        includeInCards: false
+        inputType: null
+        instructions: null
+        label: null
+        max: null
+        min: null
+        name: null
+        orientation: null
+        placeholder: null
+        providesThumbs: false
+        readonly: false
+        requirable: false
+        size: null
+        step: null
+        tip: null
+        title: null
+        type: craft\fieldlayoutelements\users\EmailField
+        uid: eab3f0ef-44dc-4b55-89fa-074791157097
+        userCondition: null
+        width: 100
+      -
+        dateAdded: '2024-12-19T15:52:15+00:00'
+        elementCondition:
+          class: craft\elements\conditions\users\UserCondition
+          conditionRules:
+            -
+              class: craft\elements\conditions\users\GroupConditionRule
+              operator: in
+              uid: 29cebc08-e79b-45a7-8f69-eb0a28dbab89
+              values:
+                - 681b7955-a563-4518-9041-5fc91081c098 # Leden Organisatie
+          elementType: craft\elements\User
+          fieldContext: global
+        fieldUid: 2c2fb008-1e62-4ff3-906c-1018563ad030 # Tel
         handle: null
         includeInCards: false
         instructions: null
@@ -283,10 +385,10 @@ tabs:
         required: false
         tip: null
         type: craft\fieldlayoutelements\CustomField
-        uid: f5acb2b0-a296-43ec-80b0-87cf4dda0141
+        uid: 34e53619-2edf-48ea-b674-bd48d0612fa8
         userCondition: null
         warning: null
         width: 100
-    name: Content
-    uid: ae013ac9-d044-4fc1-85a9-cdfa5bb71919
+    name: Contact
+    uid: 29a009f6-fae3-4141-b690-3bfa8ef7d6eb
     userCondition: null

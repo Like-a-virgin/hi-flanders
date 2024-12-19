@@ -1,0 +1,18 @@
+{% set allSites = craft.app.sites.getAllSites()%}
+
+{% if allSites|length > 1 %}
+    <div class="lang-switch" x-data="{ langOpen: false }">    
+        <button class="btn" @click="langOpen = ! langOpen">{{currentSite.language|upper}} {{ svg("assets/icons/chevron-down.svg")|attr({class: 'btn__chevron' }) }}</button>
+        <ul class="lang-switch__langs" x-show="langOpen">
+            {% for item in allSites %}
+                {% if item.id is not same as currentSite.id %}            
+                    <li class="lang-switch__item {{ color is defined ?  'lang-switch__item--' ~ color }}">
+                        <a class="lang-switch__link {{ item.id == currentSite.id  ?  'lang-switch__link--selected' }}" href="{{item.baseUrl}}{{craft.app.request.pathInfo }}" hreflang="{{ item.language }}">
+                            {{ item.language|capitalize }}
+                        </a>
+                    </li>
+                {% endif %}
+            {% endfor %}
+        </ul>
+    </div>
+{% endif %}

@@ -52,8 +52,36 @@ fieldLayouts:
             warning: null
             width: 100
           -
-            dateAdded: '2024-12-18T13:12:50+00:00'
+            dateAdded: '2024-12-19T15:31:36+00:00'
             elementCondition: null
+            fieldUid: fcaee0ce-af89-44a0-b03b-4e63a5236d7b # Tarief Groep
+            handle: null
+            includeInCards: false
+            instructions: null
+            label: null
+            providesThumbs: false
+            required: false
+            tip: null
+            type: craft\fieldlayoutelements\CustomField
+            uid: c7f38a9f-f646-42a4-aa24-b88000cf9b99
+            userCondition: null
+            warning: null
+            width: 100
+          -
+            dateAdded: '2024-12-18T13:12:50+00:00'
+            elementCondition:
+              class: craft\elements\conditions\entries\EntryCondition
+              conditionRules:
+                -
+                  class: craft\fields\conditions\OptionsFieldConditionRule
+                  fieldUid: fcaee0ce-af89-44a0-b03b-4e63a5236d7b # Tarief Groep
+                  layoutElementUid: c7f38a9f-f646-42a4-aa24-b88000cf9b99
+                  operator: in
+                  uid: 5ea345e4-c4ba-46b1-9886-30ca63ea746f
+                  values:
+                    - individual
+              elementType: craft\elements\Entry
+              fieldContext: global
             fieldUid: bcc31cfe-3e29-427b-89b2-8e771af767e9 # Nummer
             handle: minAge
             includeInCards: false
@@ -69,7 +97,19 @@ fieldLayouts:
             width: 100
           -
             dateAdded: '2024-12-18T13:12:50+00:00'
-            elementCondition: null
+            elementCondition:
+              class: craft\elements\conditions\entries\EntryCondition
+              conditionRules:
+                -
+                  class: craft\fields\conditions\OptionsFieldConditionRule
+                  fieldUid: fcaee0ce-af89-44a0-b03b-4e63a5236d7b # Tarief Groep
+                  layoutElementUid: c7f38a9f-f646-42a4-aa24-b88000cf9b99
+                  operator: in
+                  uid: 370956e6-9985-43c4-90a8-8c4a546d8c96
+                  values:
+                    - individual
+              elementType: craft\elements\Entry
+              fieldContext: global
             fieldUid: bcc31cfe-3e29-427b-89b2-8e771af767e9 # Nummer
             handle: maxAge
             includeInCards: false

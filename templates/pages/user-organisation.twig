@@ -1,6 +1,5 @@
-{% set extraMembers = craft.entries.section('extraMembers').authorID(user.id).all() %}
 {% set maxDate = now|date_modify('-3 years')|date("Y-m-d") %}
-{% set memberTypes = craft.entries.section('rates').all() %}
+{% set memberTypes = craft.entries.section('rates').all()|filter(i => i.rateGroup is same as 'organisation') %}
 
 {% set currentDate = now|date('Y-m-d') %}
 {% set userBirthDay = user.birthday|date('Y-m-d') %}
@@ -16,32 +15,26 @@
     </div>
     <div class="box__content" x-data="{ edit: false }">
         <div class="box__wrapper">        
-            <div class="box__column box__column--2">            
-                <p>{{'Voornaam'|t}}</p>
+            <div class="box__column box__column--4">            
+                <p>{{'Organisation'|t}}</p>
                 <div class="box__info">
-                    <p>{{ user.altFirstName|capitalize }}</p>
-                </div>
-            </div>
-            <div class="box__column box__column--2">            
-                <p>{{'Familienaam'|t}}</p>
-                <div class="box__info">
-                    <p>{{ user.altLastName }}</p>
-                </div>
-            </div>
-            <div class="box__column box__column--2">            
-                <p>{{'Email'|t}}</p>
-                <div class="box__info">
-                    <p>{{ user.email }}</p>
-                </div>
-            </div>
-            <div class="box__column box__column--2">            
-                <p>{{'Geboortedatum'|t}}</p>
-                <div class="box__info">
-                    <p>{{ user.birthday|date("m/d/Y") }}</p>
+                    <p>{{ user.organisation|capitalize }}</p>
                 </div>
             </div>
         </div>
         <div class="box__wrapper" x-show="!edit">        
+            <div class="box__column box__column--2">            
+                <p>{{'Contactpersoon'|t}}</p>
+                <div class="box__info">
+                    <p>{{ user.contactPerson }}</p>
+                </div>
+            </div>
+            <div class="box__column box__column--2">            
+                <p>{{'Tel'|t}}</p>
+                <div class="box__info">
+                    <p>{{ user.tel }}</p>
+                </div>
+            </div>
             <div class="box__column box__column--2">            
                 <p>{{'Land'|t}}</p>
                 <div class="box__info">
@@ -84,6 +77,22 @@
             {{ csrfInput() }}
             {{ actionInput('users/save-user') }}
             {{ hiddenInput('userId', user.id) }}
+            <div class="edit__column--2">
+                <label class="edit__label" for="contact-person">{{'Contactpersoon'|t}}</label>
+                {{ input('text', 'fields[contactPerson]', user.contactPerson ?? null, {
+                    id: 'contact-person',
+                    placeholder: 'Contactpersoon',
+                    required: true
+                }) }}
+            </div>
+            <div class="edit__column--2">
+                <label class="edit__label" for="tel">{{'Tel'|t}}</label>
+                {{ input('text', 'fields[tel]', user.tel ?? null, {
+                    id: 'tel',
+                    placeholder: 'Tel',
+                    required: true
+                }) }}
+            </div>
             <div class="edit__column--2">
                 <label class="edit__label" for="country">{{'Land'|t}}</label>
                 {{ input('text', 'fields[country]', user.country ?? null, {
@@ -133,17 +142,17 @@
             </div>
             <button @click="edit = false" class="box__function-btn box__function-btn--save">{{'Save Profile'|t}}</button>
         </form>
-        <div class="box__wrapper">            
+        <div class="box__wrapper">        
             <div class="box__column {{userGroup is same as 'membersOrganisation' ? 'box__column--2' : 'box__column--4'}}">
                 <p class="box__text-bold">{{'Lidmaatschap'|t}}</p>
                 <div class="box__info box__info--prim">
+                    {% if userGroup is same as 'members' %} 
                         <p>{{ memberTypeCurrent|first.title }}</p>
+                    {% else %}
+                        <p>{{'Groepskaart 10+'|t}}</p>
+                    {% endif %}
                 </div>
             </div>
         </div>
     </div>
 </div>
-{% if extraMembers|length > 0 %}
-    {% include "components/user-extras.twig" %}
-{% endif %}
-{% include "components/user-add-extra.twig" %} 

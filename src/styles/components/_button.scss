@@ -1,0 +1,36 @@
+@use "../abstracts" as *;
+
+.btn {
+    color: $clr-primary;
+    text-decoration: none;
+    font-weight: $fw-bold;
+    font-size: $fs-p;
+    line-height: 1;
+
+    background-color: $clr-secondary;
+    padding: 1rem 2rem;
+    border-radius: $br;
+    display: block;
+    border: none;
+
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 1rem;
+    
+    &__chevron {
+        fill: $clr-primary;
+        height: 1rem;
+        width: 1rem;
+    }
+
+    &:hover {
+        background-color: $clr-primary;
+        color: $clr-secondary;
+        cursor: pointer;
+
+        .btn__chevron {
+            fill: $clr-secondary;
+        }
+    }
+}

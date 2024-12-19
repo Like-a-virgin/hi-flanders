@@ -1,11 +1,6 @@
 {% set query = query ?? '' %}
 
 {% set members = craft.users.group('members').all() %}
-{% set filteredMembers = members | filter(member =>
-    member.altFirstName is not empty and member.altFirstName|lower starts with query|lower or
-    member.altLastName is not empty and member.altLastName|lower starts with query|lower or
-    member.id|string starts with query
-) %}
 
 <div class="box-container table">
     <h1>Leden</h1>
@@ -16,22 +11,30 @@
         </div>
     </div>
     <table class="table__table" id="table-members">
+        {% set filteredMembers = members|filter(member =>
+            member.altFirstName is not empty and member.altFirstName|lower starts with query|lower or
+            member.altLastName is not empty and member.altLastName|lower starts with query|lower or
+            member.id|string starts with query
+        ) %}
         <thead>
             <tr>
-                <th>Voornaam</th>
-                <th>Famillienaam</th>
-                <th>Lidnummer</th>
-                <th>Lidmaatschap</th>
-                <th>Extra personen</th>
+                <th>{{'Voornaam'|t}}</th>
+                <th>{{'Familienaam'|t}}</th>
+                <th>{{'Email'|t}}</th>
+                <th>{{'Lidnummer'|t}}</th>
+                <th>{{'Extra personen'|t}}</th>
+                <th>{{'Betaald'|t}}</th>
+                <th>{{'Meer'|t}}</th>
             </tr>
         </thead>
         <tbody>
             {% if query %}
-                {% set theMembers = filteredMembers %}
+                {% set theMembers = filteredMembers|sort((a, b) => a.altFirstName <=> b.altFirstName) %}
             {% else %}
-                {% set theMembers = members %}
+                {% set theMembers = members|sort((a, b) => a.altFirstName <=> b.altFirstName) %}
             {% endif %}
             {% for member in theMembers %}
+                {% set memberIsEntry = member is instance of ('craft\\elements\\Entry') %}
                 {% set memberTypes = craft.entries.section('rates').all() %}
                 {% set currentDate = now|date('Y-m-d') %}
                 {% set memberBday = member.birthday|date('Y-m-d') %}
@@ -41,9 +44,11 @@
                 <tr>
                     <td>{{member.altFirstName}}</td>
                     <td>{{member.altLastName}}</td>
-                    <td>008 {{member.id}}</td>
-                    <td>{{ memberType|first }}</td>
-                    <td>{{ extraMembers|length }}</td>
+                    <td>{{ memberIsEntry is same as false ? member.email}}</td>
+                    <td>{{ memberIsEntry is same as false ? '(008) ' ~ member.id}}</td>
+                    <td>{{ memberIsEntry is same as false ? extraMembers|length }}</td>
+                    <td><div class="table__status table__status--false">{{ svg("assets/icons/x.svg")|attr({class: 'table__status-icon table__status-icon--false' }) }}</div></td>
+                    <td><button class="table__more">Bekijk info</button></td>
                 </tr>
             {% endfor %}
         </tbody>

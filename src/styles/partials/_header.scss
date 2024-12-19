@@ -1,0 +1,11 @@
+@use "../abstracts" as *;
+
+.header {
+    position: absolute;
+    right: 4rem;
+    top: 4rem;
+    
+    display: flex;
+    flex-direction: row;
+    gap: 1rem;
+}

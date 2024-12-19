@@ -56,7 +56,7 @@
         }
 
         tbody td:last-child {
-            padding-left: 2rem;
+            padding-right: 2rem;
         }
 
         tbody tr:last-child td:first-child {
@@ -83,5 +83,42 @@
         border: solid $clr-primary 0.1rem;
         padding-left: 1rem;
         overflow: hidden;
+    }
+
+    &__status {
+        padding: 0.25rem 0.5rem;
+        border-radius: 0.25rem;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        width: fit-content;
+
+        &--false {
+            background-color: $clr-error-bg;
+        }
+    }
+
+    &__status-icon {
+        height: 1rem;
+        width: 1rem;
+
+        &--false {
+            fill: $clr-error-text;
+        }
+    }
+
+    &__more {
+        border: none;
+        font-family: $ff;
+        font-size: $fs-p;
+        background-color: transparent;
+        padding: 0;
+        text-decoration: underline;
+
+        &:hover {
+            color: $clr-primary;
+            cursor: pointer;
+        }
     }
 }

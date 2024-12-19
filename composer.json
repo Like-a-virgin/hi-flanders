@@ -3,10 +3,12 @@
   "prefer-stable": true,
   "require": {
     "craftcms/ckeditor": "^4.4.0",
-    "craftcms/cms": "^5.0.0",
+    "craftcms/cms": "5.5.7",
+    "craftcms/feed-me": "^6.6.1",
     "craftcms/postmark": "^3.1.0",
+    "mutation/translate": "^4.0.2",
     "nystudio107/craft-vite": "^5.0.1",
-    "putyourlightson/craft-sprig": "^3.4.0",
+    "putyourlightson/craft-sprig": "^3.5.1",
     "verbb/formie": "^3.0.15",
     "vlucas/phpdotenv": "^5.4.0"
   },
@@ -29,5 +31,12 @@
     "post-root-package-install": [
       "@php -r \"file_exists('.env') || copy('.env.example.dev', '.env');\""
     ]
-  }
+  },
+  "repositories": [
+    {
+      "type": "composer",
+      "url": "https://composer.craftcms.com",
+      "canonical": false
+    }
+  ]
 }

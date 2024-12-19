@@ -1,0 +1,41 @@
+<div class="box-container" x-data="{ openForm: false }">
+    <div class="formbox formbox--wider formbox--member" :class="openForm ? 'formbox--member-open' : ''">
+        <button @click="openForm = ! openForm" class="form__heading box__add">{{ svg("assets/icons/add.svg")|attr({class: 'box__icon box__icon--add' }) }} Persoon toevoegen</button>
+        <form x-collapse x-show="openForm" class="formbox__form" method="post" accept-charset="UTF-8">
+            {{ csrfInput() }}
+            {{ actionInput('entries/save-entry') }}
+
+            {{ input('hidden', 'sectionId', craft.entries.section('extraMembers').sectionId|first) }}
+            {{ input('hidden', 'fields[parentMember]', user) }}
+
+            <div class="formbox__column">                
+                <label class="formbox__label" for="alt-first-name">{{'Voornaam'|t}}</label>
+                {{ input('text', 'fields[altFirstName]', null, {
+                    id: 'alt-first-name',
+                    placeholder: 'Voornaam',
+                    required: true
+                }) }}
+            </div>
+            <div class="formbox__column">                
+                <label class="formbox__label" for="alt-sur-namee">{{'Familienaam'|t}}</label>
+                {{ input('text', 'fields[altLastName]', null, {
+                    id: 'alt-sur-name',
+                    placeholder: 'Achternaam',
+                    required: true
+                }) }}
+            </div>
+            <div class="formbox__column">                
+                <label class="formbox__label" for="birthday">{{'Geboortedatum'|t}}</label>
+                {{ input('text', 'fields[birthday]', null, {
+                    id: 'birthday',
+                    placeholder: 'Geboortedatum',
+                    onFocus: "(this.type = 'date', this.placeholder = '')",
+                    required: true,
+                    max: maxDate
+                }) }}
+            </div>   
+            
+            <button class="formbox__button formbox__button--sec formbox__column">{{'Voeg toe'|t}}</button>
+        </form>
+    </div>
+</div>

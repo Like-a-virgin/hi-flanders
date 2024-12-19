@@ -1,7 +1,8 @@
 baseUrl: $PRIMARY_SITE_URL
+enabled: true
 handle: default
 hasUrls: true
-language: nl-BE
+language: nl
 name: users
 primary: true
 siteGroup: 1d0447d2-95ba-4d14-95bd-e1f51bb4dd4c # users

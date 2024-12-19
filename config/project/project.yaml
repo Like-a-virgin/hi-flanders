@@ -1,4 +1,4 @@
-dateModified: 1734532894
+dateModified: 1734624908
 elementSources:
   craft\elements\Entry:
     -
@@ -81,6 +81,7 @@ meta:
     00d6a85f-228e-4877-b53c-8725397c83d9: address # address
     1d0447d2-95ba-4d14-95bd-e1f51bb4dd4c: users # users
     1d223580-d398-4fc6-af8a-8a1e08933341: 'Extra personen' # Extra personen
+    2c2fb008-1e62-4ff3-906c-1018563ad030: Tel # Tel
     4a63b33e-aa54-421b-b619-d4bc7f4888e7: Home # Home
     7b5aa47e-5da6-461a-b6fc-a190a143d8d8: 'Activeer email' # Activeer email
     9a41348d-b717-4688-9000-767870baae38: New # New
@@ -91,25 +92,34 @@ meta:
     93edcc59-32ca-4780-9d52-1d1fc486519a: 'Lid ouder' # Lid ouder
     359a39c5-8655-460f-a1b4-0c097ea0edb2: users # users
     590f0cba-dbfa-4eda-882d-2fe3aac82a92: Prijs # Prijs
+    681b7955-a563-4518-9041-5fc91081c098: 'Leden Organisatie' # Leden Organisatie
     915a3019-dc60-443b-ab35-c471e10a8aed: Register # Register
     80634baf-dc43-47ea-8528-2e72e4a53d61: Tarief # Tarief
     3261931d-97c8-4b0e-a83a-6d9ac4dee153: Birthday # Birthday
     5978149a-5b05-4ba3-95ff-72c6250597fe: Tariefformule # Tariefformule
     15257075-d043-4ea1-a62e-1785e8ed7a5f: Tekst # Tekst
     aa21d2ca-e34c-4497-a6fa-49b5a7cc7f58: Title # Title
+    ab51ff2a-5865-41c8-897f-008e0b288a70: Date # Date
     bbdfff72-14f8-4e5d-b59e-12d5b73c9a17: Home # Home
     bcc31cfe-3e29-427b-89b2-8e771af767e9: Nummer # Nummer
     c573f0bd-29d4-4985-8cff-271a6ee231a2: 'Leden admin' # Leden admin
     c1614bab-5fdd-4eae-8e0b-f4eb393c25dd: Tekst # Tekst
     cd27b3c1-54f6-4e33-8a9f-02cba48208fa: 'Extra lid' # Extra lid
+    d74da9d4-3821-46f5-8cf4-f7c4d12c04df: 'users fr' # users fr
+    dad48958-bcb3-4253-9f7e-868f67fa27b0: 'users en' # users en
     db8cca95-36d6-43cd-977d-2c8d4ef17863: 'Contact Form' # Contact Form
     dbf7ddea-4516-47d3-a072-3707a9c6d1fd: Min # Min
     e18619bb-8aea-4d89-bacb-e80261037c94: Dashboard # Dashboard
+    fcaee0ce-af89-44a0-b03b-4e63a5236d7b: 'Tarief Groep' # Tarief Groep
 plugins:
   ckeditor:
     edition: standard
     enabled: true
     schemaVersion: 3.0.0.0
+  feed-me:
+    edition: standard
+    enabled: true
+    schemaVersion: 5.1.1
   formie:
     edition: standard
     enabled: true
@@ -123,6 +133,11 @@ plugins:
     edition: standard
     enabled: true
     schemaVersion: 1.0.1
+  translations-admin:
+    edition: standard
+    enabled: true
+    licenseKey: ZYPJYSJ7XYYNOWFYSO3SHUR3
+    schemaVersion: 1.1.0
   vite:
     edition: standard
     enabled: true

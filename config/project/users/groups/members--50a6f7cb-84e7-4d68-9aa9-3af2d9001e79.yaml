@@ -4,5 +4,8 @@ name: Leden
 permissions:
   - 'createentries:1d223580-d398-4fc6-af8a-8a1e08933341' # Extra personen
   - 'deleteentries:1d223580-d398-4fc6-af8a-8a1e08933341' # Extra personen
+  - 'editsite:359a39c5-8655-460f-a1b4-0c097ea0edb2' # users
+  - 'editsite:d74da9d4-3821-46f5-8cf4-f7c4d12c04df' # users fr
+  - 'editsite:dad48958-bcb3-4253-9f7e-868f67fa27b0' # users en
   - 'saveentries:1d223580-d398-4fc6-af8a-8a1e08933341' # Extra personen
   - 'viewentries:1d223580-d398-4fc6-af8a-8a1e08933341' # Extra personen

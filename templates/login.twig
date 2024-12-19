@@ -3,7 +3,7 @@
 {% block content %}
     <div class="formbox">
         <div class="formbox__heading">
-            <h2>Login</h2>
+            <h2>{{'Log in'|t}}</h2>
         </div>
         <form class="formbox__form" method="post" accept-charset="UTF-8">
             {{ csrfInput() }}
@@ -17,35 +17,35 @@
             {% endif %}
 
             <div class="formbox__column--full">            
-                <label class="formbox__label" for="loginName">Email</label>
+                <label class="formbox__label" for="loginName">{{'Email'|t}}</label>
                 {{ input('text', 'loginName', craft.app.user.rememberedUsername, {
                     id: 'loginName',
                     autocomplete: 'username',
-                    placeholder: 'Email',
+                    placeholder: 'Email'|t,
                 }) }}
             </div>
 
             <div class="formbox__password formbox__column--full">            
-                <label class="formbox__label" for="password">Password</label>
+                <label class="formbox__label" for="password">{{'Password'|t}}</label>
                 {{ input('password', 'password', null, {
                     id: 'password',
-                    placeholder: 'wachtwoord'
+                    placeholder: 'Password'|t
                 }) }}
 
                 <div class="formbox__password-options">
                     <label>
                         {{ input('checkbox', 'rememberMe', '1') }}
-                        Remember me
+                        {{'Remember me'|t}}
                     </label>
-                    <a class="formbox__link formbox__link--small" href="{{ url('reset-password') }}">Wachtwoord vergeten?</a>
+                    <a class="formbox__link formbox__link--small" href="{{ url('reset-password') }}">{{'Wachtwoord vergeten?'|t}}</a>
                 </div>
             </div>
 
-            <button class="formbox__button formbox__column--full">Login</button>
+            <button class="formbox__button formbox__column--full">{{'Log in'|t}}</button>
         </form>
         <div class="formbox__options">
-            <p class="formbox__or">Of</p>
-            <a class="formbox__button formbox__button--sec" href="{{ url('register') }}">Lid worden</a>
+            <p class="formbox__or">{{'Of'|t}}</p>
+            <a class="formbox__button formbox__button--sec" href="{{ url('register') }}">{{'Lid worden'|t}}</a>
         </div>
     </div>
 {% endblock %}

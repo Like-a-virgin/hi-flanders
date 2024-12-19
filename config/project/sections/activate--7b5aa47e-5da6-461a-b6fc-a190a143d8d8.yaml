@@ -23,5 +23,15 @@ siteSettings:
     enabledByDefault: true
     hasUrls: true
     template: pages/activate.twig
-    uriFormat: activeer-email
+    uriFormat: activeer-account
+  d74da9d4-3821-46f5-8cf4-f7c4d12c04df: # users fr
+    enabledByDefault: true
+    hasUrls: true
+    template: pages/activate.twig
+    uriFormat: activer-compte
+  dad48958-bcb3-4253-9f7e-868f67fa27b0: # users en
+    enabledByDefault: true
+    hasUrls: true
+    template: pages/activate.twig
+    uriFormat: activate-account
 type: single

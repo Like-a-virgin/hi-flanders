@@ -1,0 +1,5 @@
+{% set query = query ?? '' %}
+
+<input sprig s-trigger="keyup changed delay:200ms" type="text" name="query" value="{{ query }}" placeholder="Search">
+
+{{query}}
