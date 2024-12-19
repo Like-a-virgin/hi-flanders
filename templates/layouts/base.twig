@@ -5,11 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title></title>
     <link rel="stylesheet" href="https://use.typekit.net/dgq7cxw.css">
+    <link rel="stylesheet" href="{{ craft.app.sites.primarySite.baseUrl }}dist/assets/app-D3wHmNWc.css">
 </head>
 <body>
     <main class="center">
         {% block content %}{% endblock %}
     </main>
     {{ craft.vite.script("src/scripts/main.js") }} 
-</body>
+    <script src="{{ craft.app.sites.primarySite.baseUrl }}dist/assets/app-JoW2D11Z.js"></script></body>
 </html>
