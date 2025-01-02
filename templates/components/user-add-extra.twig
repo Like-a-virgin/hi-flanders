@@ -6,7 +6,7 @@
             {{ actionInput('entries/save-entry') }}
 
             {{ input('hidden', 'sectionId', craft.entries.section('extraMembers').sectionId|first) }}
-            {{ input('hidden', 'fields[parentMember]', user) }}
+            {{ input('hidden', 'fields[parentMember][]', user.id) }}
 
             <div class="formbox__column">                
                 <label class="formbox__label" for="alt-first-name">{{'Voornaam'|t}}</label>
@@ -34,6 +34,11 @@
                     max: maxDate
                 }) }}
             </div>   
+            {% if extraMemberBirthday is not empty %}
+                {% set memberAge = now|date('Y') - extraMemberBirthday|date('Y') %}
+                {% set memberRateCurrent = memberRates|find(rate => rate.minAge <= memberAge and (rate.maxAge is null or rate.maxAge >= memberAge)) %}
+                {{ input('hidden', 'fields[memberRate][]', memberRateCurrent.id) }}
+            {% endif %}
             
             <button class="formbox__button formbox__button--sec formbox__column">{{'Voeg toe'|t}}</button>
         </form>

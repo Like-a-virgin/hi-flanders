@@ -1,0 +1,33 @@
+columnSuffix: null
+handle: memberType
+instructions: null
+name: 'Member type'
+searchable: false
+settings:
+  customOptions: false
+  options:
+    -
+      __assoc__:
+        -
+          - label
+          - Individual
+        -
+          - value
+          - individual
+        -
+          - default
+          - '1'
+    -
+      __assoc__:
+        -
+          - label
+          - Group
+        -
+          - value
+          - group
+        -
+          - default
+          - ''
+translationKeyFormat: null
+translationMethod: none
+type: craft\fields\Dropdown

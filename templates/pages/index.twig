@@ -6,10 +6,12 @@
 
 {% block content %}
     {% if userGroup is same as 'members' %}    
-        {% include "pages/user.twig" %}
+        {% if user.memberType.value is same as 'group' %}
+            {% include "pages/user-organisation.twig" %}  
+        {% else %}
+            {% include "pages/user.twig" %}
+        {% endif %}
     {% elseif userGroup is same as 'membersAdmin' %}
         {% include "pages/dashboard.twig" %}  
-    {% elseif userGroup is same as 'membersOrganisation' %}
-        {% include "pages/user-organisation.twig" %}  
     {% endif %}
 {% endblock %}

@@ -1,8 +1,20 @@
-dateModified: 1734624908
+dateModified: 1735831975
 elementSources:
   craft\elements\Entry:
     -
+      defaultSort:
+        - postDate
+        - desc
+      defaultViewMode: ''
+      disabled: false
       key: '*'
+      tableAttributes:
+        - status
+        - section
+        - postDate
+        - expiryDate
+        - authors
+        - link
       type: native
     -
       defaultSort:
@@ -39,6 +51,26 @@ elementSources:
       tableAttributes: '-'
       type: custom
     -
+      condition:
+        class: craft\elements\conditions\entries\EntryCondition
+        conditionRules:
+          -
+            class: craft\elements\conditions\entries\SectionConditionRule
+            operator: in
+            uid: 99736d7d-24f7-4599-8baa-ca4e64680e47
+            values:
+              - 7b5aa47e-5da6-461a-b6fc-a190a143d8d8 # Activeer email
+        elementType: craft\elements\Entry
+        fieldContext: global
+      defaultSort:
+        - id
+        - asc
+      defaultViewMode: ''
+      key: 'custom:4d7761b5-3733-4d13-87cd-5e455e41ed8f'
+      label: 'Activeer account'
+      tableAttributes: '-'
+      type: custom
+    -
       heading: Leden
       type: heading
     -
@@ -47,7 +79,7 @@ elementSources:
         - desc
       defaultViewMode: ''
       disabled: false
-      key: 'section:1d223580-d398-4fc6-af8a-8a1e08933341' # Extra personen
+      key: 'section:1d223580-d398-4fc6-af8a-8a1e08933341' # Extra leden
       tableAttributes:
         - status
         - postDate
@@ -80,20 +112,22 @@ meta:
   __names__:
     00d6a85f-228e-4877-b53c-8725397c83d9: address # address
     1d0447d2-95ba-4d14-95bd-e1f51bb4dd4c: users # users
-    1d223580-d398-4fc6-af8a-8a1e08933341: 'Extra personen' # Extra personen
+    1d223580-d398-4fc6-af8a-8a1e08933341: 'Extra leden' # Extra leden
     2c2fb008-1e62-4ff3-906c-1018563ad030: Tel # Tel
+    2d35b4ae-62f0-4cb2-8a94-73ebdae1ef03: 'Member type' # Member type
     4a63b33e-aa54-421b-b619-d4bc7f4888e7: Home # Home
     7b5aa47e-5da6-461a-b6fc-a190a143d8d8: 'Activeer email' # Activeer email
     9a41348d-b717-4688-9000-767870baae38: New # New
     9ed2f6cf-f594-490a-b852-acaac49be4fc: Activeer # Activeer
     21c22e0c-c629-4e07-9e19-a289ef81be37: Simple # Simple
+    44a841e6-e727-4500-9e81-386090b011f6: memberRate # memberRate
     50a6f7cb-84e7-4d68-9aa9-3af2d9001e79: Leden # Leden
     77d8ae37-4c00-4972-aab9-94dd08c7f29c: SimpleText # SimpleText
     93edcc59-32ca-4780-9d52-1d1fc486519a: 'Lid ouder' # Lid ouder
     359a39c5-8655-460f-a1b4-0c097ea0edb2: users # users
     590f0cba-dbfa-4eda-882d-2fe3aac82a92: Prijs # Prijs
-    681b7955-a563-4518-9041-5fc91081c098: 'Leden Organisatie' # Leden Organisatie
     915a3019-dc60-443b-ab35-c471e10a8aed: Register # Register
+    5178f917-f380-440d-a326-c41e396ba39a: 'privacy policy' # privacy policy
     80634baf-dc43-47ea-8528-2e72e4a53d61: Tarief # Tarief
     3261931d-97c8-4b0e-a83a-6d9ac4dee153: Birthday # Birthday
     5978149a-5b05-4ba3-95ff-72c6250597fe: Tariefformule # Tariefformule

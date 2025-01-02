@@ -1,0 +1,22 @@
+columnSuffix: null
+handle: privacyPolicy
+instructions: null
+name: 'privacy policy'
+searchable: false
+settings:
+  customOptions: false
+  options:
+    -
+      __assoc__:
+        -
+          - label
+          - 'I accept'
+        -
+          - value
+          - iAccept
+        -
+          - default
+          - ''
+translationKeyFormat: null
+translationMethod: none
+type: craft\fields\Checkboxes

@@ -1,9 +1,6 @@
 <div class="box-container box-container--member">
     <h2>{{'Extra leden'|t}}</h2>
     {% for item in extraMembers %}
-        {% set itemBirthday = item.birthday|date('Y-m-d') %}
-        {% set itemAge = (currentDate|date('Y') - itemBirthday|date('Y')) - (currentDate|date('md') < itemBirthday|date('md') ? 1 : 0) %}
-        {% set itemTypeCurrent = memberTypes|filter(i => i.minAge <= itemAge and (i.maxAge is null or i.maxAge >= itemAge)) %}
         <div class="box box--member" x-data="{openMember: false}" :class="openMember ? 'box--member-open' : ''">
             <div @click="openMember = ! openMember" class="box__heading box__heading--center">
                 <h3>{{item.title}}</h3>

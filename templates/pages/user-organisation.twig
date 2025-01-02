@@ -4,7 +4,6 @@
 {% set currentDate = now|date('Y-m-d') %}
 {% set userBirthDay = user.birthday|date('Y-m-d') %}
 {% set memberAge = (currentDate|date('Y') - userBirthDay|date('Y')) - (currentDate|date('md') < userBirthDay|date('md') ? 1 : 0) %}
-{% set memberTypeCurrent = memberTypes|filter(i => i.minAge <= memberAge and (i.maxAge is null or i.maxAge >= memberAge)) %}
 
 {% requireLogin %}
 
@@ -146,11 +145,7 @@
             <div class="box__column {{userGroup is same as 'membersOrganisation' ? 'box__column--2' : 'box__column--4'}}">
                 <p class="box__text-bold">{{'Lidmaatschap'|t}}</p>
                 <div class="box__info box__info--prim">
-                    {% if userGroup is same as 'members' %} 
-                        <p>{{ memberTypeCurrent|first.title }}</p>
-                    {% else %}
-                        <p>{{'Groepskaart 10+'|t}}</p>
-                    {% endif %}
+                    <p>{{'Groepskaart 10+'|t}}</p>
                 </div>
             </div>
         </div>

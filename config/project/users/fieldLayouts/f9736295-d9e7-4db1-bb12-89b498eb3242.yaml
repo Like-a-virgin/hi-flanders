@@ -86,11 +86,13 @@ tabs:
           class: craft\elements\conditions\users\UserCondition
           conditionRules:
             -
-              class: craft\elements\conditions\users\GroupConditionRule
+              class: craft\fields\conditions\OptionsFieldConditionRule
+              fieldUid: 2d35b4ae-62f0-4cb2-8a94-73ebdae1ef03 # Member type
+              layoutElementUid: 7e33f6e8-0b0e-400d-a437-2c89359c2d44
               operator: in
               uid: 749a2431-65ac-4770-aafd-339ae777afaf
               values:
-                - 50a6f7cb-84e7-4d68-9aa9-3af2d9001e79 # Leden
+                - individual
           elementType: craft\elements\User
           fieldContext: global
         fieldUid: aa21d2ca-e34c-4497-a6fa-49b5a7cc7f58 # Title
@@ -99,7 +101,7 @@ tabs:
         instructions: null
         label: Voornaam
         providesThumbs: false
-        required: false
+        required: true
         tip: null
         type: craft\fieldlayoutelements\CustomField
         uid: ce6736cd-f987-43c9-90cd-102a64414abe
@@ -112,11 +114,13 @@ tabs:
           class: craft\elements\conditions\users\UserCondition
           conditionRules:
             -
-              class: craft\elements\conditions\users\GroupConditionRule
+              class: craft\fields\conditions\OptionsFieldConditionRule
+              fieldUid: 2d35b4ae-62f0-4cb2-8a94-73ebdae1ef03 # Member type
+              layoutElementUid: 7e33f6e8-0b0e-400d-a437-2c89359c2d44
               operator: in
               uid: 9dac14e9-ea42-4ad9-998d-744b022b467c
               values:
-                - 50a6f7cb-84e7-4d68-9aa9-3af2d9001e79 # Leden
+                - individual
           elementType: craft\elements\User
           fieldContext: global
         fieldUid: aa21d2ca-e34c-4497-a6fa-49b5a7cc7f58 # Title
@@ -125,7 +129,7 @@ tabs:
         instructions: null
         label: Achternaam
         providesThumbs: false
-        required: false
+        required: true
         tip: null
         type: craft\fieldlayoutelements\CustomField
         uid: 6ac0afe4-fc85-4b39-831c-b08f6b50bf5c
@@ -138,11 +142,13 @@ tabs:
           class: craft\elements\conditions\users\UserCondition
           conditionRules:
             -
-              class: craft\elements\conditions\users\GroupConditionRule
+              class: craft\fields\conditions\OptionsFieldConditionRule
+              fieldUid: 2d35b4ae-62f0-4cb2-8a94-73ebdae1ef03 # Member type
+              layoutElementUid: 7e33f6e8-0b0e-400d-a437-2c89359c2d44
               operator: in
               uid: 560afdca-fe1a-4987-a728-e16d4abc3adf
               values:
-                - 681b7955-a563-4518-9041-5fc91081c098 # Leden Organisatie
+                - group
           elementType: craft\elements\User
           fieldContext: global
         fieldUid: aa21d2ca-e34c-4497-a6fa-49b5a7cc7f58 # Title
@@ -151,7 +157,7 @@ tabs:
         instructions: null
         label: Organisatie
         providesThumbs: false
-        required: false
+        required: true
         tip: null
         type: craft\fieldlayoutelements\CustomField
         uid: 40949dc7-a01d-4e59-b8ce-d0579608613d
@@ -177,7 +183,7 @@ tabs:
         instructions: null
         label: null
         providesThumbs: false
-        required: false
+        required: true
         tip: null
         type: craft\fieldlayoutelements\CustomField
         uid: f5acb2b0-a296-43ec-80b0-87cf4dda0141
@@ -200,6 +206,22 @@ tabs:
         userCondition: null
         warning: null
         width: 100
+      -
+        dateAdded: '2025-01-02T13:13:00+00:00'
+        elementCondition: null
+        fieldUid: 5178f917-f380-440d-a326-c41e396ba39a # privacy policy
+        handle: null
+        includeInCards: false
+        instructions: null
+        label: null
+        providesThumbs: false
+        required: true
+        tip: null
+        type: craft\fieldlayoutelements\CustomField
+        uid: b830085b-1066-438a-bf29-a802e220b852
+        userCondition: null
+        warning: null
+        width: 100
     name: Content
     uid: ae013ac9-d044-4fc1-85a9-cdfa5bb71919
     userCondition: null
@@ -215,7 +237,7 @@ tabs:
         instructions: null
         label: 'Land '
         providesThumbs: false
-        required: false
+        required: true
         tip: null
         type: craft\fieldlayoutelements\CustomField
         uid: 1e9c4549-9019-4bd9-8652-b90976b53a30
@@ -231,7 +253,7 @@ tabs:
         instructions: null
         label: Straat
         providesThumbs: false
-        required: false
+        required: true
         tip: null
         type: craft\fieldlayoutelements\CustomField
         uid: b283cd21-16ca-43bd-9495-48e0c7c630f3
@@ -247,7 +269,7 @@ tabs:
         instructions: null
         label: Nummer
         providesThumbs: false
-        required: false
+        required: true
         tip: null
         type: craft\fieldlayoutelements\CustomField
         uid: 811da2f6-b5e6-4fc3-b8d9-7f2f2e49a1c3
@@ -279,7 +301,7 @@ tabs:
         instructions: null
         label: Stad
         providesThumbs: false
-        required: false
+        required: true
         tip: null
         type: craft\fieldlayoutelements\CustomField
         uid: d1a0b663-1b4f-4c51-94ea-64a8f09f1470
@@ -295,7 +317,7 @@ tabs:
         instructions: null
         label: Postcode
         providesThumbs: false
-        required: false
+        required: true
         tip: null
         type: craft\fieldlayoutelements\CustomField
         uid: 2db58625-40da-47d1-9cc8-5d92692652c3
@@ -314,11 +336,13 @@ tabs:
           class: craft\elements\conditions\users\UserCondition
           conditionRules:
             -
-              class: craft\elements\conditions\users\GroupConditionRule
+              class: craft\fields\conditions\OptionsFieldConditionRule
+              fieldUid: 2d35b4ae-62f0-4cb2-8a94-73ebdae1ef03 # Member type
+              layoutElementUid: 7e33f6e8-0b0e-400d-a437-2c89359c2d44
               operator: in
               uid: ac976cbd-e673-4d83-b3db-e75e985c8afc
               values:
-                - 681b7955-a563-4518-9041-5fc91081c098 # Leden Organisatie
+                - group
           elementType: craft\elements\User
           fieldContext: global
         fieldUid: aa21d2ca-e34c-4497-a6fa-49b5a7cc7f58 # Title
@@ -327,7 +351,7 @@ tabs:
         instructions: null
         label: Contactpersoon
         providesThumbs: false
-        required: false
+        required: true
         tip: null
         type: craft\fieldlayoutelements\CustomField
         uid: da184061-da82-42ee-a38c-41bd3934583f
@@ -369,11 +393,13 @@ tabs:
           class: craft\elements\conditions\users\UserCondition
           conditionRules:
             -
-              class: craft\elements\conditions\users\GroupConditionRule
+              class: craft\fields\conditions\OptionsFieldConditionRule
+              fieldUid: 2d35b4ae-62f0-4cb2-8a94-73ebdae1ef03 # Member type
+              layoutElementUid: 7e33f6e8-0b0e-400d-a437-2c89359c2d44
               operator: in
               uid: 29cebc08-e79b-45a7-8f69-eb0a28dbab89
               values:
-                - 681b7955-a563-4518-9041-5fc91081c098 # Leden Organisatie
+                - group
           elementType: craft\elements\User
           fieldContext: global
         fieldUid: 2c2fb008-1e62-4ff3-906c-1018563ad030 # Tel
@@ -391,4 +417,42 @@ tabs:
         width: 100
     name: Contact
     uid: 29a009f6-fae3-4141-b690-3bfa8ef7d6eb
+    userCondition: null
+  -
+    elementCondition: null
+    elements:
+      -
+        dateAdded: '2025-01-02T14:39:49+00:00'
+        elementCondition: null
+        fieldUid: 2d35b4ae-62f0-4cb2-8a94-73ebdae1ef03 # Member type
+        handle: null
+        includeInCards: false
+        instructions: null
+        label: Type
+        providesThumbs: false
+        required: true
+        tip: null
+        type: craft\fieldlayoutelements\CustomField
+        uid: 7e33f6e8-0b0e-400d-a437-2c89359c2d44
+        userCondition: null
+        warning: null
+        width: 100
+      -
+        dateAdded: '2025-01-02T15:01:33+00:00'
+        elementCondition: null
+        fieldUid: 44a841e6-e727-4500-9e81-386090b011f6 # memberRate
+        handle: null
+        includeInCards: false
+        instructions: null
+        label: null
+        providesThumbs: false
+        required: true
+        tip: null
+        type: craft\fieldlayoutelements\CustomField
+        uid: bfd5b7f9-52f4-4cb5-9dc6-fcb3f2202677
+        userCondition: null
+        warning: null
+        width: 100
+    name: Lidmaatschap
+    uid: 19cf21ec-6b32-476c-a140-abf35779079d
     userCondition: null

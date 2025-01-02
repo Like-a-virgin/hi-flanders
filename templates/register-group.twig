@@ -6,7 +6,6 @@
     {% set user = user ?? null %}
     {% set activationPage = craft.entries.section('activate').one().uri %}
     {% set maxDate = now|date_modify('-3 years')|date("Y-m-d") %}
-    {% set memberRates = craft.entries.section('rates').all() %}
 
     {% macro errorList(errors) %}
     {% if errors %}
@@ -16,14 +15,14 @@
 
     <div class="formbox">
         <div class="formbox__heading">
-            <h2>{{'Registreer'|t}}</h2>
+            <h2>{{'Registreer groep'|t}}</h2>
         </div>
         <form class="formbox__form" method="post" accept-charset="UTF-8" novalidate>
             {{ csrfInput() }}
             {{ actionInput('users/save-user') }}
             {{ redirectInput(activationPage) }}
 
-            {{ input('hidden', 'fields[memberType]', 'individual') }}
+            {{ input('hidden', 'fields[memberType]', 'group') }}
             
             {% if user %}
                 {% set errors = user.getErrors() %}
@@ -41,45 +40,32 @@
                 {% if user and user.getErrors('password') %}
                     <div class="formbox__error formbox__column--full">{{_self.errorList(user.getErrors('password'))}}</div>
                 {% endif %}   
-                {% if user and user.getErrors('privacyPolicy') %}
-                    <div class="formbox__error formbox__column--full"><p>Je moet akkoord gaan met de privacy policy</p></div>
-                {% endif %}   
             {% endif %}
-
-            <div class="formbox__column {{ user and user.getErrors('altFirstName') ? 'formbox__column--error' }}"> 
-                <label class="formbox__label" for="alt-first-name">{{'Voornaam'|t}}</label>
-                {{ input('text', 'fields[altFirstName]', user.altFirstName ?? null, {
-                    id: 'alt-first-name',
-                    placeholder: 'Voornaam'|t,
+            
+            <div class="formbox__column--full {{ user and user.getErrors('organisation') ? 'formbox__column--error' }}"> 
+                <label class="formbox__label" for="organisation">{{'Organisatie'|t}}</label>
+                {{ input('text', 'fields[organisation]', user.organisation ?? null, {
+                    id: 'organisation',
+                    placeholder: 'Organisatie'|t,
                     required: true
                 }) }}
             </div>
-            <div class="formbox__column {{ user and user.getErrors('altLastName') ? 'formbox__column--error' }}">     
-                <label class="formbox__label" for="alt-sur-name">{{'Familienaam'|t}}</label>
-                {{ input('text', 'fields[altLastName]', user.altLastName ?? null, {
-                    id: 'alt-sur-name',
-                    placeholder: 'Familienaam'|t,
+            <div class="formbox__column--full {{ user and user.getErrors('fullName') ? 'formbox__column--error' }}">                
+                <label class="formbox__label" for="name-contact">{{'Naam Contactpersoon'|t}}</label>
+                {{ input('text', 'fields[contactPerson]', user.contactPerson ?? null, {
+                    id: 'name-contact',
+                    placeholder: 'Naam contactpersoon'|t,
                     required: true
                 }) }}
             </div>
-            <div class="formbox__column {{ user and user.getErrors('email') ? 'formbox__column--error' }}">                
+            <div class="formbox__column--full {{ user and user.getErrors('email') ? 'formbox__column--error' }}">                
                 <label class="formbox__label" for="email">{{'Email'|t}}</label>
                 {{ input('email', 'email', user.email ?? null, {
                     id: 'email',
                     placeholder: 'Email'|t,
                     required: true
                 }) }}
-            </div> 
-            <div class="formbox__column {{ user and user.getErrors('birthday') ? 'formbox__column--error' }}">                
-                <label class="formbox__label" for="birthday">{{'Geboortedatum'|t}}</label>
-                {{ input('text', 'fields[birthday]', user and user.birthday ? user.birthday|date('d-m-Y') : null, {
-                    id: 'birthday',
-                    placeholder: 'Geboortedatum'|t,
-                    onFocus: "(this.type = 'date', this.placeholder = '')",
-                    required: true,
-                    max: maxDate
-                }) }}
-            </div>     
+            </div>    
             <div class="formbox__column--full {{ user and user.getErrors('country') ? 'formbox__column--error' }}">
                 <label class="formbox__label" for="country">{{'Land'|t}}</label>
                 {{ input('text', 'fields[country]', user.country ?? null, {
@@ -88,7 +74,7 @@
                     required: true
                 }) }}
             </div>
-            <div class="formbox__column {{ user and user.getErrors('country') ? 'formbox__column--error' }}">
+            <div class="formbox__column {{ user and user.getErrors('postalCode') ? 'formbox__column--error' }}">
                 <label class="formbox__label" for="postal-code">{{'Postcode'|t}}</label>
                 {{ input('text', 'fields[postalCode]', user.postalCode ?? null, {
                     id: 'postal-code',
@@ -96,7 +82,7 @@
                     required: true
                 }) }}
             </div>
-            <div class="formbox__column {{ user and user.getErrors('country') ? 'formbox__column--error' }}">
+            <div class="formbox__column {{ user and user.getErrors('city') ? 'formbox__column--error' }}">
                 <label class="formbox__label" for="city">{{'Stad'|t}}</label>
                 {{ input('text', 'fields[city]', user.city ?? null, {
                     id: 'city',
@@ -127,7 +113,7 @@
                     placeholder: 'Bus'|t
                 }) }}
             </div>
-            <div class="formbox__column--full  {{ user and user.getErrors('password') ? 'formbox__column--error' }}">         
+            <div class="formbox__column--full {{ user and user.getErrors('password') ? 'formbox__column--error' }}">            
                 <label class="formbox__label" for="password">{{'Password'|t}}</label>
                 {{ input('password', 'password', null, {
                     id: 'password',
@@ -144,26 +130,25 @@
                 }) }} 
                 <p>{{'Ik ga akkoord dat mijn gegevens gebruikt worden zoals beschreven in de'|t}} <a class="formbox__link" href="https://www.hiflanders.be/nl/privacy-policy">{{'privacy policy'|t}}</a>.</label></p>
             </div>
-            {% if user %}
-                {% set currentDate = now|date('Y-m-d') %}
-                {% set userBirthDay = user.birthday|date('Y-m-d') %}
-                {% set memberAge = (currentDate|date('Y') - userBirthDay|date('Y')) - (currentDate|date('md') < userBirthDay|date('md') ? 1 : 0) %}
-                {% set memberRateCurrent = memberRates|find(i => i.minAge <= memberAge and (i.maxAge is null or i.maxAge >= memberAge)) %}
 
-                {{ input('hidden', 'fields[memberRate][]', memberRateCurrent.id) }}
+            {{ input('hidden', 'fields[altFirstName]', 'test') }}
+            {{ input('hidden', 'fields[altLastName]', 'test') }}
+            {{ input('hidden', 'fields[birthday]', '10-08-2000') }}
+
+            {% if user and user.groups %}            
                 <pre>
-                    {{ dump(memberRateCurrent.id) }}
+                    {{ dump(user.groups) }}
                 </pre>
             {% endif %}
+            <pre>
+                {{ dump(craft.app.request.bodyParams) }}
+            </pre>
 
-
-            {{ dump(craft.app.request.bodyParams) }}
             <button class="formbox__button formbox__column--full">{{'Registreer'|t}}</button>
         </form>
         <div class="formbox__options">
             <p class="formbox__or">{{'Of'|t}}</p>
             <a class="formbox__button formbox__button--sec" href="{{ url('login') }}">{{'Log in'|t}}</a>
-            <a href="/register-group">registreer groep</a>
         </div>
     </div>
 {% endblock %}

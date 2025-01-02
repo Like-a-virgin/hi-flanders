@@ -1,11 +1,7 @@
 {% set extraMembers = craft.entries.section('extraMembers').authorID(user.id).all() %}
 {% set maxDate = now|date_modify('-3 years')|date("Y-m-d") %}
 {% set memberTypes = craft.entries.section('rates').all() %}
-
 {% set currentDate = now|date('Y-m-d') %}
-{% set userBirthDay = user.birthday|date('Y-m-d') %}
-{% set memberAge = (currentDate|date('Y') - userBirthDay|date('Y')) - (currentDate|date('md') < userBirthDay|date('md') ? 1 : 0) %}
-{% set memberTypeCurrent = memberTypes|filter(i => i.minAge <= memberAge and (i.maxAge is null or i.maxAge >= memberAge)) %}
 
 {% requireLogin %}
 
@@ -137,7 +133,7 @@
             <div class="box__column {{userGroup is same as 'membersOrganisation' ? 'box__column--2' : 'box__column--4'}}">
                 <p class="box__text-bold">{{'Lidmaatschap'|t}}</p>
                 <div class="box__info box__info--prim">
-                        <p>{{ memberTypeCurrent|first.title }}</p>
+                    <p>{{ user.memberRate.one().title }}</p>
                 </div>
             </div>
         </div>

@@ -9,7 +9,7 @@
     "mutation/translate": "^4.0.2",
     "nystudio107/craft-vite": "^5.0.1",
     "putyourlightson/craft-sprig": "^3.5.1",
-    "verbb/formie": "^3.0.15",
+    "verbb/formie": "3.0.16",
     "vlucas/phpdotenv": "^5.4.0"
   },
   "require-dev": {

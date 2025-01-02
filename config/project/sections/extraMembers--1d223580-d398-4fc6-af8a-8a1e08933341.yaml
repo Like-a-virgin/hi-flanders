@@ -4,7 +4,7 @@ entryTypes:
   - cd27b3c1-54f6-4e33-8a9f-02cba48208fa # Extra lid
 handle: extraMembers
 maxAuthors: 1
-name: 'Extra personen'
+name: 'Extra leden'
 previewTargets:
   -
     __assoc__:

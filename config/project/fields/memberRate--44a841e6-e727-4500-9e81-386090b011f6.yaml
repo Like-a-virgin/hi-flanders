@@ -1,0 +1,22 @@
+columnSuffix: null
+handle: memberRate
+instructions: null
+name: memberRate
+searchable: false
+settings:
+  allowSelfRelations: false
+  branchLimit: null
+  maintainHierarchy: false
+  maxRelations: 1
+  minRelations: null
+  selectionLabel: null
+  showCardsInGrid: false
+  showSiteMenu: false
+  sources:
+    - 'section:5978149a-5b05-4ba3-95ff-72c6250597fe' # Tariefformule
+  targetSiteId: null
+  validateRelatedElements: false
+  viewMode: list
+translationKeyFormat: null
+translationMethod: none
+type: craft\fields\Entries
