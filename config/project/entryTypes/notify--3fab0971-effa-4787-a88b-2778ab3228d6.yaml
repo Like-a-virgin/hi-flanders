@@ -1,6 +1,6 @@
 color: null
 fieldLayouts:
-  45bb7801-7667-4559-893a-83bd668f7d8b:
+  48a5a23b-2630-4e42-acbb-1d7978d23f8c:
     tabs:
       -
         elementCondition: null
@@ -10,7 +10,7 @@ fieldLayouts:
             autocomplete: false
             autocorrect: true
             class: null
-            dateAdded: '2024-12-18T08:19:44+00:00'
+            dateAdded: '2025-01-06T16:20:07+00:00'
             disabled: false
             elementCondition: null
             id: null
@@ -31,12 +31,12 @@ fieldLayouts:
             tip: null
             title: null
             type: craft\fieldlayoutelements\entries\EntryTitleField
-            uid: afbdff45-217b-4839-b6fd-7c2b304c2bdb
+            uid: eaf821d1-e9c8-4293-bbe8-0859c1ee0713
             userCondition: null
             warning: null
             width: 100
           -
-            dateAdded: '2024-12-18T08:27:41+00:00'
+            dateAdded: '2025-01-06T16:21:22+00:00'
             elementCondition: null
             fieldUid: c1614bab-5fdd-4eae-8e0b-f4eb393c25dd # Tekst
             handle: null
@@ -47,17 +47,17 @@ fieldLayouts:
             required: false
             tip: null
             type: craft\fieldlayoutelements\CustomField
-            uid: 5e518077-e7d1-4fb4-919d-279e02fcceab
+            uid: 3510f1c4-43a3-4d00-beb6-89a5aca2e008
             userCondition: null
             warning: null
             width: 100
         name: Content
-        uid: fad5caf7-4109-4377-ac1c-7042307047e6
+        uid: a2523d85-433f-4476-81ea-35abc30276b9
         userCondition: null
-handle: activeer
+handle: notify
 hasTitleField: true
 icon: null
-name: Activeer
+name: Notify
 showSlugField: true
 showStatusField: true
 slugTranslationKeyFormat: null

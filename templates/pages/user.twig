@@ -11,7 +11,7 @@
         <h2>{{'Lidnummer'|t}}: 008 {{ user.id }}</h2>
     </div>
     <div class="box__content" x-data="{ edit: false }">
-        <div class="box__wrapper">        
+        <div class="box__wrapper box__wrapper--labels">        
             <div class="box__column box__column--2">            
                 <p>{{'Voornaam'|t}}</p>
                 <div class="box__info">
@@ -37,7 +37,7 @@
                 </div>
             </div>
         </div>
-        <div class="box__wrapper" x-show="!edit">        
+        <div class="box__wrapper box__wrapper--labels" x-show="!edit">        
             <div class="box__column box__column--2">            
                 <p>{{'Land'|t}}</p>
                 <div class="box__info">
@@ -127,7 +127,7 @@
                     placeholder: 'bus'
                 }) }}
             </div>
-            <button @click="edit = false" class="box__function-btn box__function-btn--save">{{'Save Profile'|t}}</button>
+            <button @click="edit = false" class="box__function-btn box__function-btn--save">{{'Opslaan'|t}}</button>
         </form>
         <div class="box__wrapper">            
             <div class="box__column {{userGroup is same as 'membersOrganisation' ? 'box__column--2' : 'box__column--4'}}">

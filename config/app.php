@@ -21,13 +21,20 @@
  */
 
 use craft\helpers\App;
+use modules\membershippayments\MembershipPayments;
 use modules\rateextramember\RateExtraMember;
 use modules\ratemember\RateMember;
 
 return [
     'id' => App::env('CRAFT_APP_ID') ?: 'CraftCMS', 
     'modules' => [
-        'rate-member' => RateMember::class, 'rate-extra-member' => RateExtraMember::class
+        'rate-member' => RateMember::class, 
+        'rate-extra-member' => RateExtraMember::class, 
+        'membership-payments' => MembershipPayments::class
     ], 
-    'bootstrap' => ['rate-member', 'rate-extra-member'],
+    'bootstrap' => [
+        'rate-member', 
+        'rate-extra-member', 
+        'membership-payments'
+    ],
 ];

@@ -37,6 +37,9 @@
                 {% if user and user.getErrors('email') %}
                     <div class="formbox__error formbox__column--full">{{_self.errorList(user.getErrors('email'))}}</div>
                 {% endif %}   
+                {% if user and user.getErrors('tel') %}
+                    <div class="formbox__error formbox__column--full">{{_self.errorList(user.getErrors('tel'))}}</div>
+                {% endif %}   
                 {% if user and user.getErrors('password') %}
                     <div class="formbox__error formbox__column--full">{{_self.errorList(user.getErrors('password'))}}</div>
                 {% endif %}   
@@ -60,6 +63,14 @@
                 {{ input('text', 'fields[contactPerson]', user.contactPerson ?? null, {
                     id: 'name-contact',
                     placeholder: 'Naam contactpersoon'|t,
+                    required: true
+                }) }}
+            </div>
+            <div class="formbox__column--full {{ user and user.getErrors('tel') ? 'formbox__column--error' }}">                
+                <label class="formbox__label" for="tel">{{'Telefoon nummer'|t}}</label>
+                {{ input('tel', 'fields[tel]', user.tel ?? null, {
+                    id: 'tel',
+                    placeholder: 'Telefoon nummer'|t,
                     required: true
                 }) }}
             </div>
@@ -148,6 +159,7 @@
         <div class="formbox__options">
             <p class="formbox__or">{{'Of'|t}}</p>
             <a class="formbox__button formbox__button--sec" href="{{ url('login') }}">{{'Log in'|t}}</a>
+            <a class="formbox__button formbox__button--sec" href="{{ url('login') }}">{{'Registreer als individu'|t}}</a>
         </div>
     </div>
 {% endblock %}

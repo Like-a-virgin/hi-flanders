@@ -1,4 +1,4 @@
-dateModified: 1736237343
+dateModified: 1736266737
 elementSources:
   craft\elements\Entry:
     -
@@ -42,6 +42,7 @@ elementSources:
               - 7b5aa47e-5da6-461a-b6fc-a190a143d8d8 # Activeer email
               - 4a63b33e-aa54-421b-b619-d4bc7f4888e7 # Home
               - 22e6beae-01af-4451-b3d5-29bf90a51e80 # Reset wachtwoord
+              - e633efea-afa2-411f-9fc3-06d84f219d9b # Bedankt betaling
         elementType: craft\elements\Entry
         fieldContext: global
       defaultSort:
@@ -92,9 +93,6 @@ elementSources:
     -
       heading: ''
       type: heading
-    -
-      key: 'section:22e6beae-01af-4451-b3d5-29bf90a51e80' # Reset wachtwoord
-      type: native
 email:
   fromEmail: lara@likeavirgin.be
   fromName: users
@@ -106,11 +104,10 @@ meta:
     1d223580-d398-4fc6-af8a-8a1e08933341: 'Extra leden' # Extra leden
     2c2fb008-1e62-4ff3-906c-1018563ad030: Tel # Tel
     2d35b4ae-62f0-4cb2-8a94-73ebdae1ef03: 'Member type' # Member type
-    3fab0971-effa-4787-a88b-2778ab3228d6: 'Reset wachtwoord' # Reset wachtwoord
+    3fab0971-effa-4787-a88b-2778ab3228d6: Notify # Notify
     4a63b33e-aa54-421b-b619-d4bc7f4888e7: Home # Home
     7b5aa47e-5da6-461a-b6fc-a190a143d8d8: 'Activeer email' # Activeer email
     9a41348d-b717-4688-9000-767870baae38: New # New
-    9ed2f6cf-f594-490a-b852-acaac49be4fc: Activeer # Activeer
     21c22e0c-c629-4e07-9e19-a289ef81be37: Simple # Simple
     22e6beae-01af-4451-b3d5-29bf90a51e80: 'Reset wachtwoord' # Reset wachtwoord
     44a841e6-e727-4500-9e81-386090b011f6: memberRate # memberRate
@@ -120,7 +117,6 @@ meta:
     93edcc59-32ca-4780-9d52-1d1fc486519a: 'Lid ouder' # Lid ouder
     359a39c5-8655-460f-a1b4-0c097ea0edb2: users # users
     590f0cba-dbfa-4eda-882d-2fe3aac82a92: Prijs # Prijs
-    915a3019-dc60-443b-ab35-c471e10a8aed: Register # Register
     5178f917-f380-440d-a326-c41e396ba39a: 'privacy policy' # privacy policy
     8365fada-1ce2-4e0a-8a3f-f919c3c18208: 'max Leeftijd' # max Leeftijd
     80634baf-dc43-47ea-8528-2e72e4a53d61: Tarief # Tarief
@@ -133,13 +129,13 @@ meta:
     abcf42d8-0123-423e-b196-1d9f4b5aeb50: 'Extra group' # Extra group
     bbdfff72-14f8-4e5d-b59e-12d5b73c9a17: Home # Home
     bcc31cfe-3e29-427b-89b2-8e771af767e9: Nummer # Nummer
-    c573f0bd-29d4-4985-8cff-271a6ee231a2: 'Leden admin' # Leden admin
+    c573f0bd-29d4-4985-8cff-271a6ee231a2: Beheerders # Beheerders
     c1614bab-5fdd-4eae-8e0b-f4eb393c25dd: Tekst # Tekst
     cd27b3c1-54f6-4e33-8a9f-02cba48208fa: 'Extra lid' # Extra lid
     d74da9d4-3821-46f5-8cf4-f7c4d12c04df: 'users fr' # users fr
     dad48958-bcb3-4253-9f7e-868f67fa27b0: 'users en' # users en
     db8cca95-36d6-43cd-977d-2c8d4ef17863: 'Contact Form' # Contact Form
-    e18619bb-8aea-4d89-bacb-e80261037c94: Dashboard # Dashboard
+    e633efea-afa2-411f-9fc3-06d84f219d9b: 'Bedankt betaling' # Bedankt betaling
 plugins:
   ckeditor:
     edition: standard

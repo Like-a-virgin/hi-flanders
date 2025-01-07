@@ -2,87 +2,89 @@
 {% set extraMembers = craft.entries.section('extraMembers').authorId(selectedMemberId).all() %}
 
 <div class="modal">
-    <div class="box">
-        <div class="box__heading">
-            <h2>{{ selectedMember.altFirstName }} {{ selectedMember.altLastName }} - 08 {{ selectedMember.id }}</h2>
-            <p class="box__membership">{{ selectedMember.memberRate.one().title }}</p>
-        </div>
-        <div class="box__content">
-            <div class="box__wrapper box__wrapper--labels">
-                <div class="box__column box__column--2">
-                    <p>{{'Straat'|t}}</p>
-                    <div class="box__info">
-                        <p>{{ selectedMember.street|capitalize }}</p>
-                    </div>
-                </div>
-                <div class="box__column">
-                    <p>{{'Nr'|t}}</p>
-                    <div class="box__info">
-                        <p>{{ selectedMember.streetNr }}</p>
-                    </div>
-                </div>
-                <div class="box__column">
-                    <p>{{'Bus'|t}}</p>
-                    <div class="box__info">
-                        <p>{{ selectedMember.bus|capitalize }}</p>
-                    </div>
-                </div>
-                <div class="box__column box__column--2">
-                    <p>{{'Stad'|t}}</p>
-                    <div class="box__info">
-                        <p>{{ selectedMember.city|capitalize }}</p>
-                    </div>
-                </div>
-                <div class="box__column box__column--2">
-                    <p>{{'Postcode'|t}}</p>
-                    <div class="box__info">
-                        <p>{{ selectedMember.postalCode }}</p>
-                    </div>
-                </div>
+    <div class="modal__content">    
+        <div class="box">
+            <div class="box__heading box__heading--center">
+                <h2>{{ selectedMember.altFirstName }} {{ selectedMember.altLastName }} - (008) {{ selectedMember.id }}</h2>
+                <p class="box__membership">{{ selectedMember.memberRate.one().title }}</p>
             </div>
-            <div class="box__wrapper">
-                <div class="box__column box__column--2">
-                    <p>{{'Email'|t}}</p>
-                    <div class="box__info">
-                        <p>{{ selectedMember.email }}</p>
+            <div class="box__content">
+                <div class="box__wrapper box__wrapper--labels">
+                    <div class="box__column box__column--2">
+                        <p>{{'Straat'|t}}</p>
+                        <div class="box__info">
+                            <p>{{ selectedMember.street|capitalize }}</p>
+                        </div>
+                    </div>
+                    <div class="box__column">
+                        <p>{{'Nr'|t}}</p>
+                        <div class="box__info">
+                            <p>{{ selectedMember.streetNr }}</p>
+                        </div>
+                    </div>
+                    <div class="box__column">
+                        <p>{{'Bus'|t}}</p>
+                        <div class="box__info">
+                            <p>{{ selectedMember.bus|capitalize }}</p>
+                        </div>
+                    </div>
+                    <div class="box__column box__column--2">
+                        <p>{{'Stad'|t}}</p>
+                        <div class="box__info">
+                            <p>{{ selectedMember.city|capitalize }}</p>
+                        </div>
+                    </div>
+                    <div class="box__column box__column--2">
+                        <p>{{'Postcode'|t}}</p>
+                        <div class="box__info">
+                            <p>{{ selectedMember.postalCode }}</p>
+                        </div>
                     </div>
                 </div>
-                <div class="box__column box__column--2">
-                    <p>{{'Geboortedatum'|t}}</p>
-                    <div class="box__info">
-                        <p>{{ selectedMember.birthday|date("m/d/Y") }}</p>
+                <div class="box__wrapper">
+                    <div class="box__column box__column--2">
+                        <p>{{'Email'|t}}</p>
+                        <div class="box__info">
+                            <p>{{ selectedMember.email }}</p>
+                        </div>
+                    </div>
+                    <div class="box__column box__column--2">
+                        <p>{{'Geboortedatum'|t}}</p>
+                        <div class="box__info">
+                            <p>{{ selectedMember.birthday|date("m/d/Y") }}</p>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="box__wrapper">
-                <div class="box__column box__column--4">
-                    <h3>Extra leden</h3>
-                </div>
-                {% if extraMembers|length > 0 %}
-                    {% for item in extraMembers %}
-                        <div class="box__column box__column--4">
-                            <div class="box__info box__info box__info--prim">
-                                <p>{{ item.altFirstName }} {{ item.altLastName }} - {{ item.birthday|date('d/m/Y') }}</p>
-                                <p>{{ item.memberRate.one().title }}</p>
-                            </div>
-                        </div>                  
-                    {% endfor %}
-                {% else %}
-                    <p>geen extra leden</p>
-                {% endif %}
-            </div>
-            <div class="box__wrapper">
-                <div class="box__column box__column--4">
-                    <h3>Betaal status</h3>
-                </div>
-                <div class="box__column box__column--4">
-                    <div class="box__info">
-                        <p>Betaald op ...</p>
+                <div class="box__wrapper">
+                    <div class="box__column box__column--4">
+                        <h3>Extra leden</h3>
                     </div>
-                </div>                  
-            </div>
-            <div class="box__options">
-                <button sprig class="btn" s-val:selectedMemberId="{{ null }}" s-val:query="{{query}}">Terug naar overzicht</button>
+                    {% if extraMembers|length > 0 %}
+                        {% for item in extraMembers %}
+                            <div class="box__column box__column--4">
+                                <div class="box__info box__info box__info--prim">
+                                    <p>{{ item.altFirstName }} {{ item.altLastName }} - {{ item.birthday|date('d/m/Y') }}</p>
+                                    <p>{{ item.memberRate.one().title }}</p>
+                                </div>
+                            </div>                  
+                        {% endfor %}
+                    {% else %}
+                        <p>geen extra leden</p>
+                    {% endif %}
+                </div>
+                <div class="box__wrapper">
+                    <div class="box__column box__column--4">
+                        <h3>Betaal status</h3>
+                    </div>
+                    <div class="box__column box__column--4">
+                        <div class="box__info">
+                            <p>Betaald op ...</p>
+                        </div>
+                    </div>                  
+                </div>
+                <div class="box__options">
+                    <button sprig class="btn" s-val:selectedMemberId="{{ null }}" s-val:query="{{query}}">Terug naar overzicht</button>
+                </div>
             </div>
         </div>
     </div>

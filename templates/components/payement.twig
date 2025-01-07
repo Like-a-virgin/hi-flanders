@@ -33,5 +33,11 @@
             <p>Totaal:</p>
             <p>{{ totalPrice|money }}</p>
         </div>
+        <form  method="post">
+            {{ csrfInput() }}
+            {{ actionInput('membership-payments/payment/initiate-payment') }}
+
+            <button class="btn" type="submit" class="pay-button">Pay Now</button>
+        </form>
     </div>
 </div>

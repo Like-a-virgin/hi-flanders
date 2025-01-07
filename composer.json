@@ -6,6 +6,7 @@
     "craftcms/cms": "5.5.8",
     "craftcms/feed-me": "^6.6.1",
     "craftcms/postmark": "^3.1.0",
+    "mollie/mollie-api-php": "^2.76",
     "nystudio107/craft-vite": "^5.0.1",
     "putyourlightson/craft-sprig": "^3.5.1",
     "vlucas/phpdotenv": "^5.4.0"
@@ -41,7 +42,8 @@
     "psr-4": {
       "modules\\extramembers\\": "modules/extra-members/",
       "modules\\ratemember\\": "modules/rate-member/",
-      "modules\\rateextramember\\": "modules/rate-extra-member/"
+      "modules\\rateextramember\\": "modules/rate-extra-member/",
+      "modules\\membershippayments\\": "modules/membership-payments/"
     }
   }
 }

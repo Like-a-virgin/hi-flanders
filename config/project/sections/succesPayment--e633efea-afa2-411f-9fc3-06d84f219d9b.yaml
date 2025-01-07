@@ -2,9 +2,9 @@ defaultPlacement: end
 enableVersioning: true
 entryTypes:
   - 3fab0971-effa-4787-a88b-2778ab3228d6 # Notify
-handle: activate
+handle: succesPayment
 maxAuthors: 1
-name: 'Activeer email'
+name: 'Bedankt betaling'
 previewTargets:
   -
     __assoc__:
@@ -23,15 +23,15 @@ siteSettings:
     enabledByDefault: true
     hasUrls: true
     template: pages/notify.twig
-    uriFormat: activeer-account
+    uriFormat: bedankt-betaling
   d74da9d4-3821-46f5-8cf4-f7c4d12c04df: # users fr
     enabledByDefault: true
     hasUrls: true
     template: pages/notify.twig
-    uriFormat: activer-compte
+    uriFormat: bedankt-betaling
   dad48958-bcb3-4253-9f7e-868f67fa27b0: # users en
     enabledByDefault: true
     hasUrls: true
     template: pages/notify.twig
-    uriFormat: activate-account
+    uriFormat: bedankt-betaling
 type: single

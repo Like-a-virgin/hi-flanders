@@ -192,7 +192,17 @@ tabs:
         width: 100
       -
         dateAdded: '2024-12-19T15:20:13+00:00'
-        elementCondition: null
+        elementCondition:
+          class: craft\elements\conditions\users\UserCondition
+          conditionRules:
+            -
+              class: craft\elements\conditions\users\GroupConditionRule
+              operator: in
+              uid: 75262b95-a075-4299-862a-777bc4107acb
+              values:
+                - 50a6f7cb-84e7-4d68-9aa9-3af2d9001e79 # Leden
+          elementType: craft\elements\User
+          fieldContext: global
         fieldUid: ab51ff2a-5865-41c8-897f-008e0b288a70 # Date
         handle: datePayment
         includeInCards: false
@@ -219,14 +229,34 @@ tabs:
         tip: null
         type: craft\fieldlayoutelements\CustomField
         uid: b830085b-1066-438a-bf29-a802e220b852
-        userCondition: null
+        userCondition:
+          class: craft\elements\conditions\users\UserCondition
+          conditionRules:
+            -
+              class: craft\elements\conditions\users\GroupConditionRule
+              operator: in
+              uid: 81ab4e2a-a20a-41ba-8f92-444ff7cd8d58
+              values:
+                - 50a6f7cb-84e7-4d68-9aa9-3af2d9001e79 # Leden
+          elementType: craft\elements\User
+          fieldContext: global
         warning: null
         width: 100
     name: Content
     uid: ae013ac9-d044-4fc1-85a9-cdfa5bb71919
     userCondition: null
   -
-    elementCondition: null
+    elementCondition:
+      class: craft\elements\conditions\users\UserCondition
+      conditionRules:
+        -
+          class: craft\elements\conditions\users\GroupConditionRule
+          operator: in
+          uid: e4b2e3e1-baaf-4c5e-9982-011fad3aa5ea
+          values:
+            - 50a6f7cb-84e7-4d68-9aa9-3af2d9001e79 # Leden
+      elementType: craft\elements\User
+      fieldContext: global
     elements:
       -
         dateAdded: '2024-12-17T11:11:20+00:00'
@@ -408,7 +438,7 @@ tabs:
         instructions: null
         label: null
         providesThumbs: false
-        required: false
+        required: true
         tip: null
         type: craft\fieldlayoutelements\CustomField
         uid: 34e53619-2edf-48ea-b674-bd48d0612fa8
@@ -419,11 +449,31 @@ tabs:
     uid: 29a009f6-fae3-4141-b690-3bfa8ef7d6eb
     userCondition: null
   -
-    elementCondition: null
+    elementCondition:
+      class: craft\elements\conditions\users\UserCondition
+      conditionRules:
+        -
+          class: craft\elements\conditions\users\GroupConditionRule
+          operator: in
+          uid: b5b6382b-ccc9-423f-9fe8-b60b8d902983
+          values:
+            - 50a6f7cb-84e7-4d68-9aa9-3af2d9001e79 # Leden
+      elementType: craft\elements\User
+      fieldContext: global
     elements:
       -
         dateAdded: '2025-01-02T14:39:49+00:00'
-        elementCondition: null
+        elementCondition:
+          class: craft\elements\conditions\users\UserCondition
+          conditionRules:
+            -
+              class: craft\elements\conditions\users\GroupConditionRule
+              operator: in
+              uid: 08ed4c77-dad3-47d8-b140-d843dc305e87
+              values:
+                - 50a6f7cb-84e7-4d68-9aa9-3af2d9001e79 # Leden
+          elementType: craft\elements\User
+          fieldContext: global
         fieldUid: 2d35b4ae-62f0-4cb2-8a94-73ebdae1ef03 # Member type
         handle: null
         includeInCards: false
@@ -466,6 +516,22 @@ tabs:
         tip: null
         type: craft\fieldlayoutelements\CustomField
         uid: 93c7413e-8cc8-4e37-bce4-0c8f9261f146
+        userCondition: null
+        warning: null
+        width: 100
+      -
+        dateAdded: '2025-01-07T12:55:08+00:00'
+        elementCondition: null
+        fieldUid: ab51ff2a-5865-41c8-897f-008e0b288a70 # Date
+        handle: paymentDate
+        includeInCards: false
+        instructions: null
+        label: Betalingsdatum
+        providesThumbs: false
+        required: false
+        tip: null
+        type: craft\fieldlayoutelements\CustomField
+        uid: dfbfb96f-919c-43db-b978-7dd300c938bf
         userCondition: null
         warning: null
         width: 100

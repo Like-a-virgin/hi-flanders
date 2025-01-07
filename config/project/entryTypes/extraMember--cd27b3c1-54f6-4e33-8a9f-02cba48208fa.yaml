@@ -53,6 +53,12 @@ fieldLayouts:
             userCondition: null
             warning: null
             width: 100
+        name: Over
+        uid: 8e882528-9d05-4508-bb00-f1cdae23b0be
+        userCondition: null
+      -
+        elementCondition: null
+        elements:
           -
             dateAdded: '2024-12-18T08:18:13+00:00'
             elementCondition: null
@@ -66,22 +72,6 @@ fieldLayouts:
             tip: null
             type: craft\fieldlayoutelements\CustomField
             uid: 7509cc76-ba33-432b-aa35-ae8a99d8a7de
-            userCondition: null
-            warning: null
-            width: 100
-          -
-            dateAdded: '2024-12-18T10:07:51+00:00'
-            elementCondition: null
-            fieldUid: aa21d2ca-e34c-4497-a6fa-49b5a7cc7f58 # Title
-            handle: parentId
-            includeInCards: false
-            instructions: null
-            label: 'Parent ID'
-            providesThumbs: false
-            required: false
-            tip: null
-            type: craft\fieldlayoutelements\CustomField
-            uid: 8313e01d-96d6-43d5-bf86-96f9c47405a7
             userCondition: null
             warning: null
             width: 100
@@ -101,8 +91,24 @@ fieldLayouts:
             userCondition: null
             warning: null
             width: 100
-        name: Content
-        uid: 8e882528-9d05-4508-bb00-f1cdae23b0be
+          -
+            dateAdded: '2025-01-07T12:56:15+00:00'
+            elementCondition: null
+            fieldUid: ab51ff2a-5865-41c8-897f-008e0b288a70 # Date
+            handle: paymentDate
+            includeInCards: false
+            instructions: null
+            label: Betalingsdatum
+            providesThumbs: false
+            required: false
+            tip: null
+            type: craft\fieldlayoutelements\CustomField
+            uid: d426d59d-5508-43a7-90a8-342fa1420189
+            userCondition: null
+            warning: null
+            width: 100
+        name: Lidmaatschap
+        uid: 95b0fa11-e5aa-4784-bf45-98e943c08d33
         userCondition: null
 handle: extraMember
 hasTitleField: false
