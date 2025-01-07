@@ -20,17 +20,17 @@ $fw-medium: 500;
 $fw-bold: 700;
 
 // Font Sizes 
-$fs-p: 1rem;
-$fs-p--mobile: 1rem;
-$fs-h1: 2rem;
+$fs-p: .875rem;
+$fs-p--mobile: .875rem;;
+$fs-h1: 28px;
 $fs-h1--mobile: 1.5rem;
 $fs-h2: 1.5rem;
 $fs-h2--mobile: 1.25rem;
 $fs-h3: 1.25rem;
 $fs-h3--mobile: 1.125rem;
 
-$fs-btn: 1rem;
-$fs-btn--mobile: 1rem; 
+$fs-btn: .875rem;
+$fs-btn--mobile: .875rem; 
 
 // Breakpoints screen 
 $screen-xs: 480px; // mobile portrait
@@ -41,3 +41,5 @@ $screen-xl: 1440px; //large desktop
 
 // Spacing 
 $spacing: 4rem;
+$sp-s: 0.875rem;
+$btn-padding: .75rem 1.5rem;

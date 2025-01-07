@@ -27,9 +27,6 @@
             
             {% if user %}
                 {% set errors = user.getErrors() %}
-                <pre>
-                    {{ dump(errors) }}
-                </pre>
                 {% if errors|length > 0 %}                
                     <div class="formbox__error formbox__column--full">
                         <p>Niet alle velden zijn correct ingevuld.</p>
@@ -66,7 +63,7 @@
                 <label class="formbox__label" for="email">{{'Email'|t}}</label>
                 {{ input('email', 'email', user.email ?? null, {
                     id: 'email',
-                    placeholder: 'Email'|t,
+                    placeholder: 'E-mailadres'|t,
                     required: true
                 }) }}
             </div> 
@@ -80,14 +77,6 @@
                     max: maxDate
                 }) }}
             </div>     
-            <div class="formbox__column--full {{ user and user.getErrors('country') ? 'formbox__column--error' }}">
-                <label class="formbox__label" for="country">{{'Land'|t}}</label>
-                {{ input('text', 'fields[country]', user.country ?? null, {
-                    id: 'country',
-                    placeholder: 'Land'|t,
-                    required: true
-                }) }}
-            </div>
             <div class="formbox__column {{ user and user.getErrors('country') ? 'formbox__column--error' }}">
                 <label class="formbox__label" for="postal-code">{{'Postcode'|t}}</label>
                 {{ input('text', 'fields[postalCode]', user.postalCode ?? null, {
@@ -127,6 +116,14 @@
                     placeholder: 'Bus'|t
                 }) }}
             </div>
+            <div class="formbox__column--full {{ user and user.getErrors('country') ? 'formbox__column--error' }}">
+                <label class="formbox__label" for="country">{{'Land'|t}}</label>
+                {{ input('text', 'fields[country]', user.country ?? null, {
+                    id: 'country',
+                    placeholder: 'Land'|t,
+                    required: true
+                }) }}
+            </div>
             <div class="formbox__column--full  {{ user and user.getErrors('password') ? 'formbox__column--error' }}">         
                 <label class="formbox__label" for="password">{{'Password'|t}}</label>
                 {{ input('password', 'password', null, {
@@ -134,6 +131,9 @@
                     placeholder: 'Kies een wachtwoord'|t,
                     required: true
                 }) }}
+                <button class="formbox__see-pass" type="button" id="togglePassword" aria-label="Show Password">
+                    {{ svg("assets/icons/eye.svg")|attr({class: 'formbox__see-pass-icon' }) }}
+                </button>
             </div>
             <div class="formbox__checkbox formbox__column--pp formbox__column--full">
                 <label for="privacy-policy">
@@ -157,7 +157,7 @@
         <div class="formbox__options">
             <p class="formbox__or">{{'Of'|t}}</p>
             <a class="formbox__button formbox__button--sec" href="{{ url('login') }}">{{'Log in'|t}}</a>
-            <a href="/register-group">registreer groep</a>
+            <a class="formbox__button formbox__button--sec" href="/register-group">{{'Registreer groep'|t}}</a>
         </div>
     </div>
 {% endblock %}

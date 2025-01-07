@@ -3,10 +3,10 @@
 input {
     border: 0.075rem solid transparent;
     background-color: #F7F7F7;
-    padding: 1rem 1.5rem;
+    padding: $btn-padding;
     border-radius: 5rem;
     font-family: $ff;
-    font-size: .875rem;
+    font-size: $fs-p;
     width: 100%;
 }
 

@@ -1,17 +1,21 @@
 {% extends "layouts/base.twig" %}
-
+    
 {% requireLogin %}
-{% set user = user ?? currentUser %}
-{% set userGroup = user.getGroups()|first.handle %}
 
 {% block content %}
-    {% if userGroup is same as 'members' %}    
-        {% if user.memberType.value is same as 'group' %}
-            {% include "pages/user-organisation.twig" %}  
-        {% else %}
-            {% include "pages/user.twig" %}
+    {% if craft.app.user.identity and craft.app.user.identity.admin %}
+        {% redirect url('admin') %}
+    {% else %}
+        {% set user = user ?? currentUser %}
+        {% set userGroup = user.getGroups()|first.handle %}
+        {% if userGroup is same as 'members' %}    
+            {% if user.memberType.value is same as 'group' %}
+                {% include "pages/user-organisation.twig" %}  
+            {% else %}
+                {% include "pages/user.twig" %}
+            {% endif %}
+        {% elseif userGroup is same as 'membersAdmin' %}
+            {% include "pages/dashboard.twig" %}  
         {% endif %}
-    {% elseif userGroup is same as 'membersAdmin' %}
-        {% include "pages/dashboard.twig" %}  
     {% endif %}
 {% endblock %}

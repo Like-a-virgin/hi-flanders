@@ -3,7 +3,7 @@
 {% block content %}
     <div class="formbox">
         <div class="formbox__heading">
-            <h2>{{'Log in'|t}}</h2>
+            <h1>{{'Log in'|t}}</h1>
         </div>
         <form class="formbox__form" method="post" accept-charset="UTF-8">
             {{ csrfInput() }}
@@ -31,14 +31,17 @@
                     id: 'password',
                     placeholder: 'Password'|t
                 }) }}
+                <button class="formbox__see-pass" type="button" id="togglePassword" aria-label="Show Password">
+                    {{ svg("assets/icons/eye.svg")|attr({class: 'formbox__see-pass-icon' }) }}
+                </button>
+            </div>
 
-                <div class="formbox__password-options">
-                    <label>
-                        {{ input('checkbox', 'rememberMe', '1') }}
-                        {{'Remember me'|t}}
-                    </label>
-                    <a class="formbox__link formbox__link--small" href="{{ url('reset-password') }}">{{'Wachtwoord vergeten?'|t}}</a>
-                </div>
+            <div class="formbox__password-options formbox__column--full">
+                <label>
+                    {{ input('checkbox', 'rememberMe', '1') }}
+                    {{'Remember me'|t}}
+                </label>
+                <a class="formbox__link formbox__link--small" href="{{ url('reset-password') }}">{{'Wachtwoord vergeten?'|t}}</a>
             </div>
 
             <button class="formbox__button formbox__column--full">{{'Log in'|t}}</button>

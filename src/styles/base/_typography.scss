@@ -1,0 +1,10 @@
+@use "../abstracts" as *;
+
+h1, h2 {
+    font-size: $fs-h1;
+    font-weight: $fw-bold;
+}
+
+p {
+    font-size: $fs-p;
+}

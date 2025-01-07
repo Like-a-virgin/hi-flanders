@@ -1,11 +1,27 @@
 @use "../abstracts" as *;
 
 .header {
+    width: 100%;
+    padding: 2rem;
+
     position: absolute;
-    right: 2rem;
-    top: 2rem;
+    top: 0;
+    left: 0;
     
     display: flex;
     flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
     gap: 1rem;
+
+    &__logo {
+        width: 12.5rem;
+        height: fit-content;
+    }
+
+    &__options {
+        display: flex;
+        flex-direction: row;
+        gap: 1rem;
+    }
 }
