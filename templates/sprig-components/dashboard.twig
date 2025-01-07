@@ -1,56 +1,72 @@
 {% set query = query ?? '' %}
 
-{% set members = craft.users.group('members').all() %}
+{% set selectedMemberId = selectedMemberId ?? null %}
 
-<div class="box-container table">
+{% set members = craft.users.group('members').all() %}
+{# {% set members = craft.entries.section('members').search(query).all() %} #}
+
+<div class="box-container table" x-data="{ openModal: false }">
     <h1>Leden</h1>
     <div class="table__options">
         <div class="table__option-search">
             {{ svg("assets/icons/search.svg")|attr({class: 'table__icon-search' }) }}
-            <input sprig class="table__search" s-replace="#table-members" s-trigger="keyup changed" name="query" value="{{query}}" type="text" placeholder="Zoeken">
+            <input sprig type="text" class="table__search" name="query" value="{{query}}" placeholder="Zoeken" s-replace="#table-members" s-trigger="keyup changed">
         </div>
     </div>
-    <table class="table__table" id="table-members">
-        {% set filteredMembers = members|filter(member =>
-            member.altFirstName is not empty and member.altFirstName|lower starts with query|lower or
-            member.altLastName is not empty and member.altLastName|lower starts with query|lower or
-            member.id|string starts with query
-        ) %}
-        <thead>
-            <tr>
-                <th>{{'Voornaam'|t}}</th>
-                <th>{{'Familienaam'|t}}</th>
-                <th>{{'Email'|t}}</th>
-                <th>{{'Lidnummer'|t}}</th>
-                <th>{{'Extra personen'|t}}</th>
-                <th>{{'Betaald'|t}}</th>
-                <th>{{'Meer'|t}}</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% if query %}
-                {% set theMembers = filteredMembers|sort((a, b) => a.altFirstName <=> b.altFirstName) %}
-            {% else %}
-                {% set theMembers = members|sort((a, b) => a.altFirstName <=> b.altFirstName) %}
-            {% endif %}
-            {% for member in theMembers %}
-                {% set memberIsEntry = member is instance of ('craft\\elements\\Entry') %}
-                {% set memberTypes = craft.entries.section('rates').all() %}
-                {% set currentDate = now|date('Y-m-d') %}
-                {% set memberBday = member.birthday|date('Y-m-d') %}
-                {% set memberAge = (currentDate|date('Y') - memberBday|date('Y')) - (currentDate|date('md') < memberBday|date('md') ? 1 : 0) %}
-                {% set memberType = memberTypes|filter(i => i.minAge <= memberAge and (i.maxAge is null or i.maxAge >= memberAge)) %}
-                {% set extraMembers = craft.entries.section('extraMembers').authorId(member.id).all() %}
+    <div class="table__content" id="table-members">    
+        <table class="table__table" >
+            {% set filteredMembers = members|filter(member =>
+                member.altFirstName is not empty and member.altFirstName|lower starts with query|lower or
+                member.altLastName is not empty and member.altLastName|lower starts with query|lower or
+                member.organisation is not empty and member.organisation|lower starts with query|lower or
+                member.email is not empty and member.email|lower starts with query|lower or
+                member.id|string starts with query
+            ) %}
+            <thead>
                 <tr>
-                    <td>{{member.altFirstName}}</td>
-                    <td>{{member.altLastName}}</td>
-                    <td>{{ memberIsEntry is same as false ? member.email}}</td>
-                    <td>{{ memberIsEntry is same as false ? '(008) ' ~ member.id}}</td>
-                    <td>{{ memberIsEntry is same as false ? extraMembers|length }}</td>
-                    <td><div class="table__status table__status--false">{{ svg("assets/icons/x.svg")|attr({class: 'table__status-icon table__status-icon--false' }) }}</div></td>
-                    <td><button class="table__more">Bekijk info</button></td>
+                    <th>{{'Naam'|t}}</th>
+                    <th>{{'Email'|t}}</th>
+                    <th>{{'Lidnummer'|t}}</th>
+                    <th>{{'Extra'|t}}</th>
+                    <th>{{'Betaald'|t}}</th>
+                    <th>{{'Meer'|t}}</th>
                 </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+                {% if query %}
+                    {% set theMembers = filteredMembers|sort((a, b) => a.altFirstName <=> b.altFirstName) %}
+                {% else %}
+                    {% set theMembers = members|sort((a, b) => a.altFirstName <=> b.altFirstName) %}
+                {% endif %}
+                {% for member in theMembers %}
+                    {% set memberIsEntry = member is instance of ('craft\\elements\\Entry') %}
+                    {% set memberTypes = craft.entries.section('rates').all() %}
+                    {% set currentDate = now|date('Y-m-d') %}
+                    {% set memberBday = member.birthday|date('Y-m-d') %}
+                    {% set memberAge = (currentDate|date('Y') - memberBday|date('Y')) - (currentDate|date('md') < memberBday|date('md') ? 1 : 0) %}
+                    {% set memberType = memberTypes|filter(i => i.minAge <= memberAge and (i.maxAge is null or i.maxAge >= memberAge)) %}
+                    {% set extraMembers = craft.entries.section('extraMembers').authorId(member.id).all() %}
+                    <tr>
+                        <td>
+                            {% if member.memberType.value is same as 'group' %}
+                                {{member.organisation}}
+                            {% else %}
+                                {{member.altFirstName}} {{member.altLastName}}
+                            {% endif %}
+                        </td>
+                        <td>{{ memberIsEntry is same as false ? member.email}}</td>
+                        <td>{{ memberIsEntry is same as false ? '(008) ' ~ member.id}}</td>
+                        <td>{{ memberIsEntry is same as false ? extraMembers|length }}</td>
+                        <td><div class="table__status table__status--false">{{ svg("assets/icons/x.svg")|attr({class: 'table__status-icon table__status-icon--false' }) }}</div></td>
+                        <td>
+                            <button sprig class="table__more" s-val:selectedMemberId="{{ member.id }}" s-val:query="{{query}}">Bekijk info</button>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% if selectedMemberId %}
+        {% include "components/modal.twig" %}
+    {% endif %}
 </div>

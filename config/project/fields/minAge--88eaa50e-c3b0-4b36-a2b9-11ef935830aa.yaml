@@ -1,7 +1,7 @@
 columnSuffix: null
-handle: min
+handle: minAge
 instructions: null
-name: Min
+name: 'min Leeftijd'
 searchable: false
 settings:
   decimals: 0

@@ -23,6 +23,8 @@ input[type="checkbox"] {
     width: fit-content;
     height: fit-content;
     margin-right: 0.25rem;
+    accent-color: $clr-primary;
+    border-radius: 0;
 }
 
 .input--white {

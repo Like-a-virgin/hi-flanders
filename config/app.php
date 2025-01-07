@@ -21,7 +21,13 @@
  */
 
 use craft\helpers\App;
+use modules\rateextramember\RateExtraMember;
+use modules\ratemember\RateMember;
 
 return [
-    'id' => App::env('CRAFT_APP_ID') ?: 'CraftCMS',
+    'id' => App::env('CRAFT_APP_ID') ?: 'CraftCMS', 
+    'modules' => [
+        'rate-member' => RateMember::class, 'rate-extra-member' => RateExtraMember::class
+    ], 
+    'bootstrap' => ['rate-member', 'rate-extra-member'],
 ];

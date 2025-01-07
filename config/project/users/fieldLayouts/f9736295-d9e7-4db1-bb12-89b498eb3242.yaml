@@ -446,10 +446,26 @@ tabs:
         instructions: null
         label: null
         providesThumbs: false
-        required: true
+        required: false
         tip: null
         type: craft\fieldlayoutelements\CustomField
         uid: bfd5b7f9-52f4-4cb5-9dc6-fcb3f2202677
+        userCondition: null
+        warning: null
+        width: 100
+      -
+        dateAdded: '2025-01-06T12:07:19+00:00'
+        elementCondition: null
+        fieldUid: aa21d2ca-e34c-4497-a6fa-49b5a7cc7f58 # Title
+        handle: null
+        includeInCards: false
+        instructions: null
+        label: test
+        providesThumbs: false
+        required: false
+        tip: null
+        type: craft\fieldlayoutelements\CustomField
+        uid: 93c7413e-8cc8-4e37-bce4-0c8f9261f146
         userCondition: null
         warning: null
         width: 100

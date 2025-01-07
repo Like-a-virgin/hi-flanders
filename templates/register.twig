@@ -144,20 +144,14 @@
                 }) }} 
                 <p>{{'Ik ga akkoord dat mijn gegevens gebruikt worden zoals beschreven in de'|t}} <a class="formbox__link" href="https://www.hiflanders.be/nl/privacy-policy">{{'privacy policy'|t}}</a>.</label></p>
             </div>
-            {% if user %}
+            {# {% if user and user.birthday %}
                 {% set currentDate = now|date('Y-m-d') %}
                 {% set userBirthDay = user.birthday|date('Y-m-d') %}
                 {% set memberAge = (currentDate|date('Y') - userBirthDay|date('Y')) - (currentDate|date('md') < userBirthDay|date('md') ? 1 : 0) %}
                 {% set memberRateCurrent = memberRates|find(i => i.minAge <= memberAge and (i.maxAge is null or i.maxAge >= memberAge)) %}
 
                 {{ input('hidden', 'fields[memberRate][]', memberRateCurrent.id) }}
-                <pre>
-                    {{ dump(memberRateCurrent.id) }}
-                </pre>
-            {% endif %}
-
-
-            {{ dump(craft.app.request.bodyParams) }}
+            {% endif %} #}
             <button class="formbox__button formbox__column--full">{{'Registreer'|t}}</button>
         </form>
         <div class="formbox__options">

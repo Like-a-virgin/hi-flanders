@@ -1,6 +1,7 @@
 @use "../abstracts" as *;
 
 .table {
+    min-height: 50vh;
 
     &__options {
         margin-bottom: 1rem;

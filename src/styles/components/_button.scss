@@ -24,6 +24,18 @@
         width: 1rem;
     }
 
+    &__close {
+        fill: $clr-primary;
+        height: 1rem;
+        width: 1rem;
+    }
+
+    &__close-modal {
+        position: absolute;
+        right: 0;
+        top: 0;
+    }
+
     &:hover {
         background-color: $clr-primary;
         color: $clr-secondary;

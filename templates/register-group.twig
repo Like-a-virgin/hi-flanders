@@ -6,6 +6,8 @@
     {% set user = user ?? null %}
     {% set activationPage = craft.entries.section('activate').one().uri %}
     {% set maxDate = now|date_modify('-3 years')|date("Y-m-d") %}
+    {% set memberRates = craft.entries.section('rates').all() %}
+    {% set groupRate = memberRates|find(i => i.memberType.value is same as 'group') %}
 
     {% macro errorList(errors) %}
     {% if errors %}
@@ -23,6 +25,7 @@
             {{ redirectInput(activationPage) }}
 
             {{ input('hidden', 'fields[memberType]', 'group') }}
+            {{ input('hidden', 'fields[memberRate][]', groupRate.id) }}
             
             {% if user %}
                 {% set errors = user.getErrors() %}
@@ -131,19 +134,11 @@
                 <p>{{'Ik ga akkoord dat mijn gegevens gebruikt worden zoals beschreven in de'|t}} <a class="formbox__link" href="https://www.hiflanders.be/nl/privacy-policy">{{'privacy policy'|t}}</a>.</label></p>
             </div>
 
-            {{ input('hidden', 'fields[altFirstName]', 'test') }}
-            {{ input('hidden', 'fields[altLastName]', 'test') }}
-            {{ input('hidden', 'fields[birthday]', '10-08-2000') }}
+            {# {{ input('hidden', 'fields[altFirstName]', 'test') }}
+            {{ input('hidden', 'fields[altLastName]', 'test') }} #}
+            {{ input('hidden', 'fields[birthday]', now|date_modify('-3 years')|date("Y-m-d")) }}
 
-            {% if user and user.groups %}            
-                <pre>
-                    {{ dump(user.groups) }}
-                </pre>
-            {% endif %}
-            <pre>
-                {{ dump(craft.app.request.bodyParams) }}
-            </pre>
-
+            {{ dump(craft.app.request.bodyParams) }}
             <button class="formbox__button formbox__column--full">{{'Registreer'|t}}</button>
         </form>
         <div class="formbox__options">

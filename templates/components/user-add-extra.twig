@@ -34,12 +34,6 @@
                     max: maxDate
                 }) }}
             </div>   
-            {% if extraMemberBirthday is not empty %}
-                {% set memberAge = now|date('Y') - extraMemberBirthday|date('Y') %}
-                {% set memberRateCurrent = memberRates|find(rate => rate.minAge <= memberAge and (rate.maxAge is null or rate.maxAge >= memberAge)) %}
-                {{ input('hidden', 'fields[memberRate][]', memberRateCurrent.id) }}
-            {% endif %}
-            
             <button class="formbox__button formbox__button--sec formbox__column">{{'Voeg toe'|t}}</button>
         </form>
     </div>
