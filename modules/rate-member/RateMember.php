@@ -55,7 +55,8 @@ class RateMember extends BaseModule
         if ($memberType === 'group') {
             // Assign the first rate with the memberType 'group'
             $groupRate = array_filter($memberRates, function ($rate) {
-                $rateMemberType = $rate->getFieldValue('memberType');
+                $rateMemberTypeField = $rate->getFieldValue('memberType');
+                $rateMemberType = $rateMemberTypeField ? $rateMemberTypeField->value : null;
                 return $rateMemberType === 'group';
             });
     
