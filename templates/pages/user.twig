@@ -24,18 +24,18 @@
 
 {% requireLogin %}
 
-{% if not activeUserMember and totalNonActive > 0 %}
+{% if not activeUserMember %}
     <div class="box-error">    
         {% if not activeUserMember %}
             <div class="box-error__error">
                 <p>! {{'Je lidmaatschap is nog niet actief'|t}}</p>
             </div>
         {% endif %}
-        {% if totalNonActive > 0 %}
+        {# {% if totalNonActive > 0 %}
             <div class="box-error__error">
                 <p>! {{totalNonActive}} {{'Extra leden zijn niet actief'|t}}</p>
             </div>
-        {% endif %}
+        {% endif %} #}
     </div>
 {% endif %}
 <div class="box">
