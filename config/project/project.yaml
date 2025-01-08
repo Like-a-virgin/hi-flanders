@@ -1,4 +1,4 @@
-dateModified: 1736351630
+dateModified: 1736352831
 elementSources:
   craft\elements\Entry:
     -
@@ -122,7 +122,7 @@ email:
   template: email/email.html
   transportSettings:
     messageStream: ''
-    token: $POSTMARK_API_KEY
+    token: pos
   transportType: craftcms\postmark\Adapter
 fs:
   branding:

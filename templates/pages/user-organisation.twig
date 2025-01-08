@@ -1,7 +1,7 @@
 {% set maxDate = now|date_modify('-3 years')|date("Y-m-d") %}
 {% set memberTypes = craft.entries.section('rates').all() %}
 
-{% set currentDate = now|date('Y-m-d') %}
+{% set currentDate = now %}
 {% set activeUserMember = user.paymentDate and user.expPaymentDate and currentDate >= user.paymentDate and currentDate <= user.expPaymentDate %}
 
 {% set totalPrice = 0 %}
@@ -160,6 +160,9 @@
                 <p class="box__text-bold">{{'Lidmaatschap'|t}}</p>
                 <div class="box__info box__info--prim">
                     <p>{{ user.memberRate.one().title }}</p>
+                    {% if user.expPaymentDate %}
+                        <p>{{'Vervalt op'|t}} {{user.expPaymentDate|date('d-m-Y')}}</p>
+                    {% endif %}
                 </div>
             </div>
         </div>
