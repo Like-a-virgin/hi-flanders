@@ -1,0 +1,37 @@
+color: null
+fieldLayouts:
+  fd809a4e-f679-48a0-9fea-3d10042f4508:
+    tabs:
+      -
+        elementCondition: null
+        elements:
+          -
+            dateAdded: '2025-01-08T14:20:42+00:00'
+            elementCondition: null
+            fieldUid: 6754b9ff-3f0c-41d6-914e-520590bd5d79 # LinkExtern
+            handle: null
+            includeInCards: false
+            instructions: null
+            label: null
+            providesThumbs: false
+            required: false
+            tip: null
+            type: craft\fieldlayoutelements\CustomField
+            uid: ee125008-b937-4f1b-9fe2-32b07dda6137
+            userCondition: null
+            warning: null
+            width: 100
+        name: Content
+        uid: b51ff800-515d-4ffc-8192-cb43ff54541f
+        userCondition: null
+handle: hoofdWebsite
+hasTitleField: false
+icon: null
+name: 'Hoofd website'
+showSlugField: true
+showStatusField: true
+slugTranslationKeyFormat: null
+slugTranslationMethod: site
+titleFormat: 'Main website'
+titleTranslationKeyFormat: null
+titleTranslationMethod: site

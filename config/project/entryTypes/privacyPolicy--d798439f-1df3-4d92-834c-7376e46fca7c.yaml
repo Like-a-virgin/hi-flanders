@@ -1,0 +1,37 @@
+color: null
+fieldLayouts:
+  e6cef7f9-4d58-41a7-a575-5181a207de19:
+    tabs:
+      -
+        elementCondition: null
+        elements:
+          -
+            dateAdded: '2025-01-08T12:51:09+00:00'
+            elementCondition: null
+            fieldUid: 6754b9ff-3f0c-41d6-914e-520590bd5d79 # LinkExtern
+            handle: null
+            includeInCards: false
+            instructions: null
+            label: null
+            providesThumbs: false
+            required: false
+            tip: null
+            type: craft\fieldlayoutelements\CustomField
+            uid: d7e6f84e-90d5-4798-b2f8-1b78005d6204
+            userCondition: null
+            warning: null
+            width: 100
+        name: Content
+        uid: cf673658-86a4-4992-9703-432729185b5d
+        userCondition: null
+handle: privacyPolicy
+hasTitleField: false
+icon: null
+name: 'Privacy policy'
+showSlugField: true
+showStatusField: true
+slugTranslationKeyFormat: null
+slugTranslationMethod: site
+titleFormat: 'Privacy policy'
+titleTranslationKeyFormat: null
+titleTranslationMethod: site

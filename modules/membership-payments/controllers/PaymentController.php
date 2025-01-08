@@ -34,29 +34,38 @@ class PaymentController extends Controller
             $userRate = new Money(0, new Currency('EUR')); 
         }
 
-        $totalRate = $userRate;
+        $totalRate = new Money(0, new Currency('EUR'));
 
+        if (!$this->isWithinPaymentPeriod($user)) {
+            $totalRate = $totalRate->add($userRate);
+        }
+
+        $extraMemberIds = [];
         $extraMembers = Entry::find()
             ->section('extraMembers')
             ->relatedTo($user)
             ->all();
 
         foreach ($extraMembers as $extraMember) {
-            $extraMemberIds[] = $extraMember->id;
-        }
-
-        foreach ($extraMembers as $extraMember) {
             $relatedEntry = $extraMember->getFieldValue('memberRate')[0] ?? null;
-
+    
             if ($relatedEntry) {
                 $price = $relatedEntry->getFieldValue('price');
-
-                $totalRate = $totalRate->add($price);
+    
+                // Check if extra member is within payment period
+                if (!$this->isWithinPaymentPeriod($extraMember)) {
+                    $totalRate = $totalRate->add($price);
+                    $extraMemberIds[] = $extraMember->id;
+                }
             }
         }
 
         $totalAmount = $totalRate->getAmount(); // Total as integer in cents
         $totalFormatted = number_format($totalAmount / 100, 2); // Convert to euros
+
+        if ($totalAmount === 0) {
+            return $this->asFailure('No payment required. All members are already paid.');
+        }
 
         $mollie = MembershipPayments::getInstance()->getMollie();
 
@@ -85,6 +94,20 @@ class PaymentController extends Controller
         ]);
 
         return $this->redirect($payment->getCheckoutUrl());
+    }
+
+    private function isWithinPaymentPeriod($element): bool
+    {
+        $paymentDate = $element->getFieldValue('paymentDate');
+        $expPaymentDate = $element->getFieldValue('expPaymentDate');
+
+        if (!$paymentDate || !$expPaymentDate) {
+            return false; // No payment date or expiry, assume not within the payment period
+        }
+
+        $today = new \DateTime('today');
+
+        return ($paymentDate <= $today && $expPaymentDate >= $today);
     }
 
     public function actionWebhook(): Response

@@ -3,6 +3,7 @@
 {# `user` is defined if the form returns validation errors. #}
 
 {% block content %}
+    {% set pp = craft.entries.section(privacyPolicy).one().linkExtern %}
     {% set user = user ?? null %}
     {% set activationPage = craft.entries.section('activate').one().uri %}
     {% set maxDate = now|date_modify('-3 years')|date("Y-m-d") %}
@@ -60,7 +61,7 @@
                 }) }}
             </div>
             <div class="formbox__column {{ user and user.getErrors('email') ? 'formbox__column--error' }}">                
-                <label class="formbox__label" for="email">{{'Email'|t}}</label>
+                <label class="formbox__label" for="email">{{'E-mail'|t}}</label>
                 {{ input('email', 'email', user.email ?? null, {
                     id: 'email',
                     placeholder: 'E-mailadres'|t,
@@ -142,7 +143,7 @@
                     required: true,
                     checked: user.privacyPolicy.storage is defined and 'iAccept' in user.privacyPolicy.storage
                 }) }} 
-                <p>{{'Ik ga akkoord dat mijn gegevens gebruikt worden zoals beschreven in de'|t}} <a class="formbox__link" href="https://www.hiflanders.be/nl/privacy-policy">{{'privacy policy'|t}}</a>.</label></p>
+                <p>{{'Ik ga akkoord dat mijn gegevens gebruikt worden zoals beschreven in de'|t}} <a class="formbox__link" target="_blank" href="{{pp}}">{{'privacy policy'|t}}</a>.</label></p>
             </div>
             {# {% if user and user.birthday %}
                 {% set currentDate = now|date('Y-m-d') %}

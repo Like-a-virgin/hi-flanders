@@ -1,4 +1,4 @@
-dateModified: 1736329530
+dateModified: 1736346062
 elementSources:
   craft\elements\Entry:
     -
@@ -40,9 +40,10 @@ elementSources:
             uid: 462bbf2f-a4d3-4f5a-bccf-f8a550569ba6
             values:
               - 7b5aa47e-5da6-461a-b6fc-a190a143d8d8 # Activeer email
-              - 4a63b33e-aa54-421b-b619-d4bc7f4888e7 # Home
-              - 22e6beae-01af-4451-b3d5-29bf90a51e80 # Reset wachtwoord
               - e633efea-afa2-411f-9fc3-06d84f219d9b # Bedankt betaling
+              - 4a63b33e-aa54-421b-b619-d4bc7f4888e7 # Home
+              - ac77cfdb-37a0-4f35-9ca7-e353977a477d # Privacy policy
+              - 22e6beae-01af-4451-b3d5-29bf90a51e80 # Reset wachtwoord
         elementType: craft\elements\Entry
         fieldContext: global
       defaultSort:
@@ -91,12 +92,45 @@ elementSources:
         - link
       type: native
     -
-      heading: ''
+      heading: Globals
       type: heading
+    -
+      condition:
+        class: craft\elements\conditions\entries\EntryCondition
+        conditionRules:
+          -
+            class: craft\elements\conditions\entries\SectionConditionRule
+            operator: in
+            uid: fa322204-aa99-498a-97a9-6014fbc0e0ec
+            values:
+              - e6b46871-c4a9-4c54-825a-0e4ff94ad028 # Branding
+              - 4bf3f29c-fce9-401f-9b64-c00e46646ddc # Main website
+        elementType: craft\elements\Entry
+        fieldContext: global
+      defaultSort:
+        - id
+        - asc
+      defaultViewMode: ''
+      key: 'custom:82a58549-8bec-49ba-9fb6-7a616719e62f'
+      label: 'Bedrijfs gegevens'
+      tableAttributes: '-'
+      type: custom
 email:
   fromEmail: lara@likeavirgin.be
   fromName: users
+  replyToEmail: null
+  template: email/email.html
+  transportSettings:
+    command: '/usr/local/bin/mailpit sendmail -t --smtp-addr 127.0.0.1:1025'
   transportType: craft\mail\transportadapters\Sendmail
+fs:
+  branding:
+    hasUrls: true
+    name: Branding
+    settings:
+      path: $BRANDING_PATH
+    type: craft\fs\Local
+    url: $BRANDING_URL
 meta:
   __names__:
     00d6a85f-228e-4877-b53c-8725397c83d9: address # address
@@ -106,18 +140,23 @@ meta:
     2d35b4ae-62f0-4cb2-8a94-73ebdae1ef03: 'Member type' # Member type
     3fab0971-effa-4787-a88b-2778ab3228d6: Notify # Notify
     4a63b33e-aa54-421b-b619-d4bc7f4888e7: Home # Home
+    4bf3f29c-fce9-401f-9b64-c00e46646ddc: 'Main website' # Main website
+    6a5cdbf8-b455-4bcd-a555-6a3fcad805f9: 'Hoofd website' # Hoofd website
     7b5aa47e-5da6-461a-b6fc-a190a143d8d8: 'Activeer email' # Activeer email
     9a41348d-b717-4688-9000-767870baae38: New # New
+    9fa38d43-f532-46e6-a754-46a74621fb10: Branding # Branding
     21c22e0c-c629-4e07-9e19-a289ef81be37: Simple # Simple
     22e6beae-01af-4451-b3d5-29bf90a51e80: 'Reset wachtwoord' # Reset wachtwoord
     44a841e6-e727-4500-9e81-386090b011f6: memberRate # memberRate
     50a6f7cb-84e7-4d68-9aa9-3af2d9001e79: Leden # Leden
+    52ac72a5-0a6a-42ba-9e72-995b76380054: Logo # Logo
     77d8ae37-4c00-4972-aab9-94dd08c7f29c: SimpleText # SimpleText
     88eaa50e-c3b0-4b36-a2b9-11ef935830aa: 'min Leeftijd' # min Leeftijd
     93edcc59-32ca-4780-9d52-1d1fc486519a: 'Lid ouder' # Lid ouder
     359a39c5-8655-460f-a1b4-0c097ea0edb2: users # users
     590f0cba-dbfa-4eda-882d-2fe3aac82a92: Prijs # Prijs
     5178f917-f380-440d-a326-c41e396ba39a: 'privacy policy' # privacy policy
+    6754b9ff-3f0c-41d6-914e-520590bd5d79: LinkExtern # LinkExtern
     8365fada-1ce2-4e0a-8a3f-f919c3c18208: 'max Leeftijd' # max Leeftijd
     80634baf-dc43-47ea-8528-2e72e4a53d61: Tarief # Tarief
     637277da-4bad-4da9-9b1a-059b6438cce0: 'Extra group' # Extra group
@@ -127,15 +166,20 @@ meta:
     aa21d2ca-e34c-4497-a6fa-49b5a7cc7f58: Title # Title
     ab51ff2a-5865-41c8-897f-008e0b288a70: Date # Date
     abcf42d8-0123-423e-b196-1d9f4b5aeb50: 'Extra group' # Extra group
+    ac77cfdb-37a0-4f35-9ca7-e353977a477d: 'Privacy policy' # Privacy policy
     bbdfff72-14f8-4e5d-b59e-12d5b73c9a17: Home # Home
     bcc31cfe-3e29-427b-89b2-8e771af767e9: Nummer # Nummer
     c573f0bd-29d4-4985-8cff-271a6ee231a2: Beheerders # Beheerders
     c1614bab-5fdd-4eae-8e0b-f4eb393c25dd: Tekst # Tekst
     cd27b3c1-54f6-4e33-8a9f-02cba48208fa: 'Extra lid' # Extra lid
     d74da9d4-3821-46f5-8cf4-f7c4d12c04df: 'users fr' # users fr
+    d798439f-1df3-4d92-834c-7376e46fca7c: 'Privacy policy' # Privacy policy
     dad48958-bcb3-4253-9f7e-868f67fa27b0: 'users en' # users en
     db8cca95-36d6-43cd-977d-2c8d4ef17863: 'Contact Form' # Contact Form
+    e6b46871-c4a9-4c54-825a-0e4ff94ad028: Branding # Branding
     e633efea-afa2-411f-9fc3-06d84f219d9b: 'Bedankt betaling' # Bedankt betaling
+    f374ab43-38fa-4b2e-870f-70e2cccc4272: Branding # Branding
+    f99096d3-baa2-498e-b404-b1e6ffc051c6: 'Super beheerder' # Super beheerder
 plugins:
   ckeditor:
     edition: standard

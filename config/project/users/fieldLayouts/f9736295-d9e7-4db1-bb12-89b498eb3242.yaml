@@ -242,6 +242,32 @@ tabs:
           fieldContext: global
         warning: null
         width: 100
+      -
+        dateAdded: '2025-01-08T12:46:18+00:00'
+        elementCondition: null
+        fieldUid: bcc31cfe-3e29-427b-89b2-8e771af767e9 # Nummer
+        handle: customId
+        includeInCards: false
+        instructions: null
+        label: 'Custom UserId'
+        providesThumbs: false
+        required: false
+        tip: null
+        type: craft\fieldlayoutelements\CustomField
+        uid: de510b48-f4ba-49e0-b734-8b7e5e157afd
+        userCondition:
+          class: craft\elements\conditions\users\UserCondition
+          conditionRules:
+            -
+              class: craft\elements\conditions\users\GroupConditionRule
+              operator: in
+              uid: 6aa86277-0db7-4e9e-96b4-1211b4769ddd
+              values:
+                - 50a6f7cb-84e7-4d68-9aa9-3af2d9001e79 # Leden
+          elementType: craft\elements\User
+          fieldContext: global
+        warning: null
+        width: 100
     name: Content
     uid: ae013ac9-d044-4fc1-85a9-cdfa5bb71919
     userCondition: null
@@ -418,30 +444,18 @@ tabs:
         userCondition: null
         width: 100
       -
-        dateAdded: '2024-12-19T15:52:15+00:00'
-        elementCondition:
-          class: craft\elements\conditions\users\UserCondition
-          conditionRules:
-            -
-              class: craft\fields\conditions\OptionsFieldConditionRule
-              fieldUid: 2d35b4ae-62f0-4cb2-8a94-73ebdae1ef03 # Member type
-              layoutElementUid: 7e33f6e8-0b0e-400d-a437-2c89359c2d44
-              operator: in
-              uid: 29cebc08-e79b-45a7-8f69-eb0a28dbab89
-              values:
-                - group
-          elementType: craft\elements\User
-          fieldContext: global
-        fieldUid: 2c2fb008-1e62-4ff3-906c-1018563ad030 # Tel
-        handle: null
+        dateAdded: '2025-01-08T12:37:45+00:00'
+        elementCondition: null
+        fieldUid: aa21d2ca-e34c-4497-a6fa-49b5a7cc7f58 # Title
+        handle: tel
         includeInCards: false
         instructions: null
-        label: null
+        label: Tel
         providesThumbs: false
-        required: true
+        required: false
         tip: null
         type: craft\fieldlayoutelements\CustomField
-        uid: 34e53619-2edf-48ea-b674-bd48d0612fa8
+        uid: dd308999-2aef-41d3-908d-d989c6eb47d0
         userCondition: null
         warning: null
         width: 100

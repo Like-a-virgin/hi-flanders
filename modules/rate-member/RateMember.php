@@ -38,6 +38,24 @@ class RateMember extends BaseModule
     private function assignMemberRate(User $user): void
     {
         $birthday = $user->getFieldValue('birthday');
+        $memberType = $user->getFieldValue('memberType');
+
+        $memberRates = Entry::find()
+            ->section('rates') 
+            ->all();
+
+        if ($memberType === 'group') {
+            // Assign the first rate with the memberType 'group'
+            $groupRate = array_filter($memberRates, function ($rate) {
+                $rateMemberType = $rate->getFieldValue('memberType');
+                return $rateMemberType === 'group';
+            });
+    
+            if (!empty($groupRate)) {
+                $user->setFieldValue('memberRate', [reset($groupRate)->id]);
+                return; // Exit once we've assigned the group rate
+            }
+        }
 
         if (!$birthday) {
             return; 
@@ -55,20 +73,18 @@ class RateMember extends BaseModule
         $currentDate = new \DateTime();
         $age = $currentDate->diff($birthday)->y;
 
-        $memberRates = Entry::find()
-            ->section('rates') 
-            ->all();
+
         
-        $memberRateCurrent = array_filter($memberRates, function ($rate) use ($age) {
+        $individualRate = array_filter($memberRates, function ($rate) use ($age) {
             $minAge = $rate->getFieldValue('minAge');
             $maxAge = $rate->getFieldValue('maxAge');
-            $memberTypeField = $rate->getFieldValue('memberType');
-
-            $memberType = $memberTypeField ? $memberTypeField->value : null;
-        
-            return $minAge <= $age && ($maxAge === null || $maxAge >= $age) && $memberType === 'individual';
+            $rateMemberType = $rate->getFieldValue('memberType');
+    
+            return $rateMemberType === 'individual' && $minAge <= $age && ($maxAge === null || $maxAge >= $age);
         });
     
-        $user->setFieldValue('memberRate', [reset($memberRateCurrent)->id]);
+        if (!empty($individualRate)) {
+            $user->setFieldValue('memberRate', [reset($individualRate)->id]);
+        }
     }
 }

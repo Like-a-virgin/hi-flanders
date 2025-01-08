@@ -2,9 +2,25 @@
 {% set memberTypes = craft.entries.section('rates').all() %}
 
 {% set currentDate = now|date('Y-m-d') %}
+{% set activeUserMember = user.paymentDate and user.expPaymentDate and currentDate >= user.paymentDate and currentDate <= user.expPaymentDate %}
+
+{% set totalPrice = 0 %}
+
+{% set userRate = user.memberRate.one() %}
+
+{% if not activeUserMember %}
+    {% set totalPrice = totalPrice ? totalPrice.add(userRate.price) : userRate.price %}
+{% endif %}
 
 {% requireLogin %}
 
+{% if not activeUserMember %}
+    <div class="box-error">    
+        <div class="box-error__error">
+            <p>! {{'Je lidmaatschap is nog niet actief'|t}}</p>
+        </div>
+    </div>
+{% endif %}
 <div class="box">
     <div class="box__heading">
         <h1>{{'Mijn gegevens'|t}}</h1>
@@ -149,23 +165,5 @@
         </div>
     </div>
 </div>
-{% include "components/group-add-extra.twig" %}
-<div class="box">
-    <div class="box__heading">
-        <h1>{{'Totaal'|t}}</h1>
-        <h2>Reeds betaald</h2>
-    </div>
-    <div class="box__content box__content--total">
-        <div class="box__column box__column--2">            
-            <div class="box__info">
-                <p>{{ user.memberRate.one().title }}</p>
-                <p>{{ user.memberRate.one().price|money }}</p>
-            </div>
-        </div>
-        <div class="box__column box__column--total box__column--2">            
-            <p>Totaal:</p>
-            <p>{{ user.memberRate.one().price|money }}</p>
-        </div>
-
-    </div>
-</div>
+{# {% include "components/group-add-extra.twig" %} #}
+{% include "components/payment.twig" %} 

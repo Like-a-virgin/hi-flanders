@@ -1,0 +1,40 @@
+
+<div class="box box--total" :class="openTotal ? 'box--total-open' : ''" x-data="{openTotal: false}">
+    <div class="box__heading box__heading--center" @click="openTotal = ! openTotal">
+        <h1>{{'Totaal'|t}}</h1>
+        {{ svg("assets/icons/chevron-down.svg")|attr({class: 'box__icon box__icon--chevron' }) }}
+    </div>
+    <div class="box__content" x-collapse x-show="openTotal">
+        <div class="box__wrapper">     
+            <div class="box__column box__column--4">            
+                <div class="box__info {{activeUserMember ? 'box__info--sec'}}">
+                    <p>{{ userRate.title }}</p>
+                    <p>{{activeUserMember ? 'Reeds betaald'|t : userRate.price|money}}</p>
+                </div>
+            </div>
+            {% if extraMembers is defined and extraMembers %}            
+                {% for extra in extraMembers %}
+                    {% set activeExtraMember = extra.paymentDate and extra.expPaymentDate and currentDate >= extra.paymentDate and currentDate <= extra.expPaymentDate %}
+                    {% set rate = extra.memberRate.one() %}
+                    <div class="box__column box__column--4">            
+                        <div class="box__info {{activeExtraMember ? 'box__info--sec'}}">
+                            <p>{{ rate.title }}</p>
+                            <p>{{activeExtraMember ? 'Reeds betaald'|t : rate.price|money}}</p>
+                        </div>
+                    </div>
+                {% endfor %}
+            {% endif %}
+        </div>
+        {% if totalPrice %}
+            <div class="box__column box__column--total box__column--2">            
+                <p>Totaal:</p>
+                <p>{{ totalPrice|money }}</p>
+            </div>
+            <form  method="post">
+                {{ csrfInput() }}
+                {{ actionInput('membership-payments/payment/initiate-payment') }}
+                <button class="btn" type="submit" class="pay-button">{{'Betaal'}}</button>
+            </form>
+        {% endif %}
+    </div>
+</div>

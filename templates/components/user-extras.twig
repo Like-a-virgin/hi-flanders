@@ -1,6 +1,7 @@
 <div class="box-container box-container--member">
     <h2>{{'Extra leden'|t}}</h2>
     {% for item in extraMembers %}
+        {% set activeExtraCheck = item.paymentDate and item.expPaymentDate and currentDate >= item.paymentDate and currentDate <= item.expPaymentDate %}
         <div class="box box--member" x-data="{openMember: false}" :class="openMember ? 'box--member-open' : ''">
             <div @click="openMember = ! openMember" class="box__heading box__heading--center">
                 <h3>{{item.title}}</h3>
@@ -26,10 +27,13 @@
                             <p>{{ item.birthday|date("m/d/Y") }}</p>
                         </div>
                     </div>
-                    <div class="box__column box__column--2">            
+                    <div class="box__column box__column--2 ">            
                         <p>{{'Lidmaatschap'|t}}</p>
-                        <div class="box__info box__info--prim">
+                        <div class="box__info {{ activeExtraCheck ? ' box__info--prim' : ' box__info--error'}}">
                             <p>{{ item.memberRate|first.title }}</p>
+                            {% if not activeExtraCheck %}
+                                <p>{{ 'Nog niet betaalt'|t }}</p>
+                            {% endif %}
                         </div>
                     </div>
                 </div>
