@@ -1,16 +1,5 @@
-<IfModule mod_headers.c>
-    SetEnvIf Origin "https://(.+\.)?mollie\.com$" AccessControlAllowOrigin=1  
-
-    Header set Access-Control-Allow-Origin "%{AccessControlAllowOrigin}e" env=AccessControlAllowOrigin
-    Header set Access-Control-Allow-Methods "GET, POST, OPTIONS" env=AccessControlAllowOrigin
-    Header set Access-Control-Allow-Headers "Content-Type, Authorization" env=AccessControlAllowOrigin
-</IfModule>
-
 <IfModule mod_rewrite.c>
     RewriteEngine On
-
-    RewriteCond %{HTTP:Authorization} ^(.*)
-    RewriteRule .* - [e=HTTP_AUTHORIZATION:%1]
 
     # Route 404s to index.php
     RewriteCond %{REQUEST_FILENAME} !-f
