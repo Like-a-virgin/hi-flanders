@@ -794,11 +794,6 @@
         {
             "name": "craftcms/postmark",
             "version": "3.1.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/craftcms/postmark.git",
-                "reference": "05d7098b2a64c30e92e64ff8119b30c0f3f54c7d"
-            },
             "dist": {
                 "type": "zip",
                 "url": "https://api.github.com/repos/craftcms/postmark/zipball/05d7098b2a64c30e92e64ff8119b30c0f3f54c7d",
@@ -809,11 +804,6 @@
                 "craftcms/cms": "^4.0.0-alpha.1|^5.0.0-beta.1",
                 "php": "^8.0.2",
                 "symfony/postmark-mailer": "^v6.0.3|^7.0"
-            },
-            "require-dev": {
-                "craftcms/ecs": "dev-main",
-                "craftcms/phpstan": "dev-main",
-                "craftcms/rector": "dev-main"
             },
             "type": "craft-plugin",
             "extra": {
@@ -826,7 +816,6 @@
                     "craftcms\\postmark\\": "src/"
                 }
             },
-            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -845,11 +834,11 @@
                 "yii2"
             ],
             "support": {
-                "docs": "https://github.com/craftcms/postmark/blob/master/README.md",
                 "email": "support@craftcms.com",
                 "issues": "https://github.com/craftcms/postmark/issues?state=open",
-                "rss": "https://github.com/craftcms/postmark/commits/master.atom",
-                "source": "https://github.com/craftcms/postmark"
+                "source": "https://github.com/craftcms/postmark",
+                "docs": "https://github.com/craftcms/postmark/blob/master/README.md",
+                "rss": "https://github.com/craftcms/postmark/commits/master.atom"
             },
             "time": "2024-03-19T21:01:58+00:00"
         },
@@ -4901,11 +4890,6 @@
         {
             "name": "symfony/postmark-mailer",
             "version": "v7.2.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/symfony/postmark-mailer.git",
-                "reference": "3a43a9dee2f474ebf7c0328d3cd55d8c17b5df6f"
-            },
             "dist": {
                 "type": "zip",
                 "url": "https://api.github.com/repos/symfony/postmark-mailer/zipball/3a43a9dee2f474ebf7c0328d3cd55d8c17b5df6f",
@@ -4920,10 +4904,6 @@
             "conflict": {
                 "symfony/http-foundation": "<6.4"
             },
-            "require-dev": {
-                "symfony/http-client": "^6.4|^7.0",
-                "symfony/webhook": "^6.4|^7.0"
-            },
             "type": "symfony-mailer-bridge",
             "autoload": {
                 "psr-4": {
@@ -4933,7 +4913,6 @@
                     "/Tests/"
                 ]
             },
-            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -4949,23 +4928,6 @@
             ],
             "description": "Symfony Postmark Mailer Bridge",
             "homepage": "https://symfony.com",
-            "support": {
-                "source": "https://github.com/symfony/postmark-mailer/tree/v7.2.0"
-            },
-            "funding": [
-                {
-                    "url": "https://symfony.com/sponsor",
-                    "type": "custom"
-                },
-                {
-                    "url": "https://github.com/fabpot",
-                    "type": "github"
-                },
-                {
-                    "url": "https://tidelift.com/funding/github/packagist/symfony/symfony",
-                    "type": "tidelift"
-                }
-            ],
             "time": "2024-09-28T08:24:38+00:00"
         },
         {
