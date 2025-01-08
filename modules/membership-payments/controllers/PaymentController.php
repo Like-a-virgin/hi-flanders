@@ -16,7 +16,6 @@ use craft\helpers\UrlHelper;
 class PaymentController extends Controller
 {
     public array|int|bool $allowAnonymous = ['webhook'];
-    public $enableCsrfValidation = false;
 
     public function actionInitiatePayment()
     {
