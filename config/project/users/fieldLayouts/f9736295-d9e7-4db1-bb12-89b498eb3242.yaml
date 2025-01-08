@@ -535,6 +535,22 @@ tabs:
         userCondition: null
         warning: null
         width: 100
+      -
+        dateAdded: '2025-01-08T09:45:09+00:00'
+        elementCondition: null
+        fieldUid: ab51ff2a-5865-41c8-897f-008e0b288a70 # Date
+        handle: expPaymentDate
+        includeInCards: false
+        instructions: null
+        label: 'Vervaldatum lidmaatschap'
+        providesThumbs: false
+        required: false
+        tip: null
+        type: craft\fieldlayoutelements\CustomField
+        uid: 23c31ed5-a18e-44c1-bcd8-5f615d51744b
+        userCondition: null
+        warning: null
+        width: 100
     name: Lidmaatschap
     uid: 19cf21ec-6b32-476c-a140-abf35779079d
     userCondition: null

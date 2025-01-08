@@ -90,8 +90,8 @@ class PaymentController extends Controller
     public function actionWebhook(): Response
     {
         $mollie = MembershipPayments::getInstance()->getMollie();
-
         $paymentId = Craft::$app->getRequest()->getBodyParam('id');
+
         if (!$paymentId) {
             Craft::error('Payment ID not provided in webhook.', __METHOD__);
             return $this->asJson(['success' => false]);
@@ -106,12 +106,13 @@ class PaymentController extends Controller
             $extraMemberIds = $metadata->extraMemberIds ?? [];
 
             $paymentDate = new DateTime();
+            $expirationDate = (clone $paymentDate)->modify('+1 year');
 
-            // Update the user
             if ($userId) {
                 $user = Craft::$app->users->getUserById($userId);
                 if ($user) {
                     $user->setFieldValue('paymentDate', $paymentDate);
+                    $user->setFieldValue('expirationDate', $expirationDate);
                     if (!Craft::$app->elements->saveElement($user)) {
                         Craft::error('Failed to update user payment date.', __METHOD__);
                     }
@@ -123,6 +124,7 @@ class PaymentController extends Controller
                 $extraMember = Entry::find()->id($extraMemberId)->one();
                 if ($extraMember) {
                     $extraMember->setFieldValue('paymentDate', $paymentDate);
+                    $extraMember->setFieldValue('expirationDate', $expirationDate);
                     if (!Craft::$app->elements->saveElement($extraMember)) {
                         Craft::error('Failed to update extra member payment date for entry ID ' . $extraMemberId, __METHOD__);
                     }

@@ -107,6 +107,22 @@ fieldLayouts:
             userCondition: null
             warning: null
             width: 100
+          -
+            dateAdded: '2025-01-08T09:45:30+00:00'
+            elementCondition: null
+            fieldUid: ab51ff2a-5865-41c8-897f-008e0b288a70 # Date
+            handle: expPaymentDate
+            includeInCards: false
+            instructions: null
+            label: 'Vervaldatum lidmaatschap'
+            providesThumbs: false
+            required: false
+            tip: null
+            type: craft\fieldlayoutelements\CustomField
+            uid: 8e04ecd2-f75e-4328-a33b-7805029438ac
+            userCondition: null
+            warning: null
+            width: 100
         name: Lidmaatschap
         uid: 95b0fa11-e5aa-4784-bf45-98e943c08d33
         userCondition: null
