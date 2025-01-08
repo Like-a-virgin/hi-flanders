@@ -112,7 +112,7 @@ class PaymentController extends Controller
                 $user = Craft::$app->users->getUserById($userId);
                 if ($user) {
                     $user->setFieldValue('paymentDate', $paymentDate);
-                    $user->setFieldValue('expirationDate', $expirationDate);
+                    $user->setFieldValue('expPaymentDate', $expirationDate);
                     if (!Craft::$app->elements->saveElement($user)) {
                         Craft::error('Failed to update user payment date.', __METHOD__);
                     }
@@ -124,7 +124,7 @@ class PaymentController extends Controller
                 $extraMember = Entry::find()->id($extraMemberId)->one();
                 if ($extraMember) {
                     $extraMember->setFieldValue('paymentDate', $paymentDate);
-                    $extraMember->setFieldValue('expirationDate', $expirationDate);
+                    $extraMember->setFieldValue('expPaymentDate', $expirationDate);
                     if (!Craft::$app->elements->saveElement($extraMember)) {
                         Craft::error('Failed to update extra member payment date for entry ID ' . $extraMemberId, __METHOD__);
                     }
