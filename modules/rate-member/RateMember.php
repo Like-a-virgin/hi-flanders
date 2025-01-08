@@ -38,12 +38,20 @@ class RateMember extends BaseModule
     private function assignMemberRate(User $user): void
     {
         $birthday = $user->getFieldValue('birthday');
-        $memberType = $user->getFieldValue('memberType');
+        $memberTypeField = $user->getFieldValue('memberType');
+
+        $memberType = $memberTypeField ? $memberTypeField->value : null;
+        
+        if (!$birthday) {
+            return; 
+        }
 
         $memberRates = Entry::find()
             ->section('rates') 
             ->all();
 
+        
+            
         if ($memberType === 'group') {
             // Assign the first rate with the memberType 'group'
             $groupRate = array_filter($memberRates, function ($rate) {
@@ -55,10 +63,6 @@ class RateMember extends BaseModule
                 $user->setFieldValue('memberRate', [reset($groupRate)->id]);
                 return; // Exit once we've assigned the group rate
             }
-        }
-
-        if (!$birthday) {
-            return; 
         }
 
         if (!($birthday instanceof \DateTime)) {
@@ -73,12 +77,11 @@ class RateMember extends BaseModule
         $currentDate = new \DateTime();
         $age = $currentDate->diff($birthday)->y;
 
-
-        
         $individualRate = array_filter($memberRates, function ($rate) use ($age) {
             $minAge = $rate->getFieldValue('minAge');
             $maxAge = $rate->getFieldValue('maxAge');
-            $rateMemberType = $rate->getFieldValue('memberType');
+            $rateMemberTypeField = $rate->getFieldValue('memberType');
+            $rateMemberType = $rateMemberTypeField ? $rateMemberTypeField->value : null;
     
             return $rateMemberType === 'individual' && $minAge <= $age && ($maxAge === null || $maxAge >= $age);
         });
