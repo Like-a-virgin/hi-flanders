@@ -1,4 +1,4 @@
-dateModified: 1736354875
+dateModified: 1736417126
 elementSources:
   craft\elements\Entry:
     -
@@ -117,7 +117,7 @@ elementSources:
       type: custom
 email:
   fromEmail: lara@likeavirgin.be
-  fromName: hi-flanders
+  fromName: 'Hi Flanders'
   replyToEmail: null
   template: email/email.html
   transportSettings:
@@ -215,7 +215,7 @@ plugins:
 system:
   edition: pro
   live: true
-  name: hi-flanders
+  name: 'Hi flanders'
   retryDuration: null
   schemaVersion: 5.5.0.0
   timeZone: America/Los_Angeles

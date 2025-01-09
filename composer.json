@@ -7,6 +7,7 @@
     "craftcms/feed-me": "^6.6.1",
     "craftcms/postmark": "^3.1.0",
     "mollie/mollie-api-php": "^2.76",
+    "mutation/translate": "^4.0.2",
     "nystudio107/craft-vite": "^5.0.1",
     "putyourlightson/craft-sprig": "^3.5.1",
     "vlucas/phpdotenv": "^5.4.0"
