@@ -1,3 +1,5 @@
+@use "../abstracts" as *;
+
 .center {
     margin: 0;
     min-height: 100vh;
@@ -7,5 +9,9 @@
     align-items: center;
     justify-content: center;
     gap: 2rem;
-    padding: 10vh 2rem 4rem 2rem;
+    padding: 12vh 1.5rem 4rem 1.5rem;
+
+    @include screen($screen-m) {
+        padding: 10vh 2rem 4rem 2rem;
+    }
 }

@@ -1,6 +1,6 @@
 @use "../abstracts" as *;
 
-input {
+body input, body select, body .fui-input, body .fui-select {
     border: 0.075rem solid transparent;
     background-color: #F7F7F7;
     padding: $btn-padding;
@@ -8,18 +8,19 @@ input {
     font-family: $ff;
     font-size: $fs-p;
     width: 100%;
+    position: relative;
 }
 
-input[type="date"]:before {
+body input[type="date"]:before {
     content: attr(placeholder) !important;
     color: #aaa;
 }
-input[type="date"]:focus:before,
-input[type="date"]:valid:before {
+body input[type="date"]:focus:before,
+body input[type="date"]:valid:before {
     content: none;
 }
 
-input[type="checkbox"] {
+body input[type="checkbox"] {
     width: fit-content;
     height: fit-content;
     margin-right: 0.25rem;
@@ -27,6 +28,51 @@ input[type="checkbox"] {
     border-radius: 0;
 }
 
-.input--white {
+body select {
+    appearance: none; /* Removes the default dropdown arrow */
+    -webkit-appearance: none; /* For Safari */
+    -moz-appearance: none; 
+    background-image: url("../../assets/icons/chevron-down--select.svg");
+    background-repeat: no-repeat;
+    background-position: right 1.5rem top 50%;
+    background-size: 1rem auto;
+    fill: $clr-secondary;
+}
+
+body .input--white {
     background-color: white;
+}
+
+body .fui-type-phone .iti__selected-country-primary {
+    background-color: transparent;
+    padding-left: 0.75rem;
+    border-radius: 5rem;
+}
+
+body .fui-checkbox input:checked+label:before{
+    background-color: $clr-primary;
+}
+
+body .fui-checkbox a {
+    color: $clr-primary;
+    font-family: $ff;
+}
+ 
+body .fui-submit {
+    border: none;
+    background-color: $clr-primary;
+    color: $clr-secondary;
+    padding: $btn-padding;
+    border-radius: 5rem;
+    font-family: $ff;
+    font-size: $fs-p;
+    font-weight: $fw-bold;
+    transition: all 0.1s ease-in-out;
+    width: 100%;
+
+    &:hover {
+        background-color: $clr-secondary;
+        color: $clr-primary;
+        cursor: pointer;
+    }
 }

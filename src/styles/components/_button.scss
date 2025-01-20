@@ -16,6 +16,7 @@
     display: flex;
     flex-direction: row;
     align-items: center;
+    justify-content: space-between;
     gap: 1rem;
     
     &__chevron {
@@ -36,13 +37,70 @@
         top: 0;
     }
 
-    &:hover {
-        background-color: $clr-primary;
-        color: $clr-secondary;
-        cursor: pointer;
+    &__icon {
+        height: 0.85rem;
+    }
 
-        .btn__chevron {
-            fill: $clr-secondary;
+    @include screen($screen-l){
+        &:hover {
+            background-color: $clr-primary;
+            color: $clr-secondary;
+            cursor: pointer;
+    
+            .btn__chevron {
+                fill: $clr-secondary;
+            }
         }
+    }
+}
+
+.btn--prim {
+    color: $clr-secondary;
+    background-color: $clr-primary;
+
+    @include screen($screen-l){
+        &:hover {
+            background-color: $clr-secondary;
+            color: $clr-primary;
+        }
+    }
+}
+
+.btn--red, .btn--green {
+    gap: 0.5rem;
+    border: solid 0.1rem transparent;
+}
+
+.btn--red {
+    color: $clr-error-text;
+    background-color: $clr-error-bg;
+
+    @include screen($screen-l){
+        &:hover {
+            background-color: $clr-error-bg;
+            color: $clr-error-text;
+            border: solid $clr-error-text 0.1rem;
+        }
+    }
+
+    .btn__icon {
+        fill: $clr-error-text;
+    }
+}
+
+.btn--green {
+    color: $clr-succes-text;
+    background-color: $clr-succes-bg;
+
+    @include screen($screen-l){
+        &:hover {
+            background-color: $clr-succes-bg;
+            color: $clr-succes-text;
+            border: solid $clr-succes-text 0.1rem;
+        }
+    }
+
+    .btn__icon {
+        fill: $clr-succes-text;
     }
 }

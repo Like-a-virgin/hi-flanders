@@ -69,7 +69,6 @@ class RateExtraMember extends BaseModule
             $minAge = $rate->getFieldValue('minAge');
             $maxAge = $rate->getFieldValue('maxAge');
             $memberTypeField = $rate->getFieldValue('memberType');
-
             $memberType = $memberTypeField ? $memberTypeField->value : null;
 
             return $minAge <= $age && ($maxAge === null || $maxAge >= $age) && $memberType === 'individual';
@@ -77,7 +76,31 @@ class RateExtraMember extends BaseModule
 
         // Assign the first matched rate to the extra member
         if (!empty($memberRateCurrent)) {
-            $extraMember->setFieldValue('memberRate', [reset($memberRateCurrent)->id]);
+            $selectedRate = reset($memberRateCurrent);
+            $extraMember->setFieldValue('memberRate', [$selectedRate->id]);
+
+            // Check the rate price
+            $ratePriceField = $selectedRate->getFieldValue('price');
+            if ($ratePriceField instanceof \Money\Money) {
+                $ratePrice = (float) $ratePriceField->getAmount() / 100;
+            } elseif (is_numeric($ratePriceField)) {
+                $ratePrice = (float) $ratePriceField;
+            } else {
+                $ratePrice = null;
+            }
+
+            if ($ratePrice === null || $ratePrice <= 0) {
+                // Set payment and expiration dates if price is null or 0
+                $paymentDate = $currentDate->format('Y-m-d');
+                $expirationDate = $currentDate->modify('+1 year')->format('Y-m-d');
+
+                $extraMember->setFieldValue('paymentDate', $paymentDate);
+                $extraMember->setFieldValue('expPaymentDate', $expirationDate);
+
+                Craft::info("Assigned rate with ID {$selectedRate->id} and set paymentDate to {$paymentDate} for extra member ID {$extraMember->id}", __METHOD__);
+            } else {
+                Craft::info("Assigned rate with ID {$selectedRate->id} without paymentDate for extra member ID {$extraMember->id}", __METHOD__);
+            }
         } else {
             Craft::error('No appropriate member rate found for extra member.', __METHOD__);
         }

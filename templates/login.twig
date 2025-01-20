@@ -1,6 +1,7 @@
 {% extends "layouts/base.twig" %}
 
 {% block content %}
+    {% set urlGroupRequest = craft.entries.section('requestGroup').one().url %}
     <div class="formbox">
         <div class="formbox__heading">
             <h1>{{'Log in'|t}}</h1>
@@ -49,7 +50,7 @@
         <div class="formbox__options">
             <p class="formbox__or">{{'Of'|t}}</p>
             <a class="formbox__button formbox__button--sec" href="{{ url('register') }}">{{'Lid worden'|t}}</a>
-            <a class="formbox__button formbox__button--sec" href="{{ url('register-group') }}">{{'Groep registreren'|t}}</a>
+            <a class="formbox__button formbox__button--sec" href="{{ urlGroupRequest }}">{{'Lid worden als groep'|t}}</a>
         </div>
     </div>
 {% endblock %}

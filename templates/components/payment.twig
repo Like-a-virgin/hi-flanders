@@ -9,7 +9,11 @@
             <div class="box__column box__column--4">            
                 <div class="box__info {{activeUserMember ? 'box__info--sec'}}">
                     <p>{{ userRate.title }}</p>
-                    <p>{{activeUserMember ? 'Reeds betaald'|t : userRate.price|money}}</p>
+                    {% if userRate.price is same as null %}
+                        <p>{{ 'Gratis' }}</p>
+                    {% else %}
+                        <p>{{ activeUserMember ? 'Reeds betaald'|t : userRate.price|money }}</p>
+                    {% endif %}
                 </div>
             </div>
             {% if extraMembers is defined and extraMembers %}            
@@ -19,7 +23,11 @@
                     <div class="box__column box__column--4">            
                         <div class="box__info {{activeExtraMember ? 'box__info--sec'}}">
                             <p>{{ rate.title }}</p>
-                            <p>{{activeExtraMember ? 'Reeds betaald'|t : rate.price|money}}</p>
+                            {% if rate.price is same as null %}
+                                <p>{{'Gratis'|t}}</p>
+                            {% else %}
+                                <p>{{activeExtraMember ? 'Reeds betaald'|t : rate.price|money }}</p>
+                            {% endif %}
                         </div>
                     </div>
                 {% endfor %}

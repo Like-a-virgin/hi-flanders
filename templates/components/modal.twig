@@ -1,15 +1,38 @@
-{% set selectedMember = craft.users.id(selectedMemberId).one() %}
-{% set extraMembers = craft.entries.section('extraMembers').authorId(selectedMemberId).all() %}
+{% set selectedMember = craft.users.id(memberId).one() %}
+{% set extraMembers = craft.entries.section('extraMembers').authorId(memberId).all() %}
 
-<div class="modal">
+<div class="modal" x-data="{deleteOpen: false, edit: false}">
     <div class="modal__content">    
         <div class="box">
             <div class="box__heading box__heading--center">
-                <h2>{{ selectedMember.altFirstName }} {{ selectedMember.altLastName }} - (008) {{ selectedMember.id }}</h2>
-                <p class="box__membership">{{ selectedMember.memberRate.one().title }}</p>
+                {% if selectedMember.getGroups()|first.handle is same as 'members' %}
+                    <h2>{{ selectedMember.altFirstName }} {{ selectedMember.altLastName }}</h2>
+                {% else %}
+                    <h2>{{ selectedMember.organisation }}</h2>
+                {% endif %}
+                <p class="box__membership">(008) {{selectedMember.customMemberId|slice(0, 3)}} {{selectedMember.customMemberId|slice(3, 3)}} {{selectedMember.customMemberId|slice(6, 3)}} {{selectedMember.customMemberId|slice(9, 3)}}</p>
             </div>
             <div class="box__content">
-                <div class="box__wrapper box__wrapper--labels">
+                <div class="box__wrapper box__wrapper--labels" x-show="!edit">
+                    <div class="box__column box__column--2">
+                        <p>{{'E-mail'|t}}</p>
+                        <div class="box__info">
+                            <p>{{ selectedMember.email }}</p>
+                        </div>
+                    </div>
+                    <div class="box__column box__column--2">
+                        {% if selectedMember.getGroups()|first.handle is same as 'members' %}                        
+                            <p>{{'Geboortedatum'|t}}</p>
+                            <div class="box__info">
+                                <p>{{ selectedMember.birthday|date("d/m/Y") }}</p>
+                            </div>
+                        {% else %}
+                            <p>{{'Contactpersoon'|t}}</p>
+                            <div class="box__info">
+                                <p>{{ selectedMember.contactPerson }}</p>
+                            </div>
+                        {% endif %}
+                    </div>
                     <div class="box__column box__column--2">
                         <p>{{'Straat'|t}}</p>
                         <div class="box__info">
@@ -41,17 +64,32 @@
                         </div>
                     </div>
                 </div>
+                <div x-show="edit">
+                    bewerk
+                </div>
                 <div class="box__wrapper">
-                    <div class="box__column box__column--2">
-                        <p>{{'E-mail'|t}}</p>
-                        <div class="box__info">
-                            <p>{{ selectedMember.email }}</p>
+                    <div class="box__column box__column--4">
+                        <h3>Lidmaatschap</h3>
+                    </div>
+                    <div class="box__column box__column--4">
+                        <div class="box__info box__info--prim">
+                            <p>{{ selectedMember.memberRate.one().title }}</p>
                         </div>
                     </div>
                     <div class="box__column box__column--2">
-                        <p>{{'Geboortedatum'|t}}</p>
+                        <p>{{'Registratiedatum'|t}}</p>
                         <div class="box__info">
-                            <p>{{ selectedMember.birthday|date("m/d/Y") }}</p>
+                            <p>{{ selectedMember.dateCreated|date("d/m/Y") }}</p>
+                        </div>
+                    </div>
+                    <div class="box__column box__column--2">
+                        <p>{{'Vervaldatum'|t}}</p>
+                        <div class="box__info {{ not selectedMember.expPaymentDate ? 'box__info--error' }}">
+                            {% if selectedMember.expPaymentDate %}
+                                <p>{{ selectedMember.expPaymentDate|date("d/m/Y") }}</p>
+                            {% else %}
+                                <p>{{ 'Lidmaatschap is nog niet betaald'|t }}</p>
+                            {% endif %}
                         </div>
                     </div>
                 </div>
@@ -69,21 +107,65 @@
                             </div>                  
                         {% endfor %}
                     {% else %}
-                        <p>geen extra leden</p>
+                        <div class="box__column box__column--4">
+                            <div class="box__info box__info">
+                                <p>geen extra leden</p>
+                            </div>
+                        </div> 
                     {% endif %}
                 </div>
                 <div class="box__wrapper">
                     <div class="box__column box__column--4">
                         <h3>Betaal status</h3>
                     </div>
-                    <div class="box__column box__column--4">
-                        <div class="box__info">
-                            <p>Betaald op ...</p>
+                    {% if selectedMember.paymentType.value is same as 'freeMember' %}
+                        <div class="box__column box__column--4">
+                            <div class="box__info">
+                                <p>{{ selectedMember.paymentType.label }}</p>
+                            </div>
                         </div>
-                    </div>                  
+                    {% else %}                        
+                        <div class="box__column box__column--2">
+                            <p>{{'Betaaldatum'|t}}</p>
+                            <div class="box__info">
+                                <p>{{ selectedMember.paymentDate|date("d/m/Y") }}</p>
+                            </div>
+                        </div>
+                        <div class="box__column box__column--2">
+                            <p>{{'Betaalmethode'|t}}</p>
+                            <div class="box__info {{selectedMember.paymentType.value is same as '' ? 'box__info--error'}}">
+                                <p>{{ selectedMember.paymentType.label }}</p>
+                            </div>
+                        </div>
+                    {% endif %}
                 </div>
                 <div class="box__options">
-                    <button sprig class="btn" s-val:selectedMemberId="{{ null }}" s-val:query="{{query}}">Terug naar overzicht</button>
+                    <div class="box__options-wrapper">
+                        <button @click="deleteOpen = true" class="btn btn--red">Verwijder {{svg('assets/icons/trash.svg')|attr({class: 'btn__icon'})}} </button>
+                        {# <button @click="edit = true" class="btn btn--green">Bewerk {{svg('assets/icons/edit.svg')|attr({class: 'btn__icon'})}}</button> #}
+                    </div>
+                    <button sprig class="btn" s-val:member-id="{{ null }}">Terug naar overzicht</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="delete-modal" x-show="deleteOpen">    
+        <div class="box box--delete">
+            <div class="box__heading">
+                <h2>{{'Lid verwijderen?'|t}}</h2>
+            </div>
+            <div class="box__content">
+                <p>{{'Ben je zeker dat je'|t}} <strong>{{ selectedMember.fullName }}</strong> {{'met lidnummer'|t}} <strong>(008) {{selectedMember.customMemberId|slice(0, 3)}} {{selectedMember.customMemberId|slice(3, 3)}} {{selectedMember.customMemberId|slice(6, 3)}} {{selectedMember.customMemberId|slice(9, 3)}}</strong> {{'wilt verwijderen als lid?'|t}}</p>
+                <div class="box__btns">
+                    <button class="btn" @click="deleteOpen = false">{{'Annuleer'|t}}</button>                
+                    <form class="form-delete" method="post">
+                        {{ csrfInput() }}
+                        {{ actionInput('elements/delete') }}
+                        {{ input('hidden', 'elementId', selectedMember.id) }}
+                        <button class="btn" type="submit">
+                            {{'Verwijder'|t}}
+                        </button>
+                    </form>
                 </div>
             </div>
         </div>

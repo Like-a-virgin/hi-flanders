@@ -1,0 +1,33 @@
+columnSuffix: null
+handle: groupType
+instructions: null
+name: 'Groep Type'
+searchable: false
+settings:
+  customOptions: false
+  options:
+    -
+      __assoc__:
+        -
+          - label
+          - Standaard
+        -
+          - value
+          - 'standard '
+        -
+          - default
+          - '1'
+    -
+      __assoc__:
+        -
+          - label
+          - Jeugd
+        -
+          - value
+          - youth
+        -
+          - default
+          - ''
+translationKeyFormat: null
+translationMethod: none
+type: craft\fields\Dropdown

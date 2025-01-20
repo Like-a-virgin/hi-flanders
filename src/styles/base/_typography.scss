@@ -1,8 +1,12 @@
 @use "../abstracts" as *;
 
 h1, h2 {
-    font-size: $fs-h1;
+    font-size: $fs-h1--mobile;
     font-weight: $fw-bold;
+
+    @include screen($screen-m) {
+        font-size: $fs-h1;
+    }
 }
 
 p {

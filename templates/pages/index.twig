@@ -6,16 +6,17 @@
     {% if craft.app.user.identity and craft.app.user.identity.admin %}
         {% redirect url('admin') %}
     {% else %}
+    
         {% set user = user ?? currentUser %}
         {% set userGroup = user.getGroups()|first.handle %}
+
         {% if userGroup is same as 'members' %}    
-            {% if user.memberType.value is same as 'group' %}
-                {% include "pages/user-organisation.twig" %}  
-            {% else %}
-                {% include "pages/user.twig" %}
-            {% endif %}
-        {% elseif userGroup is same as 'membersAdmin' %}
+            {% include "pages/user.twig" %}
+        {% elseif userGroup is same as 'membersGroup' %}
+            {% include "pages/user-organisation.twig" %} 
+        {% elseif userGroup is same as 'membersAdmin' or userGroup is same as 'membersAdminSuper' %}
             {% include "pages/dashboard.twig" %}  
         {% endif %}
+
     {% endif %}
 {% endblock %}

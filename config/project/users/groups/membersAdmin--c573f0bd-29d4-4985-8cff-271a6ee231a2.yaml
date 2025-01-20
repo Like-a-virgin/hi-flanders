@@ -1,7 +1,17 @@
 description: null
 handle: membersAdmin
-name: Beheerders
+name: Beheerder
 permissions:
+  - administrateusers
+  - 'assignusergroup:50a6f7cb-84e7-4d68-9aa9-3af2d9001e79' # Leden
+  - 'assignusergroup:a21d7477-05ca-43ea-ae84-fc44c3e16a70' # Leden groep
+  - 'assignusergroup:c573f0bd-29d4-4985-8cff-271a6ee231a2' # Beheerder
+  - assignuserpermissions
+  - deleteusers
   - 'editsite:359a39c5-8655-460f-a1b4-0c097ea0edb2' # users
   - 'editsite:d74da9d4-3821-46f5-8cf4-f7c4d12c04df' # users fr
   - 'editsite:dad48958-bcb3-4253-9f7e-868f67fa27b0' # users en
+  - editusers
+  - impersonateusers
+  - moderateusers
+  - registerusers

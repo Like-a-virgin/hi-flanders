@@ -1,14 +1,19 @@
 {% extends "layouts/base.twig" %}
 
-{# `user` is defined if the form returns validation errors. #}
+{% requireLogin %}
 
 {% block content %}
+    {% if not craft.app.user.identity or currentUser.getGroups()|first.handle is not same as 'membersAdmin'%}
+        {% redirect 'login' %}
+    {% endif %}
+
     {% set pp = craft.entries.section(privacyPolicy).one().linkExtern %}
     {% set user = user ?? null %}
     {% set activationPage = craft.entries.section('activate').one().uri %}
     {% set maxDate = now|date_modify('-3 years')|date("Y-m-d") %}
     {% set memberRates = craft.entries.section('rates').all() %}
     {% set groupRate = memberRates|find(i => i.memberType.value is same as 'group') %}
+    {% set succesUrl = craft.entries.section('succesRegister').one().url %}
 
     {% macro errorList(errors) %}
     {% if errors %}
@@ -23,10 +28,9 @@
         <form class="formbox__form" method="post" accept-charset="UTF-8" novalidate>
             {{ csrfInput() }}
             {{ actionInput('users/save-user') }}
-            {{ redirectInput(activationPage) }}
+            {{ redirectInput(succesUrl) }}
 
-            {{ input('hidden', 'fields[memberType]', 'group') }}
-            {{ input('hidden', 'fields[memberRate][]', groupRate.id) }}
+            {{ input('hidden', 'groupHandle', 'membersGroup') }}
             
             {% if user %}
                 {% set errors = user.getErrors() %}
@@ -51,6 +55,13 @@
                 {% endif %}   
             {% endif %}
             
+            <div class="formbox__column--full {{ user and user.getErrors('memberType') ? 'formbox__column--error' }}"> 
+                <label class="formbox__label" for="groupType">{{ 'Soort organisatie'|t }}</label>
+                <select id="groupType" name="fields[memberType]" required>
+                    <option value="group" {{ user and user.groupType == 'group' ? 'selected' }}>Standaard</option>
+                    <option value="groupYouth" {{ user and user.groupType == 'groupYouth' ? 'selected' }}>Jeugd</option>
+                </select>
+            </div>
             <div class="formbox__column--full {{ user and user.getErrors('organisation') ? 'formbox__column--error' }}"> 
                 <label class="formbox__label" for="organisation">{{'Organisatie'|t}}</label>
                 {{ input('text', 'fields[organisation]', user.organisation ?? null, {
@@ -59,7 +70,7 @@
                     required: true
                 }) }}
             </div>
-            <div class="formbox__column--full {{ user and user.getErrors('fullName') ? 'formbox__column--error' }}">                
+            <div class="formbox__column--full {{ user and user.getErrors('contactPerson') ? 'formbox__column--error' }}">                
                 <label class="formbox__label" for="name-contact">{{'Naam Contactpersoon'|t}}</label>
                 {{ input('text', 'fields[contactPerson]', user.contactPerson ?? null, {
                     id: 'name-contact',
@@ -81,6 +92,14 @@
                 {{ input('email', 'email', user.email ?? null, {
                     id: 'email',
                     placeholder: 'E-mail'|t,
+                    required: true
+                }) }}
+            </div>    
+            <div class="formbox__column--full {{ user and user.getErrors('email') ? 'formbox__column--error' }}">                
+                <label class="formbox__label" for="confirm-email">{{'Confirm E-mail'|t }}</label>
+                {{ input('email', 'confirmEmail', null, {
+                    id: 'confirm-email',
+                    placeholder: 'Bevestig E-mailadres'|t,
                     required: true
                 }) }}
             </div>    
@@ -131,37 +150,12 @@
                     required: true
                 }) }}
             </div>
-            <div class="formbox__column--full {{ user and user.getErrors('password') ? 'formbox__column--error' }}">            
-                <label class="formbox__label" for="password">{{'Password'|t}}</label>
-                {{ input('password', 'password', null, {
-                    id: 'password',
-                    placeholder: 'Kies een wachtwoord'|t,
-                    required: true
-                }) }}
-                <button class="formbox__see-pass" type="button" id="togglePassword" aria-label="Show Password">
-                    {{ svg("assets/icons/eye.svg")|attr({class: 'formbox__see-pass-icon' }) }}
-                </button>
-            </div>
-            <div class="formbox__checkbox formbox__column--pp formbox__column--full">
-                <label for="privacy-policy">
-                {{ input('checkbox', 'fields[privacyPolicy]', 'iAccept', {
-                    id: 'privacy-policy',
-                    required: true,
-                    checked: user.privacyPolicy.storage is defined and 'iAccept' in user.privacyPolicy.storage
-                }) }} 
-                <p>{{'Ik ga akkoord dat mijn gegevens gebruikt worden zoals beschreven in de'|t}} <a class="formbox__link" target="_blank" href="{{pp}}">{{'privacy policy'|t}}</a>.</label></p>
-            </div>
-
-            {# {{ input('hidden', 'fields[altFirstName]', 'test') }}
-            {{ input('hidden', 'fields[altLastName]', 'test') }} #}
-            {{ input('hidden', 'fields[birthday]', now|date_modify('-3 years')|date("Y-m-d")) }}
 
             <button class="formbox__button formbox__column--full">{{'Registreer'|t}}</button>
         </form>
         <div class="formbox__options">
             <p class="formbox__or">{{'Of'|t}}</p>
-            <a class="formbox__button formbox__button--sec" href="{{ url('login') }}">{{'Log in'|t}}</a>
-            <a class="formbox__button formbox__button--sec" href="{{ url('login') }}">{{'Registreer als individu'|t}}</a>
+            <a class="formbox__button formbox__button--sec" href="{{ url('/') }}">{{'Annuleer'|t}}</a>
         </div>
     </div>
 {% endblock %}

@@ -4,7 +4,53 @@
     min-height: 50vh;
 
     &__options {
+        width: 100%;
         margin-bottom: 1rem;
+
+        display: flex;
+        flex-direction: row;
+        gap: 0.5rem;
+    }
+
+    &__download-icon {
+        width: 1rem;
+        height: fit-content;
+        fill: $clr-secondary;
+    }
+
+    &__download {
+        height: 3rem;
+        aspect-ratio: 1/1;
+        border-radius: $br;
+        border: none;
+        background-color: $clr-primary;
+
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;        
+
+        &:hover {
+            cursor: pointer;
+            background-color: $clr-secondary;
+            color: $clr-primary;
+            
+            .table__download-icon {
+                fill: $clr-primary;
+            }
+        }
+    }
+
+
+
+    .tooltiptext {
+        position: absolute;
+        top: -2rem;
+        padding: 0.25rem 0.5rem;
+        background-color: #F7F7F7;
+        border-radius: 0.25rem;
+        display: none;
+        width: fit-content;
     }
 
     &__search {
@@ -19,11 +65,13 @@
         }
     }
 
+
     &__table {
         width: 100%;
         border-collapse: collapse;
         text-align: left;
-        border-radius: $br $br 0 0;
+        border-radius: $br;
+        overflow: hidden;
 
         thead {
             color: $clr-secondary;
@@ -48,7 +96,7 @@
             padding: 0.75rem 1rem;
         }
 
-        tbody tr:nth-child(odd){
+        tbody tr:nth-child(even){
             background-color: rgba($clr-secondary, 0.03);
         }
 
@@ -76,6 +124,7 @@
     }
 
     &__option-search {
+        width: 100%;
         display: flex;
         flex-direction: row;
         align-items: center;
@@ -84,6 +133,7 @@
         border: solid $clr-primary 0.1rem;
         padding-left: 1rem;
         overflow: hidden;
+        grid-column: span 4;
     }
 
     &__status {
@@ -98,6 +148,10 @@
         &--false {
             background-color: $clr-error-bg;
         }
+
+        &--true {
+            background-color: $clr-succes-bg;
+        }
     }
 
     &__status-icon {
@@ -106,6 +160,10 @@
 
         &--false {
             fill: $clr-error-text;
+        }
+
+        &--true {
+            fill: $clr-succes-text;
         }
     }
 

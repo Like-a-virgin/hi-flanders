@@ -1,0 +1,6 @@
+siteUid: null
+sortOrder: 2
+template: register-individual.twig
+uriParts:
+  - register-individual
+uriPattern: register-individual

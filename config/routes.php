@@ -12,4 +12,5 @@
 return [
     'actions/entries/delete-entry' => 'entries/delete-entry',
     'membership-payments/payment/webhook' => 'membership-payments/payment/webhook',
+    'export-users' => 'excel-users/export/users',
 ];

@@ -18,7 +18,7 @@ use yii\base\Module as BaseModule;
  */
 class RateMember extends BaseModule
 {
-    public function init(): void
+    public function init(): void 
     {
         parent::init();
 
@@ -28,7 +28,8 @@ class RateMember extends BaseModule
             function (ElementEvent $event) {
                 $element = $event->element;
 
-                if ($element instanceof User) {
+                if ($element->status !== 'active' && $element instanceof User) {
+                    Craft::info('User detected: ' . $element->id, __METHOD__);
                     $this->assignMemberRate($element);
                 }
             }
@@ -37,58 +38,110 @@ class RateMember extends BaseModule
 
     private function assignMemberRate(User $user): void
     {
-        $birthday = $user->getFieldValue('birthday');
-        $memberTypeField = $user->getFieldValue('memberType');
+        $request = Craft::$app->getRequest();
+        $birthday= $request->getBodyParam("fields.birthday");
+        $memberType = $request->getBodyParam('fields.memberType');
 
-        $memberType = $memberTypeField ? $memberTypeField->value : null;
-        
-        if (!$birthday) {
-            return; 
+        if (!$memberType) {
+            Craft::error('No memberType set for user ID ' . $user->id, __METHOD__);
+            return;
         }
 
         $memberRates = Entry::find()
-            ->section('rates') 
+            ->section('rates')
             ->all();
 
-        
-            
-        if ($memberType === 'group') {
-            // Assign the first rate with the memberType 'group'
-            $groupRate = array_filter($memberRates, function ($rate) {
-                $rateMemberTypeField = $rate->getFieldValue('memberType');
-                $rateMemberType = $rateMemberTypeField ? $rateMemberTypeField->value : null;
-                return $rateMemberType === 'group';
-            });
-    
-            if (!empty($groupRate)) {
-                $user->setFieldValue('memberRate', [reset($groupRate)->id]);
-                return; // Exit once we've assigned the group rate
-            }
-        }
+        $filteredRates = array_filter($memberRates, function ($rate) use ($memberType) {
+            $rateMemberType = $rate->getFieldValue('memberType')->value;
+            return $rateMemberType === $memberType;
+        });
 
+        if (empty($filteredRates)) {
+            Craft::error('No rates found for memberType: ' . $memberType . ' for user ID ' . $user->id, __METHOD__);
+            return;
+        }
+    
+        if ($memberType === 'individual') {
+            $this->handleIndividualRate($user, $birthday, $filteredRates);
+        } else {
+            $this->assignRateWithOptionalPayment($user, reset($filteredRates)); // Assign the first rate for non-individual memberType
+        }
+    }
+
+    private function handleIndividualRate(User $user, $birthday, array $filteredRates): void
+    {
         if (!($birthday instanceof \DateTime)) {
             try {
                 $birthday = new \DateTime($birthday);
             } catch (\Exception $e) {
-                Craft::error('Invalid birthday format: ' . $birthday, __METHOD__);
-                return; 
+                Craft::error('Invalid birthday format for user ID ' . $user->id, __METHOD__);
+                return;
             }
         }
 
         $currentDate = new \DateTime();
         $age = $currentDate->diff($birthday)->y;
 
-        $individualRate = array_filter($memberRates, function ($rate) use ($age) {
+        // Filter rates by age range
+        $ageFilteredRates = array_filter($filteredRates, function ($rate) use ($age) {
             $minAge = $rate->getFieldValue('minAge');
             $maxAge = $rate->getFieldValue('maxAge');
-            $rateMemberTypeField = $rate->getFieldValue('memberType');
-            $rateMemberType = $rateMemberTypeField ? $rateMemberTypeField->value : null;
-    
-            return $rateMemberType === 'individual' && $minAge <= $age && ($maxAge === null || $maxAge >= $age);
+            return ($minAge === null || $minAge <= $age) && ($maxAge === null || $maxAge >= $age);
         });
+
+        if (!empty($ageFilteredRates)) {
+            $this->assignRateWithOptionalPayment($user, reset($ageFilteredRates));
+        } else {
+            Craft::info('No age-appropriate rate found for user ID ' . $user->id . ', assigning first rate.', __METHOD__);
+            $this->assignRateWithOptionalPayment($user, reset($filteredRates)); // Assign the first rate if no age-specific match
+        }
+    }
+
+    private function assignRateWithOptionalPayment(User $user, $rate): void
+    {
+        $request = Craft::$app->getRequest();
+
+        $user->setFieldValue('memberRate', [$rate->id]);
+
+        $ratePriceField = $rate->getFieldValue('price');
+
+        if ($ratePriceField instanceof \Money\Money) {
+            // Convert Money object to float
+            $ratePrice = (float) $ratePriceField->getAmount() / 100; // Adjust divisor if amounts are stored as cents
+        } elseif (is_numeric($ratePriceField)) {
+            // Handle numeric values directly
+            $ratePrice = (float) $ratePriceField;
+        } else {
+            $ratePrice = null; // Default fallback if price cannot be determined
+        }
+
+        $currentDate = new \DateTime();
+        $paymentDate = $currentDate->format('Y-m-d');
+        $expirationDate = $currentDate->modify('+1 year')->format('Y-m-d');
+
+        $paymentTypeField = $request->getBodyParam('fields.paymentType');
+        $paymentType = $paymentTypeField ? (string)$paymentTypeField : null;
+
+        if ($paymentType) {
+            // Payment type is set; assign payment date and expiration date
+            $user->setFieldValue('paymentDate', $paymentDate);
+            $user->setFieldValue('expPaymentDate', $expirationDate);
+            $user->setFieldValue('paymentType', $paymentType);
     
-        if (!empty($individualRate)) {
-            $user->setFieldValue('memberRate', [reset($individualRate)->id]);
+            Craft::info("Assigned rate with ID {$rate->id}, paymentType {$paymentType}, paymentDate {$paymentDate}, and expirationDate {$expirationDate} for user ID {$user->id}", __METHOD__);
+        } elseif ($ratePrice === null || (float) $ratePrice <= 0) {
+            $user->setFieldValue('paymentDate', $paymentDate);
+            $user->setFieldValue('expPaymentDate', $expirationDate);
+
+            $user->setFieldValue('paymentType', 'free');
+
+            Craft::info("Assigned rate with ID {$rate->id} and set paymentDate to {$paymentDate} for user ID {$user->id}", __METHOD__);
+        } else {
+            $user->setFieldValue('paymentDate', null);
+            $user->setFieldValue('expPaymentDate', $expirationDate);
+            $user->setFieldValue('paymentType', null);
+
+            Craft::info("Assigned rate with ID {$rate->id} without paymentDate for user ID {$user->id}", __METHOD__);
         }
     }
 }

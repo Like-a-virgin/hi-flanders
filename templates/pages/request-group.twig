@@ -1,0 +1,17 @@
+{% extends "layouts/base.twig" %}
+
+{% block content %}
+    <div class="formbox">
+        <div class="formbox__heading">
+            <h1>{{ entry.title }}</h1>
+        </div>
+        <div class="formbox__formie">
+            {{ craft.formie.renderForm(entry.formSelect.one())}}
+        </div>
+        <div class="formbox__options">
+            <p class="formbox__or">{{'Of'|t}}</p>
+            <a class="formbox__button formbox__button--sec" href="{{ url('login') }}">{{'Log in'|t}}</a>
+            <a class="formbox__button formbox__button--sec" href="{{ url('login') }}">{{'Registreer als individu'|t}}</a>
+        </div>
+    </div>
+{% endblock %}

@@ -3,13 +3,15 @@
   "prefer-stable": true,
   "require": {
     "craftcms/ckeditor": "^4.4.0",
-    "craftcms/cms": "5.5.9",
+    "craftcms/cms": "5.5.10",
     "craftcms/feed-me": "^6.6.1",
     "craftcms/postmark": "^3.1.0",
     "mollie/mollie-api-php": "^2.76",
     "mutation/translate": "^4.0.2",
     "nystudio107/craft-vite": "^5.0.1",
+    "phpoffice/phpspreadsheet": "^1.29",
     "putyourlightson/craft-sprig": "^3.5.1",
+    "verbb/formie": "3.0.18",
     "vlucas/phpdotenv": "^5.4.0"
   },
   "require-dev": {
@@ -41,10 +43,14 @@
   ],
   "autoload": {
     "psr-4": {
-      "modules\\extramembers\\": "modules/extra-members/",
       "modules\\ratemember\\": "modules/rate-member/",
       "modules\\rateextramember\\": "modules/rate-extra-member/",
-      "modules\\membershippayments\\": "modules/membership-payments/"
+      "modules\\membershippayments\\": "modules/membership-payments/",
+      "modules\\confirmemail\\": "modules/confirm-email/",
+      "modules\\userfullname\\": "modules/user-full-name/",
+      "modules\\custommemberid\\": "modules/custom-member-id/",
+      "modules\\adminregister\\": "modules/admin-register/",
+      "modules\\excelusers\\": "modules/excel-users/"
     }
   }
 }

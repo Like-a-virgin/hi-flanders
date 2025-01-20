@@ -1,72 +1,225 @@
-{% set query = query ?? '' %}
+{% set paymentMethods = [{value: 'hostel', label: 'Hostel'|t}, {value: 'online', label: 'Online'|t}, {value: 'transfer', label: 'Overschrijving'|t}, {value: 'free', label: 'Gratis'|t}] %}
+{% set cardTypes = [{value: 'printed', label: 'Geprint'|t}, {value: 'online', label: 'Enkel online'|t}] %}
+{% set ageGroups = craft.entries.section('rates').memberType('individual').all() %}
 
-{% set selectedMemberId = selectedMemberId ?? null %}
+{% set search = search ?? null %}
 
-{% set members = craft.users.group('members').all() %}
-{# {% set members = craft.entries.section('members').search(query).all() %} #}
+{% set memberId = memberId ?? null %}
 
-<div class="box-container table" x-data="{ openModal: false }">
-    <h1>Leden</h1>
-    <div class="table__options">
-        <div class="table__option-search">
-            {{ svg("assets/icons/search.svg")|attr({class: 'table__icon-search' }) }}
-            <input sprig type="text" class="table__search" name="query" value="{{query}}" placeholder="Zoeken" s-replace="#table-members" s-trigger="keyup changed">
-        </div>
-    </div>
-    <div class="table__content" id="table-members">    
-        <table class="table__table" >
-            {% set filteredMembers = members|filter(member =>
-                member.altFirstName is not empty and member.altFirstName|lower starts with query|lower or
-                member.altLastName is not empty and member.altLastName|lower starts with query|lower or
-                member.organisation is not empty and member.organisation|lower starts with query|lower or
-                member.email is not empty and member.email|lower starts with query|lower or
-                member.id|string starts with query
-            ) %}
-            <thead>
-                <tr>
-                    <th>{{'Naam'|t}}</th>
-                    <th>{{'E-mail'|t}}</th>
-                    <th>{{'Lidnummer'|t}}</th>
-                    <th>{{'Gekoppeld'|t}}</th>
-                    <th>{{'Betaald'|t}}</th>
-                    <th>{{'Meer'|t}}</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% if query %}
-                    {% set theMembers = filteredMembers|sort((a, b) => a.altFirstName <=> b.altFirstName) %}
-                {% else %}
-                    {% set theMembers = members|sort((a, b) => a.altFirstName <=> b.altFirstName) %}
-                {% endif %}
-                {% for member in theMembers %}
-                    {% set memberIsEntry = member is instance of ('craft\\elements\\Entry') %}
-                    {% set memberTypes = craft.entries.section('rates').all() %}
-                    {% set currentDate = now|date('Y-m-d') %}
-                    {% set memberBday = member.birthday|date('Y-m-d') %}
-                    {% set memberAge = (currentDate|date('Y') - memberBday|date('Y')) - (currentDate|date('md') < memberBday|date('md') ? 1 : 0) %}
-                    {% set memberType = memberTypes|filter(i => i.minAge <= memberAge and (i.maxAge is null or i.maxAge >= memberAge)) %}
-                    {% set extraMembers = craft.entries.section('extraMembers').authorId(member.id).all() %}
-                    <tr>
-                        <td>
-                            {% if member.memberType.value is same as 'group' %}
-                                {{member.organisation}}
-                            {% else %}
-                                {{member.altFirstName}} {{member.altLastName}}
-                            {% endif %}
-                        </td>
-                        <td>{{ memberIsEntry is same as false ? member.email}}</td>
-                        <td>{{ memberIsEntry is same as false ? '(008) ' ~ member.id}}</td>
-                        <td>{{ memberIsEntry is same as false ? extraMembers|length }}</td>
-                        <td><div class="table__status table__status--false">{{ svg("assets/icons/x.svg")|attr({class: 'table__status-icon table__status-icon--false' }) }}</div></td>
-                        <td>
-                            <button sprig class="table__more" s-val:selectedMemberId="{{ member.id }}" s-val:query="{{query}}">Bekijk info</button>
-                        </td>
-                    </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-    </div>
-    {% if selectedMemberId %}
-        {% include "components/modal.twig" %}
-    {% endif %}
+{% set payMethod = payMethod ?? null %}
+{% set cardType = cardType ?? null %}
+{% set ageGroup = ageGroup ?? null %}
+{% set regMin = regMin ?? null %}
+{% set regMax = regMax ?? null %}
+{% set payMax = payMax ?? null %}
+{% set payMin = payMin ?? null %}
+
+{% set openOption = openOption ?? null %}
+
+{% set limit = 6 %}
+{% set page = page ?? 1 %}
+
+{% set filters = {
+    search: search,
+    payMethod: payMethod,
+    cardType: cardType,
+    ageGroup: ageGroup,
+    regMin: regMin,
+    regMax: regMax,
+    payMax: payMax,
+    payMin: payMin,
+    memberId: memberId,
+} %}
+
+{% set dateFilterReg = [] %}
+{% if regMin and regMax %}
+    {% set dateFilterReg = ['and', ">= #{regMin}", "<= #{regMax}"] %}
+{% elseif regMin %}
+    {% set dateFilterReg = ">= #{regMin}" %}
+{% elseif regMax %}
+    {% set dateFilterReg = "<= #{regMax}" %}
+{% endif %}
+
+{% set dateFilterPay = [] %}
+{% if payMin and payMax %}
+    {% set dateFilterPay = ['and', ">= #{payMin}", "<= #{payMax}"] %}
+{% elseif payMin %}
+    {% set dateFilterPay = ">= #{payMin}" %}
+{% elseif payMax %}
+    {% set dateFilterPay = "<= #{payMax}" %}
+{% endif %}
+
+{% set membersQuery = craft.users({
+    group: ['members', 'membersGroup'], 
+    search: search,
+    paymentType: payMethod,
+    cardType: cardType,
+    memberRate: ageGroup ? ageGroup : null,
+    dateCreated: dateFilterReg,
+    paymentDate: dateFilterPay,
+    limit: limit
+}) %}
+
+{% do sprig.pushUrl('?' ~ filters|merge({
+    page: page
+})|url_encode) %}
+
+{% set pageInfo = sprig.paginate(membersQuery, page) %}
+{% set entries = pageInfo.pageResults %}
+{% set membersAll = membersQuery.all() %}
+
+<div class="box-container table" x-data="{ openModal: false, openOption: 0 }">
+	<h1>Leden</h1>
+	<div class="table__options">
+		<div class="table__option-search">
+			{{ svg("assets/icons/search.svg")|attr({class: 'table__icon-search' }) }}
+			<input sprig s-replace="#table-members" type="text" class="table__search" name="search" value="{{search}}" placeholder="Zoeken">
+		</div>
+		<div class="filter">
+			<button title="Filter" aria-label="{{ 'Filter' }}" class="filter__option-btn" @click="openOption === 1 ? openOption = false : openOption = 1">{{svg('assets/icons/filter.svg')|attr({class: 'filter__option-icon' })}}</button>
+			<div class="filter__box filter__box--filters" x-show="openOption === 1">
+				<div class="filter__select-box">
+					<p class="filter__title">Betaalmethode</p>
+					<select sprig s-replace="#table-members" class="filter__select" name="payMethod">
+						<option value="" {{ not payMethod ? 'selected'}}>Selecteer een betaalmethode</option>
+						{% for item in paymentMethods %}
+							<option class="filter__option" value="{{item.value}}" {{ payMethod == item.value ? 'selected'}}>{{item.label}}</option>
+						{% endfor %}
+					</select>
+				</div>
+				<div class="filter__select-box">
+					<p class="filter__title">Lidkaart type</p>
+					<select sprig s-replace="#table-members" class="filter__select" name="cardType" id="">
+						<option value="" {{ not cardType ? 'selected'}}>{{ 'Selecteer een printoptie'|t }}</option>
+						{% for item in cardTypes %}
+							<option class="filter__option" value="{{item.value}}" {{ cardType == item.value ? 'selected'}}>{{item.label}}</option>
+						{% endfor %}
+					</select>
+				</div>
+				<div class="filter__select-box">
+					<p class="filter__title">Leeftijdsgroep</p>
+					<select sprig s-replace="#table-members" class="filter__select" name="ageGroup" id="">
+						<option value="{{null}}" {{ not ageGroup ? 'selected'}}>{{'Selecteer een leeftijdsgroep'|t}}</option>
+						{% for item in ageGroups %}
+							<option class="filter__option" value="{{item.id}}" {{ ageGroup == item.id ? 'selected'}}>{{item.minAge}}
+								{{item.maxAge ? '- ' ~ item.maxAge : '+'}}</option>
+						{% endfor %}
+					</select>
+				</div>
+				<div>
+					<p class="filter__title">Registratiedatum</p>
+					<div class="filter__date-option">
+						<label class="filter__date-text" for="reg-min-date">Van:</label>
+						<input sprig class="filter__date" type="date" id="reg-min-date" name="regMin" s-trigger="change" value="{{regMin}}" s-replace="#table-members">
+						<label class="filter__date-text" for="reg-max-date">Tot:</label>
+						<input sprig class="filter__date" type="date" id="reg-max-date" name="regMax" s-trigger="change" value="{{regMax}}" s-replace="#table-members">
+					</div>
+				</div>
+				<div>
+					<p class="filter__title">Betaaldatum</p>
+					<div class="filter__date-option">
+						<label class="filter__date-text" for="pay-min-date">Van:</label>
+						<input sprig class="filter__date" type="date" id="pay-min-date" name="payMin" s-trigger="change" value="{{payMin}}" s-replace="#table-members">
+						<label class="filter__date-text" for="pay-max-date">Tot:</label>
+						<input sprig class="filter__date" type="date" id="pay-max-date" name="payMax" s-trigger="change" value="{{payMax}}" s-replace="#table-members">
+					</div>
+				</div>
+				<button sprig s-val:pay-method="{{null}}" s-val:card-type="{{null}}" s-val:age-group="{{null}}" s-val:reg-min="{{null}}" s-val:reg-max="{{null}}" s-val:pay-min="{{null}}" s-val:pay-max="{{null}}">reset</button>
+			</div>
+		</div>
+		<div class="filter">
+			<button title="Nieuw lid" aria-label="{{'Nieuwe lid'}}" class="filter__option-btn" @click="openOption === 2 ? openOption = false : openOption = 2">{{svg('assets/icons/user-plus.svg')|attr({class: 'filter__option-icon' })}}</button>
+			<div class="filter__box filter__box--new" x-show="openOption === 2">
+				<a class="filter__btn" href="/register-individual">{{'Nieuw individu'|t}}</a>
+				<a class="filter__btn" href="/register-group">{{'Nieuw groep'|t}}</a>
+			</div>
+		</div>
+		<a href="/export-users" title="{{'Download excel'}}" class="table__download">{{svg('assets/icons/download.svg')|attr({class: "table__download-icon"})}}</a>
+	</div>
+	<div class="table__content" id="table-members">
+		<table
+			class="table__table">
+			<thead>
+				<tr>
+					<th>{{'Naam'|t}}</th>
+					<th>{{'E-mail'|t}}</th>
+					<th>{{'Lidnummer'|t}}</th>
+					<th>{{'Gekoppeld'|t}}</th>
+					<th>{{'Betaald'|t}}</th>
+					<th>{{'Actief'|t}}</th>
+					<th>{{'Meer'|t}}</th>
+				</tr>
+			</thead>
+			<tbody>
+				{% for member in entries %}
+					{% set memberIsEntry = member is instance of ('craft\\elements\\Entry') %}
+					{% set memberTypes = craft.entries.section('rates').all() %}
+					{% set currentDate = now|date('Y-m-d') %}
+					{% set memberBday = member.birthday|date('Y-m-d') %}
+					{% set memberAge = (currentDate|date('Y') - memberBday|date('Y')) - (currentDate|date('md') < memberBday|date('md') ? 1 : 0) %}
+					{% set memberType = memberTypes|filter(i => i.minAge <= memberAge and (i.maxAge is null or i.maxAge >= memberAge)) %}
+					{% set extraMembers = craft.entries.section('extraMembers').authorId(member.id).all() %}
+					{% set paymentStatus = member.paymentDate and member.expPaymentDate and (now >= member.paymentDate) and (now <= member.expPaymentDate) %}
+					<tr>
+						<td>
+							{% if member.getGroups()|first.handle is same as 'membersGroup' %}
+								{{ member.organisation }}
+							{% else %}
+								{{member.altFirstName}}
+								{{member.altLastName}}
+							{% endif %}
+						</td>
+						<td>{{ memberIsEntry is same as false ? member.email}}</td>
+						<td>{{ memberIsEntry is same as false ? '(008) ' ~ member.customMemberId|slice(0, 3) ~ ' ' ~ member.customMemberId|slice(3, 3) ~ ' ' ~ member.customMemberId|slice(6, 3) ~ ' ' ~ member.customMemberId|slice(9, 3)}}</td>
+						<td>{{ memberIsEntry is same as false ? extraMembers|length }}</td>
+						<td>
+							{% if paymentStatus %}
+								<div class="table__status table__status--true">{{ svg("assets/icons/check.svg")|attr({class: 'table__status-icon table__status-icon--true' }) }}</div>
+							{% else %}
+								<div class="table__status table__status--false">{{ svg("assets/icons/x.svg")|attr({class: 'table__status-icon table__status-icon--false' }) }}</div>
+							{% endif %}
+						</td>
+						<td>
+							{% if member.status is same as 'active' %}
+								<div class="table__status table__status--true">{{ svg("assets/icons/check.svg")|attr({class: 'table__status-icon table__status-icon--true' }) }}</div>
+							{% else %}
+								<div class="table__status table__status--false">{{ svg("assets/icons/x.svg")|attr({class: 'table__status-icon table__status-icon--false' }) }}</div>
+							{% endif %}
+						</td>
+						<td>
+							<button sprig class="table__more" s-val:memberId="{{ member.id }}" s-val:search="{{search}}">Bekijk info</button>
+						</td>
+					</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+	</div>
+	{% if entries %}
+		<div class="pagination">
+			<p>
+				{{ pageInfo.first }}-{{ pageInfo.last }}
+				{{'van de'|t}}
+				{{ pageInfo.total }}
+				{{'leden'|t}}.
+			</p>
+			<div class="pagination__controls">
+				<button class="pagination__btn {{page < 1 ? 'pagination__btn--false'}}" sprig s-val:page="{{ page - 1 }}" s-push-url="?page={{ page - 1 }}">
+					{{svg('assets/icons/chevron-left.svg')|attr({class: 'pagination__chevron'})}}
+				</button>
+				{% for i in 1..pageInfo.totalPages %}
+					{% if i == page %}
+						<p class="pagination__btn pagination__btn--current">{{ i }}</p>
+					{% else %}
+						<a class="pagination__btn" sprig s-val:page="{{ i }}" s-push-url="?page={{ i }}">{{ i }}</a>
+					{% endif %}
+				{% endfor %}
+				<button class="pagination__btn {{page > pageInfo.totalPages ? 'pagination__btn--false'}}" sprig s-val:page="{{ page + 1 }}" s-push-url="?page={{ page + 1 }}">
+					{{svg('assets/icons/chevron-right.svg')|attr({class: 'pagination__chevron'})}}
+				</button>
+			</div>
+		</div>
+	{% endif %}
+	{% if memberId %}
+		{% include "components/modal.twig" %}
+	{% endif %}
 </div>

@@ -42,13 +42,18 @@
 
     &__heading {
         background-color: $clr-primary;
-        padding: 1rem 2rem;
+        padding: 1rem 1.5rem;
         border-radius: $br $br 0 0;
 
         display: flex;
-        flex-direction: row;
-        justify-content: space-between;
-        align-items: flex-end;
+        flex-direction: column;
+
+        @include screen($screen-m) {
+            flex-direction: row;
+            justify-content: space-between;
+            align-items: flex-end;
+            padding: 1rem 2rem;
+        }
     }
 
     &__heading--column {
@@ -58,15 +63,22 @@
     }
 
     &__heading--center {
+        flex-direction: row;
+        justify-content: space-between;
         align-items: center;
     }
 
     &__content {
-        padding: 2rem;
+        padding: 2rem 1.5rem;
         display: flex;
         flex-direction: column;
-        gap: 4rem;
+        gap: 2rem;
         background-color: white;
+
+        @include screen($screen-m) {
+            padding: 2rem;
+            gap: 4rem;
+        }
     }
 
     &__content--total {
@@ -92,10 +104,19 @@
         display: flex;
         flex-direction: column;
         gap: 0.5rem;
+        grid-column: span 4;
+
+        @include screen($screen-m){
+            grid-column: span 1;
+        }
     }
 
     &__column--2 {
-        grid-column: span 2;
+        grid-column: span 4;
+
+        @include screen($screen-m){
+            grid-column: span 2;
+        }
     }
 
     &__column--4 {
@@ -115,7 +136,16 @@
     }
 
     &__options {
-        align-self: flex-end;
+        width: 100%;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+    }
+    &__options-wrapper {
+        display: flex;
+        flex-direction: row;
+        gap: $sp-s;
     }
 
     &__info {
@@ -244,6 +274,12 @@
 
         border: solid 0.1rem transparent;
 
+        grid-column: span 4;
+
+        @include screen($screen-m){
+            grid-column: span 1;
+        }
+
         &:hover {
             border: solid 0.1rem $clr-succes-text;
             cursor: pointer;
@@ -324,5 +360,24 @@
 
     .box__icon--chevron {
         transform: rotate(-180deg);
+    }
+}
+
+.box--delete {
+    max-width: 40rem;
+
+    .box__content {
+        gap: 2rem;
+    }
+
+    .box__btns {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: $sp-s;
+    }
+
+    .btn {
+        width: 100%;
+        justify-content: center;
     }
 }

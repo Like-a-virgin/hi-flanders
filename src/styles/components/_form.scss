@@ -6,13 +6,26 @@
     border-radius: $br;
     box-shadow: 0px 3px 6px 0px rgba(black, 0.16);
 
+    &__form, &__formie {
+        padding: 1.5rem 1rem;
+        padding-bottom: $sp-s;
+
+        @include screen($screen-m) {
+            padding: 2rem;
+            padding-bottom: $sp-s;
+        }
+    }
+
     &__form {
         display: grid;
         grid-template-columns: repeat(4, 1fr);
         gap: .75rem;
+    }
 
-        padding: 2rem;
-        padding-bottom: $sp-s;
+    &__form--no-options {
+        @include screen($screen-m) {
+            padding-bottom: 2rem;
+        }
     }
 
     &__label {
@@ -21,8 +34,12 @@
 
     &__heading {
         background-color: $clr-primary;
-        padding: 1rem 2rem;
+        padding: 1rem 1.25rem;
         border-radius: $br $br 0 0;
+
+        @include screen($screen-m) {
+            padding: 1rem 2rem;
+        }
     }
 
     &__column {
@@ -76,7 +93,10 @@
 
         &--small {
             font-size: .875rem;
-            align-self: flex-end;
+
+            @include screen($screen-m) {
+                align-self: flex-end;
+            }
         }
 
         &:hover {
@@ -138,11 +158,15 @@
     }
 
     &__options {
-        padding: 0 2rem 2rem 2rem;
+        padding: 0 1.5rem 1rem 1.5rem;
 
         display: flex;
         flex-direction: column;
         gap: $sp-s;
+
+        @include screen($screen-m) {
+            padding: 0 2rem 2rem 2rem;
+        }
     }
 
     &__password {
@@ -173,11 +197,18 @@
 
     &__password-options {
         display: flex;
-        flex-direction: row;
-        justify-content: space-between;
-        align-items: center;
+        flex-direction: column;
+        align-items: flex-start;
         width: 100%;
+        gap: 0.5rem;
         padding: 0.4rem 0.75rem 0 0.75rem;
+
+        @include screen($screen-m) {
+            flex-direction: row;
+            justify-content: space-between;
+            align-items: center;
+            gap: 0;
+        }
     }
 
     &__column--pp {

@@ -1,4 +1,4 @@
-dateModified: 1736417126
+dateModified: 1737120243
 elementSources:
   craft\elements\Entry:
     -
@@ -39,11 +39,13 @@ elementSources:
             operator: in
             uid: 462bbf2f-a4d3-4f5a-bccf-f8a550569ba6
             values:
+              - e9b9d6df-6aae-4dc1-88c7-214694d8af07 # Aanvraag groep lidmaatschap
               - 7b5aa47e-5da6-461a-b6fc-a190a143d8d8 # Activeer email
               - e633efea-afa2-411f-9fc3-06d84f219d9b # Bedankt betaling
               - 4a63b33e-aa54-421b-b619-d4bc7f4888e7 # Home
               - ac77cfdb-37a0-4f35-9ca7-e353977a477d # Privacy policy
               - 22e6beae-01af-4451-b3d5-29bf90a51e80 # Reset wachtwoord
+              - af17efa6-765d-4c48-99b6-d836a037abd9 # Succes registratie
         elementType: craft\elements\Entry
         fieldContext: global
       defaultSort:
@@ -121,9 +123,8 @@ email:
   replyToEmail: null
   template: email/email.html
   transportSettings:
-    messageStream: ''
-    token: $POSTMARK_API_KEY
-  transportType: craftcms\postmark\Adapter
+    command: '/usr/local/bin/mailpit sendmail -t --smtp-addr 127.0.0.1:1025'
+  transportType: craft\mail\transportadapters\Sendmail
 fs:
   branding:
     hasUrls: true
@@ -139,11 +140,13 @@ meta:
     1d223580-d398-4fc6-af8a-8a1e08933341: 'Extra leden' # Extra leden
     2c2fb008-1e62-4ff3-906c-1018563ad030: Tel # Tel
     2d35b4ae-62f0-4cb2-8a94-73ebdae1ef03: 'Member type' # Member type
+    3fa074c6-e343-4927-8f8e-9c209ddd6261: Betaalmethode # Betaalmethode
     3fab0971-effa-4787-a88b-2778ab3228d6: Notify # Notify
     4a63b33e-aa54-421b-b619-d4bc7f4888e7: Home # Home
     4bf3f29c-fce9-401f-9b64-c00e46646ddc: 'Main website' # Main website
     6a5cdbf8-b455-4bcd-a555-6a3fcad805f9: 'Hoofd website' # Hoofd website
     7b5aa47e-5da6-461a-b6fc-a190a143d8d8: 'Activeer email' # Activeer email
+    7ca5fc34-985a-44f3-bc43-3f333f9457f3: CustomId # CustomId
     9a41348d-b717-4688-9000-767870baae38: New # New
     9fa38d43-f532-46e6-a754-46a74621fb10: Branding # Branding
     21c22e0c-c629-4e07-9e19-a289ef81be37: Simple # Simple
@@ -154,33 +157,39 @@ meta:
     77d8ae37-4c00-4972-aab9-94dd08c7f29c: SimpleText # SimpleText
     88eaa50e-c3b0-4b36-a2b9-11ef935830aa: 'min Leeftijd' # min Leeftijd
     93edcc59-32ca-4780-9d52-1d1fc486519a: 'Lid ouder' # Lid ouder
+    115f3616-1f1d-4238-bbd6-a35c5b4e8f28: 'Lidkaart type' # Lidkaart type
     359a39c5-8655-460f-a1b4-0c097ea0edb2: users # users
     590f0cba-dbfa-4eda-882d-2fe3aac82a92: Prijs # Prijs
     5178f917-f380-440d-a326-c41e396ba39a: 'privacy policy' # privacy policy
     6754b9ff-3f0c-41d6-914e-520590bd5d79: LinkExtern # LinkExtern
     8365fada-1ce2-4e0a-8a3f-f919c3c18208: 'max Leeftijd' # max Leeftijd
+    70433b7e-ace4-47e7-a7cc-aeeee486c616: 'Groep Type' # Groep Type
     80634baf-dc43-47ea-8528-2e72e4a53d61: Tarief # Tarief
     637277da-4bad-4da9-9b1a-059b6438cce0: 'Extra group' # Extra group
     3261931d-97c8-4b0e-a83a-6d9ac4dee153: Birthday # Birthday
     5978149a-5b05-4ba3-95ff-72c6250597fe: Tariefformule # Tariefformule
     15257075-d043-4ea1-a62e-1785e8ed7a5f: Tekst # Tekst
+    a21d7477-05ca-43ea-ae84-fc44c3e16a70: 'Leden groep' # Leden groep
     aa21d2ca-e34c-4497-a6fa-49b5a7cc7f58: Title # Title
     ab51ff2a-5865-41c8-897f-008e0b288a70: Date # Date
     abcf42d8-0123-423e-b196-1d9f4b5aeb50: 'Extra group' # Extra group
     ac77cfdb-37a0-4f35-9ca7-e353977a477d: 'Privacy policy' # Privacy policy
+    af17efa6-765d-4c48-99b6-d836a037abd9: 'Succes registratie' # Succes registratie
     bbdfff72-14f8-4e5d-b59e-12d5b73c9a17: Home # Home
     bcc31cfe-3e29-427b-89b2-8e771af767e9: Nummer # Nummer
-    c573f0bd-29d4-4985-8cff-271a6ee231a2: Beheerders # Beheerders
+    be1c673f-0962-430c-8f77-56c215ba3ba8: 'Form Select' # Form Select
+    c573f0bd-29d4-4985-8cff-271a6ee231a2: Beheerder # Beheerder
     c1614bab-5fdd-4eae-8e0b-f4eb393c25dd: Tekst # Tekst
     cd27b3c1-54f6-4e33-8a9f-02cba48208fa: 'Extra lid' # Extra lid
     d74da9d4-3821-46f5-8cf4-f7c4d12c04df: 'users fr' # users fr
+    d8718bb0-fa18-417d-92e8-3e7b464a8356: 'Aanvraag groep' # Aanvraag groep
     d798439f-1df3-4d92-834c-7376e46fca7c: 'Privacy policy' # Privacy policy
     dad48958-bcb3-4253-9f7e-868f67fa27b0: 'users en' # users en
     db8cca95-36d6-43cd-977d-2c8d4ef17863: 'Contact Form' # Contact Form
     e6b46871-c4a9-4c54-825a-0e4ff94ad028: Branding # Branding
+    e9b9d6df-6aae-4dc1-88c7-214694d8af07: 'Aanvraag groep lidmaatschap' # Aanvraag groep lidmaatschap
     e633efea-afa2-411f-9fc3-06d84f219d9b: 'Bedankt betaling' # Bedankt betaling
     f374ab43-38fa-4b2e-870f-70e2cccc4272: Branding # Branding
-    f99096d3-baa2-498e-b404-b1e6ffc051c6: 'Super beheerder' # Super beheerder
 plugins:
   ckeditor:
     edition: standard
@@ -194,7 +203,7 @@ plugins:
     edition: standard
     enabled: true
     licenseKey: ZB80OHDNVOKXEFKE4AQEOXSU
-    schemaVersion: 3.4.7
+    schemaVersion: 3.4.8
   postmark:
     edition: standard
     enabled: true

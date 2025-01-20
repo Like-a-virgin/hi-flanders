@@ -2,7 +2,7 @@
 {% set maxDate = now|date_modify('-3 years')|date("Y-m-d") %}
 {% set memberTypes = craft.entries.section('rates').all() %}
 {% set currentDate = now %}
-{% set activeUserMember = user.paymentDate and user.expPaymentDate and currentDate >= user.paymentDate and currentDate <= user.expPaymentDate %}
+{% set activeUserMember = user.paymentDate and user.expPaymentDate and (now >= user.paymentDate) and (now <= user.expPaymentDate) %}
 
 {% set totalPrice = 0 %}
 {% set totalNonActive = 0 %}
@@ -48,13 +48,13 @@
             <div class="box__column box__column--2">            
                 <p>{{'Voornaam'|t}}</p>
                 <div class="box__info">
-                    <p>{{ user.altFirstName|capitalize }}</p>
+                    <p>{{ user.firstName|capitalize }}</p>
                 </div>
             </div>
             <div class="box__column box__column--2">            
                 <p>{{'Familienaam'|t}}</p>
                 <div class="box__info">
-                    <p>{{ user.altLastName }}</p>
+                    <p>{{ user.lastName }}</p>
                 </div>
             </div>
             <div class="box__column box__column--2">            

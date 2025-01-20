@@ -2,7 +2,7 @@ columnSuffix: null
 handle: textSingle
 instructions: null
 name: Title
-searchable: false
+searchable: true
 settings:
   byteLimit: null
   charLimit: null

@@ -21,20 +21,35 @@
  */
 
 use craft\helpers\App;
+use modules\adminregister\AdminRegister;
+use modules\confirmemail\ConfirmEmail;
+use modules\custommemberid\CustomMemberId;
+use modules\excelusers\ExcelUsers;
 use modules\membershippayments\MembershipPayments;
 use modules\rateextramember\RateExtraMember;
 use modules\ratemember\RateMember;
+use modules\userfullname\UserFullName;
 
 return [
     'id' => App::env('CRAFT_APP_ID') ?: 'CraftCMS', 
     'modules' => [
         'rate-member' => RateMember::class, 
         'rate-extra-member' => RateExtraMember::class, 
-        'membership-payments' => MembershipPayments::class
+        'membership-payments' => MembershipPayments::class,
+        'confirm-email' => ConfirmEmail::class,
+        'user-full-name' => UserFullName::class,
+        'custom-member-id' => CustomMemberId::class,
+        'admin-register' => AdminRegister::class,
+        'excel-users' => ExcelUsers::class,
     ], 
     'bootstrap' => [
         'rate-member', 
         'rate-extra-member', 
-        'membership-payments'
+        'membership-payments',
+        'confirm-email',
+        'user-full-name',
+        'custom-member-id',
+        'admin-register',
+        'excel-users',
     ],
 ];

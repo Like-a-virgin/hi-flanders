@@ -1,0 +1,61 @@
+@use "../abstracts" as *;
+
+.pagination {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 2rem;
+
+    &__controls {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+    }
+
+    &__btn {
+        background-color: rgba($clr-secondary, 0.03);
+        border: solid 0.05rem rgba($clr-secondary, 0.08);
+        height: 2.5rem;
+        min-width: 2.5rem;
+        padding: 0.85rem;
+        gap: -0.1rem;
+
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+
+        font-family: $ff;
+        font-weight: $fw-medium;
+        color: $clr-secondary;
+
+        &:hover {
+            background-color: $clr-primary;
+            border: solid 0.1rem $clr-primary;
+            cursor: pointer;
+        }
+
+        &:first-child {
+            border-radius: $br 0rem 0 $br;
+        }
+
+        &:last-child {
+            border-radius: 0 $br $br 0;
+        }
+    }
+
+    &__btn--false, &__btn--current {
+        pointer-events: none;
+    }
+
+    &__btn--current {
+        background-color: rgba($clr-secondary, 0.08);
+    }
+
+    &__chevron {
+        fill: $clr-secondary;
+        height: 1rem;
+    }
+}

@@ -8,6 +8,7 @@
     {% set activationPage = craft.entries.section('activate').one().uri %}
     {% set maxDate = now|date_modify('-3 years')|date("Y-m-d") %}
     {% set memberRates = craft.entries.section('rates').all() %}
+    {% set urlGroupRequest = craft.entries.section('requestGroup').one().url %}
 
     {% macro errorList(errors) %}
     {% if errors %}
@@ -24,7 +25,7 @@
             {{ actionInput('users/save-user') }}
             {{ redirectInput(activationPage) }}
 
-            {{ input('hidden', 'fields[memberType]', 'individual') }}
+            {{ input('hidden', 'groups', 'members') }}
             
             {% if user %}
                 {% set errors = user.getErrors() %}
@@ -51,6 +52,7 @@
                     placeholder: 'Voornaam'|t,
                     required: true
                 }) }}
+                {{ input('hidden', 'firstName', user.altFirstName ?? null) }}
             </div>
             <div class="formbox__column {{ user and user.getErrors('altLastName') ? 'formbox__column--error' }}">     
                 <label class="formbox__label" for="alt-sur-name">{{'Familienaam'|t}}</label>
@@ -59,8 +61,9 @@
                     placeholder: 'Familienaam'|t,
                     required: true
                 }) }}
+                {{ input('hidden', 'lastName', user.altLastName ?? null) }}
             </div>
-            <div class="formbox__column {{ user and user.getErrors('email') ? 'formbox__column--error' }}">                
+            <div class="formbox__column--full {{ user and user.getErrors('email') ? 'formbox__column--error' }}">                
                 <label class="formbox__label" for="email">{{'E-mail'|t}}</label>
                 {{ input('email', 'email', user.email ?? null, {
                     id: 'email',
@@ -68,7 +71,15 @@
                     required: true
                 }) }}
             </div> 
-            <div class="formbox__column {{ user and user.getErrors('birthday') ? 'formbox__column--error' }}">                
+            <div class="formbox__column--full {{ user and user.getErrors('confirmEmail') ? 'formbox__column--error' }}">
+                <label class="formbox__label" for="confirm-email">{{ 'Confirm E-mail'|t }}</label>
+                {{ input('email', 'confirmEmail', null, {
+                    id: 'confirm-email',
+                    placeholder: 'Bevestig E-mailadres'|t,
+                    required: true
+                }) }}
+            </div>
+            <div class="formbox__column--full {{ user and user.getErrors('birthday') ? 'formbox__column--error' }}">                
                 <label class="formbox__label" for="birthday">{{'Geboortedatum'|t}}</label>
                 {{ input('text', 'fields[birthday]', user and user.birthday ? user.birthday|date('d-m-Y') : null, {
                     id: 'birthday',
@@ -78,22 +89,6 @@
                     max: maxDate
                 }) }}
             </div>     
-            <div class="formbox__column {{ user and user.getErrors('country') ? 'formbox__column--error' }}">
-                <label class="formbox__label" for="postal-code">{{'Postcode'|t}}</label>
-                {{ input('text', 'fields[postalCode]', user.postalCode ?? null, {
-                    id: 'postal-code',
-                    placeholder: 'Postcode'|t,
-                    required: true
-                }) }}
-            </div>
-            <div class="formbox__column {{ user and user.getErrors('country') ? 'formbox__column--error' }}">
-                <label class="formbox__label" for="city">{{'Stad'|t}}</label>
-                {{ input('text', 'fields[city]', user.city ?? null, {
-                    id: 'city',
-                    placeholder: 'Stad'|t,
-                    required: true
-                }) }}
-            </div>
             <div class="formbox__column {{ user and user.getErrors('street') ? 'formbox__column--error' }}">
                 <label class="formbox__label" for="street">{{ 'Straat'|t }}</label>
                 {{ input('text', 'fields[street]', user.street ?? null, {
@@ -115,6 +110,22 @@
                 {{ input('text', 'fields[bus]', user.bus ?? null, {
                     id: 'bus',
                     placeholder: 'Bus'|t
+                }) }}
+            </div>
+            <div class="formbox__column {{ user and user.getErrors('postalCode') ? 'formbox__column--error' }}">
+                <label class="formbox__label" for="postal-code">{{'Postcode'|t}}</label>
+                {{ input('text', 'fields[postalCode]', user.postalCode ?? null, {
+                    id: 'postal-code',
+                    placeholder: 'Postcode'|t,
+                    required: true
+                }) }}
+            </div>
+            <div class="formbox__column {{ user and user.getErrors('country') ? 'formbox__column--error' }}">
+                <label class="formbox__label" for="city">{{'Stad'|t}}</label>
+                {{ input('text', 'fields[city]', user.city ?? null, {
+                    id: 'city',
+                    placeholder: 'Stad'|t,
+                    required: true
                 }) }}
             </div>
             <div class="formbox__column--full {{ user and user.getErrors('country') ? 'formbox__column--error' }}">
@@ -145,20 +156,12 @@
                 }) }} 
                 <p>{{'Ik ga akkoord dat mijn gegevens gebruikt worden zoals beschreven in de'|t}} <a class="formbox__link" target="_blank" href="{{pp}}">{{'privacy policy'|t}}</a>.</label></p>
             </div>
-            {# {% if user and user.birthday %}
-                {% set currentDate = now|date('Y-m-d') %}
-                {% set userBirthDay = user.birthday|date('Y-m-d') %}
-                {% set memberAge = (currentDate|date('Y') - userBirthDay|date('Y')) - (currentDate|date('md') < userBirthDay|date('md') ? 1 : 0) %}
-                {% set memberRateCurrent = memberRates|find(i => i.minAge <= memberAge and (i.maxAge is null or i.maxAge >= memberAge)) %}
-
-                {{ input('hidden', 'fields[memberRate][]', memberRateCurrent.id) }}
-            {% endif %} #}
             <button class="formbox__button formbox__column--full">{{'Registreer'|t}}</button>
         </form>
         <div class="formbox__options">
             <p class="formbox__or">{{'Of'|t}}</p>
             <a class="formbox__button formbox__button--sec" href="{{ url('login') }}">{{'Log in'|t}}</a>
-            <a class="formbox__button formbox__button--sec" href="/register-group">{{'Registreer groep'|t}}</a>
+            <a class="formbox__button formbox__button--sec" href="{{urlGroupRequest}}">{{'Lid worden als groep'|t}}</a>
         </div>
     </div>
 {% endblock %}

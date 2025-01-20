@@ -2,6 +2,7 @@
 $clr-primary: #FFCC22;
 $clr-secondary: #102438;
 $clr-tertiary: white; 
+$clr-tertiary--darker: #F7F7F7; 
 $clr-error-text: #E74C3C;
 $clr-error-bg: rgba($clr-error-text, 0.09);
 $clr-succes-text: #28A745;
@@ -22,7 +23,7 @@ $fw-bold: 700;
 // Font Sizes 
 $fs-p: .875rem;
 $fs-p--mobile: .875rem;;
-$fs-h1: 28px;
+$fs-h1: 1.75rem;
 $fs-h1--mobile: 1.5rem;
 $fs-h2: 1.5rem;
 $fs-h2--mobile: 1.25rem;

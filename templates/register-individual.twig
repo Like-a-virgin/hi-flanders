@@ -1,0 +1,162 @@
+{% extends "layouts/base.twig" %}
+
+{% requireLogin %}
+
+{% block content %}
+    {% if not craft.app.user.identity or currentUser.getGroups()|first.handle is not same as 'membersAdmin' %}
+        {% redirect 'login' %}
+    {% endif %}
+    {% set maxDate = now|date_modify('-3 years')|date("Y-m-d") %}
+    {% set pp = craft.entries.section(privacyPolicy).one().linkExtern %}
+    {% set paymentMethods = [{value: 'hostel', label: 'Hostel'|t}, {value: 'transfer', label: 'Overschrijving'|t}, {value: 'free', label: 'Gratis'|t}] %}
+    {% set user = user ?? null %}
+    {% set succesUrl = craft.entries.section('succesRegister').one().url %}
+
+    {% macro errorList(errors) %}
+    {% if errors %}
+        {{ ul(errors, {class: 'errors'}) }}
+    {% endif %}
+    {% endmacro %}
+
+    <div class="formbox">
+        <div class="formbox__heading">
+            <h1>Registreer een individu</h1>
+        </div>
+        <form class="formbox__form" method="post" accept-charset="UTF-8" novalidate>
+            {{ csrfInput() }}
+            {{ actionInput('users/save-user') }}
+            {{ redirectInput(succesUrl) }}
+
+            {{ input('hidden', 'groupHandle', 'members') }}
+
+            {% if user %}
+                {% set errors = user.getErrors() %}
+                {% if errors|length > 0 %}
+                    <div class="formbox__error formbox__column--full">
+                        <p>{{ 'Niet alle velden zijn correct ingevuld.'|t }}</p>
+                    </div>
+                {% endif %}
+                {% if user.getErrors('email') %}
+                    <div class="formbox__error formbox__column--full">{{ _self.errorList(user.getErrors('email')) }}</div>
+                {% endif %}
+                {% if user.getErrors('password') %}
+                    <div class="formbox__error formbox__column--full">{{ _self.errorList(user.getErrors('password')) }}</div>
+                {% endif %}
+                {% if user.getErrors('privacyPolicy') %}
+                    <div class="formbox__error formbox__column--full"><p>{{ 'Je moet akkoord gaan met de privacy policy'|t }}</p></div>
+                {% endif %}
+            {% endif %}
+
+            <div class="formbox__column--full">
+                <label class="formbox__label" for="payment-type">{{'Type lid'|t}}</label>
+                <select name="fields[memberType]" id="member-type" required>
+                    <option value="individual">{{'Individu'|t}}</option>
+                    <option value="employee">{{'Werknemer'|t}}</option>
+                </select>
+            </div>
+            <div class="formbox__column"> 
+                <label class="formbox__label" for="alt-first-name">{{'Voornaam'|t}}</label>
+                {{ input('text', 'fields[altFirstName]', user.altFirstName ?? null, {
+                    id: 'alt-first-name',
+                    placeholder: 'Voornaam'|t,
+                    required: true
+                }) }}
+            </div>
+            <div class="formbox__column">     
+                <label class="formbox__label" for="alt-sur-name">{{'Familienaam'|t}}</label>
+                {{ input('text', 'fields[altLastName]', user.altLastName ?? null, {
+                    id: 'alt-sur-name',
+                    placeholder: 'Familienaam'|t,
+                    required: true
+                }) }}
+            </div>
+            <div class="formbox__column">                
+                <label class="formbox__label" for="email">{{'E-mail'|t}}</label>
+                {{ input('email', 'email', user.email ?? null, {
+                    id: 'email',
+                    placeholder: 'E-mailadres'|t,
+                    required: true
+                }) }}
+            </div> 
+            <div class="formbox__column">
+                <label class="formbox__label" for="confirm-email">{{ 'Confirm E-mail'|t }}</label>
+                {{ input('email', 'confirmEmail', null, {
+                    id: 'confirm-email',
+                    placeholder: 'Bevestig E-mailadres'|t,
+                    required: true
+                }) }}
+            </div>
+            <div class="formbox__column--full">                
+                <label class="formbox__label" for="birthday">{{'Geboortedatum'|t}}</label>
+                {{ input('text', 'fields[birthday]', user.birthday ?? null, {
+                    id: 'birthday',
+                    placeholder: 'Geboortedatum'|t,
+                    onFocus: "(this.type = 'date', this.placeholder = '')",
+                    required: true,
+                    max: maxDate
+                }) }}
+            </div>     
+            <div class="formbox__column">
+                <label class="formbox__label" for="street">{{ 'Straat'|t }}</label>
+                {{ input('text', 'fields[street]', user.street ?? null, {
+                    id: 'street',
+                    placeholder: 'Straat'|t,
+                    required: true
+                }) }}
+            </div>
+            <div class="formbox__column--1-4">
+                <label class="formbox__label" for="number">{{'Nr'|t}}</label>
+                {{ input('text', 'fields[streetNr]', user.streetNr ?? null, {
+                    id: 'number',
+                    placeholder: 'Nr'|t,
+                    required: true
+                }) }}
+            </div>
+            <div class="formbox__column--1-4">
+                <label class="formbox__label" for="bus">{{ 'Bus'|t }}</label>
+                {{ input('text', 'fields[bus]', user.bus ?? null, {
+                    id: 'bus',
+                    placeholder: 'Bus'|t
+                }) }}
+            </div>
+            <div class="formbox__column">
+                <label class="formbox__label" for="postal-code">{{'Postcode'|t}}</label>
+                {{ input('text', 'fields[postalCode]', user.postalCode ?? null, {
+                    id: 'postal-code',
+                    placeholder: 'Postcode'|t,
+                    required: true
+                }) }}
+            </div>
+            <div class="formbox__column">
+                <label class="formbox__label" for="city">{{'Stad'|t}}</label>
+                {{ input('text', 'fields[city]', user.city ?? null, {
+                    id: 'city',
+                    placeholder: 'Stad'|t,
+                    required: true
+                }) }}
+            </div>
+            <div class="formbox__column--full">
+                <label class="formbox__label" for="country">{{'Land'|t}}</label>
+                {{ input('text', 'fields[country]', user.country ?? null, {
+                    id: 'country',
+                    placeholder: 'Land'|t,
+                    required: true
+                }) }}
+            </div>
+            <div class="formbox__column--full">
+                <label class="formbox__label" for="payment-type">{{'Betaalmethode'|t}}</label>
+                <select name="fields[paymentType]" id="payment-type" required>
+                    <option value="">{{'Nog niet betaald'|t}}</option>
+                    {% for item in paymentMethods %}
+                        <option value="{{item.value}}">{{item.label}}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <button class="formbox__button formbox__column--full">{{'Registreer'|t}}</button>
+        </form>
+        <div class="formbox__options">
+            <p class="formbox__or">{{'Of'|t}}</p>
+            <a class="formbox__button formbox__button--sec" href="{{ url('/') }}">{{'Annuleer'|t}}</a>
+        </div>
+    </div>
+{% endblock %}

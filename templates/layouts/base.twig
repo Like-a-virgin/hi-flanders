@@ -5,25 +5,14 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title></title>
         <link rel="stylesheet" href="https://use.typekit.net/dgq7cxw.css">
-        <link rel="stylesheet" href="{{ craft.app.sites.primarySite.baseUrl }}dist/assets/app-BxWkqKw8.css">
+        <link rel="stylesheet" href="{{ craft.app.sites.primarySite.baseUrl }}dist/assets/app-DXhWHOy_.css">
     </head>
     <body>
-        <header class="header">
-            <a href="{{ currentSite.baseUrl }}">
-                {{ svg("assets/branding/Logo.svg")|attr({class: 'header__logo' }) }}
-            </a>
-            <div class="header__options">        
-                {% include "components/language-switcher.twig" %}
-                {% if currentUser %}
-                    <a class="btn" href="{{ logoutUrl }}">Logout</a>
-                {% endif %}
-                <a class="btn" href="{{ craft.entries.section('mainWebsite').one().linkExtern }}">{{'Naar website'|t}}</a>
-            </div>
-        </header>
+        {% include "partials/header.twig" %}
         <main class="center">
             {% block content %}{% endblock %}
         </main>
         {# {{ craft.vite.script("src/scripts/main.js") }}  #}
-        <script src="{{ craft.app.sites.primarySite.baseUrl }}dist/assets/app-5Z86G9De.js"></script>
+        <script src="{{ craft.app.sites.primarySite.baseUrl }}dist/assets/app-DNzNJAVn.js"></script>
     </body>
 </html>

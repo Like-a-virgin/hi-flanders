@@ -2,12 +2,12 @@
 
 .header {
     width: 100%;
-    height: 10vh;
-    padding: 2rem;
+    padding: 1.5rem;
 
     position: absolute;
     top: 0;
     left: 0;
+    z-index: 1;
     
     display: flex;
     flex-direction: row;
@@ -15,14 +15,98 @@
     align-items: center;
     gap: 1rem;
 
+    @include screen($screen-s){
+        padding: 2rem;
+        height: 10vh;
+    }
+
     &__logo {
-        width: 12.5rem;
+        width: 8rem;
         height: fit-content;
+
+        @include screen($screen-s) {
+            width: 12.5rem;
+        }
     }
 
     &__options {
+        position: fixed;
+        top: 0;
+        right: -60vw;
+        z-index: 1;
+
+        background-color: $clr-primary;
+        height: 100vh;
+        width: 60vw;
+        padding: 5rem 1rem 1rem 1rem;
+
         display: flex;
-        flex-direction: row;
-        gap: 1rem;
+        flex-direction: column;
+        gap: 0.5rem;
+
+        transition: all 0.2s ease-in-out;
+
+        @include screen($screen-s) {
+            flex-direction: row;
+            width: fit-content;
+            height: fit-content;
+            gap: 1rem;
+            position: relative;
+            right: 0;
+            background-color: transparent;
+            padding: 0;
+
+        }
     }
+
+    &__menu {
+        display: flex;
+        flex-direction: column;
+        gap: 0.525rem;
+
+        position: fixed;
+        top: 1.5rem;
+        right: 1.5rem;
+        z-index: 10;
+
+        @include screen($screen-s) {
+            display: none;
+        }
+    }
+
+    &__menu-bar {
+        height: 0.175rem;
+        width: 2rem;
+        border-radius: 1rem;
+        background-color: $clr-primary;
+
+        transform-origin: left;
+    }
+
+    &__menu--open {
+        .header__menu-bar {
+            background-color: $clr-tertiary;
+        }
+
+        .header__menu-bar--top {
+            rotate: 45deg;
+        }
+
+        .header__menu-bar--center {
+            opacity: 0;
+        }
+
+        .header__menu-bar--bottom {
+            rotate: -45deg;
+        }
+    }
+
+    &__options--open {
+        right: 0;
+    }
+
+    &__options-closed {
+        right: -50vw;
+    }
+
 }

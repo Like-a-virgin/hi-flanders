@@ -1,0 +1,176 @@
+@use "../abstracts" as *;
+
+.filter {
+    position: relative;
+
+    &__option-icon {
+        width: 1rem;
+        height: fit-content;
+        fill: $clr-secondary;
+    }
+
+    &__option-btn {
+        height: 3rem;
+        aspect-ratio: 1/1;
+        border-radius: $br;
+        border: none;
+        background-color: $clr-primary;
+
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;        
+
+        &:hover {
+            cursor: pointer;
+            background-color: $clr-secondary;
+            color: $clr-primary;
+
+            .filter__option-icon {
+                fill: $clr-primary;
+            }
+        }
+    }
+    
+    &__box {
+        position: absolute;
+        right: 0;
+        top: 3.5rem;
+        background-color: $clr-primary;
+        padding: $sp-s;
+        border-radius: $br;
+        width: fit-content;
+    
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+    
+        box-shadow: 0px 3px 6px 0px rgba(black, 0.16);
+    
+        &--new {
+            gap: 0.5rem;
+        }
+
+        &--filters {
+            min-width: 20rem;
+        }
+    }
+    
+    &__btn {
+        width: fit-content;
+        width: 9rem;
+        background-color: $clr-tertiary;
+        padding:  0.5rem 1rem;
+        border-radius: 0.4rem;
+        text-decoration: none;
+        color: $clr-secondary;
+        border: solid 0.1rem transparent;
+    
+        &:hover {
+            box-shadow: inset 0px 0px 6px 0px rgba(black, 0.16);
+            border: solid 0.1rem $clr-secondary;
+        }
+    }
+
+    &__chevron {
+        height: 0.75rem;
+    }
+
+    &__select {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+        gap: 1rem;
+
+        width: 100%;
+        padding: 0.5rem;
+        border: none;
+        background-color: $clr-tertiary;
+        border-radius: 0.25rem;
+        color: $clr-secondary;
+        font-family: $ff;
+    }
+
+    &__title {
+        margin-bottom: 0.5rem;
+        font-weight: $fw-medium;
+    }
+
+    &__select-box {
+        position: relative;
+        width: 100%;
+    }
+
+    &__select-options {
+        display: grid;
+        grid-template-columns: 1fr;
+        width: 100%;
+
+        position: absolute;
+        margin-top: -0.1rem;
+        z-index: 10;
+
+        box-shadow: inset 0px 0px 10px 0px rgba(black, 0.16);
+    }
+
+    &__select-option {
+        background-color: $clr-tertiary--darker;
+        color: $clr-secondary;
+        border: none;
+        padding: 0.5rem;
+        text-align: left;
+        font-family: $ff;
+        
+        &:first-child {
+            padding-top: 0.75rem;
+        }
+        
+        &:last-child {
+            border-radius: 0 0 0.25rem 0.25rem;
+        }
+
+        &:hover {
+            background-color: $clr-secondary;
+            color: $clr-tertiary;
+            cursor: pointer;
+        }
+    }
+
+    &__date-option {
+        display: grid;
+        grid-template-columns: repeat(5, 1fr);
+        row-gap: 0.5rem;
+        align-items: center;
+    }
+
+    &__date {
+        border-radius: 0.25rem;
+        padding: 0.5rem;
+        background-color: $clr-tertiary;
+        grid-column: span 4;
+    }
+
+    &__wrapper {
+        display: flex;
+        flex-direction: row;
+        gap: 0.85rem;
+    }
+
+    &__remove {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        background-color: transparent;
+        border: none;
+
+        &:hover {
+            cursor: pointer;
+        }
+    }
+
+    &__remove-icon {
+        height: 1rem;
+    }
+}

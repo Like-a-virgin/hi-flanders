@@ -1,0 +1,66 @@
+columnSuffix: null
+handle: paymentType
+instructions: null
+name: Betaalmethode
+searchable: true
+settings:
+  customOptions: false
+  options:
+    -
+      __assoc__:
+        -
+          - label
+          - 'Nog niet betaald '
+        -
+          - value
+          - ''
+        -
+          - default
+          - '1'
+    -
+      __assoc__:
+        -
+          - label
+          - Online
+        -
+          - value
+          - online
+        -
+          - default
+          - ''
+    -
+      __assoc__:
+        -
+          - label
+          - 'Betaald in hostel'
+        -
+          - value
+          - hostel
+        -
+          - default
+          - ''
+    -
+      __assoc__:
+        -
+          - label
+          - Overschrijving
+        -
+          - value
+          - transfer
+        -
+          - default
+          - ''
+    -
+      __assoc__:
+        -
+          - label
+          - 'Gratis lidmaatschap verkregen'
+        -
+          - value
+          - free
+        -
+          - default
+          - ''
+translationKeyFormat: null
+translationMethod: none
+type: craft\fields\Dropdown

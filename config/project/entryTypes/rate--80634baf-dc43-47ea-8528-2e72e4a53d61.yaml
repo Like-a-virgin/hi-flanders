@@ -52,6 +52,22 @@ fieldLayouts:
             warning: null
             width: 100
           -
+            dateAdded: '2025-01-02T16:01:54+00:00'
+            elementCondition: null
+            fieldUid: 2d35b4ae-62f0-4cb2-8a94-73ebdae1ef03 # Member type
+            handle: null
+            includeInCards: false
+            instructions: null
+            label: null
+            providesThumbs: false
+            required: false
+            tip: null
+            type: craft\fieldlayoutelements\CustomField
+            uid: caa94997-93b9-4c73-ad24-3e894fbc7fc4
+            userCondition: null
+            warning: null
+            width: 100
+          -
             dateAdded: '2025-01-06T11:42:27+00:00'
             elementCondition:
               class: craft\elements\conditions\entries\EntryCondition
@@ -104,22 +120,6 @@ fieldLayouts:
             tip: null
             type: craft\fieldlayoutelements\CustomField
             uid: 4ff715d1-7cf4-47fd-8ccb-8c14af90d9ef
-            userCondition: null
-            warning: null
-            width: 100
-          -
-            dateAdded: '2025-01-02T16:01:54+00:00'
-            elementCondition: null
-            fieldUid: 2d35b4ae-62f0-4cb2-8a94-73ebdae1ef03 # Member type
-            handle: null
-            includeInCards: false
-            instructions: null
-            label: null
-            providesThumbs: false
-            required: false
-            tip: null
-            type: craft\fieldlayoutelements\CustomField
-            uid: caa94997-93b9-4c73-ad24-3e894fbc7fc4
             userCondition: null
             warning: null
             width: 100

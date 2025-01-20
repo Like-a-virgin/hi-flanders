@@ -12,12 +12,28 @@ fieldLayouts:
             handle: null
             includeInCards: false
             instructions: null
-            label: null
+            label: 'Link naar home'
             providesThumbs: false
             required: false
             tip: null
             type: craft\fieldlayoutelements\CustomField
             uid: ee125008-b937-4f1b-9fe2-32b07dda6137
+            userCondition: null
+            warning: null
+            width: 100
+          -
+            dateAdded: '2025-01-17T12:56:43+00:00'
+            elementCondition: null
+            fieldUid: 6754b9ff-3f0c-41d6-914e-520590bd5d79 # LinkExtern
+            handle: linkPp
+            includeInCards: false
+            instructions: null
+            label: 'Link naar privacy policy'
+            providesThumbs: false
+            required: false
+            tip: null
+            type: craft\fieldlayoutelements\CustomField
+            uid: c7234d3a-a605-45bf-8b90-d632d0402399
             userCondition: null
             warning: null
             width: 100
