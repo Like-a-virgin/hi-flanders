@@ -129,13 +129,20 @@ class PaymentController extends Controller
             $extraMemberIds = $metadata->extraMemberIds ?? [];
 
             $paymentDate = new DateTime();
-            $expirationDate = (clone $paymentDate)->modify('+1 year');
 
             if ($userId) {
                 $user = Craft::$app->users->getUserById($userId);
                 if ($user) {
+                    $creationDate = $user->dateCreated;
+                    $expirationDate = new DateTime();
+
                     $user->setFieldValue('paymentDate', $paymentDate);
-                    $user->setFieldValue('expPaymentDate', $expirationDate);
+                    $expirationDate->setDate(
+                        $paymentDate->format('Y') + 1, // Add one year to the current year
+                        $creationDate->format('m'),   // Month from user's creation date
+                        $creationDate->format('d')    // Day from user's creation date
+                    );
+
                     if (!Craft::$app->elements->saveElement($user)) {
                         Craft::error('Failed to update user payment date.', __METHOD__);
                     }
