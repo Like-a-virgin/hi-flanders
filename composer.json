@@ -7,10 +7,10 @@
     "craftcms/feed-me": "^6.6.1",
     "craftcms/postmark": "^3.1.0",
     "mollie/mollie-api-php": "^2.76",
-    "mutation/translate": "^4.0.2",
+    "mutation/translate": "4.1.1",
     "nystudio107/craft-vite": "^5.0.1",
     "phpoffice/phpspreadsheet": "^1.29",
-    "putyourlightson/craft-sprig": "^3.5.1",
+    "putyourlightson/craft-sprig": "3.5.2",
     "verbb/formie": "3.0.18",
     "vlucas/phpdotenv": "^5.4.0"
   },
@@ -50,7 +50,8 @@
       "modules\\userfullname\\": "modules/user-full-name/",
       "modules\\custommemberid\\": "modules/custom-member-id/",
       "modules\\adminregister\\": "modules/admin-register/",
-      "modules\\excelusers\\": "modules/excel-users/"
+      "modules\\excelusers\\": "modules/excel-users/",
+      "modules\\membershiprenewal\\": "modules/membership-renewal/"
     }
   }
 }

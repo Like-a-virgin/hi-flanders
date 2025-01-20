@@ -4,6 +4,8 @@ namespace modules\ratemember;
 
 use Craft;
 use craft\elements\User;
+use craft\services\Users;
+use craft\events\UserEvent;
 use craft\elements\Entry;
 use craft\events\ElementEvent;
 use craft\services\Elements;
@@ -28,7 +30,7 @@ class RateMember extends BaseModule
             function (ElementEvent $event) {
                 $element = $event->element;
 
-                if ($element->status !== 'active' && $element instanceof User) {
+                if (($element->status !== 'active' || $element->status === 'pending') && $element instanceof User) {
                     Craft::info('User detected: ' . $element->id, __METHOD__);
                     $this->assignMemberRate($element);
                 }
@@ -39,17 +41,17 @@ class RateMember extends BaseModule
     private function assignMemberRate(User $user): void
     {
         $request = Craft::$app->getRequest();
-        $birthday= $request->getBodyParam("fields.birthday");
-        $memberType = $request->getBodyParam('fields.memberType');
+        $birthday= $request->getBodyParam("fields.birthday") ?? $user->getFieldValue('birthday');
+        $memberType = $request->getBodyParam('fields.memberType') ?? $user->getFieldValue('memberType')->value;
 
         if (!$memberType) {
             Craft::error('No memberType set for user ID ' . $user->id, __METHOD__);
             return;
         }
-
+        
         $memberRates = Entry::find()
-            ->section('rates')
-            ->all();
+        ->section('rates')
+        ->all();
 
         $filteredRates = array_filter($memberRates, function ($rate) use ($memberType) {
             $rateMemberType = $rate->getFieldValue('memberType')->value;
@@ -125,20 +127,20 @@ class RateMember extends BaseModule
         if ($paymentType) {
             // Payment type is set; assign payment date and expiration date
             $user->setFieldValue('paymentDate', $paymentDate);
-            $user->setFieldValue('expPaymentDate', $expirationDate);
+            // $user->setFieldValue('expPaymentDate', $expirationDate);
             $user->setFieldValue('paymentType', $paymentType);
     
             Craft::info("Assigned rate with ID {$rate->id}, paymentType {$paymentType}, paymentDate {$paymentDate}, and expirationDate {$expirationDate} for user ID {$user->id}", __METHOD__);
         } elseif ($ratePrice === null || (float) $ratePrice <= 0) {
             $user->setFieldValue('paymentDate', $paymentDate);
-            $user->setFieldValue('expPaymentDate', $expirationDate);
+            // $user->setFieldValue('expPaymentDate', $expirationDate);
 
             $user->setFieldValue('paymentType', 'free');
 
             Craft::info("Assigned rate with ID {$rate->id} and set paymentDate to {$paymentDate} for user ID {$user->id}", __METHOD__);
         } else {
             $user->setFieldValue('paymentDate', null);
-            $user->setFieldValue('expPaymentDate', $expirationDate);
+            // $user->setFieldValue('expPaymentDate', $expirationDate);
             $user->setFieldValue('paymentType', null);
 
             Craft::info("Assigned rate with ID {$rate->id} without paymentDate for user ID {$user->id}", __METHOD__);

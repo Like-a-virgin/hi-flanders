@@ -26,6 +26,7 @@ use modules\confirmemail\ConfirmEmail;
 use modules\custommemberid\CustomMemberId;
 use modules\excelusers\ExcelUsers;
 use modules\membershippayments\MembershipPayments;
+use modules\membershiprenewal\MembershipRenewal;
 use modules\rateextramember\RateExtraMember;
 use modules\ratemember\RateMember;
 use modules\userfullname\UserFullName;
@@ -41,6 +42,7 @@ return [
         'custom-member-id' => CustomMemberId::class,
         'admin-register' => AdminRegister::class,
         'excel-users' => ExcelUsers::class,
+        'membership-renewal' => MembershipRenewal::class,
     ], 
     'bootstrap' => [
         'rate-member', 
@@ -51,5 +53,6 @@ return [
         'custom-member-id',
         'admin-register',
         'excel-users',
+        'membership-renewal',
     ],
 ];

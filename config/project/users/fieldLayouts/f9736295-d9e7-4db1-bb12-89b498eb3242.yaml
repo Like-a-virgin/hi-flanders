@@ -212,6 +212,22 @@ tabs:
           fieldContext: global
         warning: null
         width: 100
+      -
+        dateAdded: '2025-01-20T12:55:59+00:00'
+        elementCondition: null
+        fieldUid: ab51ff2a-5865-41c8-897f-008e0b288a70 # Date
+        handle: lastRenewalDate
+        includeInCards: false
+        instructions: null
+        label: 'Vernieuwd op'
+        providesThumbs: false
+        required: false
+        tip: null
+        type: craft\fieldlayoutelements\CustomField
+        uid: b5e05616-7efd-4882-a04a-da672c0b3519
+        userCondition: null
+        warning: null
+        width: 100
     name: Content
     uid: ae013ac9-d044-4fc1-85a9-cdfa5bb71919
     userCondition: null
@@ -509,12 +525,12 @@ tabs:
               operator: in
               uid: 56e78340-6fa1-48b6-9b3a-017ab4149529
               values:
-                - a21d7477-05ca-43ea-ae84-fc44c3e16a70 # Leden groep
                 - 50a6f7cb-84e7-4d68-9aa9-3af2d9001e79 # Leden
+                - a21d7477-05ca-43ea-ae84-fc44c3e16a70 # Leden groep
           elementType: craft\elements\User
           fieldContext: global
         fieldUid: ab51ff2a-5865-41c8-897f-008e0b288a70 # Date
-        handle: expPaymentDate
+        handle: memberDueDate
         includeInCards: false
         instructions: null
         label: 'Vervaldatum lidmaatschap'
