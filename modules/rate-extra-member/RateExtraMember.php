@@ -95,7 +95,7 @@ class RateExtraMember extends BaseModule
                 $expirationDate = $currentDate->modify('+1 year')->format('Y-m-d');
 
                 $extraMember->setFieldValue('paymentDate', $paymentDate);
-                $extraMember->setFieldValue('expPaymentDate', $expirationDate);
+                $extraMember->setFieldValue('memberDueDate', $expirationDate);
 
                 Craft::info("Assigned rate with ID {$selectedRate->id} and set paymentDate to {$paymentDate} for extra member ID {$extraMember->id}", __METHOD__);
             } else {

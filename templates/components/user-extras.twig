@@ -1,7 +1,7 @@
 <div class="box-container box-container--member">
     <h2>{{'Extra leden'|t}}</h2>
     {% for item in extraMembers %}
-        {% set activeExtraCheck = item.paymentDate and item.expPaymentDate and currentDate >= item.paymentDate and currentDate <= item.expPaymentDate %}
+        {% set activeExtraCheck = item.paymentDate and item.memberDueDate and currentDate >= item.paymentDate and currentDate <= item.memberDueDate %}
         <div class="box box--member" x-data="{openMember: false}" :class="openMember ? 'box--member-open' : ''">
             <div @click="openMember = ! openMember" class="box__heading box__heading--center">
                 <h3>{{item.title}}</h3>

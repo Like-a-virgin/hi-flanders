@@ -84,9 +84,9 @@
                     </div>
                     <div class="box__column box__column--2">
                         <p>{{'Vervaldatum'|t}}</p>
-                        <div class="box__info {{ not selectedMember.expPaymentDate ? 'box__info--error' }}">
-                            {% if selectedMember.expPaymentDate %}
-                                <p>{{ selectedMember.expPaymentDate|date("d/m/Y") }}</p>
+                        <div class="box__info {{ not selectedMember.memberDueDate ? 'box__info--error' }}">
+                            {% if selectedMember.memberDueDate %}
+                                <p>{{ selectedMember.memberDueDate|date("d/m/Y") }}</p>
                             {% else %}
                                 <p>{{ 'Lidmaatschap is nog niet betaald'|t }}</p>
                             {% endif %}

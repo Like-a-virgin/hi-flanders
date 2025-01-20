@@ -99,15 +99,15 @@ class PaymentController extends Controller
     private function isWithinPaymentPeriod($element): bool
     {
         $paymentDate = $element->getFieldValue('paymentDate');
-        $expPaymentDate = $element->getFieldValue('expPaymentDate');
+        $memberDueDate = $element->getFieldValue('memberDueDate');
 
-        if (!$paymentDate || !$expPaymentDate) {
+        if (!$paymentDate || !$memberDueDate) {
             return false; // No payment date or expiry, assume not within the payment period
         }
 
         $today = new \DateTime('today');
 
-        return ($paymentDate <= $today && $expPaymentDate >= $today);
+        return ($paymentDate <= $today && $memberDueDate >= $today);
     }
 
     public function actionWebhook(): Response
@@ -154,7 +154,7 @@ class PaymentController extends Controller
                 $extraMember = Entry::find()->id($extraMemberId)->one();
                 if ($extraMember) {
                     $extraMember->setFieldValue('paymentDate', $paymentDate);
-                    $extraMember->setFieldValue('expPaymentDate', $expirationDate);
+                    // $extraMember->setFieldValue('memberDueDate', $expirationDate);
                     if (!Craft::$app->elements->saveElement($extraMember)) {
                         Craft::error('Failed to update extra member payment date for entry ID ' . $extraMemberId, __METHOD__);
                     }

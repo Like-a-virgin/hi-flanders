@@ -2,7 +2,7 @@
 {% set maxDate = now|date_modify('-3 years')|date("Y-m-d") %}
 {% set memberTypes = craft.entries.section('rates').all() %}
 {% set currentDate = now %}
-{% set activeUserMember = user.paymentDate and user.expPaymentDate and (now >= user.paymentDate) and (now <= user.expPaymentDate) %}
+{% set activeUserMember = user.paymentDate and user.memberDueDate and (now >= user.paymentDate) and (now <= user.memberDueDate) %}
 
 {% set totalPrice = 0 %}
 {% set totalNonActive = 0 %}
@@ -14,7 +14,7 @@
 {% endif %}
 
 {% for extra in extraMembers %}
-    {% set activeExtraMember = extra.paymentDate and extra.expPaymentDate and currentDate >= extra.paymentDate and currentDate <= extra.expPaymentDate %}
+    {% set activeExtraMember = extra.paymentDate and extra.memberDueDate and currentDate >= extra.paymentDate and currentDate <= extra.memberDueDate %}
     {% set rate = extra.memberRate.one() %}
     {% if not activeExtraMember %}
         {% set totalPrice = totalPrice ? totalPrice.add(rate.price) : rate.price %}
@@ -169,8 +169,8 @@
                 <p class="box__text-bold">{{'Lidmaatschap'|t}}</p>
                 <div class="box__info box__info--prim">
                     <p>{{ user.memberRate.one().title }}</p>
-                    {% if user.expPaymentDate %}
-                        <p>{{'Vervalt op'|t}} {{user.expPaymentDate|date('d-m-Y')}}</p>
+                    {% if user.memberDueDate %}
+                        <p>{{'Vervalt op'|t}} {{user.memberDueDate|date('d-m-Y')}}</p>
                     {% endif %}
                 </div>
             </div>

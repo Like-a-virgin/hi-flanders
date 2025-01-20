@@ -18,7 +18,7 @@
             </div>
             {% if extraMembers is defined and extraMembers %}            
                 {% for extra in extraMembers %}
-                    {% set activeExtraMember = extra.paymentDate and extra.expPaymentDate and currentDate >= extra.paymentDate and currentDate <= extra.expPaymentDate %}
+                    {% set activeExtraMember = extra.paymentDate and extra.memberDueDate and currentDate >= extra.paymentDate and currentDate <= extra.memberDueDate %}
                     {% set rate = extra.memberRate.one() %}
                     <div class="box__column box__column--4">            
                         <div class="box__info {{activeExtraMember ? 'box__info--sec'}}">
