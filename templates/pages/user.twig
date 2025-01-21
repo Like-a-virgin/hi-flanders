@@ -23,9 +23,7 @@
 {% endfor %}
 
 {% requireLogin %}
-<pre>
-    {{ dump(user) }}
-</pre>
+
 {% if not activeUserMember %}
     <div class="box-error">    
         {% if not activeUserMember %}
@@ -174,7 +172,7 @@
                     {% endif %}
                 </div>
             </div>
-            <div class="box__column">
+            {# <div class="box__column">
                 {% set form = craft.formie.forms({ handle: 'printLidkaart' }).one() %}
                 {% do craft.formie.populateFormValues(form, {
                     firstName: user.altFirstName,
@@ -189,7 +187,7 @@
                         }
                     }
                 }) }}
-            </div> 
+            </div>  #}
         </div>
     </div>
 </div>
