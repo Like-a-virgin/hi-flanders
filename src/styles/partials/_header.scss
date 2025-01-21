@@ -2,7 +2,7 @@
 
 .header {
     width: 100%;
-    padding: 1.5rem;
+    padding: 1rem 1.5rem;
 
     position: absolute;
     top: 0;
@@ -15,9 +15,12 @@
     align-items: center;
     gap: 1rem;
 
+    box-shadow: 0px 3px 6px 0px rgba($clr-secondary, 0.1);
+    border-bottom: solid 0.5rem $clr-primary;
+
     @include screen($screen-s){
-        padding: 2rem;
-        height: 10vh;
+        padding: 1rem 2rem;
+        height: 6rem;
     }
 
     &__logo {
@@ -25,7 +28,7 @@
         height: fit-content;
 
         @include screen($screen-s) {
-            width: 12.5rem;
+            width: 11.25rem;
         }
     }
 

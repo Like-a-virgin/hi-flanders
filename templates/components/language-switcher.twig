@@ -2,7 +2,7 @@
 
 {% if allSites|length > 1 %}
     <div class="lang-switch" x-data="{ langOpen: false }">    
-        <button class="btn" @click="langOpen = ! langOpen">{{currentSite.language|upper}} {{ svg("assets/icons/chevron-down.svg")|attr({class: 'btn__chevron' }) }}</button>
+        <button class="btn btn--prim" @click="langOpen = ! langOpen">{{currentSite.language|upper}} {{ svg("assets/icons/chevron-down.svg")|attr({class: 'btn__chevron' }) }}</button>
         <ul class="lang-switch__langs" x-show="langOpen">
             {% for item in allSites %}
                 {% if item.id is not same as currentSite.id %}            

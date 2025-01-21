@@ -6,7 +6,7 @@
     row-gap: 1rem;
     column-gap: 0.75rem;
 
-    input {
+    input, select {
         border-radius: $br;
         padding: 1rem;
         border: solid $clr-primary 0.075rem;

@@ -1,7 +1,8 @@
 {% set selectedMember = craft.users.id(memberId).one() %}
-{% set extraMembers = craft.entries.section('extraMembers').authorId(memberId).all() %}
+{% set extraMembers = craft.entries.section('extraMembers').parentMember(memberId).all() %}
+{% set maxDate = now|date_modify('-3 years')|date("Y-m-d") %}
 
-<div class="modal" x-data="{deleteOpen: false, edit: false}">
+<div class="modal" x-data="{deleteOpen: false, editAddress: false, editPayment: false, extraMember: false}">
     <div class="modal__content">    
         <div class="box">
             <div class="box__heading box__heading--center">
@@ -13,7 +14,14 @@
                 <p class="box__membership">(008) {{selectedMember.customMemberId|slice(0, 3)}} {{selectedMember.customMemberId|slice(3, 3)}} {{selectedMember.customMemberId|slice(6, 3)}} {{selectedMember.customMemberId|slice(9, 3)}}</p>
             </div>
             <div class="box__content">
-                <div class="box__wrapper box__wrapper--labels" x-show="!edit">
+                {% if selectedMember.status is same as 'pending' %}
+                    <div class="box-error">
+                        <div class="box-error__error">
+                            <p>{{ 'Dit account is nog niet geactiveerd!'|t }}</p>
+                        </div>
+                    </div>
+                {% endif %}
+                <div class="box__wrapper box__wrapper--labels">
                     <div class="box__column box__column--2">
                         <p>{{'E-mail'|t}}</p>
                         <div class="box__info">
@@ -32,6 +40,12 @@
                                 <p>{{ selectedMember.contactPerson }}</p>
                             </div>
                         {% endif %}
+                    </div>
+                </div>
+                <div x-show="!editAddress" class="box__wrapper box__wrapper--labels">
+                    <div class="box__column box__column--4 box__column--flex-between">
+                        <h3>{{'Adres'|t}}</h3>
+                        <button class="box__function-btn" @click="editAddress = true">{{'Wijzigin'}} {{ svg("assets/icons/edit.svg")|attr({class: 'box__icon-option box__icon-edit' }) }}</button>
                     </div>
                     <div class="box__column box__column--2">
                         <p>{{'Straat'|t}}</p>
@@ -52,24 +66,87 @@
                         </div>
                     </div>
                     <div class="box__column box__column--2">
+                        <p>{{'Land'|t}}</p>
+                        <div class="box__info">
+                            <p>{{ selectedMember.country|capitalize }}</p>
+                        </div>
+                    </div>
+                    <div class="box__column box__column">
                         <p>{{'Stad'|t}}</p>
                         <div class="box__info">
                             <p>{{ selectedMember.city|capitalize }}</p>
                         </div>
                     </div>
-                    <div class="box__column box__column--2">
+                    <div class="box__column box__column">
                         <p>{{'Postcode'|t}}</p>
                         <div class="box__info">
                             <p>{{ selectedMember.postalCode }}</p>
                         </div>
                     </div>
                 </div>
-                <div x-show="edit">
-                    bewerk
-                </div>
+                <form x-show="editAddress" class="edit" method="post" accept-charset="UTF-8" enctype="multipart/form-data">
+                    {{ csrfInput() }}
+                    {{ actionInput('users/save-user') }}
+                    {{ hiddenInput('userId', selectedMember.id) }}
+                    {{ redirectInput(craft.app.request.absoluteUrl) }}
+                    <div class="box__column box__column--4">
+                        <h3>{{'Adres'|t}}</h3>
+                    </div>
+                    <div class="edit__column--2">
+                        <label class="edit__label" for="street">{{ 'Straat'|t }}</label>
+                        {{ input('text', 'fields[street]', selectedMember.street ?? null, {
+                            id: 'street',
+                            placeholder: 'Straat',
+                            required: true
+                        }) }}
+                    </div>
+                    <div class="edit__column--1-4">
+                        <label class="edit__label" for="number">{{'Nr'|t}}</label>
+                        {{ input('text', 'fields[streetNr]', selectedMember.streetNr ?? null, {
+                            id: 'number',
+                            placeholder: 'Nr',
+                            required: true
+                        }) }}
+                    </div>
+                    <div class="edit__column--1-4">
+                        <label class="edit__label" for="email">{{ 'Bus'|t }}</label>
+                        {{ input('text', 'fields[bus]', selectedMember.bus ?? null, {
+                            id: 'bus',
+                            placeholder: 'bus'
+                        }) }}
+                    </div>
+                    <div class="edit__column--2">
+                        <label class="edit__label" for="country">{{'Land'|t}}</label>
+                        {{ input('text', 'fields[country]', selectedMember.country ?? null, {
+                            id: 'country',
+                            placeholder: 'Land',
+                            required: true
+                        }) }}
+                    </div>
+                    <div class="edit__column">
+                        <label class="edit__label" for="postal-code">{{'Postcode'|t}}</label>
+                        {{ input('text', 'fields[postalCode]', selectedMember.postalCode ?? null, {
+                            id: 'postal-code',
+                            placeholder: 'Postcode',
+                            required: true
+                        }) }}
+                    </div>
+                    <div class="edit__column">
+                        <label class="edit__label" for="city">{{'Stad'|t}}</label>
+                        {{ input('text', 'fields[city]', selectedMember.city ?? null, {
+                            id: 'city',
+                            placeholder: 'Stad',
+                            required: true
+                        }) }}
+                    </div>
+                    <div class="box__column--flex">
+                        <button type="submit" class="box__function-btn box__function-btn--save">{{'Opslaan'|t}}</button>
+                        <button @click="editAddress = false" type="reset" class="box__function-btn box__function-btn--cancel">{{'Annuleer'}}</button>
+                    </div>
+                </form>
                 <div class="box__wrapper">
                     <div class="box__column box__column--4">
-                        <h3>Lidmaatschap</h3>
+                        <h3>{{'Lidmaatschap'|t}}</h3>
                     </div>
                     <div class="box__column box__column--4">
                         <div class="box__info box__info--prim">
@@ -84,41 +161,41 @@
                     </div>
                     <div class="box__column box__column--2">
                         <p>{{'Vervaldatum'|t}}</p>
-                        <div class="box__info {{ not selectedMember.memberDueDate ? 'box__info--error' }}">
-                            {% if selectedMember.memberDueDate %}
-                                <p>{{ selectedMember.memberDueDate|date("d/m/Y") }}</p>
-                            {% else %}
-                                <p>{{ 'Lidmaatschap is nog niet betaald'|t }}</p>
-                            {% endif %}
+                        <div class="box__info">
+                            <p>{{ selectedMember.memberDueDate|date("d/m/Y") }}</p>
                         </div>
                     </div>
                 </div>
-                <div class="box__wrapper">
-                    <div class="box__column box__column--4">
-                        <h3>Extra leden</h3>
-                    </div>
-                    {% if extraMembers|length > 0 %}
-                        {% for item in extraMembers %}
+                {% if selectedMember.getGroups()|first.handle is same as 'members' %}  
+                    <div class="box__wrapper">
+                        <div class="box__column box__column--4 box__column--flex-between">
+                            <h3>{{'Extra leden'|t}}</h3>
+                            <button class="box__function-btn box__function-btn--prim" @click="extraMember = true">{{'Extra lid toevoegen'}} {{ svg("assets/icons/add.svg")|attr({class: 'box__icon-option box__icon-edit' }) }}</button>
+                        </div>
+                        {% if extraMembers|length > 0 %}
+                            {% for item in extraMembers %}
+                                <div class="box__column box__column--4">
+                                    <div class="box__info box__info box__info--prim">
+                                        <p>{{ item.altFirstName }} {{ item.altLastName }} - {{ item.birthday|date('d/m/Y') }}</p>
+                                        <p>{{ item.memberRate.one().title }}</p>
+                                    </div>
+                                </div>                  
+                            {% endfor %}
+                        {% else %}
                             <div class="box__column box__column--4">
-                                <div class="box__info box__info box__info--prim">
-                                    <p>{{ item.altFirstName }} {{ item.altLastName }} - {{ item.birthday|date('d/m/Y') }}</p>
-                                    <p>{{ item.memberRate.one().title }}</p>
+                                <div class="box__info box__info">
+                                    <p>geen extra leden</p>
                                 </div>
-                            </div>                  
-                        {% endfor %}
-                    {% else %}
-                        <div class="box__column box__column--4">
-                            <div class="box__info box__info">
-                                <p>geen extra leden</p>
-                            </div>
-                        </div> 
-                    {% endif %}
-                </div>
-                <div class="box__wrapper">
-                    <div class="box__column box__column--4">
-                        <h3>Betaal status</h3>
+                            </div> 
+                        {% endif %}
                     </div>
-                    {% if selectedMember.paymentType.value is same as 'freeMember' %}
+                {% endif %}
+                <div x-show="!editPayment" class="box__wrapper">
+                    <div class="box__column box__column--4 box__column--flex-between">
+                        <h3>Betaal status</h3>
+                        <button class="box__function-btn" @click="editPayment = true">{{'Wijzigin'}} {{ svg("assets/icons/edit.svg")|attr({class: 'box__icon-option box__icon-edit' }) }}</button>
+                    </div>
+                    {% if selectedMember.paymentType.value is same as 'free' %}
                         <div class="box__column box__column--4">
                             <div class="box__info">
                                 <p>{{ selectedMember.paymentType.label }}</p>
@@ -139,16 +216,48 @@
                         </div>
                     {% endif %}
                 </div>
+                <form x-show="editPayment" class="edit" method="post" accept-charset="UTF-8" enctype="multipart/form-data">
+                    {{ csrfInput() }}
+                    {{ actionInput('users/save-user') }}
+                    {{ hiddenInput('userId', selectedMember.id) }}
+                    {{ redirectInput(craft.app.request.absoluteUrl) }}
+
+                    <div class="box__column box__column--4">
+                        <h3>Betaal status</h3>
+                    </div>
+                    <div class="edit__column--2">
+                        <label class="edit__label" for="pay-date">{{'Betaaldatum'|t}}</label>
+                        {{ input('text', 'fields[paymentDate]', null, {
+                            id: 'pay-date',
+                            placeholder: 'Betaaldatum'|t,
+                            onFocus: "(this.type = 'date', this.placeholder = '')",
+                            required: true
+                        }) }}
+                    </div>
+                    <div class="edit__column--2">
+                        <label class="edit__label" for="payment-type">{{'Betaalmethode'|t}}</label>
+                        <select name="fields[paymentType]" id="payment-type" required>
+                            <option value="">{{'Nog niet betaald'|t}}</option>
+                            {% for item in paymentMethods %}
+                                <option value="{{item.value}}">{{item.label}}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="box__column--flex">
+                        <button type="submit" class="box__function-btn box__function-btn--save">{{'Opslaan'|t}}</button>
+                        <button @click="editPayment = false" type="reset" class="box__function-btn box__function-btn--cancel">{{'Annuleer'}}</button>
+                    </div>
+                </form>
                 <div class="box__options">
                     <div class="box__options-wrapper">
-                        <button @click="deleteOpen = true" class="btn btn--red">Verwijder {{svg('assets/icons/trash.svg')|attr({class: 'btn__icon'})}} </button>
+                        <button @click="deleteOpen = true" class="btn btn--red">{{'Verwijder lid'|t}} {{svg('assets/icons/trash.svg')|attr({class: 'btn__icon'})}} </button>
                     </div>
-                    <button sprig class="btn" s-val:member-id="{{ null }}">Terug naar overzicht</button>
+                    <button sprig class="btn" s-val:member-id="{{ null }}">{{'Terug naar overzicht'|t}}</button>
                 </div>
             </div>
         </div>
     </div>
-    <div class="delete-modal" x-show="deleteOpen">    
+    <div class="extra-modal" x-show="deleteOpen">    
         <div class="box box--delete">
             <div class="box__heading">
                 <h2>{{'Lid verwijderen?'|t}}</h2>
@@ -169,4 +278,50 @@
             </div>
         </div>
     </div>
+    {% if selectedMember.getGroups()|first.handle is same as 'members' %}    
+        <div class="extra-modal" x-show="extraMember">
+            <div class="formbox box--extra">
+                <div class="formbox__heading">
+                    <h2>{{'Extra lid toevoegen'|t}}</h2>
+                </div>
+                <form class="formbox__form formbox__form--no-options" method="post" accept-charset="UTF-8">
+                    {{ csrfInput() }}
+                    {{ actionInput('entries/save-entry') }}
+                    {{ redirectInput(craft.app.request.absoluteUrl) }}
+
+                    {{ input('hidden', 'sectionId', craft.entries.section('extraMembers').sectionId|first) }}
+                    {{ input('hidden', 'fields[parentMember][]', selectedMember.id) }}
+
+                    <div class="formbox__column">                
+                        <label class="formbox__label" for="alt-first-name">{{'Voornaam'|t}}</label>
+                        {{ input('text', 'fields[altFirstName]', null, {
+                            id: 'alt-first-name',
+                            placeholder: 'Voornaam',
+                            required: true
+                        }) }}
+                    </div>
+                    <div class="formbox__column">                
+                        <label class="formbox__label" for="alt-sur-namee">{{'Familienaam'|t}}</label>
+                        {{ input('text', 'fields[altLastName]', null, {
+                            id: 'alt-sur-name',
+                            placeholder: 'Achternaam',
+                            required: true
+                        }) }}
+                    </div>
+                    <div class="formbox__column--full">                
+                        <label class="formbox__label" for="birthday">{{'Geboortedatum'|t}}</label>
+                        {{ input('text', 'fields[birthday]', null, {
+                            id: 'birthday',
+                            placeholder: 'Geboortedatum',
+                            onFocus: "(this.type = 'date', this.placeholder = '')",
+                            required: true,
+                            max: maxDate
+                        }) }}
+                    </div>   
+                    <button @click="extraMember = false" type="reset" class="formbox__button formbox__button--sec formbox__column">{{'Annuleer'|t}}</button>
+                    <button type="submit" class="formbox__button formbox__button--sec formbox__column">{{'Voeg toe'|t}}</button>
+                </form>
+            </div>
+        </div>
+    {% endif %}
 </div>

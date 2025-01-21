@@ -1,5 +1,6 @@
 
-<div class="box box--total" :class="openTotal ? 'box--total-open' : ''" x-data="{openTotal: false}">
+
+<div id="payment" class="box box--total" :class="openTotal ? 'box--total-open' : ''" x-data="{openTotal: {{totalPrice and totalPrice|money is same as 0 ? 'false' : 'true' }}}">
     <div class="box__heading box__heading--center" @click="openTotal = ! openTotal">
         <h1>{{'Totaal'|t}}</h1>
         {{ svg("assets/icons/chevron-down.svg")|attr({class: 'box__icon box__icon--chevron' }) }}
@@ -31,6 +32,14 @@
                         </div>
                     </div>
                 {% endfor %}
+            {% endif %}
+            {% if user.requestPrint %}
+                <div class="box__column box__column--4">            
+                    <div class="box__info {{user.payedCardDate and user.payedCardDate|date('m-d-Y') <= now|date('m-d-Y') ? 'box__info--sec' }}">
+                        <p>{{ cardRate.title }}</p>
+                        <p>{{ user.payedCardDate and user.payedCardDate|date('m-d-Y') <= now|date('m-d-Y') ? 'Reeds betaald'|t : cardRate.price|money }}</p>
+                    </div>
+                </div>
             {% endif %}
         </div>
         {% if totalPrice %}

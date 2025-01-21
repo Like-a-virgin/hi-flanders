@@ -60,6 +60,20 @@ class PaymentController extends Controller
             }
         }
 
+        $printRequest = $user->getFieldValue('requestPrint');
+        $printPaydate = $user->getFieldValue('payedCardDate');
+
+        $printRateEntry = Entry::find()
+        ->section('rates')
+        ->memberType('card')
+        ->one();
+
+        $printRate = $printRateEntry->getFieldValue('price');
+
+        if ($printRequest and !$printPaydate) {
+            $totalRate = $totalRate->add($printRate);
+        }
+
         $totalAmount = $totalRate->getAmount(); // Total as integer in cents
         $totalFormatted = number_format($totalAmount / 100, 2); // Convert to euros
 
@@ -133,18 +147,18 @@ class PaymentController extends Controller
             if ($userId) {
                 $user = Craft::$app->users->getUserById($userId);
                 if ($user) {
-                    $creationDate = $user->dateCreated;
-                    $expirationDate = new DateTime();
-
                     $user->setFieldValue('paymentDate', $paymentDate);
-                    $expirationDate->setDate(
-                        $paymentDate->format('Y') + 1, // Add one year to the current year
-                        $creationDate->format('m'),   // Month from user's creation date
-                        $creationDate->format('d')    // Day from user's creation date
-                    );
+                    $user->setFieldValue('paymentType', 'online');
 
                     if (!Craft::$app->elements->saveElement($user)) {
                         Craft::error('Failed to update user payment date.', __METHOD__);
+                    }
+
+                    $printRequest = $user->getFieldValue('requestPrint');
+                    $printPaydate = $user->getFieldValue('payedCardDate');
+
+                    if ($printRequest and !$printPaydate) {
+                        $user->setFieldValue('payedCardDate', $paymentDate);
                     }
                 }
             }

@@ -1,0 +1,7 @@
+@use "../abstracts" as *;
+
+.footer {
+    height: 4rem;
+    width: 100vw;
+    background-color: $clr-secondary;
+}

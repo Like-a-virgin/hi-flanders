@@ -74,11 +74,18 @@ class AdminRegister extends BaseModule
             'groupType' => null,
             'organisation' => null,
             'tel' => null,
-            'contactPerson' => null
+            'contactPerson' => null,
+            'memberDueDate' => null
         ];
 
         foreach ($fields as $fieldHandle => $coreField) {
             $value = $request->getBodyParam("fields.{$fieldHandle}");
+
+            if ($fieldHandle === 'memberDueDate') {
+                // Automatically set memberDueDate to today + 1 year
+                $currentDate = new \DateTime();
+                $value = $currentDate->modify('+1 year')->format('Y-m-d');
+            }
     
             if ($value !== null) {
                 $user->setFieldValue($fieldHandle, $value);

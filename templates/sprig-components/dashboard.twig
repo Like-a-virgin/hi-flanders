@@ -73,33 +73,30 @@
 	<div class="table__options">
 		<div class="table__option-search">
 			{{ svg("assets/icons/search.svg")|attr({class: 'table__icon-search' }) }}
-			<input sprig s-replace="#table-members" type="text" class="table__search" name="search" value="{{search}}" placeholder="Zoeken">
+			<input sprig  type="text" class="table__search" name="search" value="{{search}}" placeholder="Zoeken">
 		</div>
 		<div class="filter">
 			<button title="Filter" aria-label="{{ 'Filter' }}" class="filter__option-btn" @click="openOption === 1 ? openOption = false : openOption = 1">{{svg('assets/icons/filter.svg')|attr({class: 'filter__option-icon' })}}</button>
 			<div class="filter__box filter__box--filters" x-show="openOption === 1">
 				<div class="filter__select-box">
-					<p class="filter__title">Betaalmethode</p>
-					<select sprig s-replace="#table-members" class="filter__select" name="payMethod">
-						<option value="" {{ not payMethod ? 'selected'}}>Selecteer een betaalmethode</option>
+					<select sprig  class="filter__select" name="payMethod">
+						<option value="" {{ not payMethod ? 'selected'}}>{{'Betaalmethode'|t}}</option>
 						{% for item in paymentMethods %}
 							<option class="filter__option" value="{{item.value}}" {{ payMethod == item.value ? 'selected'}}>{{item.label}}</option>
 						{% endfor %}
 					</select>
 				</div>
 				<div class="filter__select-box">
-					<p class="filter__title">Lidkaart type</p>
-					<select sprig s-replace="#table-members" class="filter__select" name="cardType" id="">
-						<option value="" {{ not cardType ? 'selected'}}>{{ 'Selecteer een printoptie'|t }}</option>
+					<select sprig  class="filter__select" name="cardType" id="">
+						<option value="" {{ not cardType ? 'selected'}}>{{ 'Lidkaart type'|t }}</option>
 						{% for item in cardTypes %}
 							<option class="filter__option" value="{{item.value}}" {{ cardType == item.value ? 'selected'}}>{{item.label}}</option>
 						{% endfor %}
 					</select>
 				</div>
 				<div class="filter__select-box">
-					<p class="filter__title">Leeftijdsgroep</p>
-					<select sprig s-replace="#table-members" class="filter__select" name="ageGroup" id="">
-						<option value="{{null}}" {{ not ageGroup ? 'selected'}}>{{'Selecteer een leeftijdsgroep'|t}}</option>
+					<select sprig  class="filter__select" name="ageGroup" id="">
+						<option value="{{null}}" {{ not ageGroup ? 'selected'}}>{{'Leeftijdsgroep'|t}}</option>
 						{% for item in ageGroups %}
 							<option class="filter__option" value="{{item.id}}" {{ ageGroup == item.id ? 'selected'}}>{{item.minAge}}
 								{{item.maxAge ? '- ' ~ item.maxAge : '+'}}</option>
@@ -110,21 +107,21 @@
 					<p class="filter__title">Registratiedatum</p>
 					<div class="filter__date-option">
 						<label class="filter__date-text" for="reg-min-date">Van:</label>
-						<input sprig class="filter__date" type="date" id="reg-min-date" name="regMin" s-trigger="change" value="{{regMin}}" s-replace="#table-members">
+						<input sprig class="filter__date" type="date" id="reg-min-date" name="regMin" s-trigger="change" value="{{regMin}}" >
 						<label class="filter__date-text" for="reg-max-date">Tot:</label>
-						<input sprig class="filter__date" type="date" id="reg-max-date" name="regMax" s-trigger="change" value="{{regMax}}" s-replace="#table-members">
+						<input sprig class="filter__date" type="date" id="reg-max-date" name="regMax" s-trigger="change" value="{{regMax}}" >
 					</div>
 				</div>
 				<div>
 					<p class="filter__title">Betaaldatum</p>
 					<div class="filter__date-option">
 						<label class="filter__date-text" for="pay-min-date">Van:</label>
-						<input sprig class="filter__date" type="date" id="pay-min-date" name="payMin" s-trigger="change" value="{{payMin}}" s-replace="#table-members">
+						<input sprig class="filter__date" type="date" id="pay-min-date" name="payMin" s-trigger="change" value="{{payMin}}" >
 						<label class="filter__date-text" for="pay-max-date">Tot:</label>
-						<input sprig class="filter__date" type="date" id="pay-max-date" name="payMax" s-trigger="change" value="{{payMax}}" s-replace="#table-members">
+						<input sprig class="filter__date" type="date" id="pay-max-date" name="payMax" s-trigger="change" value="{{payMax}}" >
 					</div>
 				</div>
-				<button class="btn" sprig s-val:pay-method="{{null}}" s-val:card-type="{{null}}" s-val:age-group="{{null}}" s-val:reg-min="{{null}}" s-val:reg-max="{{null}}" s-val:pay-min="{{null}}" s-val:pay-max="{{null}}">reset</button>
+				<button class="btn" sprig s-val:pay-method="{{null}}" s-val:card-type="{{null}}" s-val:age-group="{{null}}" s-val:reg-min="{{null}}" s-val:reg-max="{{null}}" s-val:pay-min="{{null}}" s-val:pay-max="{{null}}" s-val:search="{{null}}">reset</button>
 			</div>
 		</div>
 		<div class="filter">
@@ -134,7 +131,7 @@
 				<a class="filter__btn" href="/register-group">{{'Nieuw groep'|t}}</a>
 			</div>
 		</div>
-		<a href="/export-users" title="{{'Download excel'}}" class="table__download">{{svg('assets/icons/download.svg')|attr({class: "table__download-icon"})}}</a>
+		<a href="/export-users?{{ filters|url_encode }}" title="{{'Download excel'}}" class="table__download">{{svg('assets/icons/download.svg')|attr({class: "table__download-icon"})}}</a>
 	</div>
 	<div class="table__content" id="table-members">
 		<table
@@ -159,7 +156,7 @@
 					{% set memberAge = (currentDate|date('Y') - memberBday|date('Y')) - (currentDate|date('md') < memberBday|date('md') ? 1 : 0) %}
 					{% set memberType = memberTypes|filter(i => i.minAge <= memberAge and (i.maxAge is null or i.maxAge >= memberAge)) %}
 					{% set extraMembers = craft.entries.section('extraMembers').authorId(member.id).all() %}
-					{% set paymentStatus = member.paymentDate and member.expPaymentDate and (now >= member.paymentDate) and (now <= member.expPaymentDate) %}
+					{% set paymentStatus = member.paymentDate and member.memberDueDate and (now >= member.paymentDate) and (now <= member.memberDueDate) %}
 					<tr>
 						<td>
 							{% if member.getGroups()|first.handle is same as 'membersGroup' %}

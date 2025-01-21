@@ -125,22 +125,17 @@ class RateMember extends BaseModule
         $paymentType = $paymentTypeField ? (string)$paymentTypeField : null;
 
         if ($paymentType) {
-            // Payment type is set; assign payment date and expiration date
             $user->setFieldValue('paymentDate', $paymentDate);
-            // $user->setFieldValue('expPaymentDate', $expirationDate);
             $user->setFieldValue('paymentType', $paymentType);
     
             Craft::info("Assigned rate with ID {$rate->id}, paymentType {$paymentType}, paymentDate {$paymentDate}, and expirationDate {$expirationDate} for user ID {$user->id}", __METHOD__);
         } elseif ($ratePrice === null || (float) $ratePrice <= 0) {
             $user->setFieldValue('paymentDate', $paymentDate);
-            // $user->setFieldValue('expPaymentDate', $expirationDate);
-
             $user->setFieldValue('paymentType', 'free');
 
             Craft::info("Assigned rate with ID {$rate->id} and set paymentDate to {$paymentDate} for user ID {$user->id}", __METHOD__);
         } else {
             $user->setFieldValue('paymentDate', null);
-            // $user->setFieldValue('expPaymentDate', $expirationDate);
             $user->setFieldValue('paymentType', null);
 
             Craft::info("Assigned rate with ID {$rate->id} without paymentDate for user ID {$user->id}", __METHOD__);

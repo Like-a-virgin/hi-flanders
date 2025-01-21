@@ -7,6 +7,9 @@ permissions:
   - 'assignusergroup:a21d7477-05ca-43ea-ae84-fc44c3e16a70' # Leden groep
   - 'assignusergroup:c573f0bd-29d4-4985-8cff-271a6ee231a2' # Beheerder
   - assignuserpermissions
+  - 'createentries:1d223580-d398-4fc6-af8a-8a1e08933341' # Extra leden
+  - 'deleteentries:1d223580-d398-4fc6-af8a-8a1e08933341' # Extra leden
+  - 'deletepeerentries:1d223580-d398-4fc6-af8a-8a1e08933341' # Extra leden
   - deleteusers
   - 'editsite:359a39c5-8655-460f-a1b4-0c097ea0edb2' # users
   - 'editsite:d74da9d4-3821-46f5-8cf4-f7c4d12c04df' # users fr
@@ -15,3 +18,7 @@ permissions:
   - impersonateusers
   - moderateusers
   - registerusers
+  - 'saveentries:1d223580-d398-4fc6-af8a-8a1e08933341' # Extra leden
+  - 'savepeerentries:1d223580-d398-4fc6-af8a-8a1e08933341' # Extra leden
+  - 'viewentries:1d223580-d398-4fc6-af8a-8a1e08933341' # Extra leden
+  - 'viewpeerentries:1d223580-d398-4fc6-af8a-8a1e08933341' # Extra leden

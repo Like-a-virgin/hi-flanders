@@ -9,9 +9,9 @@
     </div>
     <div class="header__options" :class="openOptions ? 'header__options--open' : 'header__options--closed'">        
         {% if currentUser %}
-            <a class="btn" href="{{ logoutUrl }}">Logout</a>
+            <a class="btn btn--prim" href="{{ logoutUrl }}">Logout</a>
         {% endif %}
-        <a class="btn" href="{{ craft.entries.section('mainWebsite').one().linkExtern }}">{{'Naar website'|t}}</a>
+        <a class="btn btn--prim " href="{{ craft.entries.section('mainWebsite').one().linkExtern }}">{{'Naar website'|t}}</a>
         {% include "components/language-switcher.twig" %}
-    </div>
+    </div> 
 </header>

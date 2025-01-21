@@ -21,7 +21,12 @@
         padding: $btn-padding;
         border-radius: $br;
         font-weight: $fw-bold;
+
+        a {
+            color: $clr-error-text;
+        }
     }
+
 }
 
 .box-container {
@@ -133,6 +138,20 @@
         p {
             font-size: 1.5rem;
         }
+    }
+
+    &__column--flex-between {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    &__column--flex {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        gap: $sp-s;
     }
 
     &__options {
@@ -302,6 +321,17 @@
         &:hover {
             background-color: $clr-secondary;
             color: $clr-primary;
+            border: solid 0.1rem transparent;
+        }
+    }
+
+    &__function-btn--cancel {
+        background-color: $clr-secondary;
+        color: $clr-primary;
+
+        &:hover {
+            background-color: $clr-primary;
+            color: $clr-secondary;
             border: solid 0.1rem transparent;
         }
     }

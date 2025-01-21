@@ -64,6 +64,10 @@
             color: $clr-primary;
         }
     }
+
+    .btn__chevron {
+        fill: $clr-secondary;
+    }
 }
 
 .btn--red, .btn--green {

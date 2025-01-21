@@ -9,6 +9,7 @@
     {% set maxDate = now|date_modify('-3 years')|date("Y-m-d") %}
     {% set memberRates = craft.entries.section('rates').all() %}
     {% set urlGroupRequest = craft.entries.section('requestGroup').one().url %}
+    {% set todayPlusOneYear = now|date_modify('+1 year')|date('Y-m-d') %}
 
     {% macro errorList(errors) %}
     {% if errors %}
@@ -26,6 +27,7 @@
             {{ redirectInput(activationPage) }}
 
             {{ input('hidden', 'groups', 'members') }}
+            {{ input('hidden', 'fields[memberDueDate]', todayPlusOneYear) }}
             
             {% if user %}
                 {% set errors = user.getErrors() %}
@@ -52,7 +54,7 @@
                     placeholder: 'Voornaam'|t,
                     required: true
                 }) }}
-                {{ input('hidden', 'firstName', user.altFirstName ?? null) }}
+                {# {{ input('hidden', 'firstName', user.altFirstName ?? null) }} #}
             </div>
             <div class="formbox__column {{ user and user.getErrors('altLastName') ? 'formbox__column--error' }}">     
                 <label class="formbox__label" for="alt-sur-name">{{'Familienaam'|t}}</label>
@@ -61,7 +63,7 @@
                     placeholder: 'Familienaam'|t,
                     required: true
                 }) }}
-                {{ input('hidden', 'lastName', user.altLastName ?? null) }}
+                {# {{ input('hidden', 'lastName', user.altLastName ?? null) }} #}
             </div>
             <div class="formbox__column--full {{ user and user.getErrors('email') ? 'formbox__column--error' }}">                
                 <label class="formbox__label" for="email">{{'E-mail'|t}}</label>

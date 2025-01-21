@@ -36,7 +36,32 @@ class ExportController extends Controller
             throw new ForbiddenHttpException('You do not have permission to access this resource.');
         }
 
-        $users = User::find()->all();
+        $queryParams = Craft::$app->getRequest()->getQueryParams();
+        unset($queryParams['page']);
+
+        $usersQuery = User::find();
+
+        // Apply filters if present
+        if (!empty($queryParams['search'])) {
+            $usersQuery->search($queryParams['search']);
+        }
+        if (!empty($queryParams['payMethod'])) {
+            $usersQuery->paymentType($queryParams['payMethod']);
+        }
+        if (!empty($queryParams['cardType'])) {
+            $usersQuery->cardType($queryParams['cardType']);
+        }
+        if (!empty($queryParams['ageGroup'])) {
+            $usersQuery->memberRate($queryParams['ageGroup']);
+        }
+        if (!empty($queryParams['regMin']) && !empty($queryParams['regMax'])) {
+            $usersQuery->andWhere(['between', 'dateCreated', $queryParams['regMin'], $queryParams['regMax']]);
+        }
+        if (!empty($queryParams['payMin']) && !empty($queryParams['payMax'])) {
+            $usersQuery->andWhere(['between', 'fields.paymentDate', $queryParams['payMin'], $queryParams['payMax']]);
+        }
+
+        $users = $usersQuery->all();
         $data = [['ID', 'Name', 'Birthday', 'Email', 'Country', 'Street', 'Street number', 'Bus', 'City', 'Postalcode ', 'Membertype', 'Payment type', 'Pay date']];
 
         foreach ($users as $user) {
@@ -80,7 +105,11 @@ class ExportController extends Controller
 
         foreach ($data as $rowIndex => $row) {
             foreach ($row as $colIndex => $value) {
-                $sheet->setCellValueByColumnAndRow($colIndex + 1, $rowIndex + 1, $value);
+                // Convert column index to letter (e.g., 0 => A, 1 => B)
+                $columnLetter = \PhpOffice\PhpSpreadsheet\Cell\Coordinate::stringFromColumnIndex($colIndex + 1);
+                $cellCoordinate = $columnLetter . ($rowIndex + 1);
+        
+                $sheet->setCellValue($cellCoordinate, $value);
             }
         }
 
