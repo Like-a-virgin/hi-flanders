@@ -70,7 +70,7 @@
                     required: true
                 }) }}
             </div>
-            <div class="formbox__column">                
+            <div class="formbox__column--full">                
                 <label class="formbox__label" for="email">{{'E-mail'|t}}</label>
                 {{ input('email', 'email', user.email ?? null, {
                     id: 'email',
@@ -78,7 +78,7 @@
                     required: true
                 }) }}
             </div> 
-            <div class="formbox__column">
+            <div class="formbox__column--full">
                 <label class="formbox__label" for="confirm-email">{{ 'Confirm E-mail'|t }}</label>
                 {{ input('email', 'confirmEmail', null, {
                     id: 'confirm-email',
@@ -96,6 +96,14 @@
                     max: maxDate
                 }) }}
             </div>     
+            <div class="formbox__column--full">
+                <label class="formbox__label" for="country">{{'Land'|t}}</label>
+                {{ input('text', 'fields[country]', user.country ?? null, {
+                    id: 'country',
+                    placeholder: 'Land'|t,
+                    required: true
+                }) }}
+            </div>
             <div class="formbox__column">
                 <label class="formbox__label" for="street">{{ 'Straat'|t }}</label>
                 {{ input('text', 'fields[street]', user.street ?? null, {
@@ -120,14 +128,6 @@
                 }) }}
             </div>
             <div class="formbox__column">
-                <label class="formbox__label" for="postal-code">{{'Postcode'|t}}</label>
-                {{ input('text', 'fields[postalCode]', user.postalCode ?? null, {
-                    id: 'postal-code',
-                    placeholder: 'Postcode'|t,
-                    required: true
-                }) }}
-            </div>
-            <div class="formbox__column">
                 <label class="formbox__label" for="city">{{'Stad'|t}}</label>
                 {{ input('text', 'fields[city]', user.city ?? null, {
                     id: 'city',
@@ -135,11 +135,11 @@
                     required: true
                 }) }}
             </div>
-            <div class="formbox__column--full">
-                <label class="formbox__label" for="country">{{'Land'|t}}</label>
-                {{ input('text', 'fields[country]', user.country ?? null, {
-                    id: 'country',
-                    placeholder: 'Land'|t,
+            <div class="formbox__column">
+                <label class="formbox__label" for="postal-code">{{'Postcode'|t}}</label>
+                {{ input('text', 'fields[postalCode]', user.postalCode ?? null, {
+                    id: 'postal-code',
+                    placeholder: 'Postcode'|t,
                     required: true
                 }) }}
             </div>

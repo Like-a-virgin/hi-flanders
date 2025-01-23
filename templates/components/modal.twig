@@ -1,8 +1,8 @@
 {% set selectedMember = craft.users.id(memberId).one() %}
 {% set extraMembers = craft.entries.section('extraMembers').parentMember(memberId).all() %}
-{% set maxDate = now|date_modify('-3 years')|date("Y-m-d") %}
+{% set minDate = now|date_modify('-17 years')|date("Y-m-d") %}
 
-<div class="modal" x-data="{deleteOpen: false, editAddress: false, editPayment: false, extraMember: false}">
+<div class="modal" x-data="{deleteOpen: false, editAddress: false, editPayment: false, extraMember: false, editPrint: false}">
     <div class="modal__content">    
         <div class="box">
             <div class="box__heading box__heading--center">
@@ -45,7 +45,7 @@
                 <div x-show="!editAddress" class="box__wrapper box__wrapper--labels">
                     <div class="box__column box__column--4 box__column--flex-between">
                         <h3>{{'Adres'|t}}</h3>
-                        <button class="box__function-btn" @click="editAddress = true">{{'Wijzigin'}} {{ svg("assets/icons/edit.svg")|attr({class: 'box__icon-option box__icon-edit' }) }}</button>
+                        <button class="box__function-btn" @click="editAddress = true">{{'Wijzigen'|t}} {{ svg("assets/icons/edit.svg")|attr({class: 'box__icon-option box__icon-edit' }) }}</button>
                     </div>
                     <div class="box__column box__column--2">
                         <p>{{'Straat'|t}}</p>
@@ -169,22 +169,29 @@
                 {% if selectedMember.getGroups()|first.handle is same as 'members' %}  
                     <div class="box__wrapper">
                         <div class="box__column box__column--4 box__column--flex-between">
-                            <h3>{{'Extra leden'|t}}</h3>
-                            <button class="box__function-btn box__function-btn--prim" @click="extraMember = true">{{'Extra lid toevoegen'}} {{ svg("assets/icons/add.svg")|attr({class: 'box__icon-option box__icon-edit' }) }}</button>
+                            <h3>{{'Kinderen'|t}}</h3>
+                            <button class="box__function-btn box__function-btn--prim" @click="extraMember = true">{{'Kind toevoegen'}} {{ svg("assets/icons/add.svg")|attr({class: 'box__icon-option box__icon-edit' }) }}</button>
                         </div>
                         {% if extraMembers|length > 0 %}
                             {% for item in extraMembers %}
-                                <div class="box__column box__column--4">
+                                <div class="box__column box__column--4 box__column--flex">
                                     <div class="box__info box__info box__info--prim">
                                         <p>{{ item.altFirstName }} {{ item.altLastName }} - {{ item.birthday|date('d/m/Y') }}</p>
                                         <p>{{ item.memberRate.one().title }}</p>
                                     </div>
-                                </div>                  
+                                    <form class="form-delete form-delete--full" method="post" accept-charset="UTF-8">
+                                        {{ csrfInput() }}
+                                        {{ actionInput('elements/delete') }}
+                                        {{ redirectInput(craft.app.request.absoluteUrl) }}
+                                        {{ input('hidden', 'elementId', item.id) }}
+                                        <button type="submit" class="btn btn--red btn--square">{{svg('assets/icons/trash.svg')|attr({class: "btn__icon"})}}</button>
+                                    </form>
+                                </div>                                    
                             {% endfor %}
                         {% else %}
                             <div class="box__column box__column--4">
                                 <div class="box__info box__info">
-                                    <p>geen extra leden</p>
+                                    <p>{{'Geen kinderen'|t}}</p>
                                 </div>
                             </div> 
                         {% endif %}
@@ -193,7 +200,7 @@
                 <div x-show="!editPayment" class="box__wrapper">
                     <div class="box__column box__column--4 box__column--flex-between">
                         <h3>Betaal status</h3>
-                        <button class="box__function-btn" @click="editPayment = true">{{'Wijzigin'}} {{ svg("assets/icons/edit.svg")|attr({class: 'box__icon-option box__icon-edit' }) }}</button>
+                        <button class="box__function-btn" @click="editPayment = true">{{'Wijzigen'|t}} {{ svg("assets/icons/edit.svg")|attr({class: 'box__icon-option box__icon-edit' }) }}</button>
                     </div>
                     {% if selectedMember.paymentType.value is same as 'free' %}
                         <div class="box__column box__column--4">
@@ -248,6 +255,23 @@
                         <button @click="editPayment = false" type="reset" class="box__function-btn box__function-btn--cancel">{{'Annuleer'}}</button>
                     </div>
                 </form>
+                <div x-show="!editPrint" class="box__wrapper">
+                    <div class="box__column box__column--4 box__column--flex-between">
+                        <h3>{{'Lidkaarttype'}}</h3>
+                    </div>
+                    <div class="box__column box__column--4">
+                        <div class="box__info {{ selectedMember.requestPrint and not selectedMember.payedPrintDate ? 'box__info--error' }}">
+                            {% if not selectedMember.requestPrint and not selectedMember.payedPrintDate %}
+                                <p>{{'Online'|t}}</p>
+                            {% elseif selectedMember.requestPrint and not selectedMember.payedPrintDate %}
+                                <p>{{'Print'|t}}</p>
+                                <p>{{'Nog niet belaald'|t}}</p>
+                            {% else %}
+                                <p>{{'Print en online'|t}}</p>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
                 <div class="box__options">
                     <div class="box__options-wrapper">
                         <button @click="deleteOpen = true" class="btn btn--red">{{'Verwijder lid'|t}} {{svg('assets/icons/trash.svg')|attr({class: 'btn__icon'})}} </button>
@@ -266,9 +290,10 @@
                 <p>{{'Ben je zeker dat je'|t}} <strong>{{ selectedMember.fullName }}</strong> {{'met lidnummer'|t}} <strong>(008) {{selectedMember.customMemberId|slice(0, 3)}} {{selectedMember.customMemberId|slice(3, 3)}} {{selectedMember.customMemberId|slice(6, 3)}} {{selectedMember.customMemberId|slice(9, 3)}}</strong> {{'wilt verwijderen als lid?'|t}}</p>
                 <div class="box__btns">
                     <button class="btn" @click="deleteOpen = false">{{'Annuleer'|t}}</button>                
-                    <form class="form-delete" method="post">
+                    <form class="form-delete" method="post" accept-charset="UTF-8">
                         {{ csrfInput() }}
                         {{ actionInput('elements/delete') }}
+                        
                         {{ input('hidden', 'elementId', selectedMember.id) }}
                         <button class="btn" type="submit">
                             {{'Verwijder'|t}}
@@ -282,7 +307,7 @@
         <div class="extra-modal" x-show="extraMember">
             <div class="formbox box--extra">
                 <div class="formbox__heading">
-                    <h2>{{'Extra lid toevoegen'|t}}</h2>
+                    <h2>{{'Kind toevoegen'|t}}</h2>
                 </div>
                 <form class="formbox__form formbox__form--no-options" method="post" accept-charset="UTF-8">
                     {{ csrfInput() }}
@@ -315,7 +340,7 @@
                             placeholder: 'Geboortedatum',
                             onFocus: "(this.type = 'date', this.placeholder = '')",
                             required: true,
-                            max: maxDate
+                            min: minDate
                         }) }}
                     </div>   
                     <button @click="extraMember = false" type="reset" class="formbox__button formbox__button--sec formbox__column">{{'Annuleer'|t}}</button>

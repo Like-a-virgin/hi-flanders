@@ -22,6 +22,7 @@
 
 use craft\helpers\App;
 use modules\adminregister\AdminRegister;
+use modules\beforeactivationuser\BeforeActivationUser;
 use modules\confirmemail\ConfirmEmail;
 use modules\custommemberid\CustomMemberId;
 use modules\excelusers\ExcelUsers;
@@ -43,6 +44,7 @@ return [
         'admin-register' => AdminRegister::class,
         'excel-users' => ExcelUsers::class,
         'membership-renewal' => MembershipRenewal::class,
+        'before-activation-user' => BeforeActivationUser::class,
     ], 
     'bootstrap' => [
         'rate-member', 
@@ -54,5 +56,6 @@ return [
         'admin-register',
         'excel-users',
         'membership-renewal',
+        'before-activation-user',
     ],
 ];

@@ -5,37 +5,26 @@ namespace modules\membershiprenewal;
 use Craft;
 use craft\elements\User;
 use craft\queue\BaseJob;
+use craft\services\Elements;
 use craft\services\Users;
 use craft\events\UserEvent;
 use yii\base\Event;
+use craft\mail\Message;
+use yii\base\Module as BaseModule;
 use DateTime;
 use DateTimeZone;
 
-use yii\base\Module as BaseModule;
-
-/**
- * MembershipRenewal module
- *
- * @method static MembershipRenewal getInstance()
- */
 class MembershipRenewal extends BaseModule
 {
     public function init(): void
     {
         Craft::setAlias('@modules/membershiprenewal', __DIR__);
 
-        // Set the controllerNamespace based on whether this is a console or web request
-        if (Craft::$app->request->isConsoleRequest) {
-            $this->controllerNamespace = 'modules\\membershiprenewal\\console\\controllers';
-        } else {
-            $this->controllerNamespace = 'modules\\membershiprenewal\\controllers';
-        }
-
         parent::init();
 
+        // Schedule the daily check
         $this->scheduleDailyCheck();
 
-        // Attach event handlers for user deactivation
         Event::on(
             Users::class,
             Users::EVENT_AFTER_DEACTIVATE_USER,
@@ -51,36 +40,7 @@ class MembershipRenewal extends BaseModule
 
         if (!$lastRun || (time() - $lastRun) >= 86400) { // 24 hours = 86400 seconds
             Craft::$app->getQueue()->push(new DailyMembershipRenewalJob());
-            Craft::$app->cache->set('membershipRenewalLastRun', time(), 86400); // Cache the last run time for 24 hours
-        }
-    }
-
-    public function processMembershipRenewals(): void
-    {
-        $usersService = Craft::$app->getUsers();
-        $currentDate = new DateTime('now', new DateTimeZone('UTC'));
-
-        // Fetch all users in the specified groups
-        $users = User::find()->group(['members', 'membersGroup'])->all();
-
-        foreach ($users as $user) {
-            // Parse the user's creation date
-            $createdDate = DateTime::createFromFormat('Y-m-d H:i:s', $user->dateCreated->format('Y-m-d H:i:s'), new DateTimeZone('UTC'));
-            if ($createdDate === false) {
-                Craft::error('Invalid date format for user ID: ' . $user->id, __METHOD__);
-                continue;
-            }
-
-            // Check if the user is eligible for renewal
-            $diff = $createdDate->diff($currentDate);
-            if ($diff->y >= 1) {
-                // Deactivate the user
-                if (!$usersService->deactivateUser($user)) {
-                    Craft::error('Failed to deactivate user: ' . $user->id, __METHOD__);
-                    continue;
-                }
-                
-            }
+            Craft::$app->cache->set('membershipRenewalLastRun', time(), 86400);
         }
     }
 
@@ -89,36 +49,67 @@ class MembershipRenewal extends BaseModule
         $user = $event->user;
         $usersService = Craft::$app->getUsers();
 
-        $user->setFieldValue('paymentDate', null);
-        $user->setFieldValue('memberDueDate', (new DateTime('now', new DateTimeZone('UTC')))->modify('+1 year')->format('Y-m-d'));
-        $user->setFieldValue('paymentType', null);
-        $user->setFieldValue('memberRate', []);
+        // Check if the user's customStatus is `renew`
+        if ($user->getFieldValue('customStatus')->value === 'renew') {
+            $activationUrl = $usersService->getEmailVerifyUrl($user);
+            $templatePath = 'email/my-email-template';
 
-        if (!Craft::$app->elements->saveElement($user)) {
-            Craft::error('Failed to save updated fields for user ID: ' . $user->id, __METHOD__);
-            Craft::error('Errors: ' . json_encode($user->getErrors()), __METHOD__);
-        } else {
-            Craft::info('Successfully updated user ID: ' . $user->id, __METHOD__);
-        }
+            // Prepare the email content
+            $emailSubject = Craft::t('app', 'Reactivate Your Membership');
+            $emailBody = Craft::$app->view->renderTemplate('templates/email/reactivate-membership', [
+                'username' => $user->fullName,
+                'activationLink' => $activationUrl,
+            ]);
 
-        try {
-            if ($usersService->sendNewEmailVerifyEmail($user)) {
-                Craft::info('Activation email sent to user: ' . $user->email, __METHOD__);
-            } else {
-                Craft::error('Failed to send activation email to user: ' . $user->email, __METHOD__);
+            // Send the email
+            try {
+                $message = new Message();
+                $message->setTo($user->email)
+                    ->setSubject($emailSubject)
+                    ->setHtmlBody($emailBody)
+                    ->setTextBody(strip_tags($emailBody)); 
+
+                if (!Craft::$app->getMailer()->send($message)) {
+                    Craft::error('Failed to send activation email to user: ' . $user->email, __METHOD__);
+                } else {
+                    Craft::info('Activation email sent to user: ' . $user->email, __METHOD__);
+                }
+            } catch (\Throwable $e) {
+                Craft::error('Error sending activation email: ' . $e->getMessage(), __METHOD__);
             }
-        } catch (\Throwable $e) {
-            Craft::error('Error sending activation email: ' . $e->getMessage(), __METHOD__);
         }
     }
 }
 
-// Job Definition
 class DailyMembershipRenewalJob extends BaseJob
 {
     public function execute($queue): void
     {
-        MembershipRenewal::getInstance()->processMembershipRenewals();
+        $currentDate = new DateTime('now', new DateTimeZone('CET')); // Get today's date
+        $today = $currentDate->format('Y-m-d'); // Format as YYYY-MM-DD
+
+        // Query users whose dueDate matches today
+        $users = User::find()
+            ->group(['members', 'membersGroup'])
+            ->memberDueDate($today) // Assumes `dueDate` is a custom date field
+            ->all();
+
+        $elementsService = Craft::$app->getElements();
+
+        foreach ($users as $user) {
+            $user->setFieldValue('customStatus', 'renew');
+
+            if (!$elementsService->saveElement($user)) {
+                Craft::error('Failed to update customStatus to renew for user: ' . $user->id, __METHOD__);
+                continue;
+            }
+
+            // Deactivate the user
+            $usersService = Craft::$app->getUsers();
+            if (!$usersService->deactivateUser($user)) {
+                Craft::error('Failed to deactivate user: ' . $user->id, __METHOD__);
+            }
+        }
     }
 
     protected function defaultDescription(): string
@@ -126,4 +117,3 @@ class DailyMembershipRenewalJob extends BaseJob
         return 'Processing daily membership renewals.';
     }
 }
-

@@ -1,0 +1,44 @@
+columnSuffix: null
+handle: lang
+instructions: null
+name: Taal
+searchable: false
+settings:
+  customOptions: false
+  options:
+    -
+      __assoc__:
+        -
+          - label
+          - English
+        -
+          - value
+          - en
+        -
+          - default
+          - '1'
+    -
+      __assoc__:
+        -
+          - label
+          - Nederlands
+        -
+          - value
+          - nl
+        -
+          - default
+          - ''
+    -
+      __assoc__:
+        -
+          - label
+          - Français
+        -
+          - value
+          - fr
+        -
+          - default
+          - ''
+translationKeyFormat: null
+translationMethod: none
+type: craft\fields\Dropdown

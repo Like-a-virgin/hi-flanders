@@ -3,8 +3,10 @@
 .btn {
     color: $clr-primary;
     text-decoration: none;
-    font-weight: $fw-bold;
+    font-weight: $fw-medium;
     font-size: $fs-p;
+    font-family: $ff;
+
     line-height: 1;
 
     background-color: $clr-secondary;
@@ -53,6 +55,8 @@
         }
     }
 }
+
+
 
 .btn--prim {
     color: $clr-secondary;
@@ -107,4 +111,8 @@
     .btn__icon {
         fill: $clr-succes-text;
     }
+}
+
+.btn--square {
+    height: 100%;
 }

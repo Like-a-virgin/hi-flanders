@@ -26,5 +26,4 @@ return GeneralConfig::create()
     ])
     ->defaultCountryCode('BE')
     ->timezone('Europe/Brussels')
-    ->purgePendingUsersDuration(60)
 ;

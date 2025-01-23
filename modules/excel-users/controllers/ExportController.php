@@ -62,7 +62,7 @@ class ExportController extends Controller
         }
 
         $users = $usersQuery->all();
-        $data = [['ID', 'Name', 'Birthday', 'Email', 'Country', 'Street', 'Street number', 'Bus', 'City', 'Postalcode ', 'Membertype', 'Payment type', 'Pay date']];
+        $data = [['ID', 'Name', 'Birthday', 'Email', 'Country', 'Street', 'Street number', 'Bus', 'City', 'Postalcode ', 'Membertype', 'Payment type', 'Pay date', 'Print request', 'Print payed']];
 
         foreach ($users as $user) {
             $memberRateEntry = $user->getFieldValue('memberRate')->one();
@@ -95,7 +95,9 @@ class ExportController extends Controller
                 $user->postalCode,
                 $memberRateTitle, 
                 $user->paymentType,
-                $formattedPayDate
+                $formattedPayDate,
+                $user->requestPrint,
+                $user->payedPrintDate,
             ];
         }
 

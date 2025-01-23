@@ -35,9 +35,9 @@
             {% endif %}
             {% if user.requestPrint %}
                 <div class="box__column box__column--4">            
-                    <div class="box__info {{user.payedCardDate and user.payedCardDate|date('m-d-Y') <= now|date('m-d-Y') ? 'box__info--sec' }}">
+                    <div class="box__info {{user.payedPrintDate and user.payedPrintDate|date('m-d-Y') <= now|date('m-d-Y') ? 'box__info--sec' }}">
                         <p>{{ cardRate.title }}</p>
-                        <p>{{ user.payedCardDate and user.payedCardDate|date('m-d-Y') <= now|date('m-d-Y') ? 'Reeds betaald'|t : cardRate.price|money }}</p>
+                        <p>{{ user.payedPrintDate and user.payedPrintDate|date('m-d-Y') <= now|date('m-d-Y') ? 'Reeds betaald'|t : cardRate.price|money }}</p>
                     </div>
                 </div>
             {% endif %}

@@ -60,8 +60,10 @@ class PaymentController extends Controller
             }
         }
 
+        Craft::dd($relatedUserRateEntry);
+
         $printRequest = $user->getFieldValue('requestPrint');
-        $printPaydate = $user->getFieldValue('payedCardDate');
+        $printPaydate = $user->getFieldValue('payedPrintDate');
 
         $printRateEntry = Entry::find()
         ->section('rates')
@@ -76,6 +78,8 @@ class PaymentController extends Controller
 
         $totalAmount = $totalRate->getAmount(); // Total as integer in cents
         $totalFormatted = number_format($totalAmount / 100, 2); // Convert to euros
+
+        Craft::dd($totalRate);
 
         if ($totalAmount === 0) {
             return $this->asFailure('No payment required. All members are already paid.');
@@ -155,10 +159,10 @@ class PaymentController extends Controller
                     }
 
                     $printRequest = $user->getFieldValue('requestPrint');
-                    $printPaydate = $user->getFieldValue('payedCardDate');
+                    $printPaydate = $user->getFieldValue('payedPrintDate');
 
                     if ($printRequest and !$printPaydate) {
-                        $user->setFieldValue('payedCardDate', $paymentDate);
+                        $user->setFieldValue('payedPrintDate', $paymentDate);
                     }
                 }
             }

@@ -1,7 +1,16 @@
+{% macro errorList(errors) %}
+{% if errors %}
+    {{ ul(errors, {class: 'errors'}) }}
+{% endif %}
+{% endmacro %}
+
+{% set minDate = now|date_modify('-17 years')|date("Y-m-d") %}
+
 <div class="box-container" x-data="{ openForm: false }">
     <div class="formbox formbox--wider formbox--member" :class="openForm ? 'formbox--member-open' : ''">
-        <button @click="openForm = ! openForm" class="form__heading box__add">{{ svg("assets/icons/add.svg")|attr({class: 'box__icon box__icon--add' }) }} Persoon toevoegen</button>
+        <button @click="openForm = ! openForm" class="form__heading box__add">{{ svg("assets/icons/add.svg")|attr({class: 'box__icon box__icon--add' }) }} {{'Kind toevoegen'}}</button>
         <form x-collapse x-show="openForm" class="formbox__form" method="post" accept-charset="UTF-8">
+            {% set errors = user.getErrors() %}
             {{ csrfInput() }}
             {{ actionInput('entries/save-entry') }}
 
@@ -31,7 +40,7 @@
                     placeholder: 'Geboortedatum',
                     onFocus: "(this.type = 'date', this.placeholder = '')",
                     required: true,
-                    max: maxDate
+                    min: minDate
                 }) }}
             </div>   
             <button class="formbox__button formbox__button--sec formbox__column">{{'Voeg toe'|t}}</button>

@@ -3,24 +3,34 @@
 .header {
     width: 100%;
     padding: 1rem 1.5rem;
+    
 
     position: absolute;
     top: 0;
     left: 0;
     z-index: 1;
-    
+
     display: flex;
     flex-direction: row;
-    justify-content: space-between;
+    justify-content: center;
     align-items: center;
-    gap: 1rem;
-
+    
     box-shadow: 0px 3px 6px 0px rgba($clr-secondary, 0.1);
-    border-bottom: solid 0.5rem $clr-primary;
+    border-bottom: solid 0.45rem $clr-primary;
 
     @include screen($screen-s){
         padding: 1rem 2rem;
         height: 6rem;
+    }
+
+    &__container {
+        width: 100%;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        gap: 1rem;
+        max-width: $screen-xxl;
     }
 
     &__logo {

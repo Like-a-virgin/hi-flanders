@@ -22,3 +22,4 @@ permissions:
   - 'savepeerentries:1d223580-d398-4fc6-af8a-8a1e08933341' # Extra leden
   - 'viewentries:1d223580-d398-4fc6-af8a-8a1e08933341' # Extra leden
   - 'viewpeerentries:1d223580-d398-4fc6-af8a-8a1e08933341' # Extra leden
+  - viewusers

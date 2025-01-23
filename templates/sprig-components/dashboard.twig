@@ -28,7 +28,7 @@
     regMax: regMax,
     payMax: payMax,
     payMin: payMin,
-    memberId: memberId,
+    memberId: memberId
 } %}
 
 {% set dateFilterReg = [] %}
@@ -61,14 +61,14 @@
 }) %}
 
 {% do sprig.pushUrl('?' ~ filters|merge({
-    page: page
+    page: page, openOption: openOption
 })|url_encode) %}
 
 {% set pageInfo = sprig.paginate(membersQuery, page) %}
 {% set entries = pageInfo.pageResults %}
 {% set membersAll = membersQuery.all() %}
 
-<div class="box-container table" x-data="{ openModal: false, openOption: 0 }">
+<div class="box-container table">
 	<h1>Leden</h1>
 	<div class="table__options">
 		<div class="table__option-search">
@@ -76,57 +76,80 @@
 			<input sprig  type="text" class="table__search" name="search" value="{{search}}" placeholder="Zoeken">
 		</div>
 		<div class="filter">
-			<button title="Filter" aria-label="{{ 'Filter' }}" class="filter__option-btn" @click="openOption === 1 ? openOption = false : openOption = 1">{{svg('assets/icons/filter.svg')|attr({class: 'filter__option-icon' })}}</button>
-			<div class="filter__box filter__box--filters" x-show="openOption === 1">
+			<button sprig s-val:open-option="{{ openOption is same as '1' ? null : '1'}}" title="Filter" aria-label="{{ 'Filter' }}" class="filter__option-btn">{{svg('assets/icons/filter.svg')|attr({class: 'filter__option-icon' })}}</button>
+			<div class="filter__box {{ openOption is same as '1' ? 'filter__box--show' : 'filter__box--hide'}} filter__box--filters">
 				<div class="filter__select-box">
-					<select sprig  class="filter__select" name="payMethod">
-						<option value="" {{ not payMethod ? 'selected'}}>{{'Betaalmethode'|t}}</option>
-						{% for item in paymentMethods %}
-							<option class="filter__option" value="{{item.value}}" {{ payMethod == item.value ? 'selected'}}>{{item.label}}</option>
-						{% endfor %}
-					</select>
+					<p class="filter__title">{{'Lidkaart type'|t}}</p>
+					<div class="filter__select-row">					
+						<select sprig  class="filter__select" name="cardType" id="">
+							<option value="" {{ not cardType ? 'selected'}}>{{ 'Selecteer een lidkaart type'|t }}</option>
+							{% for item in cardTypes %}
+								<option class="filter__option" value="{{item.value}}" {{ cardType == item.value ? 'selected'}}>{{item.label}}</option>
+							{% endfor %}
+						</select>
+						{% if cardType %}
+							<button class="filter__remove" sprig s-val:card-type="{{null}}">{{svg('assets/icons/x.svg')|attr({class:"filter__remove-icon"})}}</button>
+						{% endif %}
+					</div>
 				</div>
 				<div class="filter__select-box">
-					<select sprig  class="filter__select" name="cardType" id="">
-						<option value="" {{ not cardType ? 'selected'}}>{{ 'Lidkaart type'|t }}</option>
-						{% for item in cardTypes %}
-							<option class="filter__option" value="{{item.value}}" {{ cardType == item.value ? 'selected'}}>{{item.label}}</option>
-						{% endfor %}
-					</select>
-				</div>
-				<div class="filter__select-box">
-					<select sprig  class="filter__select" name="ageGroup" id="">
-						<option value="{{null}}" {{ not ageGroup ? 'selected'}}>{{'Leeftijdsgroep'|t}}</option>
-						{% for item in ageGroups %}
-							<option class="filter__option" value="{{item.id}}" {{ ageGroup == item.id ? 'selected'}}>{{item.minAge}}
-								{{item.maxAge ? '- ' ~ item.maxAge : '+'}}</option>
-						{% endfor %}
-					</select>
+					<p class="filter__title">{{'Leeftijdsgroep'|t}}</p>
+					<div class="filter__select-row">					
+						<select sprig  class="filter__select" name="ageGroup" id="">
+							<option value="{{null}}" {{ not ageGroup ? 'selected'}}>{{'Selecteer een leeftijdsgroep'|t}}</option>
+							{% for item in ageGroups %}
+								<option class="filter__option" value="{{item.id}}" {{ ageGroup == item.id ? 'selected'}}>{{item.minAge}}
+									{{item.maxAge ? '- ' ~ item.maxAge : '+'}}</option>
+							{% endfor %}
+						</select>
+						{% if ageGroup %}
+							<button class="filter__remove" sprig s-val:age-group="{{null}}">{{svg('assets/icons/x.svg')|attr({class:"filter__remove-icon"})}}</button>
+						{% endif %}
+					</div>
 				</div>
 				<div>
-					<p class="filter__title">Registratiedatum</p>
+					<p class="filter__title">{{'Registratiedatum'|t}}</p>
 					<div class="filter__date-option">
 						<label class="filter__date-text" for="reg-min-date">Van:</label>
-						<input sprig class="filter__date" type="date" id="reg-min-date" name="regMin" s-trigger="change" value="{{regMin}}" >
 						<label class="filter__date-text" for="reg-max-date">Tot:</label>
+						<input sprig class="filter__date" type="date" id="reg-min-date" name="regMin" s-trigger="change" value="{{regMin}}" >
 						<input sprig class="filter__date" type="date" id="reg-max-date" name="regMax" s-trigger="change" value="{{regMax}}" >
 					</div>
 				</div>
-				<div>
-					<p class="filter__title">Betaaldatum</p>
-					<div class="filter__date-option">
-						<label class="filter__date-text" for="pay-min-date">Van:</label>
-						<input sprig class="filter__date" type="date" id="pay-min-date" name="payMin" s-trigger="change" value="{{payMin}}" >
-						<label class="filter__date-text" for="pay-max-date">Tot:</label>
-						<input sprig class="filter__date" type="date" id="pay-max-date" name="payMax" s-trigger="change" value="{{payMax}}" >
+				<div class="filter__select-box">
+					<p class="filter__title">{{'Betaalmethode'|t}}</p>
+					<div class="filter__select-row">					
+						<select sprig  class="filter__select" name="payMethod">
+							<option value="" {{ not payMethod ? 'selected'}}>{{'Selecteer een betaalmethode'|t}}</option>
+							{% for item in paymentMethods %}
+								<option class="filter__option" value="{{item.value}}" {{ payMethod == item.value ? 'selected'}}>{{item.label}}</option>
+							{% endfor %}
+						</select>
+						{% if payMethod %}
+							<button class="filter__remove" sprig s-val:pay-method="{{null}}">{{svg('assets/icons/x.svg')|attr({class:"filter__remove-icon"})}}</button>
+						{% endif %}
 					</div>
 				</div>
-				<button class="btn" sprig s-val:pay-method="{{null}}" s-val:card-type="{{null}}" s-val:age-group="{{null}}" s-val:reg-min="{{null}}" s-val:reg-max="{{null}}" s-val:pay-min="{{null}}" s-val:pay-max="{{null}}" s-val:search="{{null}}">reset</button>
+				<div>
+					<p class="filter__title">{{'Betaaldatum'|t}}</p>
+					<div class="filter__date-option">
+						<label class="filter__date-text" for="pay-min-date">Van:</label>
+						<label class="filter__date-text" for="pay-max-date">Tot:</label>
+						<div>
+							<input sprig class="filter__date" type="date" id="pay-min-date" name="payMin" s-trigger="change" value="{{payMin}}">
+							{% if payMethod %}
+								<button class="filter__remove" sprig s-val:pay-method="{{null}}">{{svg('assets/icons/x.svg')|attr({class:"filter__remove-icon"})}}</button>
+							{% endif %}
+						</div>
+						<input sprig class="filter__date" type="date" id="pay-max-date" name="payMax" s-trigger="change" value="{{payMax}}">
+					</div>
+				</div>
+				<button class="btn" sprig s-val:pay-method="{{null}}" s-val:card-type="{{null}}" s-val:age-group="{{null}}" s-val:reg-min="{{null}}" s-val:reg-max="{{null}}" s-val:pay-min="{{null}}" s-val:pay-max="{{null}}" s-val:search="{{null}}">{{'Verwijder alle filters'}}</button>
 			</div>
 		</div>
 		<div class="filter">
-			<button title="Nieuw lid" aria-label="{{'Nieuwe lid'}}" class="filter__option-btn" @click="openOption === 2 ? openOption = false : openOption = 2">{{svg('assets/icons/user-plus.svg')|attr({class: 'filter__option-icon' })}}</button>
-			<div class="filter__box filter__box--new" x-show="openOption === 2">
+			<button sprig s-val:open-option="{{ openOption is same as '2' ? null : '2'}}" title="Nieuw lid" aria-label="{{'Nieuwe lid'}}" class="filter__option-btn">{{svg('assets/icons/user-plus.svg')|attr({class: 'filter__option-icon' })}}</button>
+			<div class="filter__box {{ openOption is same as '2' ? 'filter__box--show' : 'filter__box--hide'}} filter__box--new">
 				<a class="filter__btn" href="/register-individual">{{'Nieuw individu'|t}}</a>
 				<a class="filter__btn" href="/register-group">{{'Nieuw groep'|t}}</a>
 			</div>
@@ -143,7 +166,7 @@
 					<th>{{'Lidnummer'|t}}</th>
 					<th>{{'Gekoppeld'|t}}</th>
 					<th>{{'Betaald'|t}}</th>
-					<th>{{'Actief'|t}}</th>
+					<th>{{'Status'|t}}</th>
 					<th>{{'Meer'|t}}</th>
 				</tr>
 			</thead>
@@ -178,9 +201,9 @@
 						</td>
 						<td>
 							{% if member.status is same as 'active' %}
-								<div class="table__status table__status--true">{{ svg("assets/icons/check.svg")|attr({class: 'table__status-icon table__status-icon--true' }) }}</div>
-							{% else %}
-								<div class="table__status table__status--false">{{ svg("assets/icons/x.svg")|attr({class: 'table__status-icon table__status-icon--false' }) }}</div>
+								<div class="table__status table__status--true">{{'active'|t}}</div>
+							{% elseif member.status is same as 'pending' %}
+								<div class="table__status table__status--false">{{'pending'|t}}</div>
 							{% endif %}
 						</td>
 						<td>

@@ -1,0 +1,19 @@
+@use "../abstracts" as *;
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    height: fit-content;
+    gap: 1.5rem;
+    width: 100%;
+    max-width: $screen-xxl;
+    height: 100%;
+
+    &__left {
+        grid-column:  span 2;
+
+        display: flex;
+        flex-direction: column;
+        gap: 1.5rem;
+    }
+}

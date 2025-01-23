@@ -1,5 +1,4 @@
-{% set extraMembers = craft.entries.section('extraMembers').authorID(user.id).all() %}
-{% set maxDate = now|date_modify('-3 years')|date("Y-m-d") %}
+{% set extraMembers = craft.entries.section('extraMembers').parentMember(user.id).all() %}
 {% set cardRate = craft.entries.section('rates').memberType('card').one() %}
 {% set currentDate = now %}
 {% set activeUserMember = user.paymentDate and user.memberDueDate and (now >= user.paymentDate) and (now <= user.memberDueDate) %}
@@ -10,7 +9,7 @@
 
 {% set userRate = user.memberRate.one() %}
 
-{% if user.requestPrint and not user.payedCardDate %}
+{% if user.requestPrint and not user.payedPrintDate %}
     {% set totalPrice = totalPrice ? totalPrice.add(cardRate.price) : cardRate.price %}
 {% endif %}
 
@@ -36,166 +35,208 @@
                 <p>! {{'Je lidmaatschap is nog niet actief'|t}} <a href="#payment">Bekijk openstaand bedrag</a></p>
             </div>
         {% endif %}
-        {# {% if totalNonActive > 0 %}
-            <div class="box-error__error">
-                <p>! {{totalNonActive}} {{'Extra leden zijn niet actief'|t}}</p>
-            </div>
-        {% endif %} #}
     </div>
 {% endif %}
-<div class="box">
-    <div class="box__heading">
-        <h1>{{'Mijn gegevens'|t}}</h1>
-        <h2>(008)  {{user.customMemberId|slice(0, 3) ~ ' ' ~ user.customMemberId|slice(3, 3) ~ ' ' ~ user.customMemberId|slice(6, 3) ~ ' ' ~ user.customMemberId|slice(9, 3)}}</h2>
-    </div>
-    <div class="box__content" x-data="{ edit: false }">
-        <div class="box__wrapper box__wrapper--labels">        
-            <div class="box__column box__column--2">            
-                <p>{{'Voornaam'|t}}</p>
-                <div class="box__info">
-                    <p>{{ user.firstName|capitalize }}</p>
-                </div>
+
+<div class="grid grid--user">
+    <div class="grid__left">    
+        <div class="box">
+            <div class="box__heading">
+                <h1>{{'Lidmaatschap'|t}}</h1>
+                <h2>(008)  {{user.customMemberId|slice(0, 3) ~ ' ' ~ user.customMemberId|slice(3, 3) ~ ' ' ~ user.customMemberId|slice(6, 3) ~ ' ' ~ user.customMemberId|slice(9, 3)}}</h2>
             </div>
-            <div class="box__column box__column--2">            
-                <p>{{'Familienaam'|t}}</p>
-                <div class="box__info">
-                    <p>{{ user.lastName }}</p>
+            <div class="box__content" x-data="{ edit: false }">
+                <div class="box__wrapper box__wrapper--labels">        
+                    <div class="box__column box__column--4 box__column--flex-between">
+                        <h3>{{'Gegevens'|t}}</h3>
+                    </div> 
+                    <div class="box__column box__column--2">            
+                        <p>{{'Voornaam'|t}}</p>
+                        <div class="box__info">
+                            <p>{{ user.firstName|capitalize }}</p>
+                        </div>
+                    </div>
+                    <div class="box__column box__column--2">            
+                        <p>{{'Familienaam'|t}}</p>
+                        <div class="box__info">
+                            <p>{{ user.lastName }}</p>
+                        </div>
+                    </div>
+                    <div class="box__column box__column--2">            
+                        <p>{{'E-mail'|t}}</p>
+                        <div class="box__info">
+                            <p>{{ user.email }}</p>
+                        </div>
+                    </div>
+                    <div class="box__column box__column--2">            
+                        <p>{{'Geboortedatum'|t}}</p>
+                        <div class="box__info">
+                            <p>{{ user.birthday|date("m/d/Y") }}</p>
+                        </div>
+                    </div>
                 </div>
-            </div>
-            <div class="box__column box__column--2">            
-                <p>{{'E-mail'|t}}</p>
-                <div class="box__info">
-                    <p>{{ user.email }}</p>
+                <div class="box__wrapper box__wrapper--labels" x-show="!edit">   
+                    <div class="box__column box__column--4 box__column--flex-between">
+                        <h3>{{'Adres'|t}}</h3>
+                        <button @click="edit = true" class="box__function-btn">{{'Wijzigen'|t}} {{ svg("assets/icons/edit.svg")|attr({class: 'box__icon-option box__icon-edit' }) }}</button>
+                    </div>     
+                    <div class="box__column box__column--2">            
+                        <p>{{'Land'|t}}</p>
+                        <div class="box__info">
+                            <p>{{ user.country|capitalize }}</p>
+                        </div>
+                    </div>
+                    <div class="box__column">            
+                        <p>{{'Postcode'|t}}</p>
+                        <div class="box__info">
+                            <p>{{ user.postalCode }}</p>
+                        </div>
+                    </div>
+                    <div class="box__column">            
+                        <p>{{'Stad'|t}}</p>
+                        <div class="box__info">
+                            <p>{{ user.city|capitalize }}</p>
+                        </div>
+                    </div>
+                    <div class="box__column box__column--2">            
+                        <p>Straat</p>
+                        <div class="box__info">
+                            <p>{{ user.street|capitalize }}</p>
+                        </div>
+                    </div>
+                    <div class="box__column">            
+                        <p>{{'Nr'|t}}</p>
+                        <div class="box__info">
+                            <p>{{ user.streetNr }}</p>
+                        </div>
+                    </div>
+                    <div class="box__column">            
+                        <p>{{ 'Bus'|t }}</p>
+                        <div class="box__info">
+                            <p>{{ user.bus }}</p>
+                        </div>
+                    </div>
                 </div>
-            </div>
-            <div class="box__column box__column--2">            
-                <p>{{'Geboortedatum'|t}}</p>
-                <div class="box__info">
-                    <p>{{ user.birthday|date("m/d/Y") }}</p>
+                <form x-show="edit" class="edit" method="post" accept-charset="UTF-8" enctype="multipart/form-data">
+                    {{ csrfInput() }}
+                    {{ actionInput('users/save-user') }}
+                    {{ hiddenInput('userId', user.id) }}
+
+                    <div class="box__column box__column--4 box__column--flex-between">
+                        <h3>{{'Adres'|t}}</h3>
+                    </div>  
+                    <div class="edit__column--2">
+                        <label class="edit__label" for="country">{{'Land'|t}}</label>
+                        {{ input('text', 'fields[country]', user.country ?? null, {
+                            id: 'country',
+                            placeholder: 'Land',
+                            required: true
+                        }) }}
+                    </div>
+                    <div class="edit__column">
+                        <label class="edit__label" for="postal-code">{{'Postcode'|t}}</label>
+                        {{ input('text', 'fields[postalCode]', user.postalCode ?? null, {
+                            id: 'postal-code',
+                            placeholder: 'Postcode',
+                            required: true
+                        }) }}
+                    </div>
+                    <div class="edit__column">
+                        <label class="edit__label" for="city">{{'Stad'|t}}</label>
+                        {{ input('text', 'fields[city]', user.city ?? null, {
+                            id: 'city',
+                            placeholder: 'Stad',
+                            required: true
+                        }) }}
+                    </div>
+                    <div class="edit__column--2">
+                        <label class="edit__label" for="street">{{ 'Straat'|t }}</label>
+                        {{ input('text', 'fields[street]', user.street ?? null, {
+                            id: 'street',
+                            placeholder: 'Straat',
+                            required: true
+                        }) }}
+                    </div>
+                    <div class="edit__column--1-4">
+                        <label class="edit__label" for="number">{{'Nr'|t}}</label>
+                        {{ input('text', 'fields[streetNr]', user.streetNr ?? null, {
+                            id: 'number',
+                            placeholder: 'Nr',
+                            required: true
+                        }) }}
+                    </div>
+                    <div class="edit__column--1-4">
+                        <label class="edit__label" for="email">{{ 'Bus'|t }}</label>
+                        {{ input('text', 'fields[bus]', user.bus ?? null, {
+                            id: 'bus',
+                            placeholder: 'bus'
+                        }) }}
+                    </div>
+                    <button type="submit" @click="edit = false" class="box__function-btn box__function-btn--save">{{'Opslaan'|t}}</button>
+                </form>
+                <div class="box__wrapper">            
+                    <div class="box__column {{userGroup is same as 'membersOrganisation' ? 'box__column--2' : 'box__column--4'}}">
+                        <p class="box__text-bold">{{'Lidmaatschap'|t}}</p>
+                        <div class="box__info box__info--prim">
+                            <p>{{ user.memberRate.one().title }}</p>
+                            {% if user.memberDueDate %}
+                                <p>{{'Vervalt op'|t}} {{user.memberDueDate|date('d-m-Y')}}</p>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+                <div class="box__wrapper">
+                    <div class="box__column box__column--4 box__column--flex-between">
+                        <h3>{{'Lidkaarttype'|t}}</h3>
+                        {% if user.requestPrint and not user.payedPrintDate %}
+                            <form method="post" accept-charset="UTF-8" enctype="multipart/form-data">
+                                {{ csrfInput() }}
+                                {{ actionInput('users/save-user') }}
+                                {{ hiddenInput('userId', user.id) }}
+                                {{ hiddenInput('fields[requestPrint]', null) }}
+
+                                <button class="box__function-btn box__function-btn--delete">{{'Print annuleren'|t}}</button>
+                            </form>
+                        {% elseif not user.requestPrint and not user.payedPrintDate %}
+                            <form method="post" accept-charset="UTF-8" enctype="multipart/form-data">
+                                {{ csrfInput() }}
+                                {{ actionInput('users/save-user') }}
+                                {{ hiddenInput('userId', user.id) }}
+                                {{ hiddenInput('fields[requestPrint]', today) }}
+
+                                <button class="box__function-btn box__function-btn--save">{{'Aanvraag print lidkaart'|t}}</button>
+                            </form>
+                        {% endif %}
+                    </div>  
+                    <div class="box__column box__column--4">                    
+                        {% if user.requestPrint and not user.payedPrintDate %}
+                            <div class="box__column">            
+                                <div class="box__info">
+                                    <p>{{ 'Online'|t }}</p>
+                                </div>
+                            </div>
+                            <p>{{'Je hebt een print aangevraagd op'|t}} {{user.requestPrint|date('d-m-Y')}} {{'je aanvraag wordt verstuurd wanneer je hebt betaald.'|t}}</p>
+                        {% elseif user.requestPrint and user.payedPrintDate %}       
+                            <div class="box__column">            
+                                <div class="box__info">
+                                    <p>{{ 'Print en online'|t }}</p>
+                                </div>
+                            </div>                     
+                        {% else %}            
+                            <div class="box__column">            
+                                <div class="box__info">
+                                    <p>{{ 'Online'|t }}</p>
+                                </div>
+                            </div>  
+                        {% endif %}
+                    </div>
                 </div>
             </div>
         </div>
-        <div class="box__wrapper box__wrapper--labels" x-show="!edit">        
-            <div class="box__column box__column--2">            
-                <p>{{'Land'|t}}</p>
-                <div class="box__info">
-                    <p>{{ user.country|capitalize }}</p>
-                </div>
-            </div>
-            <div class="box__column">            
-                <p>{{'Postcode'|t}}</p>
-                <div class="box__info">
-                    <p>{{ user.postalCode }}</p>
-                </div>
-            </div>
-            <div class="box__column">            
-                <p>{{'Stad'|t}}</p>
-                <div class="box__info">
-                    <p>{{ user.city|capitalize }}</p>
-                </div>
-            </div>
-            <div class="box__column box__column--2">            
-                <p>Straat</p>
-                <div class="box__info">
-                    <p>{{ user.street|capitalize }}</p>
-                </div>
-            </div>
-            <div class="box__column">            
-                <p>{{'Nr'|t}}</p>
-                <div class="box__info">
-                    <p>{{ user.streetNr }}</p>
-                </div>
-            </div>
-            <div class="box__column">            
-                <p>{{ 'Bus'|t }}</p>
-                <div class="box__info">
-                    <p>{{ user.bus }}</p>
-                </div>
-            </div>
-            <button @click="edit = true" class="box__function-btn">{{ svg("assets/icons/edit.svg")|attr({class: 'box__icon-option box__icon-edit' }) }} Bewerk gegevens</button>
-        </div>
-        <form x-show="edit" class="edit" method="post" accept-charset="UTF-8" enctype="multipart/form-data">
-            {{ csrfInput() }}
-            {{ actionInput('users/save-user') }}
-            {{ hiddenInput('userId', user.id) }}
-
-            <div class="edit__column--2">
-                <label class="edit__label" for="country">{{'Land'|t}}</label>
-                {{ input('text', 'fields[country]', user.country ?? null, {
-                    id: 'country',
-                    placeholder: 'Land',
-                    required: true
-                }) }}
-            </div>
-            <div class="edit__column">
-                <label class="edit__label" for="postal-code">{{'Postcode'|t}}</label>
-                {{ input('text', 'fields[postalCode]', user.postalCode ?? null, {
-                    id: 'postal-code',
-                    placeholder: 'Postcode',
-                    required: true
-                }) }}
-            </div>
-            <div class="edit__column">
-                <label class="edit__label" for="city">{{'Stad'|t}}</label>
-                {{ input('text', 'fields[city]', user.city ?? null, {
-                    id: 'city',
-                    placeholder: 'Stad',
-                    required: true
-                }) }}
-            </div>
-            <div class="edit__column--2">
-                <label class="edit__label" for="street">{{ 'Straat'|t }}</label>
-                {{ input('text', 'fields[street]', user.street ?? null, {
-                    id: 'street',
-                    placeholder: 'Straat',
-                    required: true
-                }) }}
-            </div>
-            <div class="edit__column--1-4">
-                <label class="edit__label" for="number">{{'Nr'|t}}</label>
-                {{ input('text', 'fields[streetNr]', user.streetNr ?? null, {
-                    id: 'number',
-                    placeholder: 'Nr',
-                    required: true
-                }) }}
-            </div>
-            <div class="edit__column--1-4">
-                <label class="edit__label" for="email">{{ 'Bus'|t }}</label>
-                {{ input('text', 'fields[bus]', user.bus ?? null, {
-                    id: 'bus',
-                    placeholder: 'bus'
-                }) }}
-            </div>
-            <button @click="edit = false" class="box__function-btn box__function-btn--save">{{'Opslaan'|t}}</button>
-        </form>
-        {% if user.requestPrint %}
-            <p>Je hebt een print aangevraagd op {{user.requestPrint|date('d-m-Y')}} je aanvraag wordt verstuurd wanneer je hebt betaald</p>
-        {% else %}            
-            <form method="post" accept-charset="UTF-8" enctype="multipart/form-data">
-                {{ csrfInput() }}
-                {{ actionInput('users/save-user') }}
-                {{ hiddenInput('userId', user.id) }}
-                {{ hiddenInput('fields[requestPrint]', today) }}
-
-                <button class="box__function-btn box__function-btn--save">{{'Aanvraag print'|t}}</button>
-            </form>
+        {% if extraMembers|length > 0 %}
+            {% include "components/user-extras.twig" %}
         {% endif %}
-        <div class="box__wrapper">            
-            <div class="box__column {{userGroup is same as 'membersOrganisation' ? 'box__column--2' : 'box__column--4'}}">
-                <p class="box__text-bold">{{'Lidmaatschap'|t}}</p>
-                <div class="box__info box__info--prim">
-                    <p>{{ user.memberRate.one().title }}</p>
-                    {% if user.memberDueDate %}
-                        <p>{{'Vervalt op'|t}} {{user.memberDueDate|date('d-m-Y')}}</p>
-                    {% endif %}
-                </div>
-            </div>
-        </div>
+        {% include "components/user-add-extra.twig" %} 
     </div>
+    {% include "components/payment.twig" %} 
 </div>
-{% if extraMembers|length > 0 %}
-    {% include "components/user-extras.twig" %}
-{% endif %}
-{% include "components/user-add-extra.twig" %} 
-
-{% include "components/payment.twig" %} 

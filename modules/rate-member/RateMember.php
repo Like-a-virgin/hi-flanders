@@ -30,9 +30,14 @@ class RateMember extends BaseModule
             function (ElementEvent $event) {
                 $element = $event->element;
 
-                if (($element->status !== 'active' || $element->status === 'pending') && $element instanceof User) {
-                    Craft::info('User detected: ' . $element->id, __METHOD__);
-                    $this->assignMemberRate($element);
+                if ($element instanceof User) {
+                    $customStatus = $element->getFieldValue('customStatus')->value;
+                    $memberRate = $element->getFieldValue('memberRate')->one();
+                    $status = $element->status;
+
+                    if ($customStatus === 'new' && $status !== 'active' || $customStatus === 'renew' && $status === 'pending' || !$memberRate) {
+                        $this->assignMemberRate($element);
+                    }
                 }
             }
         );

@@ -10,14 +10,14 @@
         <link rel="shortcut icon" href="{{ craft.app.sites.primarySite.baseUrl }}/assets/favicons/favicon.ico" />
         <link rel="apple-touch-icon" sizes="180x180" href="{{ craft.app.sites.primarySite.baseUrl }}/assets/favicons/apple-touch-icon.png" />
         <link rel="manifest" href="{{ craft.app.sites.primarySite.baseUrl }}/assets/favicons/site.webmanifest" />
-        <link rel="stylesheet" href="{{ craft.app.sites.primarySite.baseUrl }}dist/assets/app-BSFTQpYj.css">
+        {# <link rel="stylesheet" href="{{ craft.app.sites.primarySite.baseUrl }}dist/assets/app-NJPGSZdi.css"> #}
     </head>
     <body>
         {% include "partials/header.twig" %}
         <main class="center">
             {% block content %}{% endblock %}
         </main>
-        {# {{ craft.vite.script("src/scripts/main.js") }}  #}
-        <script src="{{ craft.app.sites.primarySite.baseUrl }}dist/assets/app-B3k9MmvD.js"></script>
+        {{ craft.vite.script("src/scripts/main.js") }} 
+        {# <script src="{{ craft.app.sites.primarySite.baseUrl }}dist/assets/app-xyP4qcfd.js"></script> #}
     </body>
 </html>
