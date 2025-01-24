@@ -76,3 +76,8 @@ body .fui-submit {
         cursor: pointer;
     }
 }
+
+body .fui-checkbox input {
+    background-color: transparent;
+    padding: 0;
+}

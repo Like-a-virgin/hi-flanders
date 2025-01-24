@@ -1,0 +1,22 @@
+@use "../abstracts" as *;
+
+.error {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding-bottom: 10rem;
+
+    &__title {
+        font-size: 6rem;
+        line-height: 1;
+    }
+
+    &__subtitle {
+        font-size: 2.125rem;
+    }
+
+    &__text p, &__text, &__subtitle {
+        margin-bottom: $sp-s;
+    }
+}

@@ -48,12 +48,12 @@ class BeforeActivationUser extends BaseModule
         // Ensure you're working with a valid user
         if ($user instanceof User) {
             $status = $user->getFieldValue('customStatus')->value;
+            $currentDate = new DateTime('now', new DateTimeZone('CET')); // Get the current date in CET timezone
             
             if ($status === 'renew') {
                 $dateCreated = $user->dateCreated;
-    
-                $currentDate = new DateTime('now', new DateTimeZone('CET')); // Get the current date in CET timezone
                 $currentYear = (int) $currentDate->format('Y'); // Extract the current year
+    
                 $newYear = $currentYear + 1;
     
                 $newDate = DateTime::createFromFormat(
@@ -73,6 +73,7 @@ class BeforeActivationUser extends BaseModule
                 $user->setFieldValue('paymentDate', null);
                 $user->setFieldValue('paymentType', null);
                 $user->setFieldValue('renewedDate', $currentDate);
+                $user->setFieldValue('statusChangeDate', $currentDate);
                 $user->setFieldValue('memberDueDate', $newDate);
                 
                 // Save the updated user to persist the changes
@@ -86,6 +87,14 @@ class BeforeActivationUser extends BaseModule
 
             if ($status === "new") {
                 $user->setFieldValue('customStatus', 'active');
+                $user->setFieldValue('statusChangeDate', $currentDate);
+
+                if (!Craft::$app->elements->saveElement($user)) {
+                    Craft::error('Failed to update accountStatus for user ID: ' . $user->id, __METHOD__);
+                    Craft::error('Errors: ' . json_encode($user->getErrors()), __METHOD__);
+                } else {
+                    Craft::info('Successfully set accountStatus to "renew" for user ID: ' . $user->id, __METHOD__);
+                } 
             }
 
         } else {

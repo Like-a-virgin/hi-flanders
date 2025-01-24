@@ -66,6 +66,10 @@
         &:hover {
             background-color: $clr-secondary;
             color: $clr-primary;
+
+            .btn__chevron {
+                fill: $clr-primary;
+            }
         }
     }
 
@@ -115,4 +119,11 @@
 
 .btn--square {
     height: 100%;
+}
+
+.btn--round {
+    border-radius: 10rem;
+    justify-content: center;
+    padding: $btn-padding;
+    width: fit-content;
 }

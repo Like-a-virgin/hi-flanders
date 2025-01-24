@@ -114,6 +114,33 @@ tabs:
         warning: null
         width: 100
       -
+        dateAdded: '2025-01-24T14:21:21+00:00'
+        elementCondition:
+          class: craft\elements\conditions\users\UserCondition
+          conditionRules:
+            -
+              class: craft\elements\conditions\users\GroupConditionRule
+              operator: in
+              uid: 32e72d69-6713-4b5c-9135-238b01734663
+              values:
+                - 50a6f7cb-84e7-4d68-9aa9-3af2d9001e79 # Leden
+                - a21d7477-05ca-43ea-ae84-fc44c3e16a70 # Leden groep
+          elementType: craft\elements\User
+          fieldContext: global
+        fieldUid: ab51ff2a-5865-41c8-897f-008e0b288a70 # Date
+        handle: statusChangeDate
+        includeInCards: false
+        instructions: null
+        label: 'Status veranderd op'
+        providesThumbs: false
+        required: false
+        tip: null
+        type: craft\fieldlayoutelements\CustomField
+        uid: ce593c2a-ef3a-428d-acab-4256ee8ec654
+        userCondition: null
+        warning: null
+        width: 100
+      -
         dateAdded: '2025-01-23T15:41:20+00:00'
         elementCondition: null
         fieldUid: 996e7f91-0447-4498-addc-bf91c17465f9 # Taal
@@ -355,7 +382,7 @@ tabs:
         instructions: null
         label: null
         providesThumbs: false
-        required: false
+        required: true
         tip: null
         type: craft\fieldlayoutelements\CustomField
         uid: b830085b-1066-438a-bf29-a802e220b852

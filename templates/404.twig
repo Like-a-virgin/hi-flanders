@@ -1,0 +1,11 @@
+{% extends "layouts/base.twig" %}
+
+{% block content %}
+{% set contentError = craft.entries.section('errorNotFound').one() %}
+    <div class="error">
+        <h1 class="error__title">{{contentError.title|upper}}</h1>
+        <h2 class="error__subtitle">{{contentError.textSingle}}</h2>
+        <div class="error__text">{{contentError.textSimple}}</div>
+        <a class="btn btn--prim btn--round" href="{{currentSite.baseUrl}}">{{contentError.textBtn}}</a>
+    </div>
+{% endblock %}

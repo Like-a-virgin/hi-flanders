@@ -10,6 +10,9 @@
     {% set memberRates = craft.entries.section('rates').all() %}
     {% set urlGroupRequest = craft.entries.section('requestGroup').one().url %}
     {% set todayPlusOneYear = now|date_modify('+1 year')|date('Y-m-d') %}
+    
+    {% set promoCode = craft.app.request.getQueryParam('event') %}
+    {% set promo = craft.entries.section('promoCodes').slug(promoCode).one() %}
 
     {% macro errorList(errors) %}
     {% if errors %}
@@ -21,13 +24,17 @@
         <div class="formbox__heading">
             <h2>{{'Registreer'|t}}</h2>
         </div>
-        <form class="formbox__form" method="post" accept-charset="UTF-8" novalidate>
+        <form class="formbox__form register-form" method="post" accept-charset="UTF-8" novalidate>
             {{ csrfInput() }}
             {{ actionInput('users/save-user') }}
             {{ redirectInput(activationPage) }}
 
             {{ input('hidden', 'groups', 'members') }}
             {{ input('hidden', 'fields[memberDueDate]', todayPlusOneYear) }}
+
+            {% if promoCode and promo %}
+                {{ input('hidden', 'fields[paymentType]', 'free') }}
+            {% endif %}
             
             {% if user %}
                 {% set errors = user.getErrors() %}
@@ -151,14 +158,21 @@
             </div>
             <div class="formbox__checkbox formbox__column--pp formbox__column--full">
                 <label for="privacy-policy">
-                {{ input('checkbox', 'fields[privacyPolicy]', 'iAccept', {
+                {{ input('checkbox', 'fields[privacyPolicy]', 'accepted' , {
                     id: 'privacy-policy',
                     required: true,
-                    checked: user.privacyPolicy.storage is defined and 'iAccept' in user.privacyPolicy.storage
+                    checked: user.privacyPolicy.storage is defined and 'accepted' in user.privacyPolicy.storage
                 }) }} 
                 <p>{{'Ik ga akkoord dat mijn gegevens gebruikt worden zoals beschreven in de'|t}} <a class="formbox__link" target="_blank" href="{{pp}}">{{'privacy policy'|t}}</a>.</label></p>
             </div>
-            <button class="formbox__button formbox__column--full">{{'Registreer'|t}}</button>
+
+            <input type="hidden" name="g-recaptcha-response" id="g-recaptcha-response">
+            <button 
+                class="formbox__button formbox__column--full" 
+                data-sitekey="{{ getenv('RECAPTCHA_SITE_KEY') }}"
+                data-callback="onSubmit"
+                data-action="submit"
+            >{{'Registreer'|t}}</button>
         </form>
         <div class="formbox__options">
             <p class="formbox__or">{{'Of'|t}}</p>

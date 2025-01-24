@@ -52,32 +52,26 @@ class MembershipRenewal extends BaseModule
         // Check if the user's customStatus is `renew`
         if ($user->getFieldValue('customStatus')->value === 'renew') {
             $activationUrl = $usersService->getEmailVerifyUrl($user);
-            $templatePath = 'email/my-email-template';
 
-            // Prepare the email content
-            $emailSubject = Craft::t('app', 'Reactivate Your Membership');
-            $emailBody = Craft::$app->view->renderTemplate('templates/email/reactivate-membership', [
-                'username' => $user->fullName,
-                'activationLink' => $activationUrl,
-            ]);
+        // Use the mailer to compose and send the email
+        try {
+            $mailer = Craft::$app->mailer;
+            $result = $mailer->compose()
+                ->setTo($user->email)
+                ->setSubject('Membership Renewal Required')
+                ->setHtmlBody("<p>Your membership has expired. Please renew your membership by clicking the link below:</p><p><a href=\"$activationUrl\">Renew Membership</a></p>")
+                ->setTextBody("Your membership has expired. Please renew your membership using the link: $activationUrl")
+                ->send();
 
-            // Send the email
-            try {
-                $message = new Message();
-                $message->setTo($user->email)
-                    ->setSubject($emailSubject)
-                    ->setHtmlBody($emailBody)
-                    ->setTextBody(strip_tags($emailBody)); 
-
-                if (!Craft::$app->getMailer()->send($message)) {
-                    Craft::error('Failed to send activation email to user: ' . $user->email, __METHOD__);
-                } else {
-                    Craft::info('Activation email sent to user: ' . $user->email, __METHOD__);
-                }
-            } catch (\Throwable $e) {
-                Craft::error('Error sending activation email: ' . $e->getMessage(), __METHOD__);
+            if (!$result) {
+                Craft::error('Failed to send renewal email to user: ' . $user->email, __METHOD__);
+            } else {
+                Craft::info('Renewal email sent to user: ' . $user->email, __METHOD__);
             }
+        } catch (\Throwable $e) {
+            Craft::error('Error sending renewal email: ' . $e->getMessage(), __METHOD__);
         }
+    }
     }
 }
 

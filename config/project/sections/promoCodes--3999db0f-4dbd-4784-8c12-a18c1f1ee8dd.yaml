@@ -1,0 +1,38 @@
+defaultPlacement: end
+enableVersioning: true
+entryTypes:
+  -
+    uid: c75441c9-96e6-40ff-ab4f-69ac95987e67 # Promo codes 
+handle: promoCodes
+maxAuthors: 1
+name: 'Promo codes'
+previewTargets:
+  -
+    __assoc__:
+      -
+        - label
+        - 'Primary entry page'
+      -
+        - urlFormat
+        - '{url}'
+      -
+        - refresh
+        - '1'
+propagationMethod: all
+siteSettings:
+  359a39c5-8655-460f-a1b4-0c097ea0edb2: # users
+    enabledByDefault: true
+    hasUrls: false
+    template: null
+    uriFormat: null
+  d74da9d4-3821-46f5-8cf4-f7c4d12c04df: # users fr
+    enabledByDefault: true
+    hasUrls: false
+    template: null
+    uriFormat: null
+  dad48958-bcb3-4253-9f7e-868f67fa27b0: # users en
+    enabledByDefault: true
+    hasUrls: false
+    template: null
+    uriFormat: null
+type: channel

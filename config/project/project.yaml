@@ -1,4 +1,4 @@
-dateModified: 1737646905
+dateModified: 1737728533
 elementSources:
   craft\elements\Entry:
     -
@@ -46,6 +46,7 @@ elementSources:
               - ac77cfdb-37a0-4f35-9ca7-e353977a477d # Privacy policy
               - 22e6beae-01af-4451-b3d5-29bf90a51e80 # Reset wachtwoord
               - af17efa6-765d-4c48-99b6-d836a037abd9 # Succes registratie
+              - 3a447095-116f-4a81-b2f7-43b6b4c1cf53 # 404
         elementType: craft\elements\Entry
         fieldContext: global
       defaultSort:
@@ -140,6 +141,7 @@ meta:
     1d223580-d398-4fc6-af8a-8a1e08933341: 'Extra leden' # Extra leden
     2c2fb008-1e62-4ff3-906c-1018563ad030: Tel # Tel
     2d35b4ae-62f0-4cb2-8a94-73ebdae1ef03: 'Member type' # Member type
+    3a447095-116f-4a81-b2f7-43b6b4c1cf53: '404' # 404
     3fa074c6-e343-4927-8f8e-9c209ddd6261: Betaalmethode # Betaalmethode
     3fab0971-effa-4787-a88b-2778ab3228d6: Notify # Notify
     4a63b33e-aa54-421b-b619-d4bc7f4888e7: Home # Home
@@ -156,11 +158,13 @@ meta:
     52ac72a5-0a6a-42ba-9e72-995b76380054: Logo # Logo
     77d8ae37-4c00-4972-aab9-94dd08c7f29c: SimpleText # SimpleText
     88eaa50e-c3b0-4b36-a2b9-11ef935830aa: 'min Leeftijd' # min Leeftijd
+    91c6a56d-e6ba-4757-a97d-293bf13c9115: '404' # 404
     93edcc59-32ca-4780-9d52-1d1fc486519a: 'Lid ouder' # Lid ouder
     115f3616-1f1d-4238-bbd6-a35c5b4e8f28: 'Lidkaart type' # Lidkaart type
     359a39c5-8655-460f-a1b4-0c097ea0edb2: users # users
     590f0cba-dbfa-4eda-882d-2fe3aac82a92: Prijs # Prijs
     996e7f91-0447-4498-addc-bf91c17465f9: Taal # Taal
+    3999db0f-4dbd-4784-8c12-a18c1f1ee8dd: 'Promo codes' # Promo codes
     5178f917-f380-440d-a326-c41e396ba39a: 'privacy policy' # privacy policy
     6754b9ff-3f0c-41d6-914e-520590bd5d79: LinkExtern # LinkExtern
     8365fada-1ce2-4e0a-8a3f-f919c3c18208: 'max Leeftijd' # max Leeftijd
@@ -183,6 +187,7 @@ meta:
     c095205f-0280-43c8-86ec-2705261bf6b9: Default # Default
     c573f0bd-29d4-4985-8cff-271a6ee231a2: Beheerder # Beheerder
     c1614bab-5fdd-4eae-8e0b-f4eb393c25dd: Tekst # Tekst
+    c75441c9-96e6-40ff-ab4f-69ac95987e67: 'Promo codes ' # Promo codes 
     cd27b3c1-54f6-4e33-8a9f-02cba48208fa: 'Extra lid' # Extra lid
     d74da9d4-3821-46f5-8cf4-f7c4d12c04df: 'users fr' # users fr
     d8718bb0-fa18-417d-92e8-3e7b464a8356: 'Aanvraag groep' # Aanvraag groep
@@ -207,6 +212,251 @@ plugins:
     enabled: true
     licenseKey: ZB80OHDNVOKXEFKE4AQEOXSU
     schemaVersion: 3.4.8
+    settings:
+      ajaxTimeout: 10
+      alertEmails: null
+      captchas:
+        __assoc__:
+          -
+            - recaptcha
+            -
+              __assoc__:
+                -
+                  - type
+                  - verbb\formie\integrations\captchas\Recaptcha
+                -
+                  - enabled
+                  - '1'
+                -
+                  - saveSpam
+                  - true
+                -
+                  - settings
+                  -
+                    __assoc__:
+                      -
+                        - handle
+                        - recaptcha
+                      -
+                        - secretKey
+                        - $RECAPTCHA_SECRET_KEY
+                      -
+                        - siteKey
+                        - $RECAPTCHA_SITE_KEY
+                      -
+                        - type
+                        - v3
+                      -
+                        - size
+                        - normal
+                      -
+                        - theme
+                        - light
+                      -
+                        - badge
+                        - bottomright
+                      -
+                        - language
+                        - en
+                      -
+                        - minScore
+                        - 0.5
+                      -
+                        - scriptLoadingMethod
+                        - asyncDefer
+                      -
+                        - enterpriseType
+                        - score
+          -
+            - hcaptcha
+            -
+              __assoc__:
+                -
+                  - type
+                  - verbb\formie\integrations\captchas\Hcaptcha
+                -
+                  - enabled
+                  - '0'
+                -
+                  - saveSpam
+                  - true
+                -
+                  - settings
+                  -
+                    __assoc__:
+                      0:
+                        - handle
+                        - hcaptcha
+                      3:
+                        - size
+                        - normal
+                      4:
+                        - theme
+                        - light
+                      5:
+                        - language
+                        - en
+                      6:
+                        - minScore
+                        - 0.5
+                      7:
+                        - scriptLoadingMethod
+                        - asyncDefer
+          -
+            - friendlyCaptcha
+            -
+              __assoc__:
+                -
+                  - type
+                  - verbb\formie\integrations\captchas\FriendlyCaptcha
+                -
+                  - enabled
+                  - '0'
+                -
+                  - saveSpam
+                  - true
+                -
+                  - settings
+                  -
+                    __assoc__:
+                      0:
+                        - handle
+                        - friendlyCaptcha
+                      3:
+                        - language
+                        - en
+                      4:
+                        - startMode
+                        - none
+          -
+            - turnstile
+            -
+              __assoc__:
+                -
+                  - type
+                  - verbb\formie\integrations\captchas\Turnstile
+                -
+                  - enabled
+                  - '0'
+                -
+                  - saveSpam
+                  - true
+                -
+                  - settings
+                  -
+                    __assoc__:
+                      0:
+                        - handle
+                        - turnstile
+                      3:
+                        - scriptLoadingMethod
+                        - asyncDefer
+                      4:
+                        - theme
+                        - auto
+                      5:
+                        - size
+                        - normal
+                      6:
+                        - appearance
+                        - always
+          -
+            - duplicate
+            -
+              __assoc__:
+                -
+                  - type
+                  - verbb\formie\integrations\captchas\Duplicate
+                -
+                  - enabled
+                  - '0'
+                -
+                  - saveSpam
+                  - true
+                -
+                  - settings
+                  -
+                    __assoc__:
+                      -
+                        - handle
+                        - duplicate
+          -
+            - honeypot
+            -
+              __assoc__:
+                -
+                  - type
+                  - verbb\formie\integrations\captchas\Honeypot
+                -
+                  - enabled
+                  - '0'
+                -
+                  - saveSpam
+                  - true
+                -
+                  - settings
+                  -
+                    __assoc__:
+                      -
+                        - handle
+                        - honeypot
+          -
+            - javascript
+            -
+              __assoc__:
+                -
+                  - type
+                  - verbb\formie\integrations\captchas\Javascript
+                -
+                  - enabled
+                  - '0'
+                -
+                  - saveSpam
+                  - true
+                -
+                  - settings
+                  -
+                    __assoc__:
+                      -
+                        - handle
+                        - javascript
+      defaultDateDisplayType: calendar
+      defaultDateTime: null
+      defaultDateValueOption: ''
+      defaultEmailTemplate: ''
+      defaultFileUploadVolume: ''
+      defaultFormTemplate: ''
+      defaultInstructionsPosition: verbb\formie\positions\AboveInput
+      defaultLabelPosition: verbb\formie\positions\AboveInput
+      defaultPage: forms
+      emptyValuePlaceholder: 'No response.'
+      enableBackSubmission: true
+      enableCsrfValidationForGuests: true
+      enableLargeFieldStorage: false
+      enableUnloadWarning: true
+      filterIntegrationMapping: true
+      includeDraftElementUsage: false
+      includeRevisionElementUsage: false
+      maxIncompleteSubmissionAge: 30
+      maxSentNotificationsAge: 30
+      pdfPaperOrientation: portrait
+      pdfPaperSize: letter
+      pluginName: Formie
+      queuePriority: null
+      saveSpam: true
+      sendEmailAlerts: false
+      sentNotifications: true
+      setOnlyCurrentPagePayload: false
+      spamBehaviour: showSuccess
+      spamBehaviourMessage: ''
+      spamEmailNotifications: false
+      spamKeywords: ''
+      spamLimit: 500
+      submissionsBehaviour: all
+      useCssLayers: false
+      useQueueForIntegrations: true
+      useQueueForNotifications: true
+      validateCustomTemplates: true
   postmark:
     edition: standard
     enabled: true

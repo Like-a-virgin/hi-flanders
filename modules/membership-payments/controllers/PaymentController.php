@@ -36,8 +36,13 @@ class PaymentController extends Controller
 
         $totalRate = new Money(0, new Currency('EUR'));
 
-        if (!$this->isWithinPaymentPeriod($user)) {
-            $totalRate = $totalRate->add($userRate);
+        $paymentDate = $user->getFieldValue('paymentDate');
+        $memberDueDate = $user->getFieldValue('memberDueDate');
+
+        if (!$paymentDate || $paymentDate > $memberDueDate) {
+            if (!$this->isWithinPaymentPeriod($user)) {
+                $totalRate = $totalRate->add($userRate);
+            }
         }
 
         $extraMemberIds = [];
@@ -59,8 +64,6 @@ class PaymentController extends Controller
                 }
             }
         }
-
-        Craft::dd($relatedUserRateEntry);
 
         $printRequest = $user->getFieldValue('requestPrint');
         $printPaydate = $user->getFieldValue('payedPrintDate');

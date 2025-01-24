@@ -88,7 +88,7 @@
                     {{ csrfInput() }}
                     {{ actionInput('users/save-user') }}
                     {{ hiddenInput('userId', selectedMember.id) }}
-                    {{ redirectInput(craft.app.request.absoluteUrl) }}
+                    {{ redirectInput(currentSite.baseUrl ~ '?' ~ urlFilters) }}
                     <div class="box__column box__column--4">
                         <h3>{{'Adres'|t}}</h3>
                     </div>
@@ -182,7 +182,7 @@
                                     <form class="form-delete form-delete--full" method="post" accept-charset="UTF-8">
                                         {{ csrfInput() }}
                                         {{ actionInput('elements/delete') }}
-                                        {{ redirectInput(craft.app.request.absoluteUrl) }}
+                                        {{ redirectInput(currentSite.baseUrl ~ '?' ~ urlFilters) }}
                                         {{ input('hidden', 'elementId', item.id) }}
                                         <button type="submit" class="btn btn--red btn--square">{{svg('assets/icons/trash.svg')|attr({class: "btn__icon"})}}</button>
                                     </form>
@@ -227,7 +227,7 @@
                     {{ csrfInput() }}
                     {{ actionInput('users/save-user') }}
                     {{ hiddenInput('userId', selectedMember.id) }}
-                    {{ redirectInput(craft.app.request.absoluteUrl) }}
+                    {{ redirectInput(currentSite.baseUrl ~ '?' ~ urlFilters) }}
 
                     <div class="box__column box__column--4">
                         <h3>Betaal status</h3>
@@ -312,7 +312,7 @@
                 <form class="formbox__form formbox__form--no-options" method="post" accept-charset="UTF-8">
                     {{ csrfInput() }}
                     {{ actionInput('entries/save-entry') }}
-                    {{ redirectInput(craft.app.request.absoluteUrl) }}
+                    {{ redirectInput(currentSite.baseUrl ~ '?' ~ urlFilters) }}
 
                     {{ input('hidden', 'sectionId', craft.entries.section('extraMembers').sectionId|first) }}
                     {{ input('hidden', 'fields[parentMember][]', selectedMember.id) }}

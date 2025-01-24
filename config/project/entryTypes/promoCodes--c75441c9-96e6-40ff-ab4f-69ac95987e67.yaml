@@ -1,0 +1,51 @@
+color: null
+fieldLayouts:
+  ba337d29-a37d-4bb8-8de6-6188e5691078:
+    tabs:
+      -
+        elementCondition: null
+        elements:
+          -
+            autocapitalize: true
+            autocomplete: false
+            autocorrect: true
+            class: null
+            dateAdded: '2025-01-24T11:02:08+00:00'
+            disabled: false
+            elementCondition: null
+            id: null
+            includeInCards: false
+            inputType: null
+            instructions: null
+            label: null
+            max: null
+            min: null
+            name: null
+            orientation: null
+            placeholder: null
+            providesThumbs: false
+            readonly: false
+            required: true
+            size: null
+            step: null
+            tip: null
+            title: null
+            type: craft\fieldlayoutelements\entries\EntryTitleField
+            uid: ec130257-6a87-4acd-a200-650c163d67a0
+            userCondition: null
+            warning: null
+            width: 100
+        name: Content
+        uid: b8bac290-190c-42e1-a506-88e9abde993c
+        userCondition: null
+handle: promoCodes
+hasTitleField: true
+icon: null
+name: 'Promo codes '
+showSlugField: true
+showStatusField: true
+slugTranslationKeyFormat: null
+slugTranslationMethod: site
+titleFormat: null
+titleTranslationKeyFormat: null
+titleTranslationMethod: site
