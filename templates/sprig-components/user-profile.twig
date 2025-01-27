@@ -1,3 +1,4 @@
+{% set user = craft.users().id(userId).one() %}
 {% set extraMembers = craft.entries.section('extraMembers').parentMember(user.id).all() %}
 {% set cardRate = craft.entries.section('rates').memberType('card').one() %}
 {% set currentDate = now %}
@@ -38,7 +39,7 @@
     </div>
 {% endif %}
 
-<div class="grid grid--user">
+<div class="grid grid--user" id="user-profile">
     <div class="grid__left">    
         <div class="box">
             <div class="box__heading">
@@ -117,63 +118,65 @@
                         </div>
                     </div>
                 </div>
-                <form x-show="edit" class="edit" method="post" accept-charset="UTF-8" enctype="multipart/form-data">
-                    {{ csrfInput() }}
-                    {{ actionInput('users/save-user') }}
-                    {{ hiddenInput('userId', user.id) }}
+                <div sprig>
+                    <form s-replace="user-profile" class="edit" method="post" accept-charset="UTF-8" enctype="multipart/form-data">
+                        {{ csrfInput() }}
+                        {{ actionInput('users/save-user') }}
+                        {{ hiddenInput('userId', user.id) }}
 
-                    <div class="box__column box__column--4 box__column--flex-between">
-                        <h3>{{'Adres'|t}}</h3>
-                    </div>  
-                    <div class="edit__column--2">
-                        <label class="edit__label" for="country">{{'Land'|t}}</label>
-                        {{ input('text', 'fields[country]', user.country ?? null, {
-                            id: 'country',
-                            placeholder: 'Land',
-                            required: true
-                        }) }}
-                    </div>
-                    <div class="edit__column">
-                        <label class="edit__label" for="postal-code">{{'Postcode'|t}}</label>
-                        {{ input('text', 'fields[postalCode]', user.postalCode ?? null, {
-                            id: 'postal-code',
-                            placeholder: 'Postcode',
-                            required: true
-                        }) }}
-                    </div>
-                    <div class="edit__column">
-                        <label class="edit__label" for="city">{{'Stad'|t}}</label>
-                        {{ input('text', 'fields[city]', user.city ?? null, {
-                            id: 'city',
-                            placeholder: 'Stad',
-                            required: true
-                        }) }}
-                    </div>
-                    <div class="edit__column--2">
-                        <label class="edit__label" for="street">{{ 'Straat'|t }}</label>
-                        {{ input('text', 'fields[street]', user.street ?? null, {
-                            id: 'street',
-                            placeholder: 'Straat',
-                            required: true
-                        }) }}
-                    </div>
-                    <div class="edit__column--1-4">
-                        <label class="edit__label" for="number">{{'Nr'|t}}</label>
-                        {{ input('text', 'fields[streetNr]', user.streetNr ?? null, {
-                            id: 'number',
-                            placeholder: 'Nr',
-                            required: true
-                        }) }}
-                    </div>
-                    <div class="edit__column--1-4">
-                        <label class="edit__label" for="email">{{ 'Bus'|t }}</label>
-                        {{ input('text', 'fields[bus]', user.bus ?? null, {
-                            id: 'bus',
-                            placeholder: 'bus'
-                        }) }}
-                    </div>
-                    <button type="submit" @click="edit = false" class="box__function-btn box__function-btn--save">{{'Opslaan'|t}}</button>
-                </form>
+                        <div class="box__column box__column--4 box__column--flex-between">
+                            <h3>{{'Adres'|t}}</h3>
+                        </div>  
+                        <div class="edit__column--2">
+                            <label class="edit__label" for="country">{{'Land'|t}}</label>
+                            {{ input('text', 'fields[country]', user.country ?? null, {
+                                id: 'country',
+                                placeholder: 'Land',
+                                required: true
+                            }) }}
+                        </div>
+                        <div class="edit__column">
+                            <label class="edit__label" for="postal-code">{{'Postcode'|t}}</label>
+                            {{ input('text', 'fields[postalCode]', user.postalCode ?? null, {
+                                id: 'postal-code',
+                                placeholder: 'Postcode',
+                                required: true
+                            }) }}
+                        </div>
+                        <div class="edit__column">
+                            <label class="edit__label" for="city">{{'Stad'|t}}</label>
+                            {{ input('text', 'fields[city]', user.city ?? null, {
+                                id: 'city',
+                                placeholder: 'Stad',
+                                required: true
+                            }) }}
+                        </div>
+                        <div class="edit__column--2">
+                            <label class="edit__label" for="street">{{ 'Straat'|t }}</label>
+                            {{ input('text', 'fields[street]', user.street ?? null, {
+                                id: 'street',
+                                placeholder: 'Straat',
+                                required: true
+                            }) }}
+                        </div>
+                        <div class="edit__column--1-4">
+                            <label class="edit__label" for="number">{{'Nr'|t}}</label>
+                            {{ input('text', 'fields[streetNr]', user.streetNr ?? null, {
+                                id: 'number',
+                                placeholder: 'Nr',
+                                required: true
+                            }) }}
+                        </div>
+                        <div class="edit__column--1-4">
+                            <label class="edit__label" for="email">{{ 'Bus'|t }}</label>
+                            {{ input('text', 'fields[bus]', user.bus ?? null, {
+                                id: 'bus',
+                                placeholder: 'bus'
+                            }) }}
+                        </div>
+                        <button type="submit" @click="edit = false" class="box__function-btn box__function-btn--save">{{'Opslaan'|t}}</button>
+                    </form>
+                </div>
                 <div class="box__wrapper">            
                     <div class="box__column {{userGroup is same as 'membersOrganisation' ? 'box__column--2' : 'box__column--4'}}">
                         <p class="box__text-bold">{{'Lidmaatschap'|t}}</p>
@@ -238,8 +241,5 @@
         {% endif %}
         {% include "components/users/user-add-extra.twig" %} 
     </div>
-    <div class="grid__right">
-        {% include "components/users/payment.twig" %} 
-        {% include "components/users/settings.twig" %} 
-    </div>
+    {% include "components/users/payment.twig" %} 
 </div>

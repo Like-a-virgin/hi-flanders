@@ -6,9 +6,11 @@ use Craft;
 use craft\elements\User;
 use craft\services\Users;
 use craft\events\UserEvent;
+use craft\elements\Entry;
 use yii\base\Event;
 use DateTime;
 use DateTimeZone;
+
 
 use yii\base\Module as BaseModule;
 
@@ -95,6 +97,30 @@ class BeforeActivationUser extends BaseModule
                 } else {
                     Craft::info('Successfully set accountStatus to "renew" for user ID: ' . $user->id, __METHOD__);
                 } 
+            }
+
+            if ($status === "deactivated") {
+                $user->setFieldValue('customStatus', 'active');
+                $user->setFieldValue('statusChangeDate', $currentDate);
+
+                if (!Craft::$app->elements->saveElement($user)) {
+                    Craft::error('Failed to update accountStatus for user ID: ' . $user->id, __METHOD__);
+                    Craft::error('Errors: ' . json_encode($user->getErrors()), __METHOD__);
+                } else {
+                    Craft::info('Successfully set accountStatus to "renew" for user ID: ' . $user->id, __METHOD__);
+                } 
+
+                $relatedEntries = Entry::find()
+                ->section('extraMembers') 
+                ->relatedTo($user)     
+                ->all();
+
+                foreach ($relatedEntries as $entry) {
+                    $entry->enabled = false; // Disable the entry
+                    if (!Craft::$app->elements->saveElement($entry)) {
+                        Craft::error("Failed to deactivate entry ID {$entry->id}.", __METHOD__);
+                    }
+                }
             }
 
         } else {

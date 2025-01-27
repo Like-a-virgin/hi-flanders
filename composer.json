@@ -52,7 +52,9 @@
       "modules\\adminregister\\": "modules/admin-register/",
       "modules\\excelusers\\": "modules/excel-users/",
       "modules\\membershiprenewal\\": "modules/membership-renewal/",
-      "modules\\beforeactivationuser\\": "modules/before-activation-user/"
+      "modules\\beforeactivationuser\\": "modules/before-activation-user/",
+      "modules\\deactivateuser\\": "modules/deactivate-user/",
+      "modules\\emailmessages\\": "modules/email-messages/"
     }
   }
 }

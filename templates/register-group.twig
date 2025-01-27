@@ -31,6 +31,7 @@
             {{ redirectInput(succesUrl) }}
 
             {{ input('hidden', 'groupHandle', 'membersGroup') }}
+            {{ input('hidden', 'fields[privacyPolicy][]', 'accepted') }}
             
             {% if user %}
                 {% set errors = user.getErrors() %}

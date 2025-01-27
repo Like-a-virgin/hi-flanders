@@ -25,6 +25,8 @@ use modules\adminregister\AdminRegister;
 use modules\beforeactivationuser\BeforeActivationUser;
 use modules\confirmemail\ConfirmEmail;
 use modules\custommemberid\CustomMemberId;
+use modules\deactivateuser\DeactivateUser;
+use modules\emailmessages\EmailMessages;
 use modules\excelusers\ExcelUsers;
 use modules\membershippayments\MembershipPayments;
 use modules\membershiprenewal\MembershipRenewal;
@@ -45,6 +47,8 @@ return [
         'excel-users' => ExcelUsers::class,
         'membership-renewal' => MembershipRenewal::class,
         'before-activation-user' => BeforeActivationUser::class,
+        'deactivate-user' => DeactivateUser::class,
+        'email-messages' => EmailMessages::class,
     ], 
     'bootstrap' => [
         'rate-member', 
@@ -57,5 +61,7 @@ return [
         'excel-users',
         'membership-renewal',
         'before-activation-user',
+        'deactivate-user',
+        'email-messages',
     ],
 ];

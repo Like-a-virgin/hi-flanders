@@ -75,7 +75,8 @@ class AdminRegister extends BaseModule
             'organisation' => null,
             'tel' => null,
             'contactPerson' => null,
-            'memberDueDate' => null
+            'memberDueDate' => null,
+            'privacyPolicy' => null,
         ];
 
         foreach ($fields as $fieldHandle => $coreField) {

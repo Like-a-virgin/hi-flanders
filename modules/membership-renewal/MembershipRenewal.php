@@ -56,14 +56,27 @@ class MembershipRenewal extends BaseModule
         // Use the mailer to compose and send the email
         try {
             $mailer = Craft::$app->mailer;
+        
+            // Render the HTML and Text templates
+            $view = Craft::$app->getView();
+            
+            Craft::dd($user);
+
+            $htmlBody = $view->renderTemplate('email/activate-user-nl', [
+                'user' => $user,
+                'activationUrl' => $activationUrl,
+            ]);
+
+        
+            // Send the email
             $result = $mailer->compose()
                 ->setTo($user->email)
                 ->setSubject('Membership Renewal Required')
-                ->setHtmlBody("<p>Your membership has expired. Please renew your membership by clicking the link below:</p><p><a href=\"$activationUrl\">Renew Membership</a></p>")
-                ->setTextBody("Your membership has expired. Please renew your membership using the link: $activationUrl")
-                ->send();
-
-            if (!$result) {
+                ->setHtmlBody($htmlBody);
+        
+                Craft::dd($result);
+                
+                if (!$result) {
                 Craft::error('Failed to send renewal email to user: ' . $user->email, __METHOD__);
             } else {
                 Craft::info('Renewal email sent to user: ' . $user->email, __METHOD__);

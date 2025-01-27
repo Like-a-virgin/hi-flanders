@@ -8,12 +8,15 @@
     width: 100%;
     max-width: $screen-xxl;
     height: 100%;
+    align-items: flex-start;
 
-    &__left {
-        grid-column:  span 2;
-
+    &__left, &__right {
         display: flex;
         flex-direction: column;
         gap: 1.5rem;
+    }
+
+    &__left {
+        grid-column:  span 2;
     }
 }

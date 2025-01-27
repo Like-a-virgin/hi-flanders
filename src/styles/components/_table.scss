@@ -70,8 +70,11 @@
         border-radius: $br;
         overflow: hidden;
         border-collapse: collapse;
-        
 
+        .row--disabled {
+            opacity: 0.5;
+        }
+        
         thead {
             color: $clr-secondary;
             background-color: $clr-primary;
@@ -80,6 +83,11 @@
 
         tr {
             margin-bottom: 4rem;
+
+            .table__status--disabled {
+                background-color: $clr-tertiary--darker;
+                color: $clr-secondary;
+            }
         }
 
         thead th:first-child {
@@ -102,6 +110,10 @@
 
         tbody tr:nth-child(even){
             background-color: rgba($clr-secondary, 0.03);
+
+            .table__status--disabled {
+                background-color: $clr-tertiary;
+            }
         }
 
         tbody td:first-child {

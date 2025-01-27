@@ -183,6 +183,15 @@
         justify-content: space-between;
     }
 
+    &__info-btn {
+        background-color: transparent;
+        border: none;
+
+        &:hover {
+            cursor: pointer;
+        }
+    }
+
     &__info--prim, &__info--sec, &__info--error {
         font-weight: $fw-bold;
     }

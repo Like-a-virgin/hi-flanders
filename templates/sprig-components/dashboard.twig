@@ -165,8 +165,8 @@
 		<div class="filter">
 			<button @click="openOption === 2 ? openOption = 0 : openOption = 2" title="Nieuw lid" aria-label="{{'Nieuwe lid'}}" class="filter__option-btn">{{svg('assets/icons/user-plus.svg')|attr({class: 'filter__option-icon' })}}</button>
 			<div class="filter__box filter__box--new" x-show="openOption === 2">
-				<a class="filter__btn" href="/register-individual">{{'Nieuw individu'|t}}</a>
-				<a class="filter__btn" href="/register-group">{{'Nieuw groep'|t}}</a>
+				<a @click="openOption = 0" class="filter__btn" href="/register-individual">{{'Nieuw individu'|t}}</a>
+				<a @click="openOption = 0" class="filter__btn" href="/register-group">{{'Nieuw groep'|t}}</a>
 			</div>
 		</div>
 		<a href="/export-users?{{ filters|url_encode }}" title="{{'Download excel'}}" class="table__download">{{svg('assets/icons/download.svg')|attr({class: "table__download-icon"})}}</a>
@@ -195,7 +195,7 @@
 					{% set memberType = memberTypes|filter(i => i.minAge <= memberAge and (i.maxAge is null or i.maxAge >= memberAge)) %}
 					{% set extraMembers = craft.entries.section('extraMembers').authorId(member.id).all() %}
 					{% set paymentStatus = member.paymentDate and member.memberDueDate and (now >= member.paymentDate) and (now <= member.memberDueDate) %}
-					<tr>
+					<tr class="{{member.customStatus.value is same as 'deactivated' ? 'row--disabled' }}">
 						<td>
 							{% if member.getGroups()|first.handle is same as 'membersGroup' %}
 								{{ member.organisation }}
@@ -221,6 +221,8 @@
 								<div class="table__status table__status--false">{{'new'|t}}</div>
 							{% elseif member.customStatus.value is same as 'renew' %}
 								<div class="table__status table__status--false">{{'verniew'|t}}</div>
+							{% elseif member.customStatus.value is same as 'deactivated' %}
+								<div class="table__status table__status--disabled">{{'gedeactiveerd'|t}}</div>
 							{% endif %}
 						</td>
 						<td>
