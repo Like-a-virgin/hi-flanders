@@ -74,9 +74,11 @@ class PaymentController extends Controller
         ->one();
 
         $printRate = $printRateEntry->getFieldValue('price');
+        $print = false;
 
         if ($printRequest and !$printPaydate) {
             $totalRate = $totalRate->add($printRate);
+            $print = true;
         }
 
         $totalAmount = $totalRate->getAmount(); // Total as integer in cents
@@ -109,6 +111,7 @@ class PaymentController extends Controller
             "metadata" => [
                 "userId" => $user->id,
                 "extraMemberIds" => $extraMemberIds,
+                "total" => $print
             ],
         ]);
 
@@ -197,9 +200,11 @@ class PaymentController extends Controller
             // Convert totalAmount to Euros (€)
             $formattedAmount = number_format($totalAmount, 2, ',', '.');
 
+            Craft::dd($formattedAmount);
+
             // Render the email template (Create `templates/email/payment-confirmation.twig`)
             $htmlBody = Craft::$app->getView()->renderTemplate('email/verification/verification-payment', [
-                'name' => $user->getFieldValue('firstName'),
+                'name' => 'test',
                 'totalAmount' => $formattedAmount,
             ]);
 
@@ -209,8 +214,7 @@ class PaymentController extends Controller
             $message = $mailer->compose()
                 ->setTo($user->email)
                 ->setSubject($subject)
-                ->setHtmlBody($htmlBody)
-                ->send();
+                ->setHtmlBody($htmlBody);
 
             if (!$message) {
                 Craft::error('Failed to send payment confirmation email to: ' . $user->email, __METHOD__);
