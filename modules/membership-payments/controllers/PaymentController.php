@@ -111,7 +111,7 @@ class PaymentController extends Controller
             "metadata" => [
                 "userId" => $user->id,
                 "extraMemberIds" => $extraMemberIds,
-                "total" => $print
+                "print" => $print
             ],
         ]);
 
@@ -150,6 +150,7 @@ class PaymentController extends Controller
             $userId = $metadata->userId ?? null;
             $extraMemberIds = $metadata->extraMemberIds ?? [];
             $totalAmount = $payment->amount->value;
+            $print = $metadata->print ?? false;
 
             $paymentDate = new DateTime();
 
@@ -159,15 +160,12 @@ class PaymentController extends Controller
                     $user->setFieldValue('paymentDate', $paymentDate);
                     $user->setFieldValue('paymentType', 'online');
 
-                    if (!Craft::$app->elements->saveElement($user)) {
-                        Craft::error('Failed to update user payment date.', __METHOD__);
+                    if ($print) {
+                        $user->setFieldValue('payedPrintDate', $paymentDate);
                     }
 
-                    $printRequest = $user->getFieldValue('requestPrint');
-                    $printPaydate = $user->getFieldValue('payedPrintDate');
-
-                    if ($printRequest and !$printPaydate) {
-                        $user->setFieldValue('payedPrintDate', $paymentDate);
+                    if (!Craft::$app->elements->saveElement($user)) {
+                        Craft::error('Failed to update user payment date.', __METHOD__);
                     }
 
                     $this->sendPaymentConfirmationEmail($user, $totalAmount);
