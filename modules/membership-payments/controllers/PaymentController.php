@@ -163,13 +163,13 @@ class PaymentController extends Controller
                     if ($print) {
                         $user->setFieldValue('payedPrintDate', $paymentDate);
                     }
+                    
+                    $this->sendPaymentConfirmationEmail($user, $totalAmount);
+                    $this->sendAccountConfirmationEmail($user);
 
                     if (!Craft::$app->elements->saveElement($user)) {
                         Craft::error('Failed to update user payment date.', __METHOD__);
                     }
-
-                    $this->sendPaymentConfirmationEmail($user, $totalAmount);
-                    $this->sendAccountConfirmationEmail($user);
                 }
             }
 
@@ -197,8 +197,6 @@ class PaymentController extends Controller
 
             // Convert totalAmount to Euros (€)
             $formattedAmount = number_format($totalAmount, 2, ',', '.');
-
-            Craft::dd($formattedAmount);
 
             // Render the email template (Create `templates/email/payment-confirmation.twig`)
             $htmlBody = Craft::$app->getView()->renderTemplate('email/verification/verification-payment', [
