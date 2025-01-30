@@ -1,6 +1,6 @@
 <?php
 
-namespace modules\paymentreminder\console\controllers;
+namespace modules\dailychecks\console\controllers;
 
 use Craft;
 use craft\console\Controller;
