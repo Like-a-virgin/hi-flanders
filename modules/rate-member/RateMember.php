@@ -143,5 +143,9 @@ class RateMember extends BaseModule
 
             Craft::info("Assigned rate with ID {$rate->id} without paymentDate for user ID {$user->id}", __METHOD__);
         }
+
+        if (!Craft::$app->elements->saveElement($user)) {
+            Craft::error('Failed to update user payment date.', __METHOD__);
+        }
     }
 }
