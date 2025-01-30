@@ -1,5 +1,5 @@
 
-<div id="payment" class="box box--total" :class="openTotal ? 'box--total-open' : ''" x-data="{openTotal: $persist(true)}">
+<div id="payment" class="box box--total" :class="openTotal ? 'box--total-open' : ''" x-data="{openTotal: true}">
     <div class="box__heading box__heading--center" @click="openTotal = ! openTotal">
         <h1>{{'Totaal'|t}}</h1>
         {{ svg("assets/icons/chevron-down.svg")|attr({class: 'box__icon box__icon--chevron' }) }}

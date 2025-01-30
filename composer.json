@@ -3,7 +3,7 @@
   "prefer-stable": true,
   "require": {
     "craftcms/ckeditor": "4.5.0",
-    "craftcms/cms": "5.6.1",
+    "craftcms/cms": "5.6.3",
     "craftcms/feed-me": "^6.6.1",
     "craftcms/postmark": "^3.1.0",
     "mollie/mollie-api-php": "^2.76",
@@ -51,10 +51,15 @@
       "modules\\custommemberid\\": "modules/custom-member-id/",
       "modules\\adminregister\\": "modules/admin-register/",
       "modules\\excelusers\\": "modules/excel-users/",
-      "modules\\membershiprenewal\\": "modules/membership-renewal/",
+      "modules\\afterdeactivation\\": "modules/after-deactivation/",
       "modules\\beforeactivationuser\\": "modules/before-activation-user/",
       "modules\\deactivateuser\\": "modules/deactivate-user/",
-      "modules\\emailmessages\\": "modules/email-messages/"
+      "modules\\emailmessages\\": "modules/email-messages/",
+      "modules\\customactivationmailing\\": "modules/custom-activation-mailing/",
+      "modules\\afteractivation\\": "modules/after-activation/",
+      "modules\\activationreminder\\": "modules/activation-reminder/",
+      "modules\\dailychecks\\": "modules/daily-checks/",
+      "modules\\oldmembers\\": "modules/old-members/"
     }
   }
 }

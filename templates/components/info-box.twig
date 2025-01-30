@@ -1,0 +1,13 @@
+{% set prim = prim ?? false %}
+{% set label = label ?? null %}
+{% set error = error ?? false %}
+{% set span = span ?? 1 %}
+
+<div class="box__column box__column--{{span}}">
+    {% if label %}
+        <p>{{label}}</p>
+    {% endif %}
+    <div class="box__info {{error ? 'box__info--error'}} {{prim ? 'box__info--prim'}}">
+        <p>{{ info }}</p>
+    </div>
+</div>

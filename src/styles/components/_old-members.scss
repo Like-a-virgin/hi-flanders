@@ -1,0 +1,16 @@
+@use "../abstracts" as *;
+
+.old-members {
+    margin-bottom: 1rem;
+    
+    h3 {
+        margin-bottom: $sp-s;
+    }
+    
+    &__actions {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        gap: $sp-s;
+    }
+}

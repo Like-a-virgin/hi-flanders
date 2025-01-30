@@ -9,7 +9,7 @@
     align-items: center;
     justify-content: center;
     gap: 2rem;
-    padding: 12vh 1.5rem 4rem 1.5rem;
+    padding: 15vh .85rem 4rem .85rem;
 
     @include screen($screen-m) {
         padding: 8rem 2rem 4rem 2rem;

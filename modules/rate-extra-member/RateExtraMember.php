@@ -20,6 +20,8 @@ class RateExtraMember extends BaseModule
     {
         parent::init();
 
+        Craft::setAlias('@modules/rateextramember', __DIR__);
+
         // Hook into the `EVENT_BEFORE_SAVE_ELEMENT` to handle "extra members"
         Event::on(
             Elements::class,

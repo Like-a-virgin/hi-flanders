@@ -45,6 +45,7 @@
         padding: 1.5rem 1.5rem;
         border-radius: $br;
         width: fit-content;
+        z-index: 10;
     
         display: grid;
         grid-template-columns: repeat(2, 1fr);
@@ -53,14 +54,29 @@
     
         box-shadow: 0px 0px 8px 0px rgba(black, 0.15);
     
-        &--new {
+        &--new, &--old {
             gap: 0.5rem;
             display: flex;
             flex-direction: column;
         }
 
+        &--old {
+            min-width: 20rem;
+        }
+
         &--filters {
             min-width: 20rem;
+        }
+    }
+
+    &__actions {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+
+        .filter__btn {
+            width: 100%;
+            text-align: center;
         }
     }
 

@@ -82,8 +82,6 @@ class PaymentController extends Controller
         $totalAmount = $totalRate->getAmount(); // Total as integer in cents
         $totalFormatted = number_format($totalAmount / 100, 2); // Convert to euros
 
-        Craft::dd($totalRate);
-
         if ($totalAmount === 0) {
             return $this->asFailure('No payment required. All members are already paid.');
         }
@@ -148,6 +146,7 @@ class PaymentController extends Controller
 
             $userId = $metadata->userId ?? null;
             $extraMemberIds = $metadata->extraMemberIds ?? [];
+            $totalAmount = $payment->amount->value;
 
             $paymentDate = new DateTime();
 
@@ -167,6 +166,9 @@ class PaymentController extends Controller
                     if ($printRequest and !$printPaydate) {
                         $user->setFieldValue('payedPrintDate', $paymentDate);
                     }
+
+                    $this->sendPaymentConfirmationEmail($user, $totalAmount);
+                    $this->sendAccountConfirmationEmail($user);
                 }
             }
 
@@ -185,4 +187,83 @@ class PaymentController extends Controller
 
         return $this->asJson(['success' => true]);
     }
+
+    private function sendPaymentConfirmationEmail(User $user, $totalAmount)
+    {
+        try {
+            $mailer = Craft::$app->mailer;
+            Craft::$app->getView()->setTemplatesPath(Craft::getAlias('@root/templates'));
+
+            // Convert totalAmount to Euros (€)
+            $formattedAmount = number_format($totalAmount, 2, ',', '.');
+
+            // Render the email template (Create `templates/email/payment-confirmation.twig`)
+            $htmlBody = Craft::$app->getView()->renderTemplate('email/verification/verification-payment', [
+                'name' => $user->getFieldValue('firstName'),
+                'totalAmount' => $formattedAmount,
+            ]);
+
+            $subject = 'Payment Confirmation - Your Membership Payment';
+
+            // Prepare and send the email
+            $message = $mailer->compose()
+                ->setTo($user->email)
+                ->setSubject($subject)
+                ->setHtmlBody($htmlBody)
+                ->send();
+
+            if (!$message) {
+                Craft::error('Failed to send payment confirmation email to: ' . $user->email, __METHOD__);
+            } else {
+                Craft::info('Payment confirmation email sent to: ' . $user->email, __METHOD__);
+            }
+        } catch (\Throwable $e) {
+            Craft::error("Error sending payment confirmation email: " . $e->getMessage(), __METHOD__);
+        }
+    }
+
+    private function sendAccountConfirmationEmail(User $user)
+    {
+        $memberType = $user->getFieldValue('memberType')->value;
+        $memberRateEntry = $user->getFieldValue('memberRate')->one();
+        $memberPrice = $memberRateEntry->getFieldValue('price');
+
+        try {
+            $mailer = Craft::$app->mailer;
+            Craft::$app->getView()->setTemplatesPath(Craft::getAlias('@root/templates'));
+
+            if ($memberType === 'group' && $memberPrice > 0) {
+                $htmlBody = Craft::$app->getView()->renderTemplate('email/verification/verification-group', [
+                    'name' => $user->getFieldValue('firstName'),
+                ]);
+    
+                $subject = 'Betaling is geslaagd. Jouw groep is nu lid van Hi Flanders!';
+            }
+
+            if ($memberType === 'individual' && $memberPrice > 0) {
+                $htmlBody = Craft::$app->getView()->renderTemplate('email/verification/verification-ind-payed', [
+                    'name' => $user->getFieldValue('firstName'),
+                ]);
+    
+                $subject = 'Gelukt! Je bent nu officieel lid van Hi Flanders 😁';
+            }
+
+            // Prepare and send the email
+            $message = $mailer->compose()
+                ->setTo($user->email)
+                ->setSubject($subject)
+                ->setHtmlBody($htmlBody)
+                ->send();
+
+            if (!$message) {
+                Craft::error('Failed to send payment confirmation email to: ' . $user->email, __METHOD__);
+            } else {
+                Craft::info('Payment confirmation email sent to: ' . $user->email, __METHOD__);
+            }
+        } catch (\Throwable $e) {
+            Craft::error("Error sending payment confirmation email: " . $e->getMessage(), __METHOD__);
+        }
+    }
+
+
 }

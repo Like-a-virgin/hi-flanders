@@ -13,4 +13,7 @@ return [
     'actions/entries/delete-entry' => 'entries/delete-entry',
     'membership-payments/payment/webhook' => 'membership-payments/payment/webhook',
     'export-users' => 'excel-users/export/users',
+    'send-activation-old' => 'old-members/send-activation/send-email',
+    'send-reminder-old' => 'old-members/send-reminder/send-email',
+    'deactivate-old' => 'old-members/deactivate/deactivate',
 ];

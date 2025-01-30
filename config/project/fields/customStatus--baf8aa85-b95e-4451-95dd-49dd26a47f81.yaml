@@ -50,6 +50,28 @@ settings:
         -
           - default
           - ''
+    -
+      __assoc__:
+        -
+          - label
+          - 'Oud actief'
+        -
+          - value
+          - old
+        -
+          - default
+          - ''
+    -
+      __assoc__:
+        -
+          - label
+          - 'Oud niet actief '
+        -
+          - value
+          - oldRenew
+        -
+          - default
+          - ''
 translationKeyFormat: null
 translationMethod: none
 type: craft\fields\Dropdown

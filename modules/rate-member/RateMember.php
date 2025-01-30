@@ -4,8 +4,6 @@ namespace modules\ratemember;
 
 use Craft;
 use craft\elements\User;
-use craft\services\Users;
-use craft\events\UserEvent;
 use craft\elements\Entry;
 use craft\events\ElementEvent;
 use craft\services\Elements;
@@ -22,6 +20,8 @@ class RateMember extends BaseModule
 {
     public function init(): void 
     {
+        Craft::setAlias('@modules/ratemember', __DIR__);
+
         parent::init();
 
         Event::on(
@@ -107,7 +107,6 @@ class RateMember extends BaseModule
     private function assignRateWithOptionalPayment(User $user, $rate): void
     {
         $request = Craft::$app->getRequest();
-
         $user->setFieldValue('memberRate', [$rate->id]);
 
         $ratePriceField = $rate->getFieldValue('price');
@@ -138,7 +137,6 @@ class RateMember extends BaseModule
             $user->setFieldValue('paymentDate', $paymentDate);
             $user->setFieldValue('paymentType', 'free');
 
-            Craft::info("Assigned rate with ID {$rate->id} and set paymentDate to {$paymentDate} for user ID {$user->id}", __METHOD__);
         } else {
             $user->setFieldValue('paymentDate', null);
             $user->setFieldValue('paymentType', null);

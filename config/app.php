@@ -22,14 +22,17 @@
 
 use craft\helpers\App;
 use modules\adminregister\AdminRegister;
+use modules\afteractivation\AfterActivation;
+use modules\afterdeactivation\AfterDeactivation;
 use modules\beforeactivationuser\BeforeActivationUser;
 use modules\confirmemail\ConfirmEmail;
+// use modules\customactivationmailing\CustomActivationMailing;
 use modules\custommemberid\CustomMemberId;
+use modules\dailychecks\DailyChecks;
 use modules\deactivateuser\DeactivateUser;
-use modules\emailmessages\EmailMessages;
 use modules\excelusers\ExcelUsers;
 use modules\membershippayments\MembershipPayments;
-use modules\membershiprenewal\MembershipRenewal;
+use modules\oldmembers\OldMembers;
 use modules\rateextramember\RateExtraMember;
 use modules\ratemember\RateMember;
 use modules\userfullname\UserFullName;
@@ -45,10 +48,13 @@ return [
         'custom-member-id' => CustomMemberId::class,
         'admin-register' => AdminRegister::class,
         'excel-users' => ExcelUsers::class,
-        'membership-renewal' => MembershipRenewal::class,
+        'after-deactivation' => AfterDeactivation::class,
         'before-activation-user' => BeforeActivationUser::class,
         'deactivate-user' => DeactivateUser::class,
-        'email-messages' => EmailMessages::class,
+        // 'custom-activation-mailing' => CustomActivationMailing::class,
+        'after-activation' => AfterActivation::class,
+        'daily-checks' => DailyChecks::class,
+        'old-members' => OldMembers::class,
     ], 
     'bootstrap' => [
         'rate-member', 
@@ -59,9 +65,12 @@ return [
         'custom-member-id',
         'admin-register',
         'excel-users',
-        'membership-renewal',
+        'after-deactivation',
         'before-activation-user',
         'deactivate-user',
-        'email-messages',
+        // 'custom-activation-mailing',
+        'after-activation',
+        'daily-checks',
+        'old-members',
     ],
 ];

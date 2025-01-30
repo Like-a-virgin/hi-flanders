@@ -1,6 +1,17 @@
 @use "../abstracts" as *;
 
+.table-mobile {
+    @include screen($screen-s) {
+        display: none;
+    }
+}
 .table {
+    display: none;
+
+    @include screen($screen-s) {
+        display: flex;
+    }
+
     min-height: 50vh;
 
     &__options {
@@ -41,16 +52,13 @@
         }
     }
 
-    .tooltiptext {
-        position: absolute;
-        top: -2rem;
-        padding: 0.25rem 0.5rem;
-        background-color: #F7F7F7;
-        border-radius: 0.25rem;
+    &__large-only {
         display: none;
-        width: fit-content;
-    }
 
+        @include screen($screen-l) {
+            display: block;
+        }
+    }
     &__search {
         max-width: 100%;
         background-color: white;
@@ -150,6 +158,22 @@
         padding-left: 1rem;
         overflow: hidden;
         grid-column: span 4;
+    }
+
+    &__option-search-delete {
+        background-color: transparent;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+        height: 100%;
+        border: none;
+        padding: 0 1rem;
+
+        &:hover {
+            background-color: rgba($clr-primary, 0.1);
+            cursor: pointer;
+        }
     }
 
     &__status {

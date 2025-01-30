@@ -10,14 +10,12 @@
         {% set user = user ?? currentUser %}
         {% set userGroup = user.getGroups()|first.handle %}
 
-        {% if userGroup is same as 'members' %}    
+        {% if userGroup is same as 'members' or userGroup is same as 'membersGroup' %}    
             {% include "pages/user.twig" %} 
             {# {{ sprig('sprig-components/user-profile.twig',{
                 userId: user.id, 
                 userGroup: userGroup
             }) }} #}
-        {% elseif userGroup is same as 'membersGroup' %}
-            {% include "pages/user-organisation.twig" %} 
         {% elseif userGroup is same as 'membersAdmin' or userGroup is same as 'membersAdminSuper' %}
             {{ sprig('sprig-components/dashboard.twig')}}
         {% endif %}

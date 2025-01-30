@@ -1,6 +1,8 @@
 {% set paymentMethods = [{value: 'hostel', label: 'Hostel'|t}, {value: 'online', label: 'Online'|t}, {value: 'transfer', label: 'Overschrijving'|t}, {value: 'free', label: 'Gratis'|t}] %}
 {% set cardTypes = [{value: 'printed', label: 'Geprint'|t}, {value: 'online', label: 'Enkel online'|t}] %}
-{% set statusValues = [{value: 'active', label: 'Actief'|t}, {value: 'new', label: 'Nieuw'|t}, {value: 'renew', label: 'Vernieuw'|t}, {value: 'deactivated', label: 'Gedeactiveerd'|t}] %}
+{% set statusValues = [{value: 'active', label: 'Actief'|t}, {value: 'new', label: 'Nieuw'|t}, {value: 'renew', label: 'Vernieuw'|t}, {value: 'deactivated', label: 'Gedeactiveerd'|t},  {value: 'old', label: 'Oud systeem'|t}] %}
+{% set memberTypes = [{value: 'individual', label: 'Individueel'|t}, {value: 'group', label: 'Groep'|t}, {value: 'groupYouth', label: 'Jeugdgroep'|t}, {value: 'employee', label: 'Werknemer'|t},  {value: 'life', label: 'Life member'|t}] %}
+{% set limits = [{value: 10}, {value: 20}, {value: 30} , {value: 40}, {value: 50}] %}
 {% set ageGroups = craft.entries.section('rates').memberType('individual').all() %}
 
 {% set search = search ?? null %}
@@ -15,8 +17,9 @@
 {% set payMax = payMax ?? null %}
 {% set payMin = payMin ?? null %}
 {% set status = status ?? null %}
+{% set memberType = memberType ?? null %}
 
-{% set limit = 7 %}
+{% set limit = limit ?? limits[0].value %}
 {% set page = page ?? 1 %}
 
 {% set filters = {
@@ -30,6 +33,8 @@
     payMin: payMin,
     memberId: memberId,
 	status: status,
+	memberType: memberType,
+	limit: limit,
 } %}
 
 {% set dateFilterReg = [] %}
@@ -59,8 +64,12 @@
     dateCreated: dateFilterReg,
     paymentDate: dateFilterPay,
     limit: limit, 
-	customStatus: status
+	customStatus: status,
+	memberType: memberType,
 }) %}
+
+{% set oldMembers = craft.users({group: ['members', 'membersGroup'], customStatus: ['old', 'oldRenew']}).all() %}
+{% set oldMembersDeactivated = oldMembers|filter(i => i.status is same as 'inactive') %}
 
 {% set urlFilters = filters|merge({page: page})|url_encode %}
 {% do sprig.pushUrl('?' ~ urlFilters ) %}
@@ -68,22 +77,49 @@
 {% set pageInfo = sprig.paginate(membersQuery, page) %}
 {% set entries = pageInfo.pageResults %}
 {% set membersAll = membersQuery.all() %}
-
+<div class="table-mobile">
+	{{'Dashboard is enkel zichtbaar op ipad of desktop'|t}}
+</div>
 <div class="box-container table">
 	<h1>Leden</h1>
 	<div class="table__options" x-data="{openOption: $persist(0)}">
 		<div class="table__option-search">
 			{{ svg("assets/icons/search.svg")|attr({class: 'table__icon-search' }) }}
 			<input sprig  type="text" class="table__search" name="search" value="{{search}}" placeholder="Zoeken">
+			<button sprig s-val:search="{{null}}" class="table__option-search-delete">{{ svg("assets/icons/x.svg")|attr({class: 'table__icon-search' }) }}</button>
 		</div>
 		<div class="filter">
 			<button @click="openOption === 1 ? openOption = 0 : openOption = 1" title="Filter" aria-label="{{ 'Filter' }}" class="filter__option-btn">{{svg('assets/icons/filter.svg')|attr({class: 'filter__option-icon' })}}</button>
 			<div class="filter__box filter__box--filters" x-show="openOption === 1">
 				<div class="filter__select-box">
+					<p class="filter__title">{{'Lid type'|t}}</p>
+					<div class="filter__select-row">					
+						<select sprig  class="filter__select" name="memberType" id="">
+							<option value="" {{ not memberType ? 'selected'}}>{{ 'Selecteer een type'|t }}</option>
+							{% for item in memberTypes %}
+								<option class="filter__option" value="{{item.value}}" {{ memberType == item.value ? 'selected'}}>{{item.label}}</option>
+							{% endfor %}
+						</select>
+						{% if memberType %}
+							<button class="filter__remove" sprig s-val:member-type="{{null}}">{{svg('assets/icons/x.svg')|attr({class:"filter__remove-icon"})}}</button>
+						{% endif %}
+					</div>
+				</div>
+				<div class="filter__select-box">
+					<p class="filter__title">{{'Rijen per pagina'|t}}</p>
+					<div class="filter__select-row">					
+						<select sprig  class="filter__select" name="limit" id="">
+							{% for item in limits %}
+								<option class="filter__option" value="{{item.value}}" {{ limit == item.value ? 'selected'}}>{{item.value}}</option>
+							{% endfor %}
+						</select>
+					</div>
+				</div>
+				<div class="filter__select-box">
 					<p class="filter__title">{{'Status'|t}}</p>
 					<div class="filter__select-row">					
 						<select sprig  class="filter__select" name="status" id="">
-							<option value="" {{ not status ? 'selected'}}>{{ 'Selecteer een lidkaart type'|t }}</option>
+							<option value="" {{ not status ? 'selected'}}>{{ 'Selecteer een status'|t }}</option>
 							{% for item in statusValues %}
 								<option class="filter__option" value="{{item.value}}" {{ status == item.value ? 'selected'}}>{{item.label}}</option>
 							{% endfor %}
@@ -159,7 +195,7 @@
 						<input sprig class="filter__date" type="date" id="reg-max-date" name="regMax" s-trigger="change" value="{{regMax}}" >
 					</div>
 				</div>
-				<button class="filter__remove-all btn" sprig s-val:pay-method="{{null}}" s-val:card-type="{{null}}" s-val:age-group="{{null}}" s-val:reg-min="{{null}}" s-val:reg-max="{{null}}" s-val:pay-min="{{null}}" s-val:pay-max="{{null}}" s-val:search="{{null}}" s-val:status="{{null}}">{{'Verwijder alle filters'}}</button>
+				<button class="filter__remove-all btn" sprig s-val:pay-method="{{null}}" s-val:card-type="{{null}}" s-val:age-group="{{null}}" s-val:reg-min="{{null}}" s-val:reg-max="{{null}}" s-val:pay-min="{{null}}" s-val:pay-max="{{null}}" s-val:search="{{null}}" s-val:status="{{null}}" s-val:member-type="{{null}}">{{'Verwijder alle filters'}}</button>
 			</div>
 		</div>
 		<div class="filter">
@@ -170,6 +206,23 @@
 			</div>
 		</div>
 		<a href="/export-users?{{ filters|url_encode }}" title="{{'Download excel'}}" class="table__download">{{svg('assets/icons/download.svg')|attr({class: "table__download-icon"})}}</a>
+		{% if oldMembers %}		
+			<div class="filter">
+				<button @click="openOption === 3 ? openOption = 0 : openOption = 3" title="Nieuw lid" aria-label="{{'Nieuwe lid'}}" class="filter__option-btn">{{svg('assets/icons/envelope.svg')|attr({class: 'filter__option-icon' })}}</button>
+				<div class="filter__box filter__box--old" x-show="openOption === 3">
+					<div>
+						<h3>{{'Acties voor oude leden'}}</h3>
+					</div>
+					<div class="filter__actions">
+						{% if oldMembersDeactivated %}
+							<a href="/send-activation-old" class="filter__btn">{{'Verstuur activatiemail'}}</a>
+						{% endif %}
+						<a href="/send-activation-old" class="filter__btn">{{'Verstuur herinnering'}}</a>
+						<a href="/send-activation-old" class="filter__btn">{{'Deactiveer oude leden'}}</a>
+					</div>
+				</div>
+			</div>
+		{% endif %}
 	</div>
 	<div class="table__content" id="table-members">
 		<table
@@ -177,9 +230,9 @@
 			<thead>
 				<tr>
 					<th>{{'Naam'|t}}</th>
-					<th>{{'E-mail'|t}}</th>
+					<th class="table__large-only">{{'E-mail'|t}}</th>
 					<th>{{'Lidnummer'|t}}</th>
-					<th>{{'Gekoppeld'|t}}</th>
+					<th class="table__large-only">{{'Gekoppeld'|t}}</th>
 					<th>{{'Betaald'|t}}</th>
 					<th>{{'Status'|t}}</th>
 					<th>{{'Meer'|t}}</th>
@@ -204,9 +257,9 @@
 								{{member.altLastName}}
 							{% endif %}
 						</td>
-						<td>{{ memberIsEntry is same as false ? member.email}}</td>
+						<td class="table__large-only">{{ memberIsEntry is same as false ? member.email}}</td>
 						<td>{{ memberIsEntry is same as false ? '(008) ' ~ member.customMemberId|slice(0, 3) ~ ' ' ~ member.customMemberId|slice(3, 3) ~ ' ' ~ member.customMemberId|slice(6, 3) ~ ' ' ~ member.customMemberId|slice(9, 3)}}</td>
-						<td>{{ memberIsEntry is same as false ? extraMembers|length }}</td>
+						<td class="table__large-only">{{ memberIsEntry is same as false ? extraMembers|length }}</td>
 						<td>
 							{% if paymentStatus %}
 								<div class="table__status table__status--true">{{ svg("assets/icons/check.svg")|attr({class: 'table__status-icon table__status-icon--true' }) }}</div>
@@ -223,6 +276,10 @@
 								<div class="table__status table__status--false">{{'verniew'|t}}</div>
 							{% elseif member.customStatus.value is same as 'deactivated' %}
 								<div class="table__status table__status--disabled">{{'gedeactiveerd'|t}}</div>
+							{% elseif member.customStatus.value is same as 'old' %}
+								<div class="table__status table__status--false">{{'oud actief lid'|t}}</div>
+							{% elseif member.customStatus.value is same as 'oldRenew' %}
+								<div class="table__status table__status--false">{{'oud niet actief lid'|t}}</div>
 							{% endif %}
 						</td>
 						<td>

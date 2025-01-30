@@ -66,10 +66,7 @@ class UserFullName extends BaseModule
         }
 
         if (!empty($organisation)) {
-            $user->fullName = $organisation;
+            $user->firstName = $organisation;
         }
-
-        // Log the operation for debugging
-        Craft::info("Copied altFirstName and altLastName to firstName and lastName for user ID {$user->id}", __METHOD__);
     }
 }

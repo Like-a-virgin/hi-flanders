@@ -123,6 +123,30 @@ class BeforeActivationUser extends BaseModule
                 }
             }
 
+            if ($status === "old" && $status === "oldRenuw") {
+                $user->setFieldValue('customStatus', 'active');
+                $user->setFieldValue('statusChangeDate', $currentDate);
+
+                if (!Craft::$app->elements->saveElement($user)) {
+                    Craft::error('Failed to update accountStatus for user ID: ' . $user->id, __METHOD__);
+                    Craft::error('Errors: ' . json_encode($user->getErrors()), __METHOD__);
+                } else {
+                    Craft::info('Successfully set accountStatus to "renew" for user ID: ' . $user->id, __METHOD__);
+                } 
+
+                $relatedEntries = Entry::find()
+                ->section('extraMembers') 
+                ->relatedTo($user)     
+                ->all();
+
+                foreach ($relatedEntries as $entry) {
+                    $entry->enabled = false; // Disable the entry
+                    if (!Craft::$app->elements->saveElement($entry)) {
+                        Craft::error("Failed to deactivate entry ID {$entry->id}.", __METHOD__);
+                    }
+                }
+            }
+
         } else {
             Craft::error('Event did not provide a valid User object.', __METHOD__);
         }

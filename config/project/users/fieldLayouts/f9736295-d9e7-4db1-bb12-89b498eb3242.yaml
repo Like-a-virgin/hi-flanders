@@ -157,6 +157,33 @@ tabs:
         warning: null
         width: 100
       -
+        dateAdded: '2025-01-29T07:41:25+00:00'
+        elementCondition:
+          class: craft\elements\conditions\users\UserCondition
+          conditionRules:
+            -
+              class: craft\elements\conditions\users\GroupConditionRule
+              operator: in
+              uid: f3bfddcd-6e52-47b0-8338-bb92419f4d89
+              values:
+                - 50a6f7cb-84e7-4d68-9aa9-3af2d9001e79 # Leden
+                - a21d7477-05ca-43ea-ae84-fc44c3e16a70 # Leden groep
+          elementType: craft\elements\User
+          fieldContext: global
+        fieldUid: 6a50b531-3d13-4fe9-95fa-16d3ce0c27d1 # Gerigistreerd door 
+        handle: null
+        includeInCards: false
+        instructions: null
+        label: null
+        providesThumbs: false
+        required: false
+        tip: null
+        type: craft\fieldlayoutelements\CustomField
+        uid: 51a3ec10-9d95-4220-a84e-d263360a04f1
+        userCondition: null
+        warning: null
+        width: 100
+      -
         dateAdded: '2025-01-23T14:14:57+00:00'
         elementCondition: null
         heading: Naam

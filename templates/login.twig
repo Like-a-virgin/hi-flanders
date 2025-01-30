@@ -1,7 +1,7 @@
 {% extends "layouts/base.twig" %}
 
 {% block content %}
-    {% set urlGroupRequest = craft.entries.section('requestGroup').one().url %}
+    {% set forms = craft.entries.section('forms').addOption(true).all() %}
     <div class="formbox">
         <div class="formbox__heading">
             <h1>{{'Log in'|t}}</h1>
@@ -9,7 +9,7 @@
         <form class="formbox__form" method="post" accept-charset="UTF-8">
             {{ csrfInput() }}
             {{ actionInput('users/login') }}
-            {{ redirectInput('/') }}
+            {{ redirectInput(currentSite.baseUrl) }}
 
             {% if errorMessage is defined %}
                 <div class="formbox__error formbox__column--full">
@@ -50,7 +50,9 @@
         <div class="formbox__options">
             <p class="formbox__or">{{'Of'|t}}</p>
             <a class="formbox__button formbox__button--sec" href="{{ url('register') }}">{{'Lid worden'|t}}</a>
-            <a class="formbox__button formbox__button--sec" href="{{ urlGroupRequest }}">{{'Lid worden als groep'|t}}</a>
+            {% for item in forms %}
+                <a class="formbox__button formbox__button--sec" href="{{ item.url }}">{{ item.textSingle }}</a>
+            {% endfor %}
         </div>
     </div>
 {% endblock %}

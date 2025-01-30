@@ -49,7 +49,7 @@ class AdminRegister extends BaseModule
 
                 if ($element instanceof User && $event->isNew) {
                     $this->assignUserGroup($element);
-                    $this->sendActivationCode($element);
+                    $this->sendActivationCode($element); 
                 }
             }
         );
@@ -77,6 +77,7 @@ class AdminRegister extends BaseModule
             'contactPerson' => null,
             'memberDueDate' => null,
             'privacyPolicy' => null,
+            'registeredBy' => null,
         ];
 
         foreach ($fields as $fieldHandle => $coreField) {
@@ -125,18 +126,79 @@ class AdminRegister extends BaseModule
 
     private function sendActivationCode(User $user): void
     {
-        if (!$user->email) {
-            Craft::error('User does not have an email address set.', __METHOD__);
-            return;
-        }
+        $registeredBy = $user->getFieldValue('registeredBy')->value;
+        $memberType = $user->getFieldValue('memberType')->value;
+        $paymentDate = $user->getFieldValue('paymentDate');
 
-        $activationCode = Craft::$app->getUsers()->sendActivationEmail($user);
+        try {
+            $activationUrl = Craft::$app->users->getActivationUrl($user);
+            $mailer = Craft::$app->mailer;
 
-        if ($activationCode) {
-            Craft::info("Activation email successfully sent to {$user->email}.", __METHOD__);
-        } else {
-            Craft::error("Failed to send activation email to {$user->email}.", __METHOD__);
+            // Set custom templates path
+            Craft::$app->getView()->setTemplatesPath(Craft::getAlias('@root/templates'));
+
+            if ($registeredBy === 'admin' && $memberType === 'group') {
+                $htmlBody = Craft::$app->getView()->renderTemplate('email/activation/activation-group', [
+                    'name' => $user->getFieldValue('organisation'),
+                    'activationUrl' => $activationUrl,
+                ]);
+
+                $subject = 'Welkom! Betalingsverzoek voor je groep';
+            }
+
+            if ($registeredBy === 'admin' && $memberType === 'groupYouth') {
+                $htmlBody = Craft::$app->getView()->renderTemplate('email/activation/activation-youth', [
+                    'name' => $user->getFieldValue('organisation'),
+                    'activationUrl' => $activationUrl,
+                ]);
+
+                $subject = 'Welkom bij Hi Flanders! Registratie bijna in orde …';
+            }
+
+            if ($registeredBy === 'admin' && $memberType === 'individual' && $paymentDate) {
+                $htmlBody = Craft::$app->getView()->renderTemplate('email/activation/activation-ind-ad-payed', [
+                    'name' => $user->getFieldValue('organisation'),
+                    'activationUrl' => $activationUrl,
+                ]);
+
+                $subject = 'Welkom bij Hi Flanders! Activeer meteen je lidmaatschap';
+            }
+            if ($registeredBy === 'admin' && $memberType === 'individual' && !$paymentDate) {
+                $htmlBody = Craft::$app->getView()->renderTemplate('email/activation/activation-ind-ad', [
+                    'name' => $user->getFieldValue('organisation'),
+                    'activationUrl' => $activationUrl,
+                ]);
+
+                $subject = 'Welkom bij Hi Flanders! Activeer meteen je lidmaatschap en betaal';
+            }
+            
+            // Prepare and send the email
+            $message = $mailer->compose()
+                ->setTo($user->email)
+                ->setSubject($subject)
+                ->setHtmlBody($htmlBody)
+                ->send();
+
+            if (!$mailer->send($message)) {
+                Craft::error('Failed to send renewal email to user: ' . $user->email, __METHOD__);
+            } else {
+                Craft::info('Renewal email sent to user: ' . $user->email, __METHOD__);
+            }
+        } catch (\Throwable $e) {
+            Craft::error("Error sending custom activation email: " . $e->getMessage(), __METHOD__);
         }
+        // if (!$user->email) {
+        //     Craft::error('User does not have an email address set.', __METHOD__);
+        //     return;
+        // }
+
+        // $activationCode = Craft::$app->getUsers()->sendActivationEmail($user);
+
+        // if ($activationCode) {
+        //     Craft::info("Activation email successfully sent to {$user->email}.", __METHOD__);
+        // } else {
+        //     Craft::error("Failed to send activation email to {$user->email}.", __METHOD__);
+        // }
     }
 
     private function isMembersAdmin(User $user): bool

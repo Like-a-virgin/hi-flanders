@@ -1,0 +1,33 @@
+columnSuffix: null
+handle: registeredBy
+instructions: null
+name: 'Gerigistreerd door '
+searchable: false
+settings:
+  customOptions: false
+  options:
+    -
+      __assoc__:
+        -
+          - label
+          - Self
+        -
+          - value
+          - self
+        -
+          - default
+          - '1'
+    -
+      __assoc__:
+        -
+          - label
+          - Admin
+        -
+          - value
+          - admin
+        -
+          - default
+          - ''
+translationKeyFormat: null
+translationMethod: none
+type: craft\fields\Dropdown

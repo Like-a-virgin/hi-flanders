@@ -4,12 +4,10 @@ namespace modules\deactivateuser;
 
 use Craft;
 use craft\elements\User;
-use craft\elements\Entry;
 use craft\events\ElementEvent;
 use craft\services\Elements;
 use yii\base\Event;
-use DateTime;
-use DateTimeZone;
+;
 use yii\base\Module as BaseModule;
 
 /**
@@ -73,3 +71,5 @@ class DeactivateUser extends BaseModule
         }
     }
 }
+
+

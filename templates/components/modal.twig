@@ -21,78 +21,96 @@
                         </div>
                     </div>
                 {% endif %}
-                <div class="box__column box__column--4 box__column--flex-between">
-                    <h3>{{'Account'|t}}</h3>
-                    <button class="box__function-btn" @click="editAddress = true">{{'Wijzigen'|t}} {{ svg("assets/icons/edit.svg")|attr({class: 'box__icon-option box__icon-edit' }) }}</button>
-                </div>
+                {% if selectedMember.customStatus.value is not same as 'active' %}                    
+                    <div class="box__wrapper box__wrapper--labels">
+                        {% include "components/info-box.twig" with {
+                            span: 4, 
+                            info: 'Dit account is niet actief'|t,
+                            error: true
+                        } %}
+                    </div>
+                {% endif %}
                 <div class="box__wrapper box__wrapper--labels">
-                    <div class="box__column box__column--4">
-                        <p>{{'Status'|t}}</p>
-                        <div class="box__info">
-                            <p>{{ selectedMember.customStatus.value }}</p>
-                        </div>
-                    </div>
-                    <div class="box__column box__column--2">
-                        <p>{{'E-mail'|t}}</p>
-                        <div class="box__info">
-                            <p>{{ selectedMember.email }}</p>
-                        </div>
-                    </div>
-                    <div class="box__column box__column--2">
-                        {% if selectedMember.getGroups()|first.handle is same as 'members' %}                        
-                            <p>{{'Geboortedatum'|t}}</p>
-                            <div class="box__info">
-                                <p>{{ selectedMember.birthday|date("d/m/Y") }}</p>
-                            </div>
-                        {% else %}
-                            <p>{{'Contactpersoon'|t}}</p>
-                            <div class="box__info">
-                                <p>{{ selectedMember.contactPerson }}</p>
-                            </div>
-                        {% endif %}
-                    </div>
+                    {% include "components/subtitle-box.twig" with {
+                        subtitle: 'Persoonsgegevens'|t
+                    } %}
+                    {% if selectedMember.getGroups()|first.handle is same as 'members' %}                    
+                        {% include "components/info-box.twig" with {
+                            span: 2, 
+                            label: 'Voornaam'|t, 
+                            info: selectedMember.altFirstName
+                        } %}
+                        {% include "components/info-box.twig" with {
+                            span: 2, 
+                            label: 'Voornaam'|t, 
+                            info: selectedMember.altLastName
+                        } %}
+                    {% else %}
+                        {% include "components/info-box.twig" with {
+                            span: 2, 
+                            label: 'Organisatie'|t, 
+                            info: selectedMember.organisation
+                        } %}
+                        {% include "components/info-box.twig" with {
+                            span: 2, 
+                            label: 'contactpersoon'|t, 
+                            info: selectedMember.contactPerson
+                        } %}
+                    {% endif %}
+                    {% include "components/info-box.twig" with {
+                        span: 2, 
+                        label: 'E-mail'|t, 
+                        info: selectedMember.email
+                    } %}
+                    {% if selectedMember.getGroups()|first.handle is same as 'members' %}
+                        {% include "components/info-box.twig" with {
+                            span: 2, 
+                            label: 'Geboortedatum'|t, 
+                            info: selectedMember.birthday|date("d/m/Y")
+                        } %}
+                    {% else %}
+                        {% include "components/info-box.twig" with {
+                            span: 2, 
+                            label: 'Contactpersoon'|t, 
+                            info: selectedMember.tel
+                        } %}
+                    {% endif %}
                 </div>
                 <div x-show="!editAddress" class="box__wrapper box__wrapper--labels">
                     <div class="box__column box__column--4 box__column--flex-between">
                         <h3>{{'Adres'|t}}</h3>
                         <button class="box__function-btn" @click="editAddress = true">{{'Wijzigen'|t}} {{ svg("assets/icons/edit.svg")|attr({class: 'box__icon-option box__icon-edit' }) }}</button>
                     </div>
-                    <div class="box__column box__column--2">
-                        <p>{{'Straat'|t}}</p>
-                        <div class="box__info">
-                            <p>{{ selectedMember.street|capitalize }}</p>
-                        </div>
-                    </div>
-                    <div class="box__column">
-                        <p>{{'Nr'|t}}</p>
-                        <div class="box__info">
-                            <p>{{ selectedMember.streetNr }}</p>
-                        </div>
-                    </div>
-                    <div class="box__column">
-                        <p>{{'Bus'|t}}</p>
-                        <div class="box__info">
-                            <p>{{ selectedMember.bus|capitalize }}</p>
-                        </div>
-                    </div>
-                    <div class="box__column box__column--2">
-                        <p>{{'Land'|t}}</p>
-                        <div class="box__info">
-                            <p>{{ selectedMember.country|capitalize }}</p>
-                        </div>
-                    </div>
-                    <div class="box__column box__column">
-                        <p>{{'Stad'|t}}</p>
-                        <div class="box__info">
-                            <p>{{ selectedMember.city|capitalize }}</p>
-                        </div>
-                    </div>
-                    <div class="box__column box__column">
-                        <p>{{'Postcode'|t}}</p>
-                        <div class="box__info">
-                            <p>{{ selectedMember.postalCode }}</p>
-                        </div>
-                    </div>
+                    {% include "components/info-box.twig" with {
+                        span: 2, 
+                        label: 'Straat'|t, 
+                        info: selectedMember.street|capitalize
+                    } %}
+                    {% include "components/info-box.twig" with {
+                        span: 1, 
+                        label: 'Nr'|t, 
+                        info: selectedMember.streetNr
+                    } %}
+                    {% include "components/info-box.twig" with {
+                        span: 1, 
+                        label: 'Bus'|t, 
+                        info: selectedMember.bus|capitalize
+                    } %}
+                    {% include "components/info-box.twig" with {
+                        span: 2, 
+                        label: 'Land'|t, 
+                        info: selectedMember.country|capitalize
+                    } %}
+                    {% include "components/info-box.twig" with {
+                        span: 1, 
+                        label: 'Stad'|t, 
+                        info: selectedMember.city|capitalize
+                    } %}
+                    {% include "components/info-box.twig" with {
+                        span: 1, 
+                        label: 'Postcode'|t, 
+                        info: selectedMember.postalCode
+                    } %}
                 </div>
                 <form x-show="editAddress" class="edit" method="post" accept-charset="UTF-8" enctype="multipart/form-data">
                     {{ csrfInput() }}
@@ -158,23 +176,27 @@
                     <div class="box__column box__column--4">
                         <h3>{{'Lidmaatschap'|t}}</h3>
                     </div>
-                    <div class="box__column box__column--4">
-                        <div class="box__info box__info--prim">
-                            <p>{{ selectedMember.memberRate.one().title }}</p>
-                        </div>
-                    </div>
-                    <div class="box__column box__column--2">
-                        <p>{{'Registratiedatum'|t}}</p>
-                        <div class="box__info">
-                            <p>{{ selectedMember.dateCreated|date("d/m/Y") }}</p>
-                        </div>
-                    </div>
-                    <div class="box__column box__column--2">
-                        <p>{{'Vervaldatum'|t}}</p>
-                        <div class="box__info">
-                            <p>{{ selectedMember.memberDueDate|date("d/m/Y") }}</p>
-                        </div>
-                    </div>
+                    {% include "components/info-box.twig" with {
+                        span: 2, 
+                        label: 'Type'|t,
+                        info: selectedMember.memberRate.one().title, 
+                        prim: true
+                    } %}
+                    {% include "components/info-box.twig" with {
+                        span: 2, 
+                        label: 'Registratiedatum'|t, 
+                        info: selectedMember.dateCreated|date("d/m/Y")
+                    } %}
+                    {% include "components/info-box.twig" with {
+                        span: 2, 
+                        label: 'Vernieuwd op'|t, 
+                        info: selectedMember.renewedDate ? selectedMember.renewedDate|date("d/m/Y") : 'Nog niet vernieuwd'|t
+                    } %}
+                    {% include "components/info-box.twig" with {
+                        span: 2, 
+                        label: 'Vervaldatum'|t, 
+                        info: selectedMember.memberDueDate|date("d/m/Y")
+                    } %}
                 </div>
                 {% if selectedMember.getGroups()|first.handle is same as 'members' %}  
                     <div class="box__wrapper">
@@ -212,26 +234,17 @@
                         <h3>Betaal status</h3>
                         <button class="box__function-btn" @click="editPayment = true">{{'Wijzigen'|t}} {{ svg("assets/icons/edit.svg")|attr({class: 'box__icon-option box__icon-edit' }) }}</button>
                     </div>
-                    {% if selectedMember.paymentType.value is same as 'free' %}
-                        <div class="box__column box__column--4">
-                            <div class="box__info">
-                                <p>{{ selectedMember.paymentType.label }}</p>
-                            </div>
-                        </div>
-                    {% else %}                        
-                        <div class="box__column box__column--2">
-                            <p>{{'Betaaldatum'|t}}</p>
-                            <div class="box__info">
-                                <p>{{ selectedMember.paymentDate|date("d/m/Y") }}</p>
-                            </div>
-                        </div>
-                        <div class="box__column box__column--2">
-                            <p>{{'Betaalmethode'|t}}</p>
-                            <div class="box__info {{selectedMember.paymentType.value is same as '' ? 'box__info--error'}}">
-                                <p>{{ selectedMember.paymentType.label }}</p>
-                            </div>
-                        </div>
-                    {% endif %}
+                    {% include "components/info-box.twig" with {
+                        span: 2, 
+                        label: 'Betaaldatum'|t, 
+                        info: selectedMember.paymentType.value is same as 'free' ? selectedMember.paymentType.label : selectedMember.paymentDate ? selectedMember.paymentDate|date("d/m/Y")
+                    } %}
+                    {% include "components/info-box.twig" with {
+                        span: 2, 
+                        label: 'Betaalmethode'|t, 
+                        info: selectedMember.paymentType.label,
+                        error: selectedMember.paymentType.value is same as ''
+                    } %}
                 </div>
                 <form x-show="editPayment" class="edit" method="post" accept-charset="UTF-8" enctype="multipart/form-data">
                     {{ csrfInput() }}
@@ -244,10 +257,8 @@
                     </div>
                     <div class="edit__column--2">
                         <label class="edit__label" for="pay-date">{{'Betaaldatum'|t}}</label>
-                        {{ input('text', 'fields[paymentDate]', null, {
+                        {{ input('date', 'fields[paymentDate]', null, {
                             id: 'pay-date',
-                            placeholder: 'Betaaldatum'|t,
-                            onFocus: "(this.type = 'date', this.placeholder = '')",
                             required: true
                         }) }}
                     </div>
@@ -267,20 +278,13 @@
                 </form>
                 <div x-show="!editPrint" class="box__wrapper">
                     <div class="box__column box__column--4 box__column--flex-between">
-                        <h3>{{'Lidkaarttype'}}</h3>
+                        <h3>{{'Lidkaart'}}</h3>
                     </div>
-                    <div class="box__column box__column--4">
-                        <div class="box__info {{ selectedMember.requestPrint and not selectedMember.payedPrintDate ? 'box__info--error' }}">
-                            {% if not selectedMember.requestPrint and not selectedMember.payedPrintDate %}
-                                <p>{{'Online'|t}}</p>
-                            {% elseif selectedMember.requestPrint and not selectedMember.payedPrintDate %}
-                                <p>{{'Print'|t}}</p>
-                                <p>{{'Nog niet belaald'|t}}</p>
-                            {% else %}
-                                <p>{{'Print en online'|t}}</p>
-                            {% endif %}
-                        </div>
-                    </div>
+                    {% include "components/info-box.twig" with {
+                        span: 4, 
+                        info: not selectedMember.requestPrint and not selectedMember.payedPrintDate ? 'Online'|t : selectedMember.requestPrint and not selectedMember.payedPrintDate ? 'Print'|t ~ ' ' ~ 'Nog niet belaald'|t : 'Print en online'|t,
+                        error: selectedMember.requestPrint and not selectedMember.payedPrintDate
+                    } %}
                 </div>
                 <div class="box__options">
                     <div class="box__options-wrapper">

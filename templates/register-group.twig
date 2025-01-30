@@ -32,6 +32,7 @@
 
             {{ input('hidden', 'groupHandle', 'membersGroup') }}
             {{ input('hidden', 'fields[privacyPolicy][]', 'accepted') }}
+            {{ input('hidden', 'fields[registeredBy]', 'admin') }}
             
             {% if user %}
                 {% set errors = user.getErrors() %}

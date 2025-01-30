@@ -3,12 +3,12 @@
 {# `user` is defined if the form returns validation errors. #}
 
 {% block content %}
-    {% set pp = craft.entries.section(privacyPolicy).one().linkExtern %}
+    {% set pp = craft.entries.section('privacyPolicy').one().linkExtern %}
     {% set user = user ?? null %}
     {% set activationPage = craft.entries.section('activate').one().uri %}
     {% set maxDate = now|date_modify('-3 years')|date("Y-m-d") %}
     {% set memberRates = craft.entries.section('rates').all() %}
-    {% set urlGroupRequest = craft.entries.section('requestGroup').one().url %}
+    {% set forms = craft.entries.section('forms').addOption(true).all() %}
     {% set todayPlusOneYear = now|date_modify('+1 year')|date('Y-m-d') %}
     
     {% set promoCode = craft.app.request.getQueryParam('event') %}
@@ -31,6 +31,10 @@
 
             {{ input('hidden', 'groups', 'members') }}
             {{ input('hidden', 'fields[memberDueDate]', todayPlusOneYear) }}
+            {{ input('hidden', 'fields[lang]', currentSite.language) }}
+            {{ input('hidden', 'fields[registeredBy]', 'self') }}
+            {{ input('hidden', 'fields[customStatus]', 'new') }}
+            {{ input('hidden', 'fields[statusChangeDate]', now|date('Y-m-d')) }}
 
             {% if promoCode and promo %}
                 {{ input('hidden', 'fields[paymentType]', 'free') }}
@@ -165,7 +169,6 @@
                 }) }} 
                 <p>{{'Ik ga akkoord dat mijn gegevens gebruikt worden zoals beschreven in de'|t}} <a class="formbox__link" target="_blank" href="{{pp}}">{{'privacy policy'|t}}</a>.</label></p>
             </div>
-
             <input type="hidden" name="g-recaptcha-response" id="g-recaptcha-response">
             <button 
                 class="formbox__button formbox__column--full" 
@@ -177,7 +180,9 @@
         <div class="formbox__options">
             <p class="formbox__or">{{'Of'|t}}</p>
             <a class="formbox__button formbox__button--sec" href="{{ url('login') }}">{{'Log in'|t}}</a>
-            <a class="formbox__button formbox__button--sec" href="{{urlGroupRequest}}">{{'Lid worden als groep'|t}}</a>
+            {% for item in forms %}
+                <a class="formbox__button formbox__button--sec" href="{{ item.url }}">{{ item.textSingle }}</a>
+            {% endfor %}
         </div>
     </div>
 {% endblock %}
