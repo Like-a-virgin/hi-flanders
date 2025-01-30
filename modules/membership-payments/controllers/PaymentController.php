@@ -160,9 +160,9 @@ class PaymentController extends Controller
                     $user->setFieldValue('paymentDate', $paymentDate);
                     $user->setFieldValue('paymentType', 'online');
 
-                    // if ($print) {
-                    //     $user->setFieldValue('payedPrintDate', $paymentDate);
-                    // }
+                    if ($print) {
+                        $user->setFieldValue('payedPrintDate', $paymentDate);
+                    }
 
                     if (!Craft::$app->elements->saveElement($user)) {
                         Craft::error('Failed to update user payment date.', __METHOD__);
