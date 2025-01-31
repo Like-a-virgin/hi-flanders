@@ -1,6 +1,7 @@
 <IfModule mod_rewrite.c>
     RewriteEngine On
 
+    php_value memory_limit 512M
     # Route 404s to index.php
     RewriteCond %{REQUEST_FILENAME} !-f
     RewriteCond %{REQUEST_FILENAME} !-d
