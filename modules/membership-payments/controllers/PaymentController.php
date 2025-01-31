@@ -126,7 +126,8 @@ class PaymentController extends Controller
                 "membershipId" => $user->getFieldValue('customMemberId'),
                 "extraMemberIds" => $extraMemberIds,
                 "print" => $printPayment,
-                "memberships" => $membershipPayments
+                "memberships" => $membershipPayments,
+                "total" => number_format($totalFormatted, 2, '.', '')
             ],
         ]);
 
@@ -218,13 +219,8 @@ class PaymentController extends Controller
             $mailer = Craft::$app->mailer;
             Craft::$app->getView()->setTemplatesPath(Craft::getAlias('@root/templates'));
 
-            // Convert totalAmount to Euros (€)
-            // $formattedAmount = number_format($totalAmount, 2, ',', '.');
-
-            // Render the email template (Create `templates/email/payment-confirmation.twig`)
             $htmlBody = Craft::$app->getView()->renderTemplate('email/verification/verification-payment', [
-                'name' => 'test',
-                'totalAmount' => number_format($totalFormatted, 2, '.', ''),
+                'name' => $user->getFieldValue('altFirstName'),
             ]);
 
             $subject = 'Payment Confirmation - Your Membership Payment';
