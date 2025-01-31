@@ -301,7 +301,7 @@ class PaymentController extends Controller
 
             // Prepare and send the email
             $message = $mailer->compose()
-                ->setTo($user->email)
+                ->setTo('claudine@likeavirgin.be')
                 ->setSubject($subject)
                 ->setHtmlBody($htmlBody)
                 ->send();
