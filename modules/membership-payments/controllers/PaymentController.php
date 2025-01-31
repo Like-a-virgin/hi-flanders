@@ -215,13 +215,25 @@ class PaymentController extends Controller
 
     private function sendPaymentConfirmationEmail(User $user)
     {
+        $memberType = $user->getFieldValue('memberType')->value;
+        
         try {
             $mailer = Craft::$app->mailer;
             Craft::$app->getView()->setTemplatesPath(Craft::getAlias('@root/templates'));
 
-            $htmlBody = Craft::$app->getView()->renderTemplate('email/verification/verification-group', [
-                'name' => $user->getFieldValue('altFirstName'),
-            ]);
+            if ($memberType === 'group') {
+                $htmlBody = Craft::$app->getView()->renderTemplate('email/verification/verification-group', [
+                    'name' => $user->getFieldValue('organisation'),
+                ]);
+    
+            }
+
+            if ($memberType === 'individual' ) {
+                $htmlBody = Craft::$app->getView()->renderTemplate('email/verification/verification-ind-payed', [
+                    'name' => $user->getFieldValue('altFirstName'),
+                ]);
+    
+            }
 
             $subject = 'Payment Confirmation - Your Membership Payment';
 
