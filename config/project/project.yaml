@@ -1,4 +1,4 @@
-dateModified: 1738321982
+dateModified: 1738329254
 elementSources:
   craft\elements\Entry:
     -
@@ -124,9 +124,8 @@ email:
   replyToEmail: null
   template: email/email.html
   transportSettings:
-    messageStream: ''
-    token: $POSTMARK_API_KEY
-  transportType: craftcms\postmark\Adapter
+    command: '/usr/local/bin/mailpit sendmail -t --smtp-addr 127.0.0.1:1025'
+  transportType: craft\mail\transportadapters\Sendmail
 fs:
   branding:
     hasUrls: true
@@ -137,10 +136,8 @@ fs:
     url: $BRANDING_URL
 meta:
   __names__:
-    00d6a85f-228e-4877-b53c-8725397c83d9: address # address
     1d0447d2-95ba-4d14-95bd-e1f51bb4dd4c: users # users
     1d223580-d398-4fc6-af8a-8a1e08933341: 'Extra leden' # Extra leden
-    2c2fb008-1e62-4ff3-906c-1018563ad030: Tel # Tel
     2d35b4ae-62f0-4cb2-8a94-73ebdae1ef03: 'Member type' # Member type
     3a447095-116f-4a81-b2f7-43b6b4c1cf53: '404' # 404
     3fa074c6-e343-4927-8f8e-9c209ddd6261: Betaalmethode # Betaalmethode
@@ -171,12 +168,10 @@ meta:
     5178f917-f380-440d-a326-c41e396ba39a: 'privacy policy' # privacy policy
     6754b9ff-3f0c-41d6-914e-520590bd5d79: LinkExtern # LinkExtern
     8365fada-1ce2-4e0a-8a3f-f919c3c18208: 'max Leeftijd' # max Leeftijd
-    70433b7e-ace4-47e7-a7cc-aeeee486c616: 'Groep Type' # Groep Type
     80634baf-dc43-47ea-8528-2e72e4a53d61: Tarief # Tarief
     637277da-4bad-4da9-9b1a-059b6438cce0: 'Extra group' # Extra group
     3261931d-97c8-4b0e-a83a-6d9ac4dee153: Birthday # Birthday
     5978149a-5b05-4ba3-95ff-72c6250597fe: Tariefformule # Tariefformule
-    15257075-d043-4ea1-a62e-1785e8ed7a5f: Tekst # Tekst
     a21d7477-05ca-43ea-ae84-fc44c3e16a70: 'Leden groep' # Leden groep
     aa21d2ca-e34c-4497-a6fa-49b5a7cc7f58: Title # Title
     ab51ff2a-5865-41c8-897f-008e0b288a70: Date # Date
@@ -185,7 +180,6 @@ meta:
     af17efa6-765d-4c48-99b6-d836a037abd9: 'Succes registratie' # Succes registratie
     baf8aa85-b95e-4451-95dd-49dd26a47f81: 'Account status' # Account status
     bbdfff72-14f8-4e5d-b59e-12d5b73c9a17: Home # Home
-    bcc31cfe-3e29-427b-89b2-8e771af767e9: Nummer # Nummer
     be1c673f-0962-430c-8f77-56c215ba3ba8: 'Form Select' # Form Select
     c095205f-0280-43c8-86ec-2705261bf6b9: Default # Default
     c573f0bd-29d4-4985-8cff-271a6ee231a2: Beheerder # Beheerder

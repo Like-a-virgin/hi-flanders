@@ -1,0 +1,5 @@
+﻿memberType,customStatus,customMemberId,altFirstName,altLastName,street,streetNr,bus,postalCode,city,country,birthday,dateCreated,paymentDate,memberDueDate,paymentType,requestPrint,payedPrintDate,totalPayedMembers,E-mailadres,registeredBy,privacyPolicy,userGroup,status,cardType
+individual,old,203404,Robert,Aarts,Molenveld,229,,2490,BALEN,België,1946-04-25,2021-06-01,2024-06-01,2025-06-01,transfer,2024-06-01,2024-06-01,16,ethan@likeavirgin.be,admin,accepted,members,inactive,printed
+individual,old,207477,Sarah,Aarts,Sleutjes,47,,3930,HAMONT-ACHEL,België,2008-04-20,2023-02-01,2024-02-02,2025-02-01,transfer,2024-02-02,2024-02-02,10,laura@likeavirgin.be,admin,accepted,members,inactive,printed
+individual,old,212661,ENA,ABTS,WITTEWEG,15,,3360,Korbeek-Lo,België,1993-11-30,2023-12-02,2024-12-01,2025-12-01,transfer,2024-12-01,2024-12-01,16,luna@likeavigrin.be,admin,accepted,members,inactive,printed
+individual,old,202973,Josette,Achten,Zandstraat,7,,3665,AS,België,1955-11-20,2021-06-01,2024-06-01,2025-06-01,transfer,2024-06-01,2024-06-01,16,kristel@likeavirgin.be,admin,accepted,members,inactive,printed

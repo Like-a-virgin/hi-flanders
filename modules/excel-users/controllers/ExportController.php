@@ -73,7 +73,8 @@ class ExportController extends Controller
             'ID', 
             'Group/individual',
             'Status', 
-            'Name', 
+            'FirstName/organisation',
+            'LastName/contactperson', 
             'Birthday', 
             'Email', 
             'Country', 
@@ -92,7 +93,9 @@ class ExportController extends Controller
             'Payment type', 
             'Card Type',
             'Print request', 
-            'Print payed']];
+            'Print payed',
+            'Total print'
+        ]];
 
         foreach ($users as $user) {
             $memberRateEntry = $user->getFieldValue('memberRate')->one();
@@ -121,6 +124,9 @@ class ExportController extends Controller
             $dueDate = $user->memberDueDate; 
             $formattedDueDate = $dueDate ? $dueDate->format('d/m/Y') : '';
 
+            $prinRequest = $user->requestPrint;
+            $formattedPrintRequest = $prinRequest ? $prinRequest->format('d-m-Y') : '';
+
             $memberRatePrice = 0;
 
             if ($memberRateEntry && $memberRateEntry->price) { // Check if memberRateEntry and price are not null
@@ -136,15 +142,6 @@ class ExportController extends Controller
 
             // Calculate related entries count and total payment
             $relatedEntriesCount = count($relatedEntries);
-            $totalPayment = $memberRatePrice; // Start with the user's own rate price
-
-            foreach ($relatedEntries as $entry) {
-                $relatedRateEntry = $entry->getFieldValue('memberRate')->one();
-                if ($relatedRateEntry && $relatedRateEntry->price) { // Check if relatedRateEntry and price are not null
-                    $relatedRatePrice = $relatedRateEntry->price;
-                    $totalPayment += method_exists($relatedRatePrice, 'getAmount') ? (float) $relatedRatePrice->getAmount() / 100 : 0; // Adjust divisor for cents if needed
-                }
-            }
 
             $groupHandle = null;
 
@@ -152,11 +149,15 @@ class ExportController extends Controller
             foreach ($user->getGroups() as $group) {
                 if ($group->handle === 'members') {
                     $groupHandle = 'individual';
+                    $firstName = $user->getFieldValue('altFirstName');
+                    $lastName = $user->getFieldValue('altLastName');
                     break;
                 }
 
                 if ($group->handle === 'membersGroup') {
                     $groupHandle = 'group';
+                    $firstName = $user->getFieldValue('organisation');
+                    $lastName = $user->getFieldValue('contactPerson');
                     break;
                 }
             }
@@ -166,7 +167,8 @@ class ExportController extends Controller
                 $customMemberId,
                 $groupHandle,
                 $user->customStatus,
-                $user->fullName,
+                $firstName,
+                $lastName,
                 $formattedBirthday,
                 $user->email,
                 $user->country,
@@ -180,12 +182,13 @@ class ExportController extends Controller
                 $formattedRenewDate,
                 $formattedDueDate,
                 $relatedEntriesCount,
-                number_format($totalPayment, 2),
+                $user->totalPayedMembers ? $user->totalPayedMembers->getAmount()/100 : 0,
                 $formattedPayDate,
                 $user->paymentType->label,
                 $user->cardType,
-                $user->requestPrint,
+                $formattedPrintRequest,
                 $user->payedPrintDate,
+                $user->totalPayedPrint ? $user->totalPayedPrint->getAmount()/100 : 0,
             ];
         }
 
@@ -200,22 +203,9 @@ class ExportController extends Controller
                 $cellCoordinate = $columnLetter . ($rowIndex + 1);
                 
                 $sheet->setCellValue($cellCoordinate, $value);
-        
-                // Format date fields (assume Birthday and Pay date are in columns 3 and 13, respectively)
-                if ($rowIndex > 0) { // Skip header row
-                    if ($colIndex === 2 || $colIndex === 12) { // Index for 'Birthday' and 'Pay date'
-                        if (!empty($value)) {
-                            // Convert the value to a PHP DateTime object
-                            $date = \DateTime::createFromFormat('d/m/Y', $value);
-                            if ($date) {
-                                $sheet->setCellValue($cellCoordinate, \PhpOffice\PhpSpreadsheet\Shared\Date::PHPToExcel($date));
-                                $sheet->getStyle($cellCoordinate)->getNumberFormat()->setFormatCode('DD/MM/YYYY');
-                            }
-                        }
-                    }
-                }
             }
         }
+        
 
         $highestColumn = $sheet->getHighestColumn();
         $highestColumnIndex = \PhpOffice\PhpSpreadsheet\Cell\Coordinate::columnIndexFromString($highestColumn);

@@ -14,18 +14,11 @@
                 <p class="box__membership">(008) {{selectedMember.customMemberId|slice(0, 3)}} {{selectedMember.customMemberId|slice(3, 3)}} {{selectedMember.customMemberId|slice(6, 3)}} {{selectedMember.customMemberId|slice(9, 3)}}</p>
             </div>
             <div class="box__content">
-                {% if selectedMember.status is same as 'pending' %}
-                    <div class="box-error">
-                        <div class="box-error__error">
-                            <p>{{ 'Dit account is nog niet geactiveerd!'|t }}</p>
-                        </div>
-                    </div>
-                {% endif %}
                 {% if selectedMember.customStatus.value is not same as 'active' %}                    
                     <div class="box__wrapper box__wrapper--labels">
                         {% include "components/info-box.twig" with {
                             span: 4, 
-                            info: 'Dit account is niet actief'|t,
+                            info: 'Dit account is niet actief of is nog niet geactiveert!'|t,
                             error: true
                         } %}
                     </div>
@@ -259,7 +252,8 @@
                         <label class="edit__label" for="pay-date">{{'Betaaldatum'|t}}</label>
                         {{ input('date', 'fields[paymentDate]', null, {
                             id: 'pay-date',
-                            required: true
+                            required: true, 
+                            placeholder: selectedMember.paymentDate|date('d-m-Y')
                         }) }}
                     </div>
                     <div class="edit__column--2">
@@ -288,7 +282,7 @@
                 </div>
                 <div class="box__options">
                     <div class="box__options-wrapper">
-                        {% if selectedMember.customStatus.value is same as 'deactivated' %}
+                        {% if selectedMember.customStatus.value is same as 'deactivated' and selectedMember.status is same as 'inactive' %}
                             <form class="form-delete" method="post" accept-charset="UTF-8" enctype="multipart/form-data">
                                 {{ csrfInput() }}
                                 {{ actionInput('users/save-user') }}

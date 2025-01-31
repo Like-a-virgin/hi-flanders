@@ -129,6 +129,7 @@ class AdminRegister extends BaseModule
         $registeredBy = $user->getFieldValue('registeredBy')->value;
         $memberType = $user->getFieldValue('memberType')->value;
         $paymentDate = $user->getFieldValue('paymentDate');
+        $customStatus = $user->getFieldValue('customStatus');
 
         try {
             $activationUrl = Craft::$app->users->getActivationUrl($user);
@@ -137,7 +138,7 @@ class AdminRegister extends BaseModule
             // Set custom templates path
             Craft::$app->getView()->setTemplatesPath(Craft::getAlias('@root/templates'));
 
-            if ($registeredBy === 'admin' && $memberType === 'group') {
+            if ($registeredBy === 'admin' && $memberType === 'group' && $customStatus === 'new') {
                 $htmlBody = Craft::$app->getView()->renderTemplate('email/activation/activation-group', [
                     'name' => $user->getFieldValue('organisation'),
                     'activationUrl' => $activationUrl,
@@ -146,7 +147,7 @@ class AdminRegister extends BaseModule
                 $subject = 'Welkom! Betalingsverzoek voor je groep';
             }
 
-            if ($registeredBy === 'admin' && $memberType === 'groupYouth') {
+            if ($registeredBy === 'admin' && $memberType === 'groupYouth' && $customStatus === 'new') {
                 $htmlBody = Craft::$app->getView()->renderTemplate('email/activation/activation-youth', [
                     'name' => $user->getFieldValue('organisation'),
                     'activationUrl' => $activationUrl,
@@ -155,7 +156,7 @@ class AdminRegister extends BaseModule
                 $subject = 'Welkom bij Hi Flanders! Registratie bijna in orde …';
             }
 
-            if ($registeredBy === 'admin' && $memberType === 'individual' && $paymentDate) {
+            if ($registeredBy === 'admin' && $memberType === 'individual' && $paymentDate && $customStatus === 'new') {
                 $htmlBody = Craft::$app->getView()->renderTemplate('email/activation/activation-ind-ad-payed', [
                     'name' => $user->getFieldValue('organisation'),
                     'activationUrl' => $activationUrl,
@@ -163,7 +164,7 @@ class AdminRegister extends BaseModule
 
                 $subject = 'Welkom bij Hi Flanders! Activeer meteen je lidmaatschap';
             }
-            if ($registeredBy === 'admin' && $memberType === 'individual' && !$paymentDate) {
+            if ($registeredBy === 'admin' && $memberType === 'individual' && !$paymentDate && $customStatus === 'new') {
                 $htmlBody = Craft::$app->getView()->renderTemplate('email/activation/activation-ind-ad', [
                     'name' => $user->getFieldValue('organisation'),
                     'activationUrl' => $activationUrl,
