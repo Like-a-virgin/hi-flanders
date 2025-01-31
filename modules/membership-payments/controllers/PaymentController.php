@@ -27,11 +27,13 @@ class PaymentController extends Controller
         }
 
         $relatedUserRateEntry = $user->getFieldValue('memberRate')[0] ?? null;
+        $hasMembershipPayments = false;
 
         if ($relatedUserRateEntry) {
             $priceUser = $relatedUserRateEntry->getFieldValue('price');
             if ($priceUser) {
                 $userRate = $relatedUserRateEntry->getFieldValue('price');
+                $hasMembershipPayments = true;
             } else {
                 $userRate = new Money(0, new Currency('EUR')); 
             }
@@ -63,6 +65,7 @@ class PaymentController extends Controller
     
             if ($relatedEntry) {
                 $priceRelatedEntry = $relatedEntry->getFieldValue('price');
+                $hasMembershipPayments = true;
 
                 if ($priceRelatedEntry) {
                     $price = $relatedEntry->getFieldValue('price');
@@ -124,7 +127,8 @@ class PaymentController extends Controller
             "metadata" => [
                 "userId" => $user->id,
                 "extraMemberIds" => $extraMemberIds,
-                "print" => $print
+                "print" => $print,
+                "memberships" => $hasMembershipPayments
             ],
         ]);
 
@@ -164,6 +168,7 @@ class PaymentController extends Controller
             $extraMemberIds = $metadata->extraMemberIds ?? [];
             $totalAmount = $payment->amount->value;
             $print = $metadata->print ?? false;
+            $memberships = $metadata->memberships ?? false;
 
             $paymentDate = new DateTime();
 
@@ -181,8 +186,10 @@ class PaymentController extends Controller
                         Craft::error('Failed to update user payment date.', __METHOD__);
                     }
 
-                    $this->sendPaymentConfirmationEmail($user, $totalAmount);
-                    $this->sendAccountConfirmationEmail($user);
+                    if ($memberships) {
+                        $this->sendPaymentConfirmationEmail($user, $totalAmount);
+                        $this->sendAccountConfirmationEmail($user);
+                    }
 
                     if ($print) {
                         $this->sendPrintDetailsOwner($user);
@@ -213,12 +220,12 @@ class PaymentController extends Controller
             Craft::$app->getView()->setTemplatesPath(Craft::getAlias('@root/templates'));
 
             // Convert totalAmount to Euros (€)
-            $formattedAmount = number_format($totalAmount, 2, ',', '.');
+            // $formattedAmount = number_format($totalAmount, 2, ',', '.');
 
             // Render the email template (Create `templates/email/payment-confirmation.twig`)
             $htmlBody = Craft::$app->getView()->renderTemplate('email/verification/verification-payment', [
                 'name' => 'test',
-                'totalAmount' => $formattedAmount,
+                'totalAmount' => $totalAmount,
             ]);
 
             $subject = 'Payment Confirmation - Your Membership Payment';
@@ -288,14 +295,7 @@ class PaymentController extends Controller
             Craft::$app->getView()->setTemplatesPath(Craft::getAlias('@root/templates'));
 
             $htmlBody = Craft::$app->getView()->renderTemplate('email/verification/verification-ind-payed', [
-                'name' => $user->getFieldValue('fullName'),
                 'id' => $user->getFieldValue('customMemberId'),
-                'street' => $user->getFieldValue('street'),
-                'nr' => $user->getFieldValue('nr'),
-                'bus' => $user->getFieldValue('bus') ?? '',
-                'postalCode' => $user->getFieldValue('postalCode'),
-                'city' => $user->getFieldValue('city'),
-                'country' => $user->getFieldValue('country'),
             ]);
 
             $subject = 'Nieuwe print aanvraag.';
