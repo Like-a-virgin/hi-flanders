@@ -215,33 +215,27 @@ class PaymentController extends Controller
 
     private function sendPaymentConfirmationEmail(User $user)
     {
-        $memberType = $user->getFieldValue('memberType')->value;
-        
         try {
             $mailer = Craft::$app->mailer;
             Craft::$app->getView()->setTemplatesPath(Craft::getAlias('@root/templates'));
 
-            if ($memberType === 'group') {
-                $htmlBody = Craft::$app->getView()->renderTemplate('email/verification/verification-group', [
-                    'name' => $user->getFieldValue('organisation'),
-                ]);
-    
-            }
+            $htmlBody = Craft::$app->getView()->renderTemplate('email/request/request-print', [
+                'id' => $user->getFieldValue('customMemberId'),
+                'street' => $user->getFieldValue('street'),
+                'number' => $user->getFieldValue('streetNr'),
+                'postalcode' => $user->getFieldValue('postalCode'),
+                'city' => $user->getFieldValue('city'),
+                'country' => $user->getFieldValue('country'),
+            ]);
 
-            if ($memberType === 'individual' ) {
-                $htmlBody = Craft::$app->getView()->renderTemplate('email/verification/verification-ind-payed', [
-                    'name' => $user->getFieldValue('altFirstName'),
-                ]);
-    
-            }
-
-            $subject = 'Payment Confirmation - Your Membership Payment';
+            $subject = 'je hebt betaald.';
 
             // Prepare and send the email
             $message = $mailer->compose()
-                ->setTo($user->email)
+                ->setTo('claudine@likeavirgin.be')
                 ->setSubject($subject)
-                ->setHtmlBody($htmlBody);
+                ->setHtmlBody($htmlBody)
+                ->send();
 
             if (!$message) {
                 Craft::error('Failed to send payment confirmation email to: ' . $user->email, __METHOD__);
