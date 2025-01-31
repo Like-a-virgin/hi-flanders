@@ -165,7 +165,7 @@ class PaymentController extends Controller
 
             $userId = $metadata->userId ?? null;
             $extraMemberIds = $metadata->extraMemberIds ?? [];
-            $totalAmount = $payment->amount->value;
+            $totalAmount = $metadata->total;
             $print = $metadata->print ?? false;
             $memberships = $metadata->memberships ?? false;
 
@@ -193,7 +193,7 @@ class PaymentController extends Controller
                         $this->sendPrintDetailsOwner($user);
                     }
 
-                    $this->sendPaymentConfirmationEmail($user);
+                    $this->sendPaymentConfirmationEmail($user, $totalAmount);
                 }
             }
 
@@ -219,13 +219,8 @@ class PaymentController extends Controller
             $mailer = Craft::$app->mailer;
             Craft::$app->getView()->setTemplatesPath(Craft::getAlias('@root/templates'));
 
-            $htmlBody = Craft::$app->getView()->renderTemplate('email/request/request-print', [
-                'id' => $user->getFieldValue('customMemberId'),
-                'street' => $user->getFieldValue('street'),
-                'number' => $user->getFieldValue('streetNr'),
-                'postalcode' => $user->getFieldValue('postalCode'),
-                'city' => $user->getFieldValue('city'),
-                'country' => $user->getFieldValue('country'),
+            $htmlBody = Craft::$app->getView()->renderTemplate('email/verification/verification-payment', [
+                'name' => $user->getFieldValue('customMemberId'),
             ]);
 
             $subject = 'je hebt betaald.';
