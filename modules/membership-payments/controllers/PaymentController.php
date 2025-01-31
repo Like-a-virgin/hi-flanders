@@ -112,6 +112,8 @@ class PaymentController extends Controller
 
         $membershipPayments = $totalMembershipRate->getAmount() > 0 ? true : false;
         $printPayment = $totalPrintRate->getAmount() > 0 ? true : false;
+
+        Craft::dd($membershipPayments);
         
         $payment = $mollie->payments->create([
             "amount" => [
@@ -191,7 +193,7 @@ class PaymentController extends Controller
                     if ($print) {
                         $this->sendPrintDetailsOwner($user);
                     }
-                    
+
                     $this->sendPaymentConfirmationEmail($user, $totalAmount);
                 }
             }
@@ -301,7 +303,7 @@ class PaymentController extends Controller
 
             // Prepare and send the email
             $message = $mailer->compose()
-                ->setTo('claudine@likeavirgin.be')
+                ->setTo($user->email)
                 ->setSubject($subject)
                 ->setHtmlBody($htmlBody)
                 ->send();
