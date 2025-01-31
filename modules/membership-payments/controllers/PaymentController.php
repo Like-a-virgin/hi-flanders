@@ -193,7 +193,7 @@ class PaymentController extends Controller
                         $this->sendPrintDetailsOwner($user);
                     }
 
-                    $this->sendPaymentConfirmationEmail($user, $totalAmount);
+                    $this->sendPaymentConfirmationEmail($user);
                 }
             }
 
@@ -213,7 +213,7 @@ class PaymentController extends Controller
         return $this->asJson(['success' => true]);
     }
 
-    private function sendPaymentConfirmationEmail(User $user, $totalAmount)
+    private function sendPaymentConfirmationEmail(User $user)
     {
         try {
             $mailer = Craft::$app->mailer;
