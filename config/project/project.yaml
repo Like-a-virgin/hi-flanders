@@ -1,4 +1,4 @@
-dateModified: 1738329254
+dateModified: 1738337236
 elementSources:
   craft\elements\Entry:
     -
@@ -124,8 +124,9 @@ email:
   replyToEmail: null
   template: email/email.html
   transportSettings:
-    command: '/usr/local/bin/mailpit sendmail -t --smtp-addr 127.0.0.1:1025'
-  transportType: craft\mail\transportadapters\Sendmail
+    messageStream: ''
+    token: $POSTMARK_API_KEY
+  transportType: craftcms\postmark\Adapter
 fs:
   branding:
     hasUrls: true
