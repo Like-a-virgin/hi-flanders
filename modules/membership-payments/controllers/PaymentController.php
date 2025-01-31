@@ -293,8 +293,8 @@ class PaymentController extends Controller
             $mailer = Craft::$app->mailer;
             Craft::$app->getView()->setTemplatesPath(Craft::getAlias('@root/templates'));
 
-            $htmlBody = Craft::$app->getView()->renderTemplate('email/request/request-print', [
-                'id' => $user->getFieldValue('customMemberId'),
+            $htmlBody = Craft::$app->getView()->renderTemplate('email/verification/verification-ind-payed', [
+                'name' => $user->getFieldValue('altFirstName'),
             ]);
 
             $subject = 'Nieuwe print aanvraag.';
