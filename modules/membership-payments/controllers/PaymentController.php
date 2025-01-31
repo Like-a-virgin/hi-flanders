@@ -176,12 +176,16 @@ class PaymentController extends Controller
                     if ($print) {
                         $user->setFieldValue('payedPrintDate', $paymentDate);
                     }
-                    
+                        
+                    if (!Craft::$app->elements->saveElement($user)) {
+                        Craft::error('Failed to update user payment date.', __METHOD__);
+                    }
+
                     $this->sendPaymentConfirmationEmail($user, $totalAmount);
                     $this->sendAccountConfirmationEmail($user);
 
-                    if (!Craft::$app->elements->saveElement($user)) {
-                        Craft::error('Failed to update user payment date.', __METHOD__);
+                    if ($print) {
+                        $this->sendPrintDetailsOwner($user);
                     }
                 }
             }
@@ -277,5 +281,39 @@ class PaymentController extends Controller
         }
     }
 
+    private function sendPrintDetailsOwner(User $user)
+    {
+        try {
+            $mailer = Craft::$app->mailer;
+            Craft::$app->getView()->setTemplatesPath(Craft::getAlias('@root/templates'));
 
+            $htmlBody = Craft::$app->getView()->renderTemplate('email/verification/verification-ind-payed', [
+                'name' => $user->getFieldValue('fullName'),
+                'id' => $user->getFieldValue('customMemberId'),
+                'street' => $user->getFieldValue('street'),
+                'nr' => $user->getFieldValue('nr'),
+                'bus' => $user->getFieldValue('bus') ?? '',
+                'postalCode' => $user->getFieldValue('postalCode'),
+                'city' => $user->getFieldValue('city'),
+                'country' => $user->getFieldValue('country'),
+            ]);
+
+            $subject = 'Nieuwe print aanvraag.';
+
+            // Prepare and send the email
+            $message = $mailer->compose()
+                ->setTo('claudine@likeavirgin.be')
+                ->setSubject($subject)
+                ->setHtmlBody($htmlBody)
+                ->send();
+
+            if (!$message) {
+                Craft::error('Failed to send payment confirmation email to: ' . $user->email, __METHOD__);
+            } else {
+                Craft::info('Payment confirmation email sent to: ' . $user->email, __METHOD__);
+            }
+        } catch (\Throwable $e) {
+            Craft::error("Error sending payment confirmation email: " . $e->getMessage(), __METHOD__);
+        }
+    }
 }
