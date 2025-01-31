@@ -213,14 +213,22 @@ class PaymentController extends Controller
         return $this->asJson(['success' => true]);
     }
 
-    private function sendPaymentConfirmationEmail(User $user)
+    private function sendPaymentConfirmationEmail(User $user, $total)
     {
+        $memberType = $user->getFieldValue('memberType')->value;
+        if ($memberType === 'group' || $memberType === 'groupYouth') {
+            $name = $user->getFieldValue('organisation');
+        } else {
+            $name = $user->getFieldValue('altFirstName');
+        }
+
         try {
             $mailer = Craft::$app->mailer;
             Craft::$app->getView()->setTemplatesPath(Craft::getAlias('@root/templates'));
 
             $htmlBody = Craft::$app->getView()->renderTemplate('email/verification/verification-payment', [
-                'name' => $user->getFieldValue('customMemberId'),
+                'name' => $name,
+                'total' => $total
             ]);
 
             $subject = 'je hebt betaald.';
