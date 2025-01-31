@@ -35,7 +35,7 @@ class AfterActivation extends BaseModule
 
     }
 
-    private function attachEventHandlers(): void
+    private function attachEventHandlers(): void 
     {
         Event::on(
             Users::class,

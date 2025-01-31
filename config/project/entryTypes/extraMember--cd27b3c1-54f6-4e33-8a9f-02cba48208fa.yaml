@@ -111,7 +111,7 @@ fieldLayouts:
             dateAdded: '2025-01-08T09:45:30+00:00'
             elementCondition: null
             fieldUid: ab51ff2a-5865-41c8-897f-008e0b288a70 # Date
-            handle: expPaymentDate
+            handle: memberDueDate
             includeInCards: false
             instructions: null
             label: 'Vervaldatum lidmaatschap'

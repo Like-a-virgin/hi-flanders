@@ -92,12 +92,8 @@ class RateExtraMember extends BaseModule
             }
 
             if ($ratePrice === null || $ratePrice <= 0) {
-                // Set payment and expiration dates if price is null or 0
                 $paymentDate = $currentDate->format('Y-m-d');
-                $expirationDate = $currentDate->modify('+1 year')->format('Y-m-d');
-
                 $extraMember->setFieldValue('paymentDate', $paymentDate);
-                $extraMember->setFieldValue('memberDueDate', $expirationDate);
 
                 Craft::info("Assigned rate with ID {$selectedRate->id} and set paymentDate to {$paymentDate} for extra member ID {$extraMember->id}", __METHOD__);
             } else {

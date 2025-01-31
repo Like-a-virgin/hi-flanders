@@ -2,6 +2,15 @@
     <h2>{{'Kinderen'|t}}</h2>
     {% for item in extraMembers %}
         {% set activeExtraCheck = item.paymentDate and user.memberDueDate and (now >= item.paymentDate) and (now <= user.memberDueDate) %}
+        {% set age = item.birthday.diff(now).y %}
+
+        {% if age >= 18 and item.memberDueDate > now %}
+            <div class="box-error">    
+                <div class="box-error__error">
+                    <p>! {{'Let op: Een of meerdere kinderen zijn 18 jaar. Zodra je lidmaatschap verloopt, hebben zij een eigen lidmaatschap nodig om lid te blijven.'|t}}</p>
+                </div>
+            </div>
+        {% endif %}
 
         <div class="box box--member" x-data="{openMember: false}" :class="openMember ? 'box--member-open' : ''">
             <div @click="openMember = ! openMember" class="box__heading box__heading--center">

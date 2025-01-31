@@ -29,7 +29,12 @@ class PaymentController extends Controller
         $relatedUserRateEntry = $user->getFieldValue('memberRate')[0] ?? null;
 
         if ($relatedUserRateEntry) {
-            $userRate = $relatedUserRateEntry->getFieldValue('price');
+            $priceUser = $relatedUserRateEntry->getFieldValue('price');
+            if ($priceUser) {
+                $userRate = $relatedUserRateEntry->getFieldValue('price');
+            } else {
+                $userRate = new Money(0, new Currency('EUR')); 
+            }
         } else {
             $userRate = new Money(0, new Currency('EUR')); 
         }
@@ -38,6 +43,8 @@ class PaymentController extends Controller
 
         $paymentDate = $user->getFieldValue('paymentDate');
         $memberDueDate = $user->getFieldValue('memberDueDate');
+
+        // Craft::dd($userRate);
 
         if (!$paymentDate || $paymentDate > $memberDueDate) {
             if (!$this->isWithinPaymentPeriod($user)) {
@@ -55,7 +62,13 @@ class PaymentController extends Controller
             $relatedEntry = $extraMember->getFieldValue('memberRate')[0] ?? null;
     
             if ($relatedEntry) {
-                $price = $relatedEntry->getFieldValue('price');
+                $priceRelatedEntry = $relatedEntry->getFieldValue('price');
+
+                if ($priceRelatedEntry) {
+                    $price = $relatedEntry->getFieldValue('price');
+                } else {
+                    $price = new Money(0, new Currency('EUR')); 
+                }
     
                 // Check if extra member is within payment period
                 if (!$this->isWithinPaymentPeriod($extraMember)) {
@@ -225,24 +238,23 @@ class PaymentController extends Controller
     private function sendAccountConfirmationEmail(User $user)
     {
         $memberType = $user->getFieldValue('memberType')->value;
-        $memberRateEntry = $user->getFieldValue('memberRate')->one();
-        $memberPrice = $memberRateEntry->getFieldValue('price');
+        $paymentType = $user->getFieldValue('paymentType')->value;
 
         try {
             $mailer = Craft::$app->mailer;
             Craft::$app->getView()->setTemplatesPath(Craft::getAlias('@root/templates'));
 
-            if ($memberType === 'group' && $memberPrice > 0) {
+            if ($memberType === 'group' && $paymentType === 'online') {
                 $htmlBody = Craft::$app->getView()->renderTemplate('email/verification/verification-group', [
-                    'name' => $user->getFieldValue('firstName'),
+                    'name' => $user->getFieldValue('organisation'),
                 ]);
     
                 $subject = 'Betaling is geslaagd. Jouw groep is nu lid van Hi Flanders!';
             }
 
-            if ($memberType === 'individual' && $memberPrice > 0) {
+            if ($memberType === 'individual' && $paymentType === 'online') {
                 $htmlBody = Craft::$app->getView()->renderTemplate('email/verification/verification-ind-payed', [
-                    'name' => $user->getFieldValue('firstName'),
+                    'name' => $user->getFieldValue('altFirstName'),
                 ]);
     
                 $subject = 'Gelukt! Je bent nu officieel lid van Hi Flanders 😁';

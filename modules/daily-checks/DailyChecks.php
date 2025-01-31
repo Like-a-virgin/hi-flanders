@@ -8,6 +8,7 @@ use modules\dailychecks\jobs\DailyActivationCheck;
 use modules\dailychecks\jobs\DailyDeactivationCheck;
 use modules\dailychecks\jobs\DailyPaymentCheck;
 use modules\dailychecks\jobs\DailyRenewalCheck;
+use modules\dailychecks\jobs\DailyExtrasCheck;
 
 /**
  * DailyChecks module
@@ -39,6 +40,7 @@ class DailyChecks extends BaseModule
         $queue->push(new DailyDeactivationCheck()); 
         $queue->push(new DailyPaymentCheck());   
         $queue->push(new DailyRenewalCheck()); 
+        $queue->push(new DailyExtrasCheck()); 
 
         Craft::info('All payment reminder jobs have been added to the queue.', __METHOD__);
     }

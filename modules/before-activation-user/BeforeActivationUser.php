@@ -85,6 +85,23 @@ class BeforeActivationUser extends BaseModule
                 } else {
                     Craft::info('Successfully set accountStatus to "renew" for user ID: ' . $user->id, __METHOD__);
                 } 
+
+                $relatedEntries = Entry::find()
+                    ->section('extraMembers')  // Adjust if needed
+                    ->relatedTo($user) // Find entries related to this user
+                    ->all();
+
+                foreach ($relatedEntries as $entry) {
+                    // ✅ Update memberDueDate for related entry
+                    $entry->setFieldValue('memberDueDate', $newDate);
+            
+                    // ✅ Save the updated entry
+                    if (!Craft::$app->elements->saveElement($entry)) {
+                        Craft::error('Failed to update memberDueDate for related entry ID: ' . $entry->id, __METHOD__);
+                    } else {
+                        Craft::info('Successfully updated memberDueDate for related entry ID: ' . $entry->id, __METHOD__);
+                    }
+                }
             }
 
             if ($status === "new") {
