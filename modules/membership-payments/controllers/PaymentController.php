@@ -26,14 +26,16 @@ class PaymentController extends Controller
             return $this->asFailure('User not logged in');
         }
 
-        $relatedUserRateEntry = $user->getFieldValue('memberRate')[0] ?? null;
-        $hasMembershipPayments = false;
+        $totalMembershipRate = new Money(0, new Currency('EUR'));
+        $totalPrintRate = new Money(0, new Currency('EUR'));
+
+        $relatedUserRateEntry = $user->getFieldValue('memberRate')[0] ?? null;;
 
         if ($relatedUserRateEntry) {
             $priceUser = $relatedUserRateEntry->getFieldValue('price');
             if ($priceUser) {
                 $userRate = $relatedUserRateEntry->getFieldValue('price');
-                $hasMembershipPayments = true;
+    
             } else {
                 $userRate = new Money(0, new Currency('EUR')); 
             }
@@ -41,16 +43,12 @@ class PaymentController extends Controller
             $userRate = new Money(0, new Currency('EUR')); 
         }
 
-        $totalRate = new Money(0, new Currency('EUR'));
-
         $paymentDate = $user->getFieldValue('paymentDate');
         $memberDueDate = $user->getFieldValue('memberDueDate');
 
-        // Craft::dd($userRate);
-
         if (!$paymentDate || $paymentDate > $memberDueDate) {
             if (!$this->isWithinPaymentPeriod($user)) {
-                $totalRate = $totalRate->add($userRate);
+                $totalMembershipRate = $totalMembershipRate->add($userRate);
             }
         }
 
@@ -65,7 +63,7 @@ class PaymentController extends Controller
     
             if ($relatedEntry) {
                 $priceRelatedEntry = $relatedEntry->getFieldValue('price');
-                $hasMembershipPayments = true;
+    
 
                 if ($priceRelatedEntry) {
                     $price = $relatedEntry->getFieldValue('price');
@@ -75,7 +73,7 @@ class PaymentController extends Controller
     
                 // Check if extra member is within payment period
                 if (!$this->isWithinPaymentPeriod($extraMember)) {
-                    $totalRate = $totalRate->add($price);
+                    $totalMembershipRate = $totalMembershipRate->add($price);
                     $extraMemberIds[] = $extraMember->id;
                 }
             }
@@ -93,12 +91,12 @@ class PaymentController extends Controller
         $print = false;
 
         if ($printRequest and !$printPaydate) {
-            $totalRate = $totalRate->add($printRate);
-            $print = true;
+            $totalPrintRate = $totalPrintRate->add($printRate);
         }
 
-        $totalAmount = $totalRate->getAmount(); // Total as integer in cents
-        $totalFormatted = number_format($totalAmount / 100, 2); // Convert to euros
+        $totalRate = $totalMembershipRate->add($totalPrintRate);
+        $totalAmount = $totalRate->getAmount(); // Convert to cents
+        $totalFormatted = number_format($totalAmount / 100, 2); 
 
         if ($totalAmount === 0) {
             return $this->asFailure('No payment required. All members are already paid.');
@@ -110,11 +108,10 @@ class PaymentController extends Controller
             ->section('succesPayment')
             ->one();
 
-        if ($thankYouPage) {
-            $redirectUrl = $thankYouPage->url;
-        } else {
-            $redirectUrl = Craft::$app->getUrlManager()->createAbsoluteUrl('/');
-        }
+        $redirectUrl = $thankYouPage ? $thankYouPage->url : Craft::$app->getUrlManager()->createAbsoluteUrl('/');
+
+        $membershipPayments = $totalMembershipRate->getAmount() > 0 ? true : false;
+        $printPayment = $totalPrintRate->getAmount() > 0 ? true : false;
         
         $payment = $mollie->payments->create([
             "amount" => [
@@ -126,9 +123,10 @@ class PaymentController extends Controller
             "webhookUrl" => UrlHelper::actionUrl('membership-payments/payment/webhook'),
             "metadata" => [
                 "userId" => $user->id,
+                "membershipId" => $user->getFieldValue('customMemberId'),
                 "extraMemberIds" => $extraMemberIds,
-                "print" => $print,
-                "memberships" => $hasMembershipPayments
+                "print" => $printPayment,
+                "memberships" => $membershipPayments
             ],
         ]);
 
@@ -187,13 +185,14 @@ class PaymentController extends Controller
                     }
 
                     if ($memberships) {
-                        $this->sendPaymentConfirmationEmail($user, $totalAmount);
                         $this->sendAccountConfirmationEmail($user);
                     }
-
+                    
                     if ($print) {
                         $this->sendPrintDetailsOwner($user);
                     }
+                    
+                    $this->sendPaymentConfirmationEmail($user, $totalAmount);
                 }
             }
 
@@ -225,7 +224,7 @@ class PaymentController extends Controller
             // Render the email template (Create `templates/email/payment-confirmation.twig`)
             $htmlBody = Craft::$app->getView()->renderTemplate('email/verification/verification-payment', [
                 'name' => 'test',
-                'totalAmount' => $totalAmount,
+                'totalAmount' => number_format($totalFormatted, 2, '.', ''),
             ]);
 
             $subject = 'Payment Confirmation - Your Membership Payment';
