@@ -128,8 +128,8 @@ class PaymentController extends Controller
                 "print" => $printPayment,
                 "memberships" => $membershipPayments,
                 "total" => number_format($totalFormatted, 2, '.', ''),
-                "membershipTotal" => number_format($totalMembershipRate->getAmount() / 100, 2), 
-                "printTotal" => number_format($totalPrintRate->getAmount() / 100, 2), 
+                "membershipTotal" => number_format($totalMembershipRate->getAmount()), 
+                "printTotal" => number_format($totalPrintRate->getAmount()), 
             ],
         ]);
 

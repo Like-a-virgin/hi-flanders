@@ -771,6 +771,33 @@ tabs:
         warning: null
         width: 100
       -
+        dateAdded: '2025-01-31T11:13:02+00:00'
+        elementCondition:
+          class: craft\elements\conditions\users\UserCondition
+          conditionRules:
+            -
+              class: craft\elements\conditions\users\GroupConditionRule
+              operator: in
+              uid: 6f38f683-dd5f-4b5e-a4c6-ef5e432d38ea
+              values:
+                - 50a6f7cb-84e7-4d68-9aa9-3af2d9001e79 # Leden
+                - a21d7477-05ca-43ea-ae84-fc44c3e16a70 # Leden groep
+          elementType: craft\elements\User
+          fieldContext: global
+        fieldUid: 590f0cba-dbfa-4eda-882d-2fe3aac82a92 # Prijs
+        handle: totalPayedMembers
+        includeInCards: false
+        instructions: null
+        label: 'Totaal betaalde leden'
+        providesThumbs: false
+        required: false
+        tip: null
+        type: craft\fieldlayoutelements\CustomField
+        uid: 55d7b6bb-f7ce-4ffa-a977-79b931a380ac
+        userCondition: null
+        warning: null
+        width: 100
+      -
         dateAdded: '2025-01-21T08:55:39+00:00'
         elementCondition: null
         heading: Print
@@ -828,6 +855,33 @@ tabs:
         tip: null
         type: craft\fieldlayoutelements\CustomField
         uid: ba3dd6e1-820b-49c4-bc26-c94a6cead3a3
+        userCondition: null
+        warning: null
+        width: 100
+      -
+        dateAdded: '2025-01-31T11:13:02+00:00'
+        elementCondition:
+          class: craft\elements\conditions\users\UserCondition
+          conditionRules:
+            -
+              class: craft\elements\conditions\users\GroupConditionRule
+              operator: in
+              uid: 150e94c9-b90b-4bcc-b219-a51baec481be
+              values:
+                - 50a6f7cb-84e7-4d68-9aa9-3af2d9001e79 # Leden
+                - a21d7477-05ca-43ea-ae84-fc44c3e16a70 # Leden groep
+          elementType: craft\elements\User
+          fieldContext: global
+        fieldUid: 590f0cba-dbfa-4eda-882d-2fe3aac82a92 # Prijs
+        handle: totalPayedPrint
+        includeInCards: false
+        instructions: null
+        label: 'Totaal Betaald Print'
+        providesThumbs: false
+        required: false
+        tip: null
+        type: craft\fieldlayoutelements\CustomField
+        uid: 03616bc2-5e40-41b1-ad28-496217d2b032
         userCondition: null
         warning: null
         width: 100
