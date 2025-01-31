@@ -219,7 +219,7 @@ class PaymentController extends Controller
             $mailer = Craft::$app->mailer;
             Craft::$app->getView()->setTemplatesPath(Craft::getAlias('@root/templates'));
 
-            $htmlBody = Craft::$app->getView()->renderTemplate('email/verification/verification-payment', [
+            $htmlBody = Craft::$app->getView()->renderTemplate('email/verification/verification-group', [
                 'name' => $user->getFieldValue('altFirstName'),
             ]);
 
