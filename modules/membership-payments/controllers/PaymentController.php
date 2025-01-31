@@ -112,8 +112,6 @@ class PaymentController extends Controller
 
         $membershipPayments = $totalMembershipRate->getAmount() > 0 ? true : false;
         $printPayment = $totalPrintRate->getAmount() > 0 ? true : false;
-
-        Craft::dd($membershipPayments);
         
         $payment = $mollie->payments->create([
             "amount" => [
