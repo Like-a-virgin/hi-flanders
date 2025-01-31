@@ -127,7 +127,9 @@ class PaymentController extends Controller
                 "extraMemberIds" => $extraMemberIds,
                 "print" => $printPayment,
                 "memberships" => $membershipPayments,
-                "total" => number_format($totalFormatted, 2, '.', '')
+                "total" => number_format($totalFormatted, 2, '.', ''),
+                "membershipTotal" => number_format($totalMembershipRate->getAmount() / 100, 2), 
+                "printTotal" => number_format($totalPrintRate->getAmount() / 100, 2), 
             ],
         ]);
 
@@ -176,6 +178,15 @@ class PaymentController extends Controller
                 if ($user) {
                     $user->setFieldValue('paymentDate', $paymentDate);
                     $user->setFieldValue('paymentType', 'online');
+
+                    $currentMembershipTotal = $user->getFieldValue('totalPayedMembers') ?? 0;
+                    $currentPrintTotal = $user->getFieldValue('totalPayedPrint') ?? 0;
+
+                    $newMembershipTotal = $currentMembershipTotal + $metadata->membershipTotal;
+                    $newPrintTotal = $currentPrintTotal + $metadata->printTotal;
+
+                    $user->setFieldValue('totalPayedMembers', $newMembershipTotal);
+                    $user->setFieldValue('totalPayedPrint', $newPrintTotal);
 
                     if ($print) {
                         $user->setFieldValue('payedPrintDate', $paymentDate);
