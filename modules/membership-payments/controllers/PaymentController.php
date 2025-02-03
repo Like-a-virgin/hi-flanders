@@ -182,17 +182,17 @@ class PaymentController extends Controller
                         $user->setFieldValue('paymentDate', $paymentDate);
                         $user->setFieldValue('paymentType', 'online');
                         
-                        $currentMembershipTotal = $user->getFieldValue('totalPayedMembers') ?? 0;
-                        $newMembershipTotal = $currentMembershipTotal + $metadata->membershipTotal;
-                        $user->setFieldValue('totalPayedMembers', $newMembershipTotal);
+                        // $currentMembershipTotal = $user->getFieldValue('totalPayedMembers') ?? 0;
+                        // $newMembershipTotal = $currentMembershipTotal + $metadata->membershipTotal;
+                        // $user->setFieldValue('totalPayedMembers', $newMembershipTotal);
                         
                         $this->sendAccountConfirmationEmail($user);
                     }
                     
                     if ($print) {
-                        $currentPrintTotal = $user->getFieldValue('totalPayedPrint') ?? 0;
-                        $newPrintTotal = $currentPrintTotal + $metadata->printTotal;
-                        $user->setFieldValue('totalPayedPrint', $newPrintTotal);
+                        // $currentPrintTotal = $user->getFieldValue('totalPayedPrint') ?? 0;
+                        // $newPrintTotal = $currentPrintTotal + $metadata->printTotal;
+                        // $user->setFieldValue('totalPayedPrint', $newPrintTotal);
                         
                         $user->setFieldValue('payedPrintDate', $paymentDate);
                         
