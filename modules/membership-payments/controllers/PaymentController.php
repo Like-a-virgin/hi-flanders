@@ -173,8 +173,6 @@ class PaymentController extends Controller
 
             $paymentDate = new DateTime();
 
-            Craft::dd($print);
-
             if ($userId) {
                 $user = Craft::$app->users->getUserById($userId);
 
