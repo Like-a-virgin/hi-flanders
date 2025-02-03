@@ -168,8 +168,8 @@ class PaymentController extends Controller
             $userId = $metadata->userId ?? null;
             $extraMemberIds = $metadata->extraMemberIds ?? [];
             $totalAmount = $metadata->total;
-            $print = $metadata->print ?? false;
-            $memberships = $metadata->memberships ?? false;
+            $print = $metadata->print;
+            $memberships = $metadata->memberships;
 
             $paymentDate = new DateTime();
 
