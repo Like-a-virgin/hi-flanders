@@ -12,6 +12,7 @@ use Money\Currency;
 use DateTime;
 use yii\web\Response;
 use craft\helpers\UrlHelper;
+use Exception;
 
 class PaymentController extends Controller
 {

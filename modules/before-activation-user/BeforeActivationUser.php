@@ -74,6 +74,7 @@ class BeforeActivationUser extends BaseModule
                 $user->setFieldValue('customStatus', 'active');
                 $user->setFieldValue('paymentDate', null);
                 $user->setFieldValue('paymentType', null);
+                $user->setFieldValue('totalPayedMembers', null);
                 $user->setFieldValue('renewedDate', $currentDate);
                 $user->setFieldValue('statusChangeDate', $currentDate);
                 $user->setFieldValue('memberDueDate', $newDate);
