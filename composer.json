@@ -3,7 +3,7 @@
   "prefer-stable": true,
   "require": {
     "craftcms/ckeditor": "4.5.0",
-    "craftcms/cms": "5.6.3",
+    "craftcms/cms": "5.6.4",
     "craftcms/feed-me": "^6.6.1",
     "craftcms/postmark": "^3.1.0",
     "mollie/mollie-api-php": "^2.76",
@@ -11,7 +11,7 @@
     "nystudio107/craft-vite": "^5.0.1",
     "phpoffice/phpspreadsheet": "^1.29",
     "putyourlightson/craft-sprig": "3.5.2",
-    "verbb/formie": "3.0.19",
+    "verbb/formie": "3.0.20",
     "vlucas/phpdotenv": "^5.4.0"
   },
   "require-dev": {

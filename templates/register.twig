@@ -161,12 +161,13 @@
                 </button>
             </div>
             <div class="formbox__checkbox formbox__column--pp formbox__column--full">
-                <label for="privacy-policy">
+                <label for="privacy-policy" class="formbox__check-label">
                 {{ input('checkbox', 'fields[privacyPolicy]', 'accepted' , {
                     id: 'privacy-policy',
                     required: true,
                     checked: user.privacyPolicy.storage is defined and 'accepted' in user.privacyPolicy.storage
                 }) }} 
+                <span class="checkmark"></span>
                 <p>{{'Ik ga akkoord dat mijn gegevens gebruikt worden zoals beschreven in de'|t}} <a class="formbox__link" target="_blank" href="{{pp}}">{{'privacy policy'|t}}</a>.</label></p>
             </div>
             <input type="hidden" name="g-recaptcha-response" id="g-recaptcha-response">
