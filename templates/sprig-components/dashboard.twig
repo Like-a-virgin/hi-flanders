@@ -2,7 +2,7 @@
 {% set cardTypes = [{value: 'printed', label: 'Geprint'|t}, {value: 'online', label: 'Enkel online'|t}] %}
 {% set statusValues = [{value: 'active', label: 'Actief'|t}, {value: 'new', label: 'Nieuw'|t}, {value: 'renew', label: 'Vernieuw'|t}, {value: 'deactivated', label: 'Gedeactiveerd'|t},  {value: 'old', label: 'Oud systeem'|t}] %}
 {% set memberTypes = [{value: 'individual', label: 'Individueel'|t}, {value: 'group', label: 'Groep'|t}, {value: 'groupYouth', label: 'Jeugdgroep'|t}, {value: 'employee', label: 'Werknemer'|t},  {value: 'life', label: 'Life member'|t}] %}
-{% set limits = [{value: 10}, {value: 20}, {value: 30} , {value: 40}, {value: 50}] %}
+{% set limits = [{value: 10}, {value: 20}, {value: 30} , {value: 40}, {value: 50}, {value: 80}, {value: 100}, {value: 150}] %}
 {% set ageGroups = craft.entries.section('rates').memberType('individual').all() %}
 
 {% set search = search ?? null %}
@@ -299,20 +299,52 @@
 				{{'leden'|t}}.
 			</p>
 			<div class="pagination__controls">
-				<button class="pagination__btn {{page < 1 ? 'pagination__btn--false'}}" sprig s-val:page="{{ page - 1 }}">
+				<button class="pagination__btn {{page is same as 1 ? 'pagination__btn--false'}}" sprig s-val:page="{{ 1 }}">
+					{{svg('assets/icons/chevron-left.svg')|attr({class: 'pagination__chevron'})}}
 					{{svg('assets/icons/chevron-left.svg')|attr({class: 'pagination__chevron'})}}
 				</button>
-				{% for i in 1..pageInfo.totalPages %}
-					{% if i == page %}
-						<p class="pagination__btn pagination__btn--current">{{ i }}</p>
-					{% else %}
-						<a class="pagination__btn" sprig s-val:page="{{ i }}" s-push-url="?page={{ i }}">{{ i }}</a>
+				<button class="pagination__btn {{page < 1 ? 'pagination__btn--false'}}" sprig s-val:page="{{ page < 2 ? 1 :  page - 1 }}">
+					{{svg('assets/icons/chevron-left.svg')|attr({class: 'pagination__chevron'})}}
+				</button>
+				{% if pageInfo.totalPages > 10 %}
+					{% if page > 3 %}
+						<a class="pagination__btn" sprig s-val:page="1" s-push-url="?page=1">1</a>
+						<span class="pagination__dots">...</span>
 					{% endif %}
-				{% endfor %}
-				<button class="pagination__btn {{page > pageInfo.totalPages ? 'pagination__btn--false'}}" sprig s-val:page="{{ page + 1 }}">
+
+					{% set pageRange = range(page - 2, page + 2) %}
+					{% set validPages = pageRange|filter(i => i > 0 and i <= pageInfo.totalPages) %}
+
+					{% for i in validPages %}
+						{% if i == page %}
+							<p class="pagination__btn pagination__btn--current">{{ i }}</p>
+						{% else %}
+							<a class="pagination__btn" sprig s-val:page="{{ i }}" s-push-url="?page={{ i }}">{{ i }}</a>
+						{% endif %}
+					{% endfor %}
+
+					{% if page < pageInfo.totalPages - 2 %}
+						<span class="pagination__dots">...</span>
+						<a class="pagination__btn" sprig s-val:page="{{ pageInfo.totalPages }}" s-push-url="?page={{ pageInfo.totalPages }}">{{ pageInfo.totalPages }}</a>
+					{% endif %}
+				{% else %}					
+					{% for i in 1..pageInfo.totalPages %}
+						{% if i == page %}
+							<p class="pagination__btn pagination__btn--current">{{ i }}</p>
+						{% else %}
+							<a class="pagination__btn" sprig s-val:page="{{ i }}" s-push-url="?page={{ i }}">{{ i }}</a>
+						{% endif %}
+					{% endfor %}
+				{% endif %}
+				<button class="pagination__btn {{page > pageInfo.totalPages ? 'pagination__btn--false'}}" sprig s-val:page="{{ page|number_format is same as pageInfo.totalPages|number_format ? pageInfo.totalPages : page + 1 }}">
+					{{svg('assets/icons/chevron-right.svg')|attr({class: 'pagination__chevron'})}}
+				</button>
+				<button class="pagination__btn {{page is same as pageInfo.totalPages ? 'pagination__btn--false'}}" sprig s-val:page="{{ pageInfo.totalPages }}">
+					{{svg('assets/icons/chevron-right.svg')|attr({class: 'pagination__chevron'})}}
 					{{svg('assets/icons/chevron-right.svg')|attr({class: 'pagination__chevron'})}}
 				</button>
 			</div>
+			
 		</div>
 	{% endif %}
 	{% if memberId %}

@@ -1,10 +1,11 @@
 defaultPlacement: end
 enableVersioning: true
 entryTypes:
-  - 80634baf-dc43-47ea-8528-2e72e4a53d61 # Tarief
+  -
+    uid: 80634baf-dc43-47ea-8528-2e72e4a53d61 # Tarief
 handle: rates
 maxAuthors: 1
-name: Tariefformule
+name: Tariefformules
 previewTargets:
   -
     __assoc__:

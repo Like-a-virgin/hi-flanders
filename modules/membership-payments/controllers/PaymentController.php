@@ -181,38 +181,32 @@ class PaymentController extends Controller
                     if ($memberships) {
                         $user->setFieldValue('paymentDate', $paymentDate);
                         $user->setFieldValue('paymentType', 'online');
-                        
-                        // $currentMembershipTotal = $user->getFieldValue('totalPayedMembers') ?? 0;
-                        // $newMembershipTotal = $currentMembershipTotal + $metadata->membershipTotal;
+
                         $user->setFieldValue('totalPayedMembers', $metadata->membershipTotal);
                         
-                        // $this->sendAccountConfirmationEmail($user);
+                        $this->sendAccountConfirmationEmail($user);
                     }
                     
                     if ($print) {
-                        // $currentPrintTotal = $user->getFieldValue('totalPayedPrint') ?? 0;
-                        // $newPrintTotal = $currentPrintTotal + $metadata->printTotal;
                         $user->setFieldValue('totalPayedPrint', $metadata->printTotal);
                         
                         $user->setFieldValue('payedPrintDate', $paymentDate);
                         
-                        // $this->sendPrintDetailsOwner($user);
+                        $this->sendPrintDetailsOwner($user);
                     }
                         
                     if (!Craft::$app->elements->saveElement($user)) {
                         Craft::error('Failed to update user payment date.', __METHOD__);
                     }
 
-                    // $this->sendPaymentConfirmationEmail($user, $totalAmount);
+                    $this->sendPaymentConfirmationEmail($user, $totalAmount);
                 }
             }
 
-            // Update extra member entries
             foreach ($extraMemberIds as $extraMemberId) {
                 $extraMember = Entry::find()->id($extraMemberId)->one();
                 if ($extraMember) {
                     $extraMember->setFieldValue('paymentDate', $paymentDate);
-                    // $extraMember->setFieldValue('memberDueDate', $expirationDate);
                     if (!Craft::$app->elements->saveElement($extraMember)) {
                         Craft::error('Failed to update extra member payment date for entry ID ' . $extraMemberId, __METHOD__);
                     }

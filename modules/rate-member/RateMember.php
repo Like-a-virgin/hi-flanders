@@ -46,8 +46,17 @@ class RateMember extends BaseModule
     private function assignMemberRate(User $user): void
     {
         $request = Craft::$app->getRequest();
-        $birthday= $request->getBodyParam("fields.birthday") ?? $user->getFieldValue('birthday');
-        $memberType = $request->getBodyParam('fields.memberType') ?? $user->getFieldValue('memberType')->value;
+        
+        $request = Craft::$app->getRequest();
+        if (!$request->getIsConsoleRequest()) {
+            $birthday = $request->getBodyParam("fields.birthday") ?? $user->getFieldValue('birthday');
+            $memberType = $request->getBodyParam('fields.memberType') ?? $user->getFieldValue('memberType')->value;
+        } else {
+            // If in console mode (e.g., queue job), get values directly from the user
+            $birthday = $user->getFieldValue('birthday');
+            $memberType = $user->getFieldValue('memberType')->value ?? null;
+        }
+
 
         if (!$memberType) {
             Craft::error('No memberType set for user ID ' . $user->id, __METHOD__);
@@ -125,8 +134,13 @@ class RateMember extends BaseModule
         $paymentDate = $currentDate->format('Y-m-d');
         $expirationDate = $currentDate->modify('+1 year')->format('Y-m-d');
 
-        $paymentTypeField = $request->getBodyParam('fields.paymentType');
-        $paymentType = $paymentTypeField ? (string)$paymentTypeField : null;
+        $paymentType = null;
+        if (!$request->getIsConsoleRequest()) {
+            $paymentType = $request->getBodyParam('fields.paymentType');
+        } else {
+            // Use existing field value for console requests
+            $paymentType = $user->getFieldValue('paymentType') ?? null;
+        }
 
         if ($paymentType) {
             $user->setFieldValue('paymentDate', $paymentDate);

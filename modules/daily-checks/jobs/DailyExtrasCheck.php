@@ -29,8 +29,8 @@ class DailyExtrasCheck extends BaseJob
             }
 
             // ✅ Convert birthday & due date to DateTime
-            $birthDate = new DateTime($birthday);
-            $dueDate = new DateTime($memberDueDate);
+            $birthDate = $birthday instanceof DateTime ? $birthday : new DateTime($birthday);
+            $dueDate = $memberDueDate instanceof DateTime ? $memberDueDate : new DateTime($memberDueDate);
 
             // ✅ Calculate age
             $age = $birthDate->diff($currentDate)->y;
