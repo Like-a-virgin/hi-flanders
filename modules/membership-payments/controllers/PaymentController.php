@@ -120,7 +120,7 @@ class PaymentController extends Controller
                 "value" => number_format($totalFormatted, 2, '.', ''), // Lowercase 'value'
             ],
             "description" => "Membership Payment for " . $user->email,
-            "redirectUrl" => UrlHelper::actionUrl('membership-payments/payment/webhook'),
+            "redirectUrl" => $redirectUrl,
             "webhookUrl" => UrlHelper::actionUrl('membership-payments/payment/webhook'),
             "metadata" => [
                 "userId" => $user->id,
@@ -184,7 +184,7 @@ class PaymentController extends Controller
                         
                         // $currentMembershipTotal = $user->getFieldValue('totalPayedMembers') ?? 0;
                         // $newMembershipTotal = $currentMembershipTotal + $metadata->membershipTotal;
-                        // $user->setFieldValue('totalPayedMembers', $newMembershipTotal);
+                        $user->setFieldValue('totalPayedMembers', $metadata->membershipTotal);
                         
                         $this->sendAccountConfirmationEmail($user);
                     }
@@ -192,7 +192,7 @@ class PaymentController extends Controller
                     if ($print) {
                         // $currentPrintTotal = $user->getFieldValue('totalPayedPrint') ?? 0;
                         // $newPrintTotal = $currentPrintTotal + $metadata->printTotal;
-                        // $user->setFieldValue('totalPayedPrint', $newPrintTotal);
+                        $user->setFieldValue('totalPayedPrint', $metadata->printTotal);
                         
                         $user->setFieldValue('payedPrintDate', $paymentDate);
                         
