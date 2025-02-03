@@ -168,39 +168,43 @@ class PaymentController extends Controller
             $userId = $metadata->userId ?? null;
             $extraMemberIds = $metadata->extraMemberIds ?? [];
             $totalAmount = $metadata->total;
-            $print = $metadata->print;
-            $memberships = $metadata->memberships;
+            $print = $metadata->print ?? false;
+            $memberships = $metadata->memberships ?? false;
 
             $paymentDate = new DateTime();
 
             if ($userId) {
                 $user = Craft::$app->users->getUserById($userId);
-
                 if ($user) {
-    
+                    $user->setFieldValue('paymentDate', $paymentDate);
+                    $user->setFieldValue('paymentType', 'online');
+
                     $currentMembershipTotal = $user->getFieldValue('totalPayedMembers') ?? 0;
                     $currentPrintTotal = $user->getFieldValue('totalPayedPrint') ?? 0;
-                    
+
+                    $newMembershipTotal = $currentMembershipTotal + $metadata->membershipTotal;
+                    $newPrintTotal = $currentPrintTotal + $metadata->printTotal;
+
+                    $user->setFieldValue('totalPayedMembers', $newMembershipTotal);
+                    $user->setFieldValue('totalPayedPrint', $newPrintTotal);
+
+                    if ($print) {
+                        $user->setFieldValue('payedPrintDate', $paymentDate);
+                    }
+                        
+                    if (!Craft::$app->elements->saveElement($user)) {
+                        Craft::error('Failed to update user payment date.', __METHOD__);
+                    }
+
                     if ($memberships) {
-                        $user->setFieldValue('paymentDate', $paymentDate);
-                        $user->setFieldValue('paymentType', 'online');
-                        $newMembershipTotal = $currentMembershipTotal + $metadata->membershipTotal;
-                        $user->setFieldValue('totalPayedMembers', $newMembershipTotal);
                         $this->sendAccountConfirmationEmail($user);
                     }
                     
                     if ($print) {
-                        $user->setFieldValue('payedPrintDate', $paymentDate);
-                        $newPrintTotal = $currentPrintTotal + $metadata->printTotal;
-                        $user->setFieldValue('totalPayedPrint', $newPrintTotal);
                         $this->sendPrintDetailsOwner($user);
                     }
-                    
-                    $this->sendPaymentConfirmationEmail($user, $totalAmount);
 
-                    if (!Craft::$app->elements->saveElement($user)) {
-                        Craft::error('Failed to update user payment date.', __METHOD__);
-                    }
+                    $this->sendPaymentConfirmationEmail($user, $totalAmount);
                 }
             }
 
