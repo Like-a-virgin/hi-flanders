@@ -120,7 +120,7 @@ class PaymentController extends Controller
                 "value" => number_format($totalFormatted, 2, '.', ''), // Lowercase 'value'
             ],
             "description" => "Membership Payment for " . $user->email,
-            "redirectUrl" => $redirectUrl,
+            "redirectUrl" => UrlHelper::actionUrl('membership-payments/payment/webhook'),
             "webhookUrl" => UrlHelper::actionUrl('membership-payments/payment/webhook'),
             "metadata" => [
                 "userId" => $user->id,
@@ -177,32 +177,30 @@ class PaymentController extends Controller
             if ($userId) {
                 $user = Craft::$app->users->getUserById($userId);
                 if ($user) {
-                    $user->setFieldValue('paymentDate', $paymentDate);
-                    $user->setFieldValue('paymentType', 'online');
-
-                    $currentMembershipTotal = $user->getFieldValue('totalPayedMembers') ?? 0;
-                    $currentPrintTotal = $user->getFieldValue('totalPayedPrint') ?? 0;
-
-                    $newMembershipTotal = $currentMembershipTotal + $metadata->membershipTotal;
-                    $newPrintTotal = $currentPrintTotal + $metadata->printTotal;
-
-                    $user->setFieldValue('totalPayedMembers', $newMembershipTotal);
-                    $user->setFieldValue('totalPayedPrint', $newPrintTotal);
-
-                    if ($print) {
-                        $user->setFieldValue('payedPrintDate', $paymentDate);
-                    }
-                        
-                    if (!Craft::$app->elements->saveElement($user)) {
-                        Craft::error('Failed to update user payment date.', __METHOD__);
-                    }
-
+                    
                     if ($memberships) {
+                        $user->setFieldValue('paymentDate', $paymentDate);
+                        $user->setFieldValue('paymentType', 'online');
+                        
+                        $currentMembershipTotal = $user->getFieldValue('totalPayedMembers') ?? 0;
+                        $newMembershipTotal = $currentMembershipTotal + $metadata->membershipTotal;
+                        $user->setFieldValue('totalPayedMembers', $newMembershipTotal);
+                        
                         $this->sendAccountConfirmationEmail($user);
                     }
                     
                     if ($print) {
+                        $currentPrintTotal = $user->getFieldValue('totalPayedPrint') ?? 0;
+                        $newPrintTotal = $currentPrintTotal + $metadata->printTotal;
+                        $user->setFieldValue('totalPayedPrint', $newPrintTotal);
+                        
+                        $user->setFieldValue('payedPrintDate', $paymentDate);
+                        
                         $this->sendPrintDetailsOwner($user);
+                    }
+                        
+                    if (!Craft::$app->elements->saveElement($user)) {
+                        Craft::error('Failed to update user payment date.', __METHOD__);
                     }
 
                     $this->sendPaymentConfirmationEmail($user, $totalAmount);
