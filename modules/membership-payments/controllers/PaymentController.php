@@ -186,7 +186,7 @@ class PaymentController extends Controller
                         // $newMembershipTotal = $currentMembershipTotal + $metadata->membershipTotal;
                         $user->setFieldValue('totalPayedMembers', $metadata->membershipTotal);
                         
-                        $this->sendAccountConfirmationEmail($user);
+                        // $this->sendAccountConfirmationEmail($user);
                     }
                     
                     if ($print) {
@@ -196,14 +196,14 @@ class PaymentController extends Controller
                         
                         $user->setFieldValue('payedPrintDate', $paymentDate);
                         
-                        $this->sendPrintDetailsOwner($user);
+                        // $this->sendPrintDetailsOwner($user);
                     }
                         
                     if (!Craft::$app->elements->saveElement($user)) {
                         Craft::error('Failed to update user payment date.', __METHOD__);
                     }
 
-                    $this->sendPaymentConfirmationEmail($user, $totalAmount);
+                    // $this->sendPaymentConfirmationEmail($user, $totalAmount);
                 }
             }
 
