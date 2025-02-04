@@ -26,7 +26,7 @@ use modules\afteractivation\AfterActivation;
 use modules\afterdeactivation\AfterDeactivation;
 use modules\beforeactivationuser\BeforeActivationUser;
 use modules\confirmemail\ConfirmEmail;
-// use modules\customactivationmailing\CustomActivationMailing;
+use modules\flexmail\Flexmail;
 use modules\custommemberid\CustomMemberId;
 use modules\dailychecks\DailyChecks;
 use modules\deactivateuser\DeactivateUser;
@@ -51,10 +51,10 @@ return [
         'after-deactivation' => AfterDeactivation::class,
         'before-activation-user' => BeforeActivationUser::class,
         'deactivate-user' => DeactivateUser::class,
-        // 'custom-activation-mailing' => CustomActivationMailing::class,
         'after-activation' => AfterActivation::class,
         'daily-checks' => DailyChecks::class,
         'old-members' => OldMembers::class,
+        'flexmail' => Flexmail::class,
     ], 
     'bootstrap' => [
         'rate-member', 
@@ -68,9 +68,9 @@ return [
         'after-deactivation',
         'before-activation-user',
         'deactivate-user',
-        // 'custom-activation-mailing',
         'after-activation',
         'daily-checks',
         'old-members',
+        'flexmail',
     ],
 ];

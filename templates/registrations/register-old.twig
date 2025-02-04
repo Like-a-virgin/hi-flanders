@@ -6,9 +6,11 @@
     {% if not craft.app.user.identity or currentUser.getGroups()|first.handle is not same as 'membersAdmin' %}
         {% redirect 'login' %}
     {% endif %}
+    {% set langs = [{label: 'Nederlands'|t, value: 'nl' }, {label: 'Engels'|t, value: 'en' }, {label: 'Frans'|t, value: 'fr' }] %}
+    {% set memberTypes = [{label: 'Individueel'|t, value: 'individual' }, {label: 'Life member'|t, value: 'life' }, {label: 'Werknemer'|t, value: 'employee' }] %}
+
     {% set maxDate = now|date_modify('-3 years')|date("Y-m-d") %}
     {% set pp = craft.entries.section(privacyPolicy).one().linkExtern %}
-    {% set paymentMethods = [{value: 'hostel', label: 'Hostel'|t}, {value: 'transfer', label: 'Overschrijving'|t}, {value: 'free', label: 'Gratis'|t}] %}
     {% set user = user ?? null %}
     {% set succesUrl = craft.entries.section('succesRegister').one().url %}
 
@@ -20,7 +22,7 @@
 
     <div class="formbox">
         <div class="formbox__heading">
-            <h1>Registreer een individu</h1>
+            <h1>Registreer een oud lid</h1>
         </div>
         <form class="formbox__form" method="post" accept-charset="UTF-8" novalidate>
             {{ csrfInput() }}
@@ -30,6 +32,12 @@
             {{ input('hidden', 'groupHandle', 'members') }}
             {{ input('hidden', 'fields[privacyPolicy]', 'accepted') }}
             {{ input('hidden', 'fields[registeredBy]', 'admin') }}
+            {{ input('hidden', 'fields[paymentType]', 'transfer') }}
+            {{ input('hidden', 'fields[paymentDate]', now|date('Y-m-d')) }}
+            {{ input('hidden', 'fields[requestPrint]', now|date('Y-m-d')) }}
+            {{ input('hidden', 'fields[payedPrintDate]', now|date('Y-m-d')) }}
+            {{ input('hidden', 'fields[cardType]', 'printed') }}
+            {{ input('hidden', 'fields[totalPayedPrint]', '0') }}
 
             {% if user %}
                 {% set errors = user.getErrors() %}
@@ -50,12 +58,42 @@
             {% endif %}
 
             <div class="formbox__column--full">
-                <label class="formbox__label" for="payment-type">{{'Type lid'|t}}</label>
+                <label class="formbox__label" for="member-type">{{'Type lid'|t}}</label>
                 <select name="fields[memberType]" id="member-type" required>
-                    <option value="individual">{{'Individu'|t}}</option>
-                    <option value="employee">{{'Werknemer'|t}}</option>
+                    <option value="individual">{{ 'Selecteer een lidtype'|t }}</option>
+                    {% for item in memberTypes %}                        
+                        <option value="{{item.value}}">{{ item.label }}</option>
+                    {% endfor %}
                 </select>
             </div>
+            <div class="formbox__column--full"> 
+                <label class="formbox__label" for="member-id">{{'Voornaam'|t}}</label>
+                {{ input('text', 'fields[customMemberId]', user.altFirstName ?? null, {
+                    id: 'member-ide',
+                    placeholder: 'Lidkaartnummer'|t,
+                    required: true
+                }) }}
+            </div>
+            <div class="formbox__column--full" x-show="payed">
+                <label class="formbox__label" for="totalPayed">{{'Stad'|t}}</label>
+                {{ input('number', 'fields[totalPayedMembers]', user.city ?? null, {
+                    id: 'totalPayed',
+                    placeholder: 'Betaald bedrag'|t,
+                    required: true,
+                    min: 0
+                }) }}
+            </div>
+            <div class="formbox__column--full">                
+                <label class="formbox__label" for="due-date">{{'Vervaldatum'|t}}</label>
+                {{ input('text', 'fields[memberDueDate]', null, {
+                    id: 'due-date',
+                    placeholder: 'Vervaldatum'|t,
+                    onFocus: "(this.type = 'date', this.placeholder = '')",
+                    required: true,
+                    max: maxDate
+                }) }}
+            </div>  
+
             <div class="formbox__column"> 
                 <label class="formbox__label" for="alt-first-name">{{'Voornaam'|t}}</label>
                 {{ input('text', 'fields[altFirstName]', user.altFirstName ?? null, {
@@ -97,7 +135,7 @@
                     required: true,
                     max: maxDate
                 }) }}
-            </div>     
+            </div>        
             <div class="formbox__column--full">
                 <label class="formbox__label" for="country">{{'Land'|t}}</label>
                 {{ input('text', 'fields[country]', user.country ?? null, {
@@ -145,11 +183,12 @@
                     required: true
                 }) }}
             </div>
+
             <div class="formbox__column--full">
-                <label class="formbox__label" for="payment-type">{{'Betaalmethode'|t}}</label>
-                <select name="fields[paymentType]" id="payment-type" required>
-                    <option value="">{{'Nog niet betaald'|t}}</option>
-                    {% for item in paymentMethods %}
+                <label class="formbox__label" for="lang">{{'Berichttaal'|t}}</label>
+                <select name="fields[lang]" id="lang" required>
+                    <option value="nl">{{'Berichttaal'|t}}</option>
+                    {% for item in langs %}
                         <option value="{{item.value}}">{{item.label}}</option>
                     {% endfor %}
                 </select>

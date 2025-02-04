@@ -203,6 +203,8 @@
 			<div class="filter__box filter__box--new" x-show="openOption === 2">
 				<a @click="openOption = 0" class="filter__btn" href="/register-individual">{{'Nieuw individu'|t}}</a>
 				<a @click="openOption = 0" class="filter__btn" href="/register-group">{{'Nieuw groep'|t}}</a>
+				<a @click="openOption = 0" class="filter__btn" href="/register-old">{{'Oud lid'|t}}</a>
+				<a @click="openOption = 0" class="filter__btn" href="/register-old-group">{{'Oud groep'|t}}</a>
 			</div>
 		</div>
 		<a href="/export-users?{{ filters|url_encode }}" title="{{'Download excel'}}" class="table__download">{{svg('assets/icons/download.svg')|attr({class: "table__download-icon"})}}</a>
@@ -344,7 +346,6 @@
 					{{svg('assets/icons/chevron-right.svg')|attr({class: 'pagination__chevron'})}}
 				</button>
 			</div>
-			
 		</div>
 	{% endif %}
 	{% if memberId %}

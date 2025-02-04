@@ -276,7 +276,7 @@ class PaymentController extends Controller
                     'name' => $user->getFieldValue('altFirstName'),
                 ]);
     
-                $subject = 'Gelukt! Je bent nu officieel lid van Hi Flanders 😁';
+                $subject = 'Betaling geslaagd! Je bent nu officieel lid van Hi Flanders 😁';
             }
 
             // Prepare and send the email

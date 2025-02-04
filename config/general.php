@@ -26,5 +26,6 @@ return GeneralConfig::create()
     ])
     ->defaultCountryCode('BE')
     ->timezone('Europe/Brussels')
+    ->defaultCpLocale('nl-BE')
     // ->disabledUtilities(['system-messages']);
 ;

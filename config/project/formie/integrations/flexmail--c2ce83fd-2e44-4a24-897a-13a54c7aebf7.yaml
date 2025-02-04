@@ -1,0 +1,49 @@
+enabled: true
+handle: flexmail
+name: Flexmail
+settings:
+  apiKey: $FLEXMAIL_API
+  apiUsername: $FLEXMAIL_CUSTOMER_ID
+  defaultFields:
+    __assoc__:
+      -
+        - email
+        -
+          __assoc__:
+            -
+              - handle
+              - email
+            -
+              - name
+              - Email
+            -
+              - required
+              - true
+      -
+        - first_name
+        -
+          __assoc__:
+            -
+              - handle
+              - first_name
+            -
+              - name
+              - 'First Name'
+            -
+              - required
+              - false
+      -
+        - name
+        -
+          __assoc__:
+            -
+              - handle
+              - name
+            -
+              - name
+              - 'Last Name'
+            -
+              - required
+              - false
+sortOrder: 1
+type: digitalpulsebe\formieflexmail\integrations\emailmarketing\Flexmail

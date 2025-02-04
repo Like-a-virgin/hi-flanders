@@ -46,5 +46,5 @@ sortOrder: 1
 subpath: ''
 titleTranslationKeyFormat: null
 titleTranslationMethod: site
-transformFs: ''
-transformSubpath: ''
+transformFs: transforms
+transformSubpath: $BRANDING_PATH_TRANSFORMS

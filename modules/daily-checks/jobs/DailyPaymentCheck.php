@@ -30,6 +30,9 @@ class DailyPaymentCheck extends BaseJob
 
     private function sendReminder(User $user): void
     {
+        $baseUrl = Craft::$app->getSites()->currentSite->getBaseUrl();
+        $memberType = $user->getFieldValue('memberType')->value;
+        
         try {
             $mailer = Craft::$app->mailer;
             Craft::$app->getView()->setTemplatesPath(Craft::getAlias('@root/templates'));

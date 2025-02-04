@@ -126,6 +126,9 @@ class ExportController extends Controller
 
             $prinRequest = $user->requestPrint;
             $formattedPrintRequest = $prinRequest ? $prinRequest->format('d-m-Y') : '';
+            
+            $prinPayed = $user->payedPrintDate;
+            $formattedPrintPayed = $prinPayed ? $prinPayed->format('d-m-Y') : '';
 
             $memberRatePrice = 0;
 
@@ -187,7 +190,7 @@ class ExportController extends Controller
                 $user->paymentType->label,
                 $user->cardType,
                 $formattedPrintRequest,
-                $user->payedPrintDate,
+                $formattedPrintPayed,
                 $user->totalPayedPrint ? $user->totalPayedPrint->getAmount()/100 : 0,
             ];
         }

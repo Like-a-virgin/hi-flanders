@@ -78,15 +78,34 @@ class AdminRegister extends BaseModule
             'memberDueDate' => null,
             'privacyPolicy' => null,
             'registeredBy' => null,
+            'lang' => null,
+            'totalPayedMembers' => null,
+            'customMemberId' => null,
+            'requestPrint' => null,
+            'payedPrintDate' => null,
+            'paymentDate' => null,
+            'cardType' => null,
+            'totalPayedPrint' => null,
         ];
 
         foreach ($fields as $fieldHandle => $coreField) {
             $value = $request->getBodyParam("fields.{$fieldHandle}");
 
-            if ($fieldHandle === 'memberDueDate') {
+            if ($fieldHandle === 'memberDueDate' && empty($value)) {
                 // Automatically set memberDueDate to today + 1 year
                 $currentDate = new \DateTime();
                 $value = $currentDate->modify('+1 year')->format('Y-m-d');
+            }
+
+            if ($fieldHandle === 'totalPayedMembers' || $fieldHandle === 'totalPayedPrint') {
+                if ($value !== null && is_numeric($value)) {
+                    $value = floatval($value); // Convert to a float
+    
+                    // Convert to cents (e.g., 49.99 -> 4999) if Craft CMS stores as cents
+                    $value = (int) round($value * 100);
+                } else {
+                    $value = null; // Prevents invalid data
+                }
             }
     
             if ($value !== null) {
@@ -96,7 +115,7 @@ class AdminRegister extends BaseModule
                 if ($coreField) {
                     $user->{$coreField} = $value;
                 }
-            }
+            } 
         }
     }
 
@@ -128,8 +147,14 @@ class AdminRegister extends BaseModule
     {
         $registeredBy = $user->getFieldValue('registeredBy')->value;
         $memberType = $user->getFieldValue('memberType')->value;
-        $paymentDate = $user->getFieldValue('paymentDate');
-        $customStatus = $user->getFieldValue('customStatus');
+        $memberRateEntry = $user->getFieldValue('memberRate')->one();
+        $memberPrice = $memberRateEntry ? $memberRateEntry->getFieldValue('price') : null;
+        $paymentType = $user->getFieldValue('paymentType')->value;
+        $customStatus = $user->getFieldValue('customStatus')->value;
+        $lang = $user->getFieldValue('lang')->value;
+        $baseUrl = Craft::$app->getSites()->currentSite->getBaseUrl();
+
+        $baseTemplateUrl = 'email/activation/' . $lang;
 
         try {
             $activationUrl = Craft::$app->users->getActivationUrl($user);
@@ -139,46 +164,74 @@ class AdminRegister extends BaseModule
             Craft::$app->getView()->setTemplatesPath(Craft::getAlias('@root/templates'));
 
             if ($registeredBy === 'admin' && $memberType === 'group' && $customStatus === 'new') {
-                $htmlBody = Craft::$app->getView()->renderTemplate('email/activation/activation-group', [
+                $templatePath = $baseTemplateUrl . '/activation-group';
+                $htmlBody = Craft::$app->getView()->renderTemplate($templatePath, [
+                    'name' => $user->getFieldValue('organisation'),
+                    'activationUrl' => $activationUrl,
+                    'url' => $baseUrl,
+                ]);
+
+                if ($lang === 'en') {
+                    $subject = 'Welcome! Payment request for your group';
+                } elseif ($lang === 'fr') {
+                    $subject = 'Bienvenue ! Demande de paiement pour votre groupe';
+                } else {
+                    $subject = 'Welkom! Betalingsverzoek voor je groep';
+                }
+
+            } elseif ($registeredBy === 'admin' && $memberType === 'groupYouth' && $customStatus === 'new') {
+                $templatePath = $baseTemplateUrl. '/activation-youth';
+                $htmlBody = Craft::$app->getView()->renderTemplate($templatePath, [
                     'name' => $user->getFieldValue('organisation'),
                     'activationUrl' => $activationUrl,
                 ]);
+    
+                if ($lang === 'en') {
+                    $subject = 'Welcome to Hi Flanders! Registration almost in done ...';
+                } elseif ($lang === 'fr') {
+                    $subject = "Bienvenue à Hi Flanders ! L'inscription est presque terminée ...";
+                } else {
+                    $subject = 'Welkom bij Hi Flanders! Registratie bijna in orde …';
+                }
 
-                $subject = 'Welkom! Betalingsverzoek voor je groep';
-            }
-
-            if ($registeredBy === 'admin' && $memberType === 'groupYouth' && $customStatus === 'new') {
-                $htmlBody = Craft::$app->getView()->renderTemplate('email/activation/activation-youth', [
-                    'name' => $user->getFieldValue('organisation'),
+            } elseif ($registeredBy === 'admin' && $memberType === 'individual' && $paymentType != '' && $customStatus === 'new' || $memberType === 'employee' || $memberType === 'life') {
+                $templatePath = $baseTemplateUrl . '/activation-ind-ad-payed';
+                $htmlBody = Craft::$app->getView()->renderTemplate($templatePath, [
+                    'name' => $user->getFieldValue('altFirstName'),
                     'activationUrl' => $activationUrl,
                 ]);
 
-                $subject = 'Welkom bij Hi Flanders! Registratie bijna in orde …';
-            }
+                if ($lang === 'en') {
+                    $subject = 'Welcome to Hi Flanders! Activate your membership now';
+                } elseif ($lang === 'fr') {
+                    $subject = 'Bienvenue à Hi Flanders ! Activez votre adhésion maintenant';
+                } else {
+                    $subject = 'Welkom bij Hi Flanders! Activeer meteen je lidmaatschap';
+                }
 
-            if ($registeredBy === 'admin' && $memberType === 'individual' && $paymentDate && $customStatus === 'new') {
-                $htmlBody = Craft::$app->getView()->renderTemplate('email/activation/activation-ind-ad-payed', [
-                    'name' => $user->getFieldValue('organisation'),
+            } elseif ($registeredBy === 'admin' && $memberType === 'individual' && $paymentType === '' && $customStatus === 'new' && $memberPrice != null) {
+                $templatePath = $baseTemplateUrl . '/activation-ind-ad';
+                $htmlBody = Craft::$app->getView()->renderTemplate($templatePath, [
+                    'name' => $user->getFieldValue('altFirstName'),
                     'activationUrl' => $activationUrl,
                 ]);
 
-                $subject = 'Welkom bij Hi Flanders! Activeer meteen je lidmaatschap';
-            }
-            if ($registeredBy === 'admin' && $memberType === 'individual' && !$paymentDate && $customStatus === 'new') {
-                $htmlBody = Craft::$app->getView()->renderTemplate('email/activation/activation-ind-ad', [
-                    'name' => $user->getFieldValue('organisation'),
-                    'activationUrl' => $activationUrl,
-                ]);
+                if ($lang === 'en') {
+                    $subject = 'Welcome to Hi Flanders! Activate your membership now';
+                } elseif ($lang === 'fr') {
+                    $subject = 'Bienvenue à Hi Flanders ! Activez votre adhésion maintenant';
+                } else {
+                    $subject = 'Welkom bij Hi Flanders! Activeer meteen je lidmaatschap';
+                }
 
-                $subject = 'Welkom bij Hi Flanders! Activeer meteen je lidmaatschap en betaal';
+            } else {
+                return;
             }
             
-            // Prepare and send the email
             $message = $mailer->compose()
                 ->setTo($user->email)
                 ->setSubject($subject)
-                ->setHtmlBody($htmlBody)
-                ->send();
+                ->setHtmlBody($htmlBody);
 
             if (!$mailer->send($message)) {
                 Craft::error('Failed to send renewal email to user: ' . $user->email, __METHOD__);
@@ -188,18 +241,6 @@ class AdminRegister extends BaseModule
         } catch (\Throwable $e) {
             Craft::error("Error sending custom activation email: " . $e->getMessage(), __METHOD__);
         }
-        // if (!$user->email) {
-        //     Craft::error('User does not have an email address set.', __METHOD__);
-        //     return;
-        // }
-
-        // $activationCode = Craft::$app->getUsers()->sendActivationEmail($user);
-
-        // if ($activationCode) {
-        //     Craft::info("Activation email successfully sent to {$user->email}.", __METHOD__);
-        // } else {
-        //     Craft::error("Failed to send activation email to {$user->email}.", __METHOD__);
-        // }
     }
 
     private function isMembersAdmin(User $user): bool

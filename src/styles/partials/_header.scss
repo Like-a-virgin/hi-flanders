@@ -122,4 +122,24 @@
         right: -50vw;
     }
 
+
+    .btn--prim {
+        background-color: $clr-secondary;
+        color: $clr-primary;
+        font-size: 1rem;
+
+        .btn__chevron {
+            fill: $clr-primary;
+        }
+
+        @include screen ($screen-s) {
+            background-color: $clr-primary;
+            color: $clr-secondary;
+            font-size: $fs-p;
+
+            .btn__chevron {
+                fill: $clr-secondary;
+            }
+        }
+    }
 }

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "8900ba6ae56518a165837671b1602447",
+    "content-hash": "86c62a70e1035bf6f3671b9502818222",
     "packages": [
         {
             "name": "bacon/bacon-qr-code",
@@ -971,6 +971,46 @@
                 "symmetric key cryptography"
             ],
             "time": "2023-06-19T06:10:36+00:00"
+        },
+        {
+            "name": "digitalpulsebe/craft-formie-flexmail",
+            "version": "2.1.1",
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/digitalpulsebe/craft-formie-flexmail/zipball/66f57571d43a49bc184ab78b1d20506f69904026",
+                "reference": "66f57571d43a49bc184ab78b1d20506f69904026",
+                "shasum": ""
+            },
+            "require": {
+                "craftcms/cms": "^5.0.0-beta.5",
+                "php": ">=8.2",
+                "verbb/formie": "^3.0.0-beta.2"
+            },
+            "type": "craft-plugin",
+            "extra": {
+                "handle": "formie-flexmail",
+                "name": "Flexmail for Formie",
+                "developer": "Digital Pulse nv",
+                "documentationUrl": "https://github.com/digitalpulsebe/craft-formie-flexmail",
+                "class": "digitalpulsebe\\formieflexmail\\FormieFlexmail"
+            },
+            "autoload": {
+                "psr-4": {
+                    "digitalpulsebe\\formieflexmail\\": "src/"
+                }
+            },
+            "license": [
+                "mit"
+            ],
+            "description": "Flexmail integration for Formie",
+            "support": {
+                "email": "support@digitalpulse.be",
+                "issues": "https://github.com/digitalpulsebe/craft-formie-flexmail/issues?state=open",
+                "source": "https://github.com/digitalpulsebe/craft-formie-flexmail",
+                "docs": "https://github.com/digitalpulsebe/craft-formie-flexmail",
+                "rss": "https://github.com/digitalpulsebe/craft-formie-flexmail/releases.atom"
+            },
+            "time": "2024-12-04T07:37:35+00:00"
         },
         {
             "name": "doctrine/collections",
@@ -8670,11 +8710,11 @@
     ],
     "aliases": [],
     "minimum-stability": "dev",
-    "stability-flags": [],
+    "stability-flags": {},
     "prefer-stable": true,
     "prefer-lowest": false,
-    "platform": [],
-    "platform-dev": [],
+    "platform": {},
+    "platform-dev": {},
     "platform-overrides": {
         "php": "8.2"
     },

@@ -2,7 +2,7 @@ allowPublicRegistration: true
 deactivateByDefault: false
 defaultGroup: 50a6f7cb-84e7-4d68-9aa9-3af2d9001e79 # Leden
 photoSubpath: null
-photoVolumeUid: null
+photoVolumeUid: 9b6463ce-f83c-4bd6-ad35-a79ab9818286 # Users
 require2fa: false
 requireEmailVerification: true
 validateOnPublicRegistration: true

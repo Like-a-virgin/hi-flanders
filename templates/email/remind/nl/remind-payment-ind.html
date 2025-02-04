@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="color-scheme" content="light only">
+        <title>Mailadres bevestigd! Volg de betalingslink …</title>
+        <style>
+            a {
+                color: #FFCC22;
+            }
+            .button {
+                background-color: #FFCC22;
+                color: #102438;
+                padding: 14px 26.4px;
+                font-weight: bold;
+                border-radius: 160px;
+                text-decoration: none;
+            }
+        </style>
+    </head>
+    <body style="font-family: Arial, sans-serif; font-size: 16px; line-height: 1.5; color: #102438; margin: 0; background-color: #FFCC22; height: 100%; padding: 50px;">
+        <div class="container" style=" max-width: 704px; margin: 20px auto; background: #fff; border-radius: 10px; box-shadow: 0px 3px 6px 0px rgba(black, 0.16); display: flex; flex-direction: column; align-items: center;">
+            <div class="header "style="color: #102438; padding: 50px 10px 0px 10px; width: 95%; max-width: 585px">
+                <div style="width: 200px;">
+                    <img src="https://hiflandres.staging.liveavirgin.be//uploads/branding/Logo.svg" alt="logo hi flanders">
+                </div>
+            </div>
+            <div class="content" style="padding: 20px 10px 50px 10px; width: 95%; max-width: 585px">
+                <p>Hi {{ name }},</p>
+                <p style="margin-bottom: 30px">Goed nieuws: je premium lidmaatschap is bijna in orde. Het laatste wat je nog moet doen, is onze betalingslink volgen. Voor slechts € 10 euro kan je een jaar lang genieten van alle voordelen bij Hi Flanders:</p>
+                <a class="button" href="{{ activationUrl }}">Naar de betaalpagina</a>
+                <p  style="margin-top: 30px"><u><strong>Opgelet:</strong> Breng dit binnen 7 dagen in orde om zeker te zijn dat de toegang tot je account niet verloopt.</u></p>
+                <p>Wanneer de betaling in orde is, kan je alle voordelen als Hi Flanders-lid eenvoudig online ontdekken: exclusieve voordelen, kortingen en inspiratie om er elke keer opnieuw een geweldige vakantie van te maken!</p>
+                <p>Heb je vragen of ondervind je problemen met de betaling? Neem dan gerust contact met ons op. We helpen je graag verder. Mail naar hi@hiflanders.be of bel +32 3 232 72 18 tijdens de kantooruren.</p>
+                <p style="margin-top: 30px">Warme groet,</p>
+                <p><strong>Het Hi Flanders-team</strong></p>
+            </div>
+        </div>
+    </body>
+</html>

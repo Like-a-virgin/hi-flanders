@@ -1,0 +1,6 @@
+siteUid: null
+sortOrder: 4
+template: registrations/register-old-group.twig
+uriParts:
+  - register-old-group
+uriPattern: register-old-group

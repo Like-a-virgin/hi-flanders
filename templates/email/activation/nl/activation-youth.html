@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="color-scheme" content="light only">
+        <title>Welkom bij Hi Flanders! Registratie bijna in orde …</title>
+        <style>
+            a {
+                color: #FFCC22;
+            }
+            .button {
+                background-color: #FFCC22;
+                color: #102438;
+                padding: 14px 26.4px;
+                font-weight: bold;
+                border-radius: 160px;
+                text-decoration: none;
+            }
+        </style>
+    </head>
+    <body style="font-family: Arial, sans-serif; font-size: 16px; line-height: 1.5; color: #102438; margin: 0; background-color: #FFCC22; height: 100%; padding: 50px;">
+        <div class="container" style=" max-width: 704px; margin: 20px auto; background: #fff; border-radius: 10px; box-shadow: 0px 3px 6px 0px rgba(black, 0.16); display: flex; flex-direction: column; align-items: center;">
+            <div class="header "style="color: #102438; padding: 50px 10px 0px 10px; width: 95%; max-width: 585px">
+                <div style="width: 200px;">
+                    <img src="https://hiflandres.staging.liveavirgin.be//uploads/branding/Logo.svg" alt="logo hi flanders">
+                </div>
+            </div>
+            <div class="content" style="padding: 20px 10px 50px 10px; width: 95%; max-width: 585px">
+                <p>Hi {{ name }},</p>
+                <p>Goed nieuws: je aanvraag tot registratie van een groep werd goedgekeurd. Omdat het hier gaat om een groepering binnen het jeugdwerk, hebben jullie recht op een GRATIS lidmaatschap.</p>
+                <p style="margin-bottom: 30px">Het enige wat je nog moet doen, is een wachtwoord kiezen om je lidmaatschap te activeren. Klik op de knop hieronder om verder te gaan:</p>
+                <a style="color:#102438" class="button" href="{{ activationUrl }}">Kies een wachtwoord</a>
+                <p style="margin-top: 40px">Activeer dit binnen 7 dagen om zeker te zijn van toegang tot je account.</p>
+                <p><u>Extra info:</u></p>
+                <ul>
+                    <li><strong>Waarom moet ik dit doen?</strong> We hebben deze bevestiging nodig om je registratie als lid te vervolledigen. Zo wordt je toekomstige ervaring bij Hi Flanders een pak gebruiksvriendelijker.</li>
+                    <li>Als lid van Hi Flanders geniet je van <a style="color:#FFCC22" href="https://www.hiflanders.be/nl/premium">exclusieve voordelen</a>, kortingen en <a style="color:#FFCC22" href="https://www.hiflanders.be/nl/belevingen">inspiratie</a> voor toekomstige verblijven. Maar we gaan je niet om de haverklap bestoken met mails. <strong>Jij houdt de controle</strong> en kiest hoe vaak je van ons wil horen.</li>
+                    <li>We behandelen jouw gegevens uiteraard <strong>vertrouwelijk en veilig</strong>, volgens de geldende privacywetgeving. Bekijk onze <a style="color:#FFCC22" href="https://www.hiflanders.be/nl/privacy-policy">privacy policy</a> voor meer info.</li>
+                </ul>
+                <p>Heb je vragen of lukt het niet om je lidmaatschap te activeren? Neem dan gerust contact met ons op. We helpen je graag verder. Mail naar <a style="color:#FFCC22" href="mailto:hi@hiflanders.be">hi@hiflanders.be</a> of bel <a style="color:#FFCC22" href="tel:+3232327218">+32 3 232 72 18</a> tijdens de kantooruren.</p>
+                <p style="margin-top: 30px">Warme groet,</p>
+                <p><strong>Het Hi Flanders-team</strong></p>
+            </div>
+        </div>
+    </body>
+</html>

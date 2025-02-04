@@ -6,6 +6,22 @@ fieldLayouts:
         elementCondition: null
         elements:
           -
+            dateAdded: '2025-02-03T16:20:36+00:00'
+            elementCondition: null
+            fieldUid: 40f481eb-0ec0-4642-ae8d-142718436d91 # Nummer
+            handle: errorNum
+            includeInCards: false
+            instructions: null
+            label: null
+            providesThumbs: false
+            required: false
+            tip: null
+            type: craft\fieldlayoutelements\CustomField
+            uid: 37730fd9-75ba-4854-aef5-6a9a62a590a5
+            userCondition: null
+            warning: null
+            width: 100
+          -
             autocapitalize: true
             autocomplete: false
             autocorrect: true
@@ -86,14 +102,14 @@ fieldLayouts:
         name: Content
         uid: 4d309b43-059a-4e75-884c-1146af26b431
         userCondition: null
-handle: errorNotFound
+handle: errorContent
 hasTitleField: true
 icon: null
-name: '404'
+name: Error
 showSlugField: true
 showStatusField: true
 slugTranslationKeyFormat: null
 slugTranslationMethod: site
-titleFormat: null
+titleFormat: '{errorNum}'
 titleTranslationKeyFormat: null
 titleTranslationMethod: site

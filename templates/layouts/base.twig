@@ -10,7 +10,7 @@
         <link rel="shortcut icon" href="{{ craft.app.sites.primarySite.baseUrl }}/assets/favicons/favicon.ico" />
         <link rel="apple-touch-icon" sizes="180x180" href="{{ craft.app.sites.primarySite.baseUrl }}/assets/favicons/apple-touch-icon.png" />
         <link rel="manifest" href="{{ craft.app.sites.primarySite.baseUrl }}/assets/favicons/site.webmanifest" />
-        <link rel="stylesheet" href="{{ craft.app.sites.primarySite.baseUrl }}dist/assets/app-qodp-HMK.css">
+        {# <link rel="stylesheet" href="{{ craft.app.sites.primarySite.baseUrl }}dist/assets/app-qodp-HMK.css"> #}
         {% if craft.app.request.getFullPath() is same as 'register' %}
             <script src="https://www.google.com/recaptcha/api.js?render={{ getenv('RECAPTCHA_SITE_KEY') }}"></script>
         {% endif %}
@@ -20,8 +20,8 @@
         <main class="center">
             {% block content %}{% endblock %}
         </main>
-        {# {{ craft.vite.script("src/scripts/main.js") }}  #}
-        <script src="{{ craft.app.sites.primarySite.baseUrl }}dist/assets/app-C4qMLBHl.js"></script>
+        {{ craft.vite.script("src/scripts/main.js") }} 
+        {# <script src="{{ craft.app.sites.primarySite.baseUrl }}dist/assets/app-C4qMLBHl.js"></script> #}
         {% if craft.app.request.getFullPath() is same as 'register' %}
             <script>
                 function onSubmit(token) {

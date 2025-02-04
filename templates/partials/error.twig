@@ -1,0 +1,8 @@
+{% set slug = slug ?? null %}
+{% set contentError = craft.entries.section('errorsContent').slug(slug).one() %}
+<div class="error">
+    <h1 class="error__title">{{contentError.title|upper}}</h1>
+    <h2 class="error__subtitle">{{contentError.textSingle}}</h2>
+    <div class="error__text">{{contentError.textSimple}}</div>
+    <a class="btn btn--prim btn--round" href="{{currentSite.baseUrl}}">{{contentError.textBtn}}</a>
+</div>

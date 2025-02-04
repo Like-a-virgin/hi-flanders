@@ -56,6 +56,11 @@ class AfterActivation extends BaseModule
         $memberType = $user->getFieldValue('memberType')->value ?? null;
         $memberRateEntry = $user->getFieldValue('memberRate')->one();
         $memberPrice = $memberRateEntry ? $memberRateEntry->getFieldValue('price') : null;
+        $paymentType = $user->getFieldValue('paymentType')->value;
+        $registeredBy = $user->getFieldValue('registeredBy')->value;
+        $lang = $user->getFieldValue('lang')->value;
+
+        $baseTemplateUrl = 'email/verification/' . $lang;
 
         try {
             $mailer = Craft::$app->mailer;
@@ -65,17 +70,50 @@ class AfterActivation extends BaseModule
             $subject = null;
 
             if ($memberType === 'groupYouth') {
-                $htmlBody = Craft::$app->getView()->renderTemplate('email/verification/verification-youth', [
+                $templatePath = $baseTemplateUrl . '/verification-youth';
+                $htmlBody = Craft::$app->getView()->renderTemplate($templatePath, [
                     'name' => $user->getFieldValue('organisation'),
                 ]);
     
-                $subject = 'Gelukt: jouw groep is nu lid van Hi Flanders!';
-            } elseif ($memberType === 'individual' && $memberPrice === null){
-                $htmlBody = Craft::$app->getView()->renderTemplate('email/verification/verification-ind-free', [
+                if ($lang === 'en') {
+                    $subject = 'Successful: your group is now a member of Hi Flanders!';
+                } elseif ($lang === 'fr') {
+                    $subject = 'Succès : votre groupe est désormais membre de Hi Flanders !';
+                } else {
+                    $subject = 'Gelukt: jouw groep is nu lid van Hi Flanders!';
+                }
+
+            } elseif ($memberType === 'individual' && $memberPrice === null || $memberType === 'employee' || $memberType === 'life'){
+                $templatePath = $baseTemplateUrl . '/verification-ind-free';
+                $htmlBody = Craft::$app->getView()->renderTemplate($templatePath , [
                     'name' => $user->getFieldValue('altFirstName'),
                 ]);
     
-                $subject = 'Yes! Je bent nu officieel lid van Hi Flanders 😁';
+                if ($lang === 'en') {
+                    $subject = 'Yes! You are now officially a member of Hi Flanders 😁';
+                } elseif ($lang === 'fr') {
+                    $subject = 'Oui ! Vous êtes maintenant officiellement membre de Hi Flanders';
+                } else {
+                    $subject = 'Yes! Je bent nu officieel lid van Hi Flanders 😁';
+                }
+
+            } elseif ($memberType === 'individual' && $memberPrice != null && $registeredBy === 'self') {
+                $templatePath = 'email/activation/' . $lang . '/activation-pay-request';
+                $baseUrl = Craft::$app->getSites()->currentSite->getBaseUrl();
+
+                $htmlBody = Craft::$app->getView()->renderTemplate($templatePath , [
+                    'name' => $user->getFieldValue('altFirstName'),
+                    'url' => $baseUrl
+                ]);
+    
+                if ($lang === 'en') {
+                    $subject = 'Mail address confirmed! Follow the payment link ...';
+                } elseif ($lang === 'fr') {
+                    $subject = 'Adresse postale confirmée ! Suivez le lien de paiement ...';
+                } else {
+                    $subject = 'Mailadres bevestigd! Volg de betalingslink …';
+                }
+
             } else {
                 return;
             }

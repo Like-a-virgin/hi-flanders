@@ -2,10 +2,10 @@ defaultPlacement: end
 enableVersioning: true
 entryTypes:
   -
-    uid: 91c6a56d-e6ba-4757-a97d-293bf13c9115 # 404
-handle: errorNotFound
+    uid: 91c6a56d-e6ba-4757-a97d-293bf13c9115 # Error
+handle: errorsContent
 maxAuthors: 1
-name: '404'
+name: Errors
 previewTargets:
   -
     __assoc__:
@@ -35,4 +35,7 @@ siteSettings:
     hasUrls: false
     template: null
     uriFormat: null
-type: single
+structure:
+  maxLevels: null
+  uid: 8a62b84b-3527-4170-bd99-e80e691da338
+type: structure

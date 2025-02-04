@@ -1,4 +1,4 @@
-dateModified: 1738587224
+dateModified: 1738681711
 elementSources:
   craft\elements\Entry:
     -
@@ -39,14 +39,13 @@ elementSources:
             operator: in
             uid: 462bbf2f-a4d3-4f5a-bccf-f8a550569ba6
             values:
-              - e9b9d6df-6aae-4dc1-88c7-214694d8af07
+              - 3a447095-116f-4a81-b2f7-43b6b4c1cf53
               - 7b5aa47e-5da6-461a-b6fc-a190a143d8d8 # Activeer email
               - e633efea-afa2-411f-9fc3-06d84f219d9b # Bedankt betaling
               - 4a63b33e-aa54-421b-b619-d4bc7f4888e7 # Home
               - ac77cfdb-37a0-4f35-9ca7-e353977a477d # Privacy policy
               - 22e6beae-01af-4451-b3d5-29bf90a51e80 # Reset wachtwoord
               - af17efa6-765d-4c48-99b6-d836a037abd9 # Succes registratie
-              - 3a447095-116f-4a81-b2f7-43b6b4c1cf53 # 404
         elementType: craft\elements\Entry
         fieldContext: global
       defaultSort:
@@ -70,6 +69,9 @@ elementSources:
         - expiryDate
         - authors
         - link
+      type: native
+    -
+      key: 'section:1f19a7ba-f837-4abf-a622-317ac9fc02e5' # Errors
       type: native
     -
       heading: Collecties
@@ -140,15 +142,17 @@ elementSources:
       label: 'Bedrijfs gegevens'
       tableAttributes: '-'
       type: custom
+    -
+      heading: ''
+      type: heading
 email:
   fromEmail: lara@likeavirgin.be
   fromName: 'Hi Flanders'
   replyToEmail: null
   template: email/email.html
   transportSettings:
-    messageStream: ''
-    token: $POSTMARK_API_KEY
-  transportType: craftcms\postmark\Adapter
+    command: '/usr/local/bin/mailpit sendmail -t --smtp-addr 127.0.0.1:1025'
+  transportType: craft\mail\transportadapters\Sendmail
 fs:
   branding:
     hasUrls: true
@@ -157,12 +161,26 @@ fs:
       path: $BRANDING_PATH
     type: craft\fs\Local
     url: $BRANDING_URL
+  transforms:
+    hasUrls: false
+    name: Transforms
+    settings:
+      path: $TRANSFORMS_PATH
+    type: craft\fs\Local
+    url: null
+  users:
+    hasUrls: true
+    name: Users
+    settings:
+      path: $USERS_PATH
+    type: craft\fs\Local
+    url: $USERS_URL
 meta:
   __names__:
     1d0447d2-95ba-4d14-95bd-e1f51bb4dd4c: users # users
     1d223580-d398-4fc6-af8a-8a1e08933341: 'Extra leden' # Extra leden
+    1f19a7ba-f837-4abf-a622-317ac9fc02e5: Errors # Errors
     2d35b4ae-62f0-4cb2-8a94-73ebdae1ef03: 'Member type' # Member type
-    3a447095-116f-4a81-b2f7-43b6b4c1cf53: '404' # 404
     3fa074c6-e343-4927-8f8e-9c209ddd6261: Betaalmethode # Betaalmethode
     3fab0971-effa-4787-a88b-2778ab3228d6: Notify # Notify
     4a63b33e-aa54-421b-b619-d4bc7f4888e7: Home # Home
@@ -172,16 +190,18 @@ meta:
     7b5aa47e-5da6-461a-b6fc-a190a143d8d8: 'Activeer email' # Activeer email
     7ca5fc34-985a-44f3-bc43-3f333f9457f3: CustomId # CustomId
     9a41348d-b717-4688-9000-767870baae38: New # New
+    9b6463ce-f83c-4bd6-ad35-a79ab9818286: Users # Users
     9fa38d43-f532-46e6-a754-46a74621fb10: Branding # Branding
     21c22e0c-c629-4e07-9e19-a289ef81be37: Simple # Simple
     22e6beae-01af-4451-b3d5-29bf90a51e80: 'Reset wachtwoord' # Reset wachtwoord
+    40f481eb-0ec0-4642-ae8d-142718436d91: Nummer # Nummer
     41bcf592-e8cf-43ee-8c4f-c83d185aee48: Forms # Forms
     44a841e6-e727-4500-9e81-386090b011f6: memberRate # memberRate
     50a6f7cb-84e7-4d68-9aa9-3af2d9001e79: Leden # Leden
     52ac72a5-0a6a-42ba-9e72-995b76380054: Logo # Logo
     77d8ae37-4c00-4972-aab9-94dd08c7f29c: SimpleText # SimpleText
     88eaa50e-c3b0-4b36-a2b9-11ef935830aa: 'min Leeftijd' # min Leeftijd
-    91c6a56d-e6ba-4757-a97d-293bf13c9115: '404' # 404
+    91c6a56d-e6ba-4757-a97d-293bf13c9115: Error # Error
     93edcc59-32ca-4780-9d52-1d1fc486519a: 'Lid ouder' # Lid ouder
     115f3616-1f1d-4238-bbd6-a35c5b4e8f28: 'Lidkaart type' # Lidkaart type
     359a39c5-8655-460f-a1b4-0c097ea0edb2: users # users
@@ -204,6 +224,7 @@ meta:
     bbdfff72-14f8-4e5d-b59e-12d5b73c9a17: Home # Home
     be1c673f-0962-430c-8f77-56c215ba3ba8: 'Form Select' # Form Select
     c095205f-0280-43c8-86ec-2705261bf6b9: Default # Default
+    c2ce83fd-2e44-4a24-897a-13a54c7aebf7: Flexmail # Flexmail
     c573f0bd-29d4-4985-8cff-271a6ee231a2: Beheerder # Beheerder
     c1614bab-5fdd-4eae-8e0b-f4eb393c25dd: Tekst # Tekst
     c75441c9-96e6-40ff-ab4f-69ac95987e67: 'Promo codes ' # Promo codes 
@@ -476,6 +497,10 @@ plugins:
       useQueueForIntegrations: true
       useQueueForNotifications: false
       validateCustomTemplates: true
+  formie-flexmail:
+    edition: standard
+    enabled: true
+    schemaVersion: 1.0.0
   postmark:
     edition: standard
     enabled: true

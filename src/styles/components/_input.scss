@@ -161,3 +161,32 @@ body .fui-checkbox-label {
     -ms-transform: rotate(45deg);
     transform: rotate(45deg);
 }
+
+.hidden {
+    display: none;
+}
+
+.custom-upload-btn {
+    padding: 0.5rem 1rem;
+    background-color: rgba($clr-primary, 0.2);
+    border-radius: 0.35rem;
+
+    &:hover {
+        cursor: pointer;
+    }
+}
+
+body .fui-alert-error {
+    color: $clr-error-text;
+    background-color: $clr-error-bg;
+}
+
+body .fui-input.fui-error {
+    border-color: $clr-error-text;
+    background-color: $clr-error-bg;
+}
+
+body .fui-alert-success {
+    color: $clr-succes-text;
+    background-color: $clr-succes-bg;
+}

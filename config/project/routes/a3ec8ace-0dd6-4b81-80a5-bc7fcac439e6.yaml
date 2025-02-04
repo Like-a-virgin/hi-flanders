@@ -1,6 +1,6 @@
 siteUid: null
 sortOrder: 1
-template: register-group.twig
+template: registrations/register-group.twig
 uriParts:
   - register-group
 uriPattern: register-group
