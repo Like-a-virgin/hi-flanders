@@ -302,7 +302,17 @@ tabs:
         width: 100
       -
         dateAdded: '2025-01-08T12:37:45+00:00'
-        elementCondition: null
+        elementCondition:
+          class: craft\elements\conditions\users\UserCondition
+          conditionRules:
+            -
+              class: craft\elements\conditions\users\GroupConditionRule
+              operator: in
+              uid: 7b980b17-019f-4d63-ac10-f9fa8d66ea3e
+              values:
+                - a21d7477-05ca-43ea-ae84-fc44c3e16a70 # Leden groep
+          elementType: craft\elements\User
+          fieldContext: global
         fieldUid: aa21d2ca-e34c-4497-a6fa-49b5a7cc7f58 # Title
         handle: tel
         includeInCards: false
@@ -313,17 +323,7 @@ tabs:
         tip: null
         type: craft\fieldlayoutelements\CustomField
         uid: dd308999-2aef-41d3-908d-d989c6eb47d0
-        userCondition:
-          class: craft\elements\conditions\users\UserCondition
-          conditionRules:
-            -
-              class: craft\elements\conditions\users\GroupConditionRule
-              operator: in
-              uid: bbb02a8d-d38b-4d81-977b-982b9a743a2d
-              values:
-                - a21d7477-05ca-43ea-ae84-fc44c3e16a70 # Leden groep
-          elementType: craft\elements\User
-          fieldContext: global
+        userCondition: null
         warning: null
         width: 100
       -
@@ -822,7 +822,7 @@ tabs:
         handle: requestPrint
         includeInCards: false
         instructions: null
-        label: 'Aanvraag print'
+        label: 'Aanvraag print lidkaart'
         providesThumbs: false
         required: false
         tip: null

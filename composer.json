@@ -3,7 +3,7 @@
   "prefer-stable": true,
   "require": {
     "craftcms/ckeditor": "4.5.0",
-    "craftcms/cms": "5.6.4",
+    "craftcms/cms": "5.6.5.1",
     "craftcms/feed-me": "^6.6.1",
     "craftcms/postmark": "^3.1.0",
     "digitalpulsebe/craft-formie-flexmail": "^2.1.1",

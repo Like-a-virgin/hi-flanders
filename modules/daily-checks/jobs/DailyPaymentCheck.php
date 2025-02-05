@@ -15,7 +15,7 @@ class DailyPaymentCheck extends BaseJob
         $currentDate = new DateTime('now', new DateTimeZone('CET'));
         $sevenDaysAgo = $currentDate->modify('-7 days')->format('Y-m-d');
 
-        $usersRemind = User::find()
+        $usersRemind = User::find() 
             ->status('active')
             ->customStatus('active')
             ->paymentType(null)
@@ -32,15 +32,25 @@ class DailyPaymentCheck extends BaseJob
     {
         $baseUrl = Craft::$app->getSites()->currentSite->getBaseUrl();
         $memberType = $user->getFieldValue('memberType')->value;
+
+        $lang = $user->getFieldValue('lang')->value;
+        $baseTemplateUrl = 'email/remind/' . $lang;
         
         try {
             $mailer = Craft::$app->mailer;
             Craft::$app->getView()->setTemplatesPath(Craft::getAlias('@root/templates'));
 
-            $activationUrl = Craft::$app->users->getEmailVerifyUrl($user);
+            $templatePath = $baseTemplateUrl . '/remind-payment';
 
-            $htmlBody = Craft::$app->getView()->renderTemplate('email/remind/remind-payment', [
-                'activationUrl' => $activationUrl,
+            if ($memberType === 'group' || $memberType === 'groupYouth') {
+                $name = $user->getFieldValue('organisation');
+            } else {
+                $name = $user->getFieldValue('altFirstName');
+            }
+
+            $htmlBody = Craft::$app->getView()->renderTemplate($templatePath, [
+                'name' => $name,
+                'url' => $baseUrl
             ]);
 
             $subject = 'Psst, niets vergeten? Betaal nu om je lidmaatschap te activeren';

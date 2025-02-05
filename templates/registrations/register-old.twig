@@ -8,6 +8,7 @@
     {% endif %}
     {% set langs = [{label: 'Nederlands'|t, value: 'nl' }, {label: 'Engels'|t, value: 'en' }, {label: 'Frans'|t, value: 'fr' }] %}
     {% set memberTypes = [{label: 'Individueel'|t, value: 'individual' }, {label: 'Life member'|t, value: 'life' }, {label: 'Werknemer'|t, value: 'employee' }] %}
+    {% set paymentMethods = [{value: 'hostel', label: 'Hostel'|t}, {value: 'transfer', label: 'Overschrijving'|t}, {value: 'free', label: 'Gratis'|t}] %}
 
     {% set maxDate = now|date_modify('-3 years')|date("Y-m-d") %}
     {% set pp = craft.entries.section(privacyPolicy).one().linkExtern %}
@@ -24,7 +25,7 @@
         <div class="formbox__heading">
             <h1>Registreer een oud lid</h1>
         </div>
-        <form class="formbox__form" method="post" accept-charset="UTF-8" novalidate>
+        <form class="formbox__form" method="post" accept-charset="UTF-8" novalidate x-data="{payed: false}">
             {{ csrfInput() }}
             {{ actionInput('users/save-user') }}
             {{ redirectInput(succesUrl) }}
@@ -32,8 +33,6 @@
             {{ input('hidden', 'groupHandle', 'members') }}
             {{ input('hidden', 'fields[privacyPolicy]', 'accepted') }}
             {{ input('hidden', 'fields[registeredBy]', 'admin') }}
-            {{ input('hidden', 'fields[paymentType]', 'transfer') }}
-            {{ input('hidden', 'fields[paymentDate]', now|date('Y-m-d')) }}
             {{ input('hidden', 'fields[requestPrint]', now|date('Y-m-d')) }}
             {{ input('hidden', 'fields[payedPrintDate]', now|date('Y-m-d')) }}
             {{ input('hidden', 'fields[cardType]', 'printed') }}
@@ -74,6 +73,15 @@
                     required: true
                 }) }}
             </div>
+            <div class="formbox__column--full">
+                <label class="formbox__label" for="payment-type">{{'Betaalmethode'|t}}</label>
+                <select name="fields[paymentType]" id="payment-type" required @change="payed = $event.target.value !== '' && $event.target.value !== 'free'">
+                    <option value="">{{ 'Nog niet betaald'|t }}</option>
+                    {% for item in paymentMethods %}                        
+                        <option value="{{item.value}}">{{ item.label }}</option>
+                    {% endfor %}
+                </select>
+            </div>
             <div class="formbox__column--full" x-show="payed">
                 <label class="formbox__label" for="totalPayed">{{'Stad'|t}}</label>
                 {{ input('number', 'fields[totalPayedMembers]', user.city ?? null, {
@@ -83,7 +91,7 @@
                     min: 0
                 }) }}
             </div>
-            <div class="formbox__column--full">                
+            <div class="formbox__column--full" x-show="payed">                
                 <label class="formbox__label" for="due-date">{{'Vervaldatum'|t}}</label>
                 {{ input('text', 'fields[memberDueDate]', null, {
                     id: 'due-date',

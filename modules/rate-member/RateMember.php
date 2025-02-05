@@ -39,7 +39,7 @@ class RateMember extends BaseModule
                         $this->assignMemberRate($element);
                     }
                 }
-            }
+            },
         );
     }
 
@@ -134,28 +134,23 @@ class RateMember extends BaseModule
         $paymentDate = $currentDate->format('Y-m-d');
         $expirationDate = $currentDate->modify('+1 year')->format('Y-m-d');
 
-        $paymentType = null;
-        if (!$request->getIsConsoleRequest()) {
-            $paymentType = $request->getBodyParam('fields.paymentType');
-        } else {
-            // Use existing field value for console requests
-            $paymentType = $user->getFieldValue('paymentType') ?? null;
-        }
-
+        $paymentType = $user->getFieldValue('paymentType')->value ?? $request->getBodyParam('fields.paymentType');
+        
         if ($paymentType) {
             $user->setFieldValue('paymentDate', $paymentDate);
             $user->setFieldValue('paymentType', $paymentType);
-    
-            Craft::info("Assigned rate with ID {$rate->id}, paymentType {$paymentType}, paymentDate {$paymentDate}, and expirationDate {$expirationDate} for user ID {$user->id}", __METHOD__);
+
         } elseif ($ratePrice === null || (float) $ratePrice <= 0) {
             $user->setFieldValue('paymentDate', $paymentDate);
             $user->setFieldValue('paymentType', 'free');
+            $user->setFieldValue('totalPayedMembers', 0);
 
         } else {
             $user->setFieldValue('paymentDate', null);
             $user->setFieldValue('paymentType', null);
-
-            Craft::info("Assigned rate with ID {$rate->id} without paymentDate for user ID {$user->id}", __METHOD__);
+            $user->setFieldValue('totalPayedMembers', 0);
         }
+
+        $user->setDirtyFields(['paymentDate', 'paymentType']);
     }
 }

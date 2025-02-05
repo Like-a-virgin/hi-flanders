@@ -31,6 +31,8 @@ class AfterDeactivation extends BaseModule
     {
         $user = $event->user;
         $usersService = Craft::$app->getUsers();
+        $lang = $user->getFieldValue('lang')->value;
+        $baseTemplateUrl = 'email/remind/' . $lang;
 
         // Check if the user's customStatus is `renew`
         if ($user->getFieldValue('customStatus')->value === 'renew') {
@@ -43,13 +45,15 @@ class AfterDeactivation extends BaseModule
             // Render the HTML and Text templates
             Craft::$app->getView()->setTemplatesPath(Craft::getAlias('@root/templates'));
 
+            $templatePath = $baseTemplateUrl . '/remind-renew';
+
             if ($user->getFieldValue('memberType')->value === 'individual') {
-                $htmlBody = Craft::$app->getView()->renderTemplate('email/renew/renew', [
+                $htmlBody = Craft::$app->getView()->renderTemplate($templatePath, [
                     'name' => $user->getFieldValue('altFirstName'),
                     'activationUrl' => $activationUrl,
                 ]);
             } else {
-                $htmlBody = Craft::$app->getView()->renderTemplate('email/renew/renew', [
+                $htmlBody = Craft::$app->getView()->renderTemplate($templatePath, [
                     'name' => $user->getFieldValue('organisation'),
                     'activationUrl' => $activationUrl,
                 ]);
@@ -60,9 +64,8 @@ class AfterDeactivation extends BaseModule
             $message = $mailer->compose()
                 ->setTo($user->email)
                 ->setSubject('Hi Flanders - Blijf genieten van onze voordelen!')
-                ->setHtmlBody($htmlBody)
-                ->send();
-                            
+                ->setHtmlBody($htmlBody);
+                                            
             if (!$mailer->send($message)) {
                 Craft::error('Failed to send renewal email to user: ' . $user->email, __METHOD__);
             } else {

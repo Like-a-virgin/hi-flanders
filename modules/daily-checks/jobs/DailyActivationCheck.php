@@ -45,6 +45,9 @@ class DailyActivationCheck extends BaseJob
     {
         $memberType = $user->getFieldValue('memberType')->value;
         $registeredBy = $user->getFieldValue('registeredBy')->value;
+        $lang = $user->getFieldValue('lang')->value;
+
+        $baseTemplateUrl = 'email/remind/' . $lang;
 
         try {
             $mailer = Craft::$app->mailer;
@@ -52,8 +55,9 @@ class DailyActivationCheck extends BaseJob
 
             if ($type === 'renew') {
                 $activationUrl = Craft::$app->users->getEmailVerifyUrl($user);
+                $templatePath = $baseTemplateUrl . '/remind-renew';
 
-                $htmlBody = Craft::$app->getView()->renderTemplate('email/remind/remind-renew', [
+                $htmlBody = Craft::$app->getView()->renderTemplate($templatePath, [
                     'name' => $user->getFieldValue('altFirstName'),
                     'activationUrl' => $activationUrl,
                 ]);
@@ -63,8 +67,9 @@ class DailyActivationCheck extends BaseJob
 
             if ($type === 'new' && $memberType === 'individual' && $registeredBy === 'admin') {
                 $activationUrl = Craft::$app->users->getActivationUrl($user);
+                $templatePath = $baseTemplateUrl . '/remind-ind-ad';
 
-                $htmlBody = Craft::$app->getView()->renderTemplate('email/remind/remind-ind-ad', [
+                $htmlBody = Craft::$app->getView()->renderTemplate($templatePath, [
                     'name' => $user->getFieldValue('altFirstName'),
                     'activationUrl' => $activationUrl,
                 ]);
@@ -74,8 +79,9 @@ class DailyActivationCheck extends BaseJob
 
             if ($type === 'new' && $memberType === 'individual' && $registeredBy === 'self') {
                 $activationUrl = Craft::$app->users->getEmailVerifyUrl($user);
+                $templatePath = $baseTemplateUrl . '/remind-ind';
 
-                $htmlBody = Craft::$app->getView()->renderTemplate('email/remind/remind-ind', [
+                $htmlBody = Craft::$app->getView()->renderTemplate($templatePath, [
                     'name' => $user->getFieldValue('altFirstName'),
                     'activationUrl' => $activationUrl,
                 ]);
@@ -85,8 +91,9 @@ class DailyActivationCheck extends BaseJob
 
             if ($type === 'new' && $memberType === 'group') {
                 $activationUrl = Craft::$app->users->getActivationUrl($user);
+                $templatePath = $baseTemplateUrl . '/remind-group';
 
-                $htmlBody = Craft::$app->getView()->renderTemplate('email/remind/remind-group', [
+                $htmlBody = Craft::$app->getView()->renderTemplate($templatePath, [
                     'name' => $user->getFieldValue('organisation'),
                     'activationUrl' => $activationUrl,
                 ]);
@@ -96,8 +103,9 @@ class DailyActivationCheck extends BaseJob
 
             if ($type === 'new' && $memberType === 'groupYouth') {
                 $activationUrl = Craft::$app->users->getActivationUrl($user);
+                $templatePath = $baseTemplateUrl . '/remind-youth';
 
-                $htmlBody = Craft::$app->getView()->renderTemplate('email/remind/remind-youth', [
+                $htmlBody = Craft::$app->getView()->renderTemplate($templatePath, [
                     'name' => $user->getFieldValue('organisation'),
                     'activationUrl' => $activationUrl,
                 ]);
@@ -108,9 +116,8 @@ class DailyActivationCheck extends BaseJob
             $message = $mailer->compose()
                 ->setTo($user->email)
                 ->setSubject($subject)
-                ->setHtmlBody($htmlBody)
-                ->send();
-
+                ->setHtmlBody($htmlBody);
+                
             if (!$mailer->send($message)) {
                 Craft::error('Failed to send renewal email to user: ' . $user->email, __METHOD__);
             } else {

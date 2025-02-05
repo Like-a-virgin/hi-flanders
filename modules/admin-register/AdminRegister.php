@@ -37,7 +37,7 @@ class AdminRegister extends BaseModule
                 if ($element instanceof User && $event->isNew) {
                     $this->prepareUserFields($element);
                 }
-            }
+            },
         );
 
         // Assign groups after the user is saved
@@ -51,7 +51,7 @@ class AdminRegister extends BaseModule
                     $this->assignUserGroup($element);
                     $this->sendActivationCode($element); 
                 }
-            }
+            },
         );
     }
 
