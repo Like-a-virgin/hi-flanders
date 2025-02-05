@@ -230,7 +230,7 @@ class PaymentController extends Controller
             $mailer = Craft::$app->mailer;
             Craft::$app->getView()->setTemplatesPath(Craft::getAlias('@root/templates'));
 
-            $htmlBody = Craft::$app->getView()->renderTemplate('email/verification/verification-payment', [
+            $htmlBody = Craft::$app->getView()->renderTemplate('email/verification/nl/verification-payment', [
                 'name' => $name,
                 'total' => $total
             ]);
@@ -264,7 +264,7 @@ class PaymentController extends Controller
             Craft::$app->getView()->setTemplatesPath(Craft::getAlias('@root/templates'));
 
             if ($memberType === 'group' && $paymentType === 'online') {
-                $htmlBody = Craft::$app->getView()->renderTemplate('email/verification/verification-group', [
+                $htmlBody = Craft::$app->getView()->renderTemplate('email/verification/nl/verification-group', [
                     'name' => $user->getFieldValue('organisation'),
                 ]);
     
@@ -272,7 +272,7 @@ class PaymentController extends Controller
             }
 
             if ($memberType === 'individual' && $paymentType === 'online') {
-                $htmlBody = Craft::$app->getView()->renderTemplate('email/verification/verification-ind-payed', [
+                $htmlBody = Craft::$app->getView()->renderTemplate('email/verification/nl/verification-ind-payed', [
                     'name' => $user->getFieldValue('altFirstName'),
                 ]);
     
@@ -302,7 +302,7 @@ class PaymentController extends Controller
             $mailer = Craft::$app->mailer;
             Craft::$app->getView()->setTemplatesPath(Craft::getAlias('@root/templates'));
 
-            $htmlBody = Craft::$app->getView()->renderTemplate('email/request/request-print', [
+            $htmlBody = Craft::$app->getView()->renderTemplate('email/request/nl/request-print', [
                 'id' => $user->getFieldValue('customMemberId'),
                 'street' => $user->getFieldValue('street'),
                 'number' => $user->getFieldValue('streetNr'),
