@@ -54,7 +54,7 @@ class SendActivationController extends Controller
             }
 
             if ($userCustomStatus === 'old') {                
-                $htmlBody = Craft::$app->getView()->renderTemplate('email/activation/activation-old-active', [
+                $htmlBody = Craft::$app->getView()->renderTemplate('email/activation/nl/activation-old-active', [
                     'name' => $userName,
                     'activationUrl' => $activationUrl
                 ]);
@@ -63,7 +63,7 @@ class SendActivationController extends Controller
             }
 
             if ($userCustomStatus === 'oldRenew') {
-                $htmlBody = Craft::$app->getView()->renderTemplate('email/activation/activation-old-deactive', [
+                $htmlBody = Craft::$app->getView()->renderTemplate('email/activation/nl/activation-old-deactive', [
                     'name' => $userName,
                     'activationUrl' => $activationUrl
                 ]);

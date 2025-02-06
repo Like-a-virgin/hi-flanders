@@ -54,7 +54,7 @@ class SendReminderController extends Controller
             }    
 
             if ($userCustomStatus === 'old') {      
-                $htmlBody = Craft::$app->getView()->renderTemplate('email/remind/remind-old-active', [
+                $htmlBody = Craft::$app->getView()->renderTemplate('email/remind/nl/remind-old-active', [
                     'name' => $userName,
                     'activationUrl' => $activationUrl
                 ]);
@@ -63,7 +63,7 @@ class SendReminderController extends Controller
             }
 
             if ($userCustomStatus === 'oldRenew') {
-                $htmlBody = Craft::$app->getView()->renderTemplate('email/remind/remind-old-deactive', [
+                $htmlBody = Craft::$app->getView()->renderTemplate('email/remind/nl/remind-old-deactive', [
                     'name' => $userName,
                     'activationUrl' => $activationUrl
                 ]);
