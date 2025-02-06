@@ -6,7 +6,7 @@
     {% set user = user ?? currentUser %}
     {% set userGroup = user.getGroups()|first.handle %}
 
-    {% if userGroup is same as 'membersAdmin' %}
+    {% if userGroup is same as 'membersAdmin' or userGroup is same as 'membersAdminSuper'  %}
         {{ sprig('sprig-components/submissions.twig')}}
     {% else %}
         {% exit 403 %}

@@ -15,7 +15,7 @@
             {% if user %}
                 {% set userGroup = user.getGroups()|first.handle %}
 
-                {% if userGroup is same as 'membersAdmin' %}
+                {% if userGroup is same as 'membersAdmin' or userGroup is same as 'membersAdminSuper' %}
                     <a class="btn {{ currentUrl is same as 'submissions' ? 'btn--prim-selected' : 'btn--prim' }}" href="submissions">{{'Aanvragen'|t}}</a>
                     <a class="btn {{ currentUrl is same as '' ? 'btn--prim-selected' : 'btn--prim' }}" href="/">{{'Leden'|t}}</a>
                 {% endif %}
