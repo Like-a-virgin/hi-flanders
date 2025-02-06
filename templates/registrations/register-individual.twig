@@ -3,7 +3,8 @@
 {% requireLogin %}
 
 {% block content %}
-    {% if not craft.app.user.identity or currentUser.getGroups()|first.handle is not same as 'membersAdmin' %}
+    {% set userGroups = currentUser.getGroups()|column('handle') %}
+    {% if not craft.app.user.identity or not userGroups|intersect(['membersAdminSuper']) %}
         {% redirect 'login' %}
     {% endif %}
     {% set langs = [{label: 'Nederlands'|t, value: 'nl' }, {label: 'Engels'|t, value: 'en' }, {label: 'Frans'|t, value: 'fr' }] %}
@@ -15,9 +16,9 @@
     {% set succesUrl = craft.entries.section('succesRegister').one().url %}
 
     {% macro errorList(errors) %}
-    {% if errors %}
-        {{ ul(errors, {class: 'errors'}) }}
-    {% endif %}
+        {% if errors %}
+            {{ ul(errors, {class: 'errors'}) }}
+        {% endif %}
     {% endmacro %}
 
     <div class="formbox">

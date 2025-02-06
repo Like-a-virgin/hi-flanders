@@ -27,7 +27,7 @@ class ExportController extends Controller
 
         $isMemberAdmin = false;
         foreach ($currentUser->getGroups() as $group) {
-            if ($group->handle === 'membersAdmin') {
+            if ($group->handle === 'membersAdmin' || $group->handle === 'membersAdminSuper') {
                 $isMemberAdmin = true;
                 break;
             }

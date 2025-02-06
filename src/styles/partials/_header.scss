@@ -137,9 +137,28 @@
             color: $clr-secondary;
             font-size: $fs-p;
 
+            
             .btn__chevron {
                 fill: $clr-secondary;
             }
+            
+            &:hover {
+                background-color: $clr-secondary;
+                color: $clr-primary;
+
+                .btn__chevron {
+                fill: $clr-primary;
+            }
+            }
+        }
+    }
+
+    .btn--prim-selected {
+
+        @include screen ($screen-s) {
+            background-color: $clr-secondary;
+            color: $clr-primary;
+            font-size: $fs-p;
         }
     }
 }

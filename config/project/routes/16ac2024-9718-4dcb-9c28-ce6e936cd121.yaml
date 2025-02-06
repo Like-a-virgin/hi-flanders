@@ -1,0 +1,6 @@
+siteUid: null
+sortOrder: 6
+template: registrations/register-admin.twig
+uriParts:
+  - register-hostel
+uriPattern: register-hostel

@@ -4,7 +4,7 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta name="color-scheme" content="light only">
-        <title>Nieuwe print aanvraag.</title>
+        <title>Welkom bij Hi Flanders! Registratie bijna in orde …</title>
         <style>
             a {
                 color: #FFCC22;
@@ -21,14 +21,17 @@
     </head>
     <body style="font-family: Arial, sans-serif; font-size: 16px; line-height: 1.5; color: #102438; margin: 0; background-color: #FFCC22; height: 100%; padding: 50px;">
         <div class="container" style=" max-width: 704px; margin: 20px auto; background: #fff; border-radius: 10px; box-shadow: 0px 3px 6px 0px rgba(black, 0.16); display: flex; flex-direction: column; align-items: center;">
-            <div class="header" style="color: #102438; text-align: center; width: 95%; padding: 50px 10px 0px 10px; max-width: 585px">
+            <div class="header "style="color: #102438; padding: 50px 10px 0px 10px; width: 95%; max-width: 585px">
                 <div style="width: 200px;">
                     <img src="https://hiflandres.staging.liveavirgin.be//uploads/branding/Logo.svg" alt="logo hi flanders">
                 </div>
             </div>
             <div class="content" style="padding: 20px 10px 50px 10px; width: 95%; max-width: 585px">
-                <p>Er is een nieuwe print aanvraag voor lidnummer {{ id }} {{ memberType }},</p>
-                <p>{{ street }} {{ number}}, {{ postalcode }} {{ city }} {{ country }}</p>
+                <p>Hey {{ name }},</p>
+                <p>Welkom</p>
+                <a style="color:#102438" class="button" href="{{ activationUrl }}">Kies een wachtwoord</a>
+                <p style="margin-top: 30px">Warme groet,</p>
+                <p><strong>Het Hi Flanders-team</strong></p>
             </div>
         </div>
     </body>

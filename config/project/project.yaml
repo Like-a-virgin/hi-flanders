@@ -1,4 +1,4 @@
-dateModified: 1738847204
+dateModified: 1738858030
 elementSources:
   craft\elements\Entry:
     -
@@ -110,7 +110,7 @@ elementSources:
         - desc
       defaultViewMode: ''
       disabled: false
-      key: 'section:3999db0f-4dbd-4784-8c12-a18c1f1ee8dd' # Promo codes
+      key: 'section:3999db0f-4dbd-4784-8c12-a18c1f1ee8dd'
       tableAttributes:
         - status
         - postDate
@@ -208,10 +208,10 @@ meta:
     359a39c5-8655-460f-a1b4-0c097ea0edb2: users # users
     590f0cba-dbfa-4eda-882d-2fe3aac82a92: Prijs # Prijs
     996e7f91-0447-4498-addc-bf91c17465f9: Taal # Taal
-    3999db0f-4dbd-4784-8c12-a18c1f1ee8dd: 'Promo codes' # Promo codes
     5178f917-f380-440d-a326-c41e396ba39a: 'privacy policy' # privacy policy
     6754b9ff-3f0c-41d6-914e-520590bd5d79: LinkExtern # LinkExtern
     8365fada-1ce2-4e0a-8a3f-f919c3c18208: 'max Leeftijd' # max Leeftijd
+    24815bbb-0421-4b52-9edb-4d6aa36625dc: 'Beheerder Super' # Beheerder Super
     80634baf-dc43-47ea-8528-2e72e4a53d61: Tarief # Tarief
     637277da-4bad-4da9-9b1a-059b6438cce0: 'Extra group' # Extra group
     3261931d-97c8-4b0e-a83a-6d9ac4dee153: Birthday # Birthday

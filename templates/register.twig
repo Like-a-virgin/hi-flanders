@@ -10,14 +10,11 @@
     {% set memberRates = craft.entries.section('rates').all() %}
     {% set forms = craft.entries.section('forms').addOption(true).all() %}
     {% set todayPlusOneYear = now|date_modify('+1 year')|date('Y-m-d') %}
-    
-    {% set promoCode = craft.app.request.getQueryParam('event') %}
-    {% set promo = craft.entries.section('promoCodes').slug(promoCode).one() %}
 
     {% macro errorList(errors) %}
-    {% if errors %}
-        {{ ul(errors, {class: 'errors'}) }}
-    {% endif %}
+        {% if errors %}
+            {{ ul(errors, {class: 'errors'}) }}
+        {% endif %}
     {% endmacro %}
 
     <div class="formbox">
@@ -35,10 +32,6 @@
             {{ input('hidden', 'fields[registeredBy]', 'self') }}
             {{ input('hidden', 'fields[customStatus]', 'new') }}
             {{ input('hidden', 'fields[statusChangeDate]', now|date('Y-m-d')) }}
-
-            {% if promoCode and promo %}
-                {{ input('hidden', 'fields[paymentType]', 'free') }}
-            {% endif %}
             
             {% if user %}
                 {% set errors = user.getErrors() %}

@@ -1,18 +1,19 @@
 
 {% set limits = [{value: 10}, {value: 20}, {value: 30} , {value: 40}, {value: 50}, {value: 80}, {value: 100}, {value: 150}] %}
-
+{% set formTypes = [{value: '', label: ''}] %}
 {% set submissionId = submissionId ?? null %}
-{% set search = search ?? null %}
 {% set page = page ?? 1 %}
 {% set limit = limit ?? limits[0].value %}
 
 {% set filters = {
-    search: search,
     submissionId: submissionId,
 	limit: limit,
 } %}
 
-{% set submissionsQuery = craft.formie.submissions().orderBy('dateCreated DESC').limit(limit) %}
+{% set submissionsQuery = craft.formie.submissions({
+    orderBy: 'dateCreated DESC', 
+    limit: limit
+}) %}
 
 {% do sprig.pushUrl('?' ~ filters|merge({page: page})|url_encode ) %}
 {% set pageInfo = sprig.paginate(submissionsQuery, page) %}
@@ -21,13 +22,8 @@
 {% set submissionsAll = submissionsQuery.all() %}
 
 <div class="box-container table">
-    <h1>{{'Aanvragen'}}</h1>
-    <div  class="table__options">
-        <div class="table__option-search">
-			{{ svg("assets/icons/search.svg")|attr({class: 'table__icon-search' }) }}
-			<input sprig  type="text" class="table__search" name="search" value="{{search}}" placeholder="Zoeken">
-			<button sprig s-val:search="{{null}}" class="table__option-search-delete">{{ svg("assets/icons/x.svg")|attr({class: 'table__icon-search' }) }}</button>
-		</div>
+    <div  class="table__heading">
+        <h1>{{'Aanvragen'}}</h1>
         <div class="filter">
             <select sprig  class="filter__limit" name="limit" id="">
                 {% for item in limits %}

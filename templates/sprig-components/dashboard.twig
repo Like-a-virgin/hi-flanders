@@ -9,6 +9,9 @@
 
 {% set memberId = memberId ?? null %}
 
+{% set user = user ?? currentUser %}
+{% set userGroup = user.getGroups()|first.handle %}
+
 {% set payMethod = payMethod ?? null %}
 {% set cardType = cardType ?? null %}
 {% set ageGroup = ageGroup ?? null %}
@@ -197,17 +200,20 @@
 				<button class="filter__remove-all btn" sprig s-val:pay-method="{{null}}" s-val:card-type="{{null}}" s-val:age-group="{{null}}" s-val:reg-min="{{null}}" s-val:reg-max="{{null}}" s-val:pay-min="{{null}}" s-val:pay-max="{{null}}" s-val:search="{{null}}" s-val:status="{{null}}" s-val:member-type="{{null}}">{{'Verwijder alle filters'}}</button>
 			</div>
 		</div>
-		<div class="filter">
-			<button @click="openOption === 2 ? openOption = 0 : openOption = 2" title="Nieuw lid" aria-label="{{'Nieuwe lid'}}" class="filter__option-btn">{{svg('assets/icons/user-plus.svg')|attr({class: 'filter__option-icon' })}}</button>
-			<div class="filter__box filter__box--new" x-show="openOption === 2">
-				<a @click="openOption = 0" class="filter__btn" href="/register-individual">{{'Nieuw individu'|t}}</a>
-				<a @click="openOption = 0" class="filter__btn" href="/register-group">{{'Nieuw groep'|t}}</a>
-				<a @click="openOption = 0" class="filter__btn" href="/register-old">{{'Oud lid'|t}}</a>
-				<a @click="openOption = 0" class="filter__btn" href="/register-old-group">{{'Oud groep'|t}}</a>
+			<div class="filter">
+				<button @click="openOption === 2 ? openOption = 0 : openOption = 2" title="Nieuw lid" aria-label="{{'Nieuwe lid'}}" class="filter__option-btn">{{svg('assets/icons/user-plus.svg')|attr({class: 'filter__option-icon' })}}</button>
+				<div class="filter__box filter__box--new" x-show="openOption === 2">
+					<a @click="openOption = 0" class="filter__btn" href="/register-individual">{{'Nieuw individu'|t}}</a>
+					<a @click="openOption = 0" class="filter__btn" href="/register-group">{{'Nieuw groep'|t}}</a>
+					<a @click="openOption = 0" class="filter__btn" href="/register-old">{{'Oud lid'|t}}</a>
+					<a @click="openOption = 0" class="filter__btn" href="/register-old-group">{{'Oud groep'|t}}</a>
+					{% if userGroup is same as 'membersAdminSuper' %}
+						<a @click="openOption = 0" class="filter__btn" href="/register-hostel">{{'Hostel toevoegen'|t}}</a>
+					{% endif %}
+				</div>
 			</div>
-		</div>
 		<a href="/export-users?{{ filters|url_encode }}" title="{{'Download excel'}}" class="table__download">{{svg('assets/icons/download.svg')|attr({class: "table__download-icon"})}}</a>
-		{% if oldMembers %}		
+		{% if oldMembers and userGroup is same as 'membersAdminSuper' %}		
 			<div class="filter">
 				<button @click="openOption === 3 ? openOption = 0 : openOption = 3" title="Nieuw lid" aria-label="{{'Nieuwe lid'}}" class="filter__option-btn">{{svg('assets/icons/envelope.svg')|attr({class: 'filter__option-icon' })}}</button>
 				<div class="filter__box filter__box--old" x-show="openOption === 3">

@@ -152,6 +152,17 @@ class AdminRegister extends BaseModule
         $paymentType = $user->getFieldValue('paymentType')->value;
         $customStatus = $user->getFieldValue('customStatus')->value;
         $lang = $user->getFieldValue('lang')->value;
+
+        $userGroups = $user->getGroups();
+        $isMembersAdmin = false;
+
+        foreach ($userGroups as $group) {
+            if ($group->handle === 'membersAdmin') {
+                $isMembersAdmin = true;
+                break;
+            }
+        }
+
         $baseUrl = Craft::$app->getSites()->currentSite->getBaseUrl();
 
         $baseTemplateUrl = 'email/activation/' . $lang;
@@ -224,6 +235,15 @@ class AdminRegister extends BaseModule
                     $subject = 'Welkom bij Hi Flanders! Activeer meteen je lidmaatschap';
                 }
 
+            } elseif ($isMembersAdmin) {
+                $templatePath = $baseTemplateUrl . '/activation-hostel';
+                $htmlBody = Craft::$app->getView()->renderTemplate($templatePath, [
+                    'name' => $user->username,
+                    'activationUrl' => $activationUrl,
+                ]);
+
+                $subject = 'Hey hostel, stel je wachtwoord in.';
+
             } else {
                 return;
             }
@@ -246,7 +266,7 @@ class AdminRegister extends BaseModule
     private function isMembersAdmin(User $user): bool
     {
         foreach ($user->getGroups() as $group) {
-            if ($group->handle === 'membersAdmin') {
+            if ($group->handle === 'membersAdmin' || $group->handle === 'membersAdminSuper') {
                 return true;
             }
         }

@@ -308,7 +308,8 @@ class PaymentController extends Controller
                 'number' => $user->getFieldValue('streetNr'),
                 'postalcode' => $user->getFieldValue('postalCode'),
                 'city' => $user->getFieldValue('city'),
-                'country' => $user->getFieldValue('country'),
+                'country' => $user->getFieldValue('country'), 
+                'memberType' => $user->getFieldValue('memberType')->label
             ]);
 
             $subject = 'Nieuwe print aanvraag.';

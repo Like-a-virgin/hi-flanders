@@ -1,0 +1,85 @@
+{% extends "layouts/base.twig" %}
+
+{% requireLogin %}
+
+{% block content %}
+    {% set userGroups = currentUser.getGroups()|column('handle') %}
+    {% if not craft.app.user.identity or not userGroups|intersect(['membersAdminSuper']) %}
+        {% redirect 'login' %}
+    {% endif %}
+    {% set langs = [{label: 'Nederlands'|t, value: 'nl' }, {label: 'Engels'|t, value: 'en' }, {label: 'Frans'|t, value: 'fr' }] %}
+    {% set memberTypes = [{label: 'Individueel'|t, value: 'individual' }, {label: 'Life member'|t, value: 'life' }, {label: 'Werknemer'|t, value: 'employee' }] %}
+    {% set paymentMethods = [{value: 'hostel', label: 'Hostel'|t}, {value: 'transfer', label: 'Overschrijving'|t}, {value: 'free', label: 'Gratis'|t}] %}
+
+    {% set maxDate = now|date_modify('-3 years')|date("Y-m-d") %}
+    {% set pp = craft.entries.section(privacyPolicy).one().linkExtern %}
+    {% set user = user ?? null %}
+    {% set succesUrl = craft.entries.section('succesRegister').one().url %}
+
+    {% macro errorList(errors) %}
+    {% if errors %}
+        {{ ul(errors, {class: 'errors'}) }}
+    {% endif %}
+    {% endmacro %}
+
+    <div class="formbox">
+        <div class="formbox__heading">
+            <h1>Registreer een oud lid</h1>
+        </div>
+        <form class="formbox__form" method="post" accept-charset="UTF-8" novalidate x-data="{payed: false}">
+            {{ csrfInput() }}
+            {{ actionInput('users/save-user') }}
+            {{ redirectInput(succesUrl) }}
+
+            {{ input('hidden', 'groupHandle', 'membersAdmin') }}
+
+            {% if user %}
+                {% set errors = user.getErrors() %}
+                {% if errors|length > 0 %}
+                    <div class="formbox__error formbox__column--full">
+                        <p>{{ 'Niet alle velden zijn correct ingevuld.'|t }}</p>
+                    </div>
+                {% endif %}
+                {% if user.getErrors('email') %}
+                    <div class="formbox__error formbox__column--full">{{ _self.errorList(user.getErrors('email')) }}</div>
+                {% endif %}
+                {% if user.getErrors('password') %}
+                    <div class="formbox__error formbox__column--full">{{ _self.errorList(user.getErrors('password')) }}</div>
+                {% endif %}
+                {% if user.getErrors('privacyPolicy') %}
+                    <div class="formbox__error formbox__column--full"><p>{{ 'Je moet akkoord gaan met de privacy policy'|t }}</p></div>
+                {% endif %}
+            {% endif %}
+
+            <div class="formbox__column--full"> 
+                <label class="formbox__label" for="username">{{'Gebruikersnaam'|t}}</label>
+                {{ input('text', 'username',  null, {
+                    id: 'username',
+                    placeholder: 'Gebruikersnaam'|t,
+                    required: true
+                }) }}
+            </div> 
+            <div class="formbox__column--full">                
+                <label class="formbox__label" for="email">{{'E-mail'|t}}</label>
+                {{ input('email', 'email', user.email ?? null, {
+                    id: 'email',
+                    placeholder: 'E-mailadres'|t,
+                    required: true
+                }) }}
+            </div> 
+            <div class="formbox__column--full">
+                <label class="formbox__label" for="confirm-email">{{ 'Confirm E-mail'|t }}</label>
+                {{ input('email', 'confirmEmail', null, {
+                    id: 'confirm-email',
+                    placeholder: 'Bevestig E-mailadres'|t,
+                    required: true
+                }) }}
+            </div>
+            <button class="formbox__button formbox__column--full">{{'Registreer'|t}}</button>
+        </form>
+        <div class="formbox__options">
+            <p class="formbox__or">{{'Of'|t}}</p>
+            <a class="formbox__button formbox__button--sec" href="{{ url('/') }}">{{'Annuleer'|t}}</a>
+        </div>
+    </div>
+{% endblock %}
