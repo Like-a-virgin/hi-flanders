@@ -28,4 +28,5 @@ return GeneralConfig::create()
     ->timezone('Europe/Brussels')
     ->defaultCpLocale('nl-BE')
     // ->disabledUtilities(['system-messages']);
+    ->purgePendingUsersDuration(0)
 ;

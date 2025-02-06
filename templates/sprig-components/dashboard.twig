@@ -76,7 +76,6 @@
 
 {% set pageInfo = sprig.paginate(membersQuery, page) %}
 {% set entries = pageInfo.pageResults %}
-{% set membersAll = membersQuery.all() %}
 <div class="table-mobile">
 	{{'Dashboard is enkel zichtbaar op ipad of desktop'|t}}
 </div>
@@ -227,8 +226,7 @@
 		{% endif %}
 	</div>
 	<div class="table__content" id="table-members">
-		<table
-			class="table__table">
+		<table class="table__table">
 			<thead>
 				<tr>
 					<th>{{'Naam'|t}}</th>

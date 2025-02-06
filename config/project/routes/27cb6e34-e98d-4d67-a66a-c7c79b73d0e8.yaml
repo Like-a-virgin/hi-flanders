@@ -1,0 +1,6 @@
+siteUid: null
+sortOrder: 5
+template: pages/submissions.twig
+uriParts:
+  - submissions
+uriPattern: submissions

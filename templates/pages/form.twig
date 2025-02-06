@@ -1,6 +1,8 @@
 {% extends "layouts/base.twig" %}
 
 {% block content %}
+    {% set forms = craft.entries.section('forms').addOption(true).all() %}
+
     <div class="formbox">
         <div class="formbox__heading">
             <h1>{{ entry.title }}</h1>
@@ -12,6 +14,9 @@
             <p class="formbox__or">{{'Of'|t}}</p>
             <a class="formbox__button formbox__button--sec" href="{{ url('login') }}">{{'Log in'|t}}</a>
             <a class="formbox__button formbox__button--sec" href="{{ url('/register') }}">{{'Registreer als individu'|t}}</a>
+            {% for item in forms %}
+                <a class="formbox__button formbox__button--sec" href="{{ item.url }}">{{ item.textSingle }}</a>
+            {% endfor %}
         </div>
     </div>
-{% endblock %}
+{% endblock %} 

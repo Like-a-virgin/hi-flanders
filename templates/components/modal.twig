@@ -228,16 +228,23 @@
                         <button class="box__function-btn" @click="editPayment = true">{{'Wijzigen'|t}} {{ svg("assets/icons/edit.svg")|attr({class: 'box__icon-option box__icon-edit' }) }}</button>
                     </div>
                     {% include "components/info-box.twig" with {
-                        span: 2, 
-                        label: 'Betaaldatum'|t, 
-                        info: selectedMember.paymentType.value is same as 'free' ? selectedMember.paymentType.label : selectedMember.paymentDate ? selectedMember.paymentDate|date("d/m/Y")
-                    } %}
-                    {% include "components/info-box.twig" with {
-                        span: 2, 
+                        span: 4, 
                         label: 'Betaalmethode'|t, 
                         info: selectedMember.paymentType.label,
                         error: selectedMember.paymentType.value is same as ''
                     } %}
+                    {% if selectedMember.paymentType.value is not same as '' %}                    
+                        {% include "components/info-box.twig" with {
+                            span: 2, 
+                            label: 'Betaaldatum'|t, 
+                            info: selectedMember.paymentType.value is same as 'free' ? selectedMember.paymentType.label : selectedMember.paymentDate ? selectedMember.paymentDate|date("d/m/Y")
+                        } %}
+                        {% include "components/info-box.twig" with {
+                            span: 2, 
+                            label: 'Betaald bedrag'|t, 
+                            info: selectedMember.totalPayedMembers ? selectedMember.totalPayedMembers|money : 0,
+                        } %}
+                    {% endif %}
                 </div>
                 <form x-show="editPayment" class="edit" method="post" accept-charset="UTF-8" enctype="multipart/form-data">
                     {{ csrfInput() }}
@@ -275,10 +282,19 @@
                         <h3>{{'Lidkaart'}}</h3>
                     </div>
                     {% include "components/info-box.twig" with {
-                        span: 4, 
+                        span: selectedMember.requestPrint and selectedMember.payedPrintDate ? 2 : 4, 
+                        label: selectedMember.requestPrint and selectedMember.payedPrintDate ? 'Type kaart'|t : null, 
                         info: not selectedMember.requestPrint and not selectedMember.payedPrintDate ? 'Online'|t : selectedMember.requestPrint and not selectedMember.payedPrintDate ? 'Print'|t ~ ' ' ~ 'Nog niet belaald'|t : 'Print en online'|t,
                         error: selectedMember.requestPrint and not selectedMember.payedPrintDate
                     } %}
+                    {% if selectedMember.requestPrint and selectedMember.payedPrintDate %}
+                        {% include "components/info-box.twig" with {
+                            span: 2, 
+                            label: 'Betaald bedrag'|t, 
+                            info: selectedMember.totalPayedPrint ? selectedMember.totalPayedPrint|money : 0,
+                        } %}
+                    {% endif %}
+                
                 </div>
                 <div class="box__options">
                     <div class="box__options-wrapper">

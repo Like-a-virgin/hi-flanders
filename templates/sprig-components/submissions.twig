@@ -1,0 +1,122 @@
+
+{% set limits = [{value: 10}, {value: 20}, {value: 30} , {value: 40}, {value: 50}, {value: 80}, {value: 100}, {value: 150}] %}
+
+{% set submissionId = submissionId ?? null %}
+{% set search = search ?? null %}
+{% set page = page ?? 1 %}
+{% set limit = limit ?? limits[0].value %}
+
+{% set filters = {
+    search: search,
+    submissionId: submissionId,
+	limit: limit,
+} %}
+
+{% set submissionsQuery = craft.formie.submissions().orderBy('dateCreated DESC').limit(limit) %}
+
+{% do sprig.pushUrl('?' ~ filters|merge({page: page})|url_encode ) %}
+{% set pageInfo = sprig.paginate(submissionsQuery, page) %}
+{% set entries = pageInfo.pageResults %}
+
+{% set submissionsAll = submissionsQuery.all() %}
+
+<div class="box-container table">
+    <h1>{{'Aanvragen'}}</h1>
+    <div  class="table__options">
+        <div class="table__option-search">
+			{{ svg("assets/icons/search.svg")|attr({class: 'table__icon-search' }) }}
+			<input sprig  type="text" class="table__search" name="search" value="{{search}}" placeholder="Zoeken">
+			<button sprig s-val:search="{{null}}" class="table__option-search-delete">{{ svg("assets/icons/x.svg")|attr({class: 'table__icon-search' }) }}</button>
+		</div>
+        <div class="filter">
+            <select sprig  class="filter__limit" name="limit" id="">
+                {% for item in limits %}
+                    <option class="filter__option" value="{{item.value}}" {{ limit == item.value ? 'selected'}}>{{item.value}}</option>
+                {% endfor %}
+            </select>
+        </div>
+    </div>
+    <div class="table__content" id="table-members">
+        <table class="table__table">
+            <thead>            
+                <tr>
+                    <th>{{'Soort'|t}}</th>
+                    <th>{{'E-mail'|t}}</th>
+                    <th>{{'Datum'|t}}</th>
+                    <th>{{'Details'|t}}</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for submission in entries %}
+                    <tr>
+                        <td>{{ submission.form.title}}</td>
+                        <td>{{ submission.email}}</td>
+                        <td>{{ submission.dateCreated|date('d-m-Y') }}</td>
+                        <td>
+							<button sprig class="table__more" s-val:submission-id="{{ submission.id }}">{{'Bekijk details'}}</button>
+						</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% if submissionsAll %}
+        <div class="pagination">
+			<p>
+				{{ pageInfo.first }}-{{ pageInfo.last }}
+				{{'van de'|t}}
+				{{ pageInfo.total }}
+				{{'aanvragen'|t}}.
+			</p>
+			<div class="pagination__controls">
+				<button class="pagination__btn {{page is same as 1 ? 'pagination__btn--false'}}" sprig s-val:page="{{ 1 }}">
+					{{svg('assets/icons/chevron-left.svg')|attr({class: 'pagination__chevron'})}}
+					{{svg('assets/icons/chevron-left.svg')|attr({class: 'pagination__chevron'})}}
+				</button>
+				<button class="pagination__btn {{page < 1 ? 'pagination__btn--false'}}" sprig s-val:page="{{ page < 2 ? 1 :  page - 1 }}">
+					{{svg('assets/icons/chevron-left.svg')|attr({class: 'pagination__chevron'})}}
+				</button>
+				{% if pageInfo.totalPages > 10 %}
+					{% if page > 3 %}
+						<a class="pagination__btn" sprig s-val:page="1" s-push-url="?page=1">1</a>
+						<span class="pagination__dots">...</span>
+					{% endif %}
+
+					{% set pageRange = range(page - 2, page + 2) %}
+					{% set validPages = pageRange|filter(i => i > 0 and i <= pageInfo.totalPages) %}
+
+					{% for i in validPages %}
+						{% if i == page %}
+							<p class="pagination__btn pagination__btn--current">{{ i }}</p>
+						{% else %}
+							<a class="pagination__btn" sprig s-val:page="{{ i }}" s-push-url="?page={{ i }}">{{ i }}</a>
+						{% endif %}
+					{% endfor %}
+
+					{% if page < pageInfo.totalPages - 2 %}
+						<span class="pagination__dots">...</span>
+						<a class="pagination__btn" sprig s-val:page="{{ pageInfo.totalPages }}" s-push-url="?page={{ pageInfo.totalPages }}">{{ pageInfo.totalPages }}</a>
+					{% endif %}
+				{% else %}					
+					{% for i in 1..pageInfo.totalPages %}
+						{% if i == page %}
+							<p class="pagination__btn pagination__btn--current">{{ i }}</p>
+						{% else %}
+							<a class="pagination__btn" sprig s-val:page="{{ i }}" s-push-url="?page={{ i }}">{{ i }}</a>
+						{% endif %}
+					{% endfor %}
+				{% endif %}
+				<button class="pagination__btn {{page > pageInfo.totalPages ? 'pagination__btn--false'}}" sprig s-val:page="{{ page|number_format is same as pageInfo.totalPages|number_format ? pageInfo.totalPages : page + 1 }}">
+					{{svg('assets/icons/chevron-right.svg')|attr({class: 'pagination__chevron'})}}
+				</button>
+				<button class="pagination__btn {{page is same as pageInfo.totalPages ? 'pagination__btn--false'}}" sprig s-val:page="{{ pageInfo.totalPages }}">
+					{{svg('assets/icons/chevron-right.svg')|attr({class: 'pagination__chevron'})}}
+					{{svg('assets/icons/chevron-right.svg')|attr({class: 'pagination__chevron'})}}
+				</button>
+			</div>
+		</div>
+    {% endif %}
+    {% if submissionId %}
+		{% include "components/submission.twig" %}
+	{% endif %}
+</div>

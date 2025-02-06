@@ -1,3 +1,5 @@
+{% set user = user ?? currentUser %}
+
 <header class="header" x-data="{openOptions: false}">
     <div class="header__container">    
         <a href="{{ currentSite.baseUrl }}">
@@ -10,10 +12,19 @@
         </div>
         <div class="header__options" :class="openOptions ? 'header__options--open' : 'header__options--closed'">        
             {% if currentUser %}
-                <a class="btn btn--prim" href="{{ logoutUrl }}">Logout</a>
+                <a class="btn btn--prim" href="{{ logoutUrl }}">{{'Logout'|t}}</a>
             {% endif %}
             <a class="btn btn--prim " href="{{ craft.entries.section('mainWebsite').one().linkExtern }}">{{'Naar website'|t}}</a>
             {% include "components/language-switcher.twig" %}
+            {% if user %}
+                {% set userGroup = user.getGroups()|first.handle %}
+
+                {% if userGroup is same as 'membersAdmin' %}
+                    <a class="btn btn--prim" href="submissions">{{'Aanvragen'|t}}</a>
+                    <a class="btn btn--prim" href="/">{{'Leden'|t}}</a>
+                {% endif %}
+            {% endif %}
+            
         </div> 
     </div>
 </header>

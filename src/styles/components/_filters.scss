@@ -128,6 +128,19 @@
         font-family: $ff;
     }
 
+    &__limit {
+        background-color: $clr-primary;
+        border-radius: $br;
+        padding: $sp-s;
+        padding-right: 2rem;
+        width: 5rem;
+        height: 3.2rem;
+
+        background-position: right $sp-s top 50%;
+        font-weight: $fw-bold;
+        text-align: center;
+    }
+
     &__title {
         margin-bottom: 0.5rem;
         font-weight: $fw-bold;
