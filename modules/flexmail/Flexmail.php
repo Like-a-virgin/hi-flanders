@@ -117,7 +117,6 @@ class Flexmail extends BaseModule
                 }
             }
         } catch (ClientException $e) {
-            Craft::dd('catch');
             if ($e->getResponse()->getStatusCode() !== 404) {
                 Craft::error('Flexmail check error: ' . $e->getMessage(), __METHOD__);
                 return;
