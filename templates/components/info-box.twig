@@ -2,8 +2,9 @@
 {% set label = label ?? null %}
 {% set error = error ?? false %}
 {% set span = span ?? 1 %}
+{% set show = show ?? null %}
 
-<div class="box__column box__column--{{span}}">
+<div class="box__column box__column--{{span}}" {{show}}>
     {% if label %}
         <p>{{label}}</p>
     {% endif %}

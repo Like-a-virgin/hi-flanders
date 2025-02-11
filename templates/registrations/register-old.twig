@@ -85,7 +85,7 @@
             </div>
             <div class="formbox__column--full" x-show="payed">
                 <label class="formbox__label" for="totalPayed">{{'Stad'|t}}</label>
-                {{ input('number', 'fields[totalPayedMembers]', user.city ?? null, {
+                {{ input('number', 'fields[totalPayedMembers]', null, {
                     id: 'totalPayed',
                     placeholder: 'Betaald bedrag'|t,
                     required: true,

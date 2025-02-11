@@ -412,6 +412,12 @@
             display: block;
         }
     }
+
+    &__row {
+        display: flex;
+        flex-direction: row;
+        gap: $sp-s;
+    }
 }
 
 .box--small {

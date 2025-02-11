@@ -33,6 +33,14 @@
         }
     }
 
+    &__column--4 {
+        grid-column: span 4;
+
+        @include screen($screen-m) {
+            grid-column: span 4;
+        }
+    }
+
     &__column--1-4 {
         grid-column: span 4;
 
