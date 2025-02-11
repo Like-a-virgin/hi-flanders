@@ -80,11 +80,13 @@ class AdminRegister extends BaseModule
             'newsletter' => null,
             'registeredBy' => null,
             'lang' => null,
+            'totalPayedMembers' => null,
             'customMemberId' => null,
             'requestPrint' => null,
             'payedPrintDate' => null,
             'paymentDate' => null,
             'cardType' => null,
+            'totalPayedPrint' => null,
         ];
 
         foreach ($fields as $fieldHandle => $coreField) {
