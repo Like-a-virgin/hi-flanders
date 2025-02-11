@@ -12,7 +12,7 @@
             <div class="header__menu-bar header__menu-bar--bottom"></div>
         </div>
         <div class="header__options" :class="openOptions ? 'header__options--open' : 'header__options--closed'">        
-            {% if user %}
+            {% if user and user.getGroups() %}
                 {% set userGroup = user.getGroups()|first.handle %}
 
                 {% if userGroup is same as 'membersAdmin' or userGroup is same as 'membersAdminSuper' %}
@@ -22,7 +22,9 @@
             {% endif %}
             <a class="btn btn--prim " href="{{ craft.entries.section('mainWebsite').one().linkExtern }}">{{'Naar website'|t}}</a>
             {% if currentUser %}
-                <a class="btn btn--prim" href="{{ logoutUrl }}">{{'Logout'|t}}</a>
+                <a class="btn btn--prim logout" href="{{ logoutUrl }}">{{'Logout'|t}}</a>
+            {% else %}
+                <a class="btn btn--prim logout" href="{{ currentSite.baseUrl }}">{{'Login'|t}}</a>
             {% endif %}
             {% include "components/language-switcher.twig" %}
         </div> 

@@ -11,6 +11,10 @@ body input, body select, body .fui-input, body .fui-select {
     position: relative;
 }
 
+body .fui-row:has(.fui-checkbox input[type="checkbox"]) {
+    margin-bottom: 0.1rem;
+}
+
 body input[type="date"]:before {
     content: attr(placeholder) !important;
     color: #aaa;

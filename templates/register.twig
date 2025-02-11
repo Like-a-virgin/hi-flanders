@@ -26,7 +26,7 @@
             {{ actionInput('users/save-user') }}
             {{ redirectInput(activationPage) }}
 
-            {{ input('hidden', 'groups', 'members') }}
+            {{ input('hidden', 'groupHandle', 'members') }}
             {{ input('hidden', 'fields[memberDueDate]', todayPlusOneYear) }}
             {{ input('hidden', 'fields[lang]', currentSite.language) }}
             {{ input('hidden', 'fields[registeredBy]', 'self') }}
@@ -153,6 +153,18 @@
                     {{ svg("assets/icons/eye.svg")|attr({class: 'formbox__see-pass-icon' }) }}
                 </button>
             </div>
+            {% if currentSite.language is not same as 'en' %}            
+                <div class="formbox__checkbox formbox__column--pp formbox__column--full">
+                    <label for="newsletter" class="formbox__check-label">
+                    {{ input('checkbox', 'fields[newsletter]', 'enroll' , {
+                        id: 'newsletter',
+                        required: true,
+                        checked: user.newsletter.storage is defined and 'enroll' in user.newsletter.storage
+                    }) }} 
+                    <span class="checkmark"></span>
+                    <p>{{'Ik wil me inschrijven voor nieuwsbrieven.'|t}}</p>
+                </div>
+            {% endif %}
             <div class="formbox__checkbox formbox__column--pp formbox__column--full">
                 <label for="privacy-policy" class="formbox__check-label">
                 {{ input('checkbox', 'fields[privacyPolicy]', 'accepted' , {

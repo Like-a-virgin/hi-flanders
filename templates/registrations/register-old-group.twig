@@ -192,6 +192,16 @@
                     {% endfor %}
                 </select>
             </div>
+            <div class="formbox__checkbox formbox__column--pp formbox__column--full">
+                <label for="newsletter" class="formbox__check-label">
+                {{ input('checkbox', 'fields[newsletter]', 'enroll' , {
+                    id: 'newsletter',
+                    required: true,
+                    checked: user.newsletter.storage is defined and 'enroll' in user.newsletter.storage
+                }) }} 
+                <span class="checkmark"></span>
+                <p>{{'Inschrijven voor nieuwsbrieven.'|t}}</p>
+            </div>
             <button class="formbox__button formbox__column--full">{{'Registreer'|t}}</button>
         </form>
         <div class="formbox__options">

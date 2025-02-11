@@ -68,6 +68,22 @@ fieldLayouts:
             warning: null
             width: 100
           -
+            dateAdded: '2025-02-10T12:17:28+00:00'
+            elementCondition: null
+            fieldUid: da3f503c-6206-4d5d-995a-375111712445 # Toevoegen als optie login
+            handle: addOptions
+            includeInCards: false
+            instructions: null
+            label: 'Opties toevoegen onder formulier'
+            providesThumbs: false
+            required: false
+            tip: null
+            type: craft\fieldlayoutelements\CustomField
+            uid: c8d2a39c-8d01-4461-b518-dd8f631e91fe
+            userCondition: null
+            warning: null
+            width: 100
+          -
             dateAdded: '2025-01-28T14:18:58+00:00'
             elementCondition: null
             fieldUid: aa21d2ca-e34c-4497-a6fa-49b5a7cc7f58 # Title

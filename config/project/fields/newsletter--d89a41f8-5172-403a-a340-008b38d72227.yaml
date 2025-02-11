@@ -1,0 +1,22 @@
+columnSuffix: null
+handle: newsletter
+instructions: null
+name: 'Inschrijven voor nieuwsbrief'
+searchable: false
+settings:
+  customOptions: false
+  options:
+    -
+      __assoc__:
+        -
+          - label
+          - 'Inschrijven '
+        -
+          - value
+          - enroll
+        -
+          - default
+          - ''
+translationKeyFormat: null
+translationMethod: none
+type: craft\fields\Checkboxes

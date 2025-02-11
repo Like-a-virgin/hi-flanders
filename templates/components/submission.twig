@@ -8,46 +8,70 @@
             </div>
             <div class="box__content">
                 <div class="box__wrapper box__wrapper--labels">
+                    {% include "components/subtitle-box.twig" with {
+                        subtitle: 'Persoonsgegevens'|t
+                    } %}
                     {% if "groupMembership" in selectedMember.form.handle %}
-                        {% include "components/subtitle-box.twig" with {
-                            subtitle: 'Persoonsgegevens'|t
-                        } %}
                         {% include "components/info-box.twig" with {
                             span: 2, 
                             info: selectedMember.organisation,
+                            label: 'Organisatie'|t
                         } %}
                         {% include "components/info-box.twig" with {
                             span: 2, 
                             info: selectedMember.contactPerson,
+                            label: 'Contact Persoon'|t
                         } %}
                         {% include "components/info-box.twig" with {
                             span: 2, 
                             info: selectedMember.tel,
+                            label: 'Tel'|t
                         } %}
                         {% include "components/info-box.twig" with {
                             span: 2, 
                             info: selectedMember.email,
+                            label: 'Email'|t
                         } %}
                     {% elseif "oldMember" in selectedMember.form.handle %}
                         {% include "components/info-box.twig" with {
                             span: 2, 
                             info: selectedMember.name,
+                            label: 'Voornaam'|t
                         } %}
                         {% include "components/info-box.twig" with {
                             span: 2, 
                             info: selectedMember.lastName,
+                            label: 'Familienaam'|t
                         } %}
                         {% include "components/info-box.twig" with {
                             span: 2, 
                             info: selectedMember.membershipId,
+                            label: 'Lidnummer'|t
                         } %}
                         {% include "components/info-box.twig" with {
                             span: 2, 
                             info: selectedMember.email,
+                            label: 'E-mail'|t
+                        } %}
+                    {% elseif "event" in selectedMember.form.handle %}
+                        {% include "components/info-box.twig" with {
+                            span: 2, 
+                            info: selectedMember.name,
+                            label: 'Voornaam'|t
+                        } %}
+                        {% include "components/info-box.twig" with {
+                            span: 2, 
+                            info: selectedMember.lastName,
+                            label: 'Familienaam'|t
+                        } %}
+                        {% include "components/info-box.twig" with {
+                            span: 2, 
+                            info: selectedMember.email,
+                            label: 'E-mail'|t
                         } %}
                     {% endif %}
                 </div>
-                {% if "groupMembership" in selectedMember.form.handle %}
+                {% if "groupMembership" in selectedMember.form.handle or "event" in selectedMember.form.handle %}
                     <div class="box__wrapper box__wrapper--labels">
                         {% include "components/subtitle-box.twig" with {
                             subtitle: 'Adres'|t
@@ -55,26 +79,32 @@
                         {% include "components/info-box.twig" with {
                             span: 4, 
                             info: selectedMember.country,
+                            label: 'Land'|t
                         } %}
                         {% include "components/info-box.twig" with {
                             span: 2, 
                             info: selectedMember.street,
+                            label: 'Straat'|t
                         } %}
                         {% include "components/info-box.twig" with {
                             span: 1, 
                             info: selectedMember.streetNr,
+                            label: 'Nr.'|t
                         } %}
                         {% include "components/info-box.twig" with {
                             span: 1, 
                             info: selectedMember.bus,
+                            label: 'Bus'|t
                         } %}
                         {% include "components/info-box.twig" with {
                             span: 2, 
                             info: selectedMember.postalCode,
+                            label: 'Postcode'|t
                         } %}
                         {% include "components/info-box.twig" with {
                             span: 2, 
                             info: selectedMember.city,
+                            label: 'Stad'|t
                         } %}
                     </div>
                 {% endif %}

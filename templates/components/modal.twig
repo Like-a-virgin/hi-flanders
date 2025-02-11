@@ -1,9 +1,9 @@
 {% set selectedMember = craft.users.id(memberId).one() %}
 {% set extraMembers = craft.entries.section('extraMembers').parentMember(memberId).all() %}
-{% set minDate = now|date_modify('-17 years')|date("Y-m-d") %}
+{% set minDate = now|date_modify('-17 years')|date("Y-m-d") %} 
 
-<div class="modal" x-data="{statusOption: false, editAddress: false, editPayment: false, extraMember: false, editPrint: false}">
-    <div class="modal__content">    
+<div class="modal" x-data="{editAddress: false, editPayment: false, extraMember: false, editPrint: false}" :class="extraMember ? 'model--no-overflow' : ''" >
+    <div class="modal__content" :class="statusOption ? 'modal--overflow' : ''">    
         <div class="box">
             <div class="box__heading box__heading--center">
                 {% if selectedMember.getGroups()|first.handle is same as 'members' %}
@@ -35,7 +35,7 @@
                         } %}
                         {% include "components/info-box.twig" with {
                             span: 2, 
-                            label: 'Voornaam'|t, 
+                            label: 'Familienaam'|t, 
                             info: selectedMember.altLastName
                         } %}
                     {% else %}
@@ -259,13 +259,12 @@
                         <label class="edit__label" for="pay-date">{{'Betaaldatum'|t}}</label>
                         {{ input('date', 'fields[paymentDate]', null, {
                             id: 'pay-date',
-                            required: true, 
                             placeholder: selectedMember.paymentDate|date('d-m-Y')
                         }) }}
                     </div>
                     <div class="edit__column--2">
                         <label class="edit__label" for="payment-type">{{'Betaalmethode'|t}}</label>
-                        <select name="fields[paymentType]" id="payment-type" required>
+                        <select name="fields[paymentType]" id="payment-type" >
                             <option value="">{{'Nog niet betaald'|t}}</option>
                             {% for item in paymentMethods %}
                                 <option value="{{item.value}}">{{item.label}}</option>
@@ -284,7 +283,7 @@
                     {% include "components/info-box.twig" with {
                         span: selectedMember.requestPrint and selectedMember.payedPrintDate ? 2 : 4, 
                         label: selectedMember.requestPrint and selectedMember.payedPrintDate ? 'Type kaart'|t : null, 
-                        info: not selectedMember.requestPrint and not selectedMember.payedPrintDate ? 'Online'|t : selectedMember.requestPrint and not selectedMember.payedPrintDate ? 'Print'|t ~ ' ' ~ 'Nog niet belaald'|t : 'Print en online'|t,
+                        info: not selectedMember.requestPrint and not selectedMember.payedPrintDate ? 'Online'|t : selectedMember.requestPrint and not selectedMember.payedPrintDate ? 'Print'|t ~ ' ' ~ 'Nog niet betaald'|t : 'Print en online'|t,
                         error: selectedMember.requestPrint and not selectedMember.payedPrintDate
                     } %}
                     {% if selectedMember.requestPrint and selectedMember.payedPrintDate %}
@@ -294,7 +293,6 @@
                             info: selectedMember.totalPayedPrint ? selectedMember.totalPayedPrint|money : 0,
                         } %}
                     {% endif %}
-                
                 </div>
                 <div class="box__options">
                     <div class="box__options-wrapper">
@@ -320,32 +318,6 @@
             </div>
         </div>
     </div>
-    <div class="extra-modal" x-show="statusOption">    
-        <div class="box box--delete">
-            <div class="box__heading">
-                <h2>{{'Lid deactiveren?'|t}}</h2>
-            </div>
-            <div class="box__content">
-                <p>{{'Ben je zeker dat je'|t}} <strong>{{ selectedMember.fullName }}</strong> {{'met lidnummer'|t}} <strong>(008) {{selectedMember.customMemberId|slice(0, 3)}} {{selectedMember.customMemberId|slice(3, 3)}} {{selectedMember.customMemberId|slice(6, 3)}} {{selectedMember.customMemberId|slice(9, 3)}}</strong> {{'wilt deactiveren?'|t}}</p>
-                <div class="box__btns">
-                    <button class="btn" @click="statusOption = false">{{'Annuleer'|t}}</button>                
-                    <form class="form-delete" method="post" accept-charset="UTF-8" enctype="multipart/form-data">
-                        {{ csrfInput() }}
-                        {{ actionInput('users/save-user') }}
-                        {{ redirectInput(currentSite.baseUrl ~ '?' ~ urlFilters) }}
-                        
-                        {{ hiddenInput('userId', selectedMember.id) }}
-                        {{ hiddenInput('fields[customStatus]', 'deactivated') }}
-                        {{ hiddenInput('fields[statusChangeDate]', now|date('d-m-Y')) }}
-
-                        <button class="btn" type="submit">
-                            {{'Lid deactiveren'|t}}
-                        </button>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
     {% if selectedMember.getGroups()|first.handle is same as 'members' %}    
         <div class="extra-modal" x-show="extraMember">
             <div class="formbox box--extra">
@@ -356,7 +328,6 @@
                     {{ csrfInput() }}
                     {{ actionInput('entries/save-entry') }}
                     {{ redirectInput(currentSite.baseUrl ~ '?' ~ urlFilters) }}
-
                     {{ input('hidden', 'sectionId', craft.entries.section('extraMembers').sectionId|first) }}
                     {{ input('hidden', 'fields[parentMember][]', selectedMember.id) }}
 
@@ -392,4 +363,29 @@
             </div>
         </div>
     {% endif %}
+</div>
+<div class="extra-modal" x-show="statusOption">    
+    <div class="box box--delete">
+        <div class="box__heading">
+            <h2>{{'Lid deactiveren?'|t}}</h2>
+        </div>
+        <div class="box__content">
+            <p>{{'Ben je zeker dat je'|t}} <strong>{{ selectedMember.fullName }}</strong> {{'met lidnummer'|t}} <strong>(008) {{selectedMember.customMemberId|slice(0, 3)}} {{selectedMember.customMemberId|slice(3, 3)}} {{selectedMember.customMemberId|slice(6, 3)}} {{selectedMember.customMemberId|slice(9, 3)}}</strong> {{'wilt deactiveren?'|t}}</p>
+            <div class="box__btns">
+                <button class="btn" @click="statusOption = false">{{'Annuleer'|t}}</button>                
+                <form class="form-delete" method="post" accept-charset="UTF-8" enctype="multipart/form-data">
+                    {{ csrfInput() }}
+                    {{ actionInput('users/save-user') }}
+                    {{ redirectInput(currentSite.baseUrl ~ '?' ~ urlFilters) }}
+                    
+                    {{ hiddenInput('userId', selectedMember.id) }}
+                    {{ hiddenInput('fields[customStatus]', 'deactivated') }}
+                    {{ hiddenInput('fields[statusChangeDate]', now|date('d-m-Y')) }}
+                    <button class="btn" type="submit">
+                        {{'Lid deactiveren'|t}}
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
 </div>

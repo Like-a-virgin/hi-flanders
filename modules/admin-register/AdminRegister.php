@@ -77,6 +77,7 @@ class AdminRegister extends BaseModule
             'contactPerson' => null,
             'memberDueDate' => null,
             'privacyPolicy' => null,
+            'newsletter' => null,
             'registeredBy' => null,
             'lang' => null,
             'totalPayedMembers' => null,
@@ -130,6 +131,8 @@ class AdminRegister extends BaseModule
 
         $groupHandle = Craft::$app->getRequest()->getBodyParam('groupHandle');
         $group = Craft::$app->userGroups->getGroupByHandle($groupHandle);
+
+        
 
         if (!$group) {
             Craft::error('Invalid user group handle provided: ' . $groupHandle, __METHOD__);

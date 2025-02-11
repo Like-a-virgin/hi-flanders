@@ -3,12 +3,18 @@
 namespace modules\flexmail;
 
 use Craft;
-use yii\base\Module as BaseModule;
-use yii\base\Event;
-use craft\services\Elements;
+
 use craft\elements\User;
 use craft\events\ElementEvent;
+use craft\services\Elements;
+use yii\base\Event;
 use GuzzleHttp\Client;
+use GuzzleHttp\Exception\ClientException;
+
+use craft\events\ModelEvent;
+
+use yii\base\Module as BaseModule;
+
 
 /**
  * Flexmail module
@@ -17,8 +23,6 @@ use GuzzleHttp\Client;
  */
 class Flexmail extends BaseModule
 {
-    private string $apiKey = 'FLEXMAIL_API';
-
     public function init(): void
     {
         Craft::setAlias('@modules/flexmail', __DIR__);
@@ -33,60 +37,103 @@ class Flexmail extends BaseModule
             Elements::class,
             Elements::EVENT_AFTER_SAVE_ELEMENT,
             function (ElementEvent $event) {
-                if ($event->element instanceof User && $event->isNew) {
-                    $this->addUserToFlexmail($event->element);
+                $element = $event->element;
+
+                if ($element instanceof User && $this->shouldSyncUser($element)) {
+                    $this->syncToFlexmail($element);
                 }
             }
         );
     }
 
-    private function addUserToFlexmail(User $user): void
+    private function shouldSyncUser(User $user): bool
     {
         $allowedGroups = ['members', 'membersGroup'];
-        $userGroups = $user->getGroups();
-        $isInAllowedGroup = false;
 
-        foreach ($userGroups as $group) {
-            if (in_array($group->handle, $allowedGroups)) {
-                $isInAllowedGroup = true;
-                break;
+        $userGroup = Craft::$app->getRequest()->getBodyParam('groupHandle');
+    
+        if (!$userGroup) {
+            Craft::error('User group field is empty for user ID: ' . $user->id, __METHOD__);
+            return false;
+        }
+    
+        if (in_array($userGroup, $allowedGroups)) {
+            return true;
+        }
+    
+        return false;
+    }
+
+    private function syncToFlexmail(User $user)
+    {
+        $apiUrl = 'https://api.flexmail.eu/contacts';
+        $apiUsername = getenv('FLEXMAIL_USER_ID');
+        $apiPassword = getenv('FLEXMAIL_API_KEY');
+
+        $client = new Client();
+
+        $newsletterField = $user->getFieldValue('newsletter');
+        $customCheckboxValue = false;
+
+        if ($newsletterField) {
+            foreach ($newsletterField as $option) {
+                if ($option->value === 'enroll' && $option->selected) {
+                    $customCheckboxValue = true;
+                    break;
+                }
             }
         }
 
-        if (!$isInAllowedGroup) {
-            Craft::info("User {$user->email} is not in the required groups. Skipping Flexmail sync.", __METHOD__);
-            return;
-        }
-
-        $data = [
-            'email' => $user->email,
-            'firstName' => $user->firstName,
-            'lastName' => $user->lastName,
-            'customFields' => [
-                'type' => 'member',
-                'memberType' => $user->memberType,
-            ],
+        $contactData = [
+            'first_name' => $user->getFieldValue('altFirstName') ?? $user->getFieldValue('organisation'),
+            'name' => $user->getFieldValue('altLastName') ?? $user->getFieldValue('contactPerson'),
+            'language' => $user->getFieldValue('lang')->value ?? 'nl',
+            'custom_fields' => [
+                'lid_type' => $user->getFieldValue('memberType')->value ?? '',
+                'nieuwsbrief' => $customCheckboxValue ? 'true' : 'false',
+            ]        
         ];
 
         try {
-            $client = new Client(['base_uri' => 'https://api.flexmail.eu/', 'timeout' => 10.0]);
-            $response = $client->post('/v1/contacts', [
-                'headers' => [
-                    'Authorization' => 'Bearer ' . $this->apiKey,
-                    'Content-Type' => 'application/json',
-                ],
-                'json' => $data,
+            
+            $existingContactResponse = $client->get("$apiUrl?email={$user->email}", [
+                'auth' => [$apiUsername, $apiPassword]
             ]);
+            
+            if ($existingContactResponse->getStatusCode() === 200) {
+                $existingContact = json_decode($existingContactResponse->getBody(), true);
+                $contactId = $existingContact['_embedded']['item'][0]['id'] ?? null;
+                
+                if ($contactId) {
+                    $updateUrl = "$apiUrl/$contactId";
+                    $client->patch($updateUrl, [
+                        'auth' => [$apiUsername, $apiPassword],
+                        'json' => $contactData,
+                    ]);
 
-            $body = json_decode($response->getBody(), true);
-
-            if (isset($body['id'])) {
-                Craft::info("Successfully added {$user->email} to Flexmail with ID {$body['id']}.", __METHOD__);
-            } else {
-                Craft::error("Failed to add {$user->email} to Flexmail: " . json_encode($body), __METHOD__);
+                    
+                    Craft::info("User {$user->email} updated in Flexmail.", __METHOD__);
+                    return;
+                }
             }
+        } catch (ClientException $e) {
+            Craft::dd('catch');
+            if ($e->getResponse()->getStatusCode() !== 404) {
+                Craft::error('Flexmail check error: ' . $e->getMessage(), __METHOD__);
+                return;
+            }
+        }
+
+        try {
+            $contactData['email'] = $user->email;
+            $contactData['source'] = 861500;
+            $client->post($apiUrl, [
+                'auth' => [$apiUsername, $apiPassword],
+                'json' => $contactData,
+            ]);
+            Craft::info("User {$user->email} created in Flexmail.", __METHOD__);
         } catch (\Exception $e) {
-            Craft::error("Flexmail API error: " . $e->getMessage(), __METHOD__);
+            Craft::error('Flexmail sync error: ' . $e->getMessage(), __METHOD__);
         }
     }
 }

@@ -1,4 +1,4 @@
-dateModified: 1738858030
+dateModified: 1739274368
 elementSources:
   craft\elements\Entry:
     -
@@ -225,12 +225,12 @@ meta:
     bbdfff72-14f8-4e5d-b59e-12d5b73c9a17: Home # Home
     be1c673f-0962-430c-8f77-56c215ba3ba8: 'Form Select' # Form Select
     c095205f-0280-43c8-86ec-2705261bf6b9: Default # Default
-    c2ce83fd-2e44-4a24-897a-13a54c7aebf7: Flexmail # Flexmail
     c573f0bd-29d4-4985-8cff-271a6ee231a2: Beheerder # Beheerder
     c1614bab-5fdd-4eae-8e0b-f4eb393c25dd: Tekst # Tekst
     c75441c9-96e6-40ff-ab4f-69ac95987e67: 'Promo codes ' # Promo codes 
     cd27b3c1-54f6-4e33-8a9f-02cba48208fa: 'Extra lid' # Extra lid
     d74da9d4-3821-46f5-8cf4-f7c4d12c04df: 'users fr' # users fr
+    d89a41f8-5172-403a-a340-008b38d72227: 'Inschrijven voor nieuwsbrief' # Inschrijven voor nieuwsbrief
     d8718bb0-fa18-417d-92e8-3e7b464a8356: Formulier # Formulier
     d798439f-1df3-4d92-834c-7376e46fca7c: 'Privacy policy' # Privacy policy
     da3f503c-6206-4d5d-995a-375111712445: 'Toevoegen als optie login' # Toevoegen als optie login
@@ -498,10 +498,6 @@ plugins:
       useQueueForIntegrations: true
       useQueueForNotifications: false
       validateCustomTemplates: true
-  formie-flexmail:
-    edition: standard
-    enabled: true
-    schemaVersion: 1.0.0
   postmark:
     edition: standard
     enabled: true

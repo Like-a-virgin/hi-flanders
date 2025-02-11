@@ -3,20 +3,24 @@
 {% block content %}
     {% set forms = craft.entries.section('forms').addOption(true).all() %}
 
-    <div class="formbox">
+    <div class="formbox {{ not entry.addOptions ? 'formbox--padding-b' : ''}}">
         <div class="formbox__heading">
             <h1>{{ entry.title }}</h1>
         </div>
         <div class="formbox__formie">
             {{ craft.formie.renderForm(entry.formSelect.one())}}
         </div>
-        <div class="formbox__options">
-            <p class="formbox__or">{{'Of'|t}}</p>
-            <a class="formbox__button formbox__button--sec" href="{{ url('login') }}">{{'Log in'|t}}</a>
-            <a class="formbox__button formbox__button--sec" href="{{ url('/register') }}">{{'Registreer als individu'|t}}</a>
-            {% for item in forms %}
-                <a class="formbox__button formbox__button--sec" href="{{ item.url }}">{{ item.textSingle }}</a>
-            {% endfor %}
-        </div>
+        {% if entry.addOptions %}
+            <div class="formbox__options">
+                <p class="formbox__or">{{'Of'|t}}</p>
+                <a class="formbox__button formbox__button--sec" href="{{ url('login') }}">{{'Log in'|t}}</a>
+                <a class="formbox__button formbox__button--sec" href="{{ url('/register') }}">{{'Registreer als individu'|t}}</a>
+                    {% for item in forms %}
+                        {% if item.slug is not same as entry.slug %}
+                            <a class="formbox__button formbox__button--sec" href="{{ item.url }}">{{ item.textSingle }}</a>
+                        {% endif %}
+                    {% endfor %}
+            </div>
+        {% endif %}
     </div>
 {% endblock %} 

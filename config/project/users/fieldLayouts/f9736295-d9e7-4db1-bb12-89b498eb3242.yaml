@@ -416,6 +416,33 @@ tabs:
         userCondition: null
         warning: null
         width: 100
+      -
+        dateAdded: '2025-02-10T10:22:36+00:00'
+        elementCondition:
+          class: craft\elements\conditions\users\UserCondition
+          conditionRules:
+            -
+              class: craft\elements\conditions\users\GroupConditionRule
+              operator: in
+              uid: 4f6b8a1a-d3f4-4cdd-a93e-8eadcbbfd81e
+              values:
+                - 50a6f7cb-84e7-4d68-9aa9-3af2d9001e79 # Leden
+                - a21d7477-05ca-43ea-ae84-fc44c3e16a70 # Leden groep
+          elementType: craft\elements\User
+          fieldContext: global
+        fieldUid: d89a41f8-5172-403a-a340-008b38d72227 # Inschrijven voor nieuwsbrief
+        handle: null
+        includeInCards: false
+        instructions: null
+        label: null
+        providesThumbs: false
+        required: false
+        tip: null
+        type: craft\fieldlayoutelements\CustomField
+        uid: 2cb75db4-53a9-4c95-8b90-5260938eeb81
+        userCondition: null
+        warning: null
+        width: 100
     name: Persoonsgegevens
     uid: ae013ac9-d044-4fc1-85a9-cdfa5bb71919
     userCondition: null
