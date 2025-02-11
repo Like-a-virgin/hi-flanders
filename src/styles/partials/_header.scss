@@ -163,6 +163,8 @@
     }
 
     .logout {
-        margin-left: 1.75rem;
+        @include screen ($screen-s) {
+            margin-left: 1.75rem;
+        }
     }
 }
