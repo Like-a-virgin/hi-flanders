@@ -37,12 +37,15 @@
                 </button>
             </div>
 
-            <div class="formbox__password-options formbox__column--full">
-                <label>
-                    {{ input('checkbox', 'rememberMe', '1') }}
+            <div class="formbox__checkbox formbox__password-options formbox__column--full">
+                <label for="remember-me" class="formbox__check-label ">
+                    {{ input('checkbox', 'rememberMe', '1', {
+                        id: 'remember-me'
+                    }) }}
                     {{'Remember me'|t}}
+                    <span class="checkmark"></span>
                 </label>
-                <a class="formbox__link formbox__link--small" href="{{ url('reset-password') }}">{{'Wachtwoord vergeten?'|t}}</a>
+                <a class="formbox__link formbox__link--small" href="{{ url('reset-password') }}">{{'Wachtwoord vergeten?'|t}}</a> 
             </div>
 
             <button class="formbox__button formbox__column--full">{{'Log in'|t}}</button>
