@@ -8,7 +8,7 @@ use craft\elements\User;
 use DateTime;
 use DateTimeZone;
 
-class DailyPaymentCheck extends BaseJob
+class DailyPaymentCheck extends BaseJob 
 {
     public function execute($queue): void
     {
@@ -53,7 +53,13 @@ class DailyPaymentCheck extends BaseJob
                 'url' => $baseUrl
             ]);
 
-            $subject = 'Psst, niets vergeten? Betaal nu om je lidmaatschap te activeren';
+            if ($lang === 'en') {
+                $subject = 'Welcome to Hi Flanders! Activate your membership now';
+            } elseif ($lang === 'fr') {
+                $subject = 'Psst, rien oublié ? Payez votre adhésion à Hi Flanders';
+            } else {
+                $subject = 'Psst, niets vergeten? Betaal nu om je lidmaatschap te activeren';
+            }
 
             $message = $mailer->compose()
                 ->setTo($user->email)

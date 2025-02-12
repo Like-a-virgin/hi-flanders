@@ -167,8 +167,8 @@
                 }) }}
             </div>
             <div class="formbox__column--full">
-                <label class="formbox__label" for="payment-type">{{'Betaalmethode'|t}}</label>
-                <select name="fields[lang]" id="payment-type" required>
+                <label class="formbox__label" for="lang">{{'Berichttaal'|t}}</label>
+                <select name="fields[lang]" id="lang" required>
                     <option value="nl">{{'Berichttaal'|t}}</option>
                     {% for item in langs %}
                         <option value="{{item.value}}">{{item.label}}</option>

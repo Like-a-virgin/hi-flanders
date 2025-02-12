@@ -219,7 +219,11 @@ class PaymentController extends Controller
 
     private function sendPaymentConfirmationEmail(User $user, $total)
     {
+        $lang = $user->getFieldValue('lang')->value;
+        $baseTemplateUrl = 'email/activation/' . $lang;
         $memberType = $user->getFieldValue('memberType')->value;
+        $templatePath = $baseTemplateUrl . '/verification-payment';
+
         if ($memberType === 'group' || $memberType === 'groupYouth') {
             $name = $user->getFieldValue('organisation');
         } else {
@@ -230,12 +234,18 @@ class PaymentController extends Controller
             $mailer = Craft::$app->mailer;
             Craft::$app->getView()->setTemplatesPath(Craft::getAlias('@root/templates'));
 
-            $htmlBody = Craft::$app->getView()->renderTemplate('email/verification/nl/verification-payment', [
+            $htmlBody = Craft::$app->getView()->renderTemplate($templatePath, [
                 'name' => $name,
                 'total' => $total
             ]);
-
-            $subject = 'je hebt betaald.';
+ 
+            if ($lang === 'en') {
+                $subject = 'Welcome! Payment request for your group';
+            } elseif ($lang === 'fr') {
+                $subject = 'Votre reçu de paiement Hi Flanders';
+            } else {
+                $subject = 'Je betalingsbewijs van Hi Flanders';
+            }
 
             // Prepare and send the email
             $message = $mailer->compose()
@@ -259,24 +269,43 @@ class PaymentController extends Controller
         $memberType = $user->getFieldValue('memberType')->value;
         $paymentType = $user->getFieldValue('paymentType')->value;
 
+        $lang = $user->getFieldValue('lang')->value;
+        $baseTemplateUrl = 'email/verificationt/' . $lang;
+        
+
         try {
             $mailer = Craft::$app->mailer;
             Craft::$app->getView()->setTemplatesPath(Craft::getAlias('@root/templates'));
 
             if ($memberType === 'group' && $paymentType === 'online') {
-                $htmlBody = Craft::$app->getView()->renderTemplate('email/verification/nl/verification-group', [
+                $templatePath = $baseTemplateUrl . '/verification-group';
+
+                $htmlBody = Craft::$app->getView()->renderTemplate($templatePath, [
                     'name' => $user->getFieldValue('organisation'),
                 ]);
     
-                $subject = 'Betaling is geslaagd. Jouw groep is nu lid van Hi Flanders!';
+                if ($lang === 'en') {
+                    $subject = 'Welcome! Payment request for your group';
+                } elseif ($lang === 'fr') {
+                    $subject = 'Votre reçu de paiement Hi Flanderse';
+                } else {
+                    $subject = 'Betaling geslaagd. Jouw groep is nu lid van Hi Flanders!';
+                }
             }
 
             if ($memberType === 'individual' && $paymentType === 'online') {
-                $htmlBody = Craft::$app->getView()->renderTemplate('email/verification/nl/verification-ind-payed', [
+                $templatePath = $baseTemplateUrl . '/verification-ind-payed';
+                $htmlBody = Craft::$app->getView()->renderTemplate($templatePath, [
                     'name' => $user->getFieldValue('altFirstName'),
                 ]);
     
-                $subject = 'Betaling geslaagd! Je bent nu officieel lid van Hi Flanders 😁';
+                if ($lang === 'en') {
+                    $subject = 'Welcome! Payment request for your group';
+                } elseif ($lang === 'fr') {
+                    $subject = 'Paiement réussi ! Vous êtes officiellement membre de Hi Flanders';
+                } else {
+                    $subject = 'Betaling geslaagd! Je bent nu officieel lid van Hi Flanders';
+                }
             }
 
             // Prepare and send the email

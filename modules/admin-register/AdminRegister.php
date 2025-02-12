@@ -167,7 +167,6 @@ class AdminRegister extends BaseModule
         }
 
         $baseUrl = Craft::$app->getSites()->currentSite->getBaseUrl();
-
         $baseTemplateUrl = 'email/activation/' . $lang;
 
         try {
@@ -203,7 +202,7 @@ class AdminRegister extends BaseModule
                 if ($lang === 'en') {
                     $subject = 'Welcome to Hi Flanders! Registration almost in done ...';
                 } elseif ($lang === 'fr') {
-                    $subject = "Bienvenue à Hi Flanders ! L'inscription est presque terminée ...";
+                    $subject = "Bienvenue chez Hi Flanders ! Enregistrement presque terminé…";
                 } else {
                     $subject = 'Welkom bij Hi Flanders! Registratie bijna in orde …';
                 }
@@ -218,7 +217,7 @@ class AdminRegister extends BaseModule
                 if ($lang === 'en') {
                     $subject = 'Welcome to Hi Flanders! Activate your membership now';
                 } elseif ($lang === 'fr') {
-                    $subject = 'Bienvenue à Hi Flanders ! Activez votre adhésion maintenant';
+                    $subject = 'Bienvenue chez Hi Flanders ! Activez votre adhésion';
                 } else {
                     $subject = 'Welkom bij Hi Flanders! Activeer meteen je lidmaatschap';
                 }
@@ -233,7 +232,7 @@ class AdminRegister extends BaseModule
                 if ($lang === 'en') {
                     $subject = 'Welcome to Hi Flanders! Activate your membership now';
                 } elseif ($lang === 'fr') {
-                    $subject = 'Bienvenue à Hi Flanders ! Activez votre adhésion maintenant';
+                    $subject = 'Bienvenue chez Hi Flanders ! Activez votre adhésion dès maintenant';
                 } else {
                     $subject = 'Welkom bij Hi Flanders! Activeer meteen je lidmaatschap';
                 }

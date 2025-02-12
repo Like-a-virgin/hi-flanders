@@ -52,18 +52,27 @@ class AfterDeactivation extends BaseModule
                     'name' => $user->getFieldValue('altFirstName'),
                     'activationUrl' => $activationUrl,
                 ]);
+
             } else {
                 $htmlBody = Craft::$app->getView()->renderTemplate($templatePath, [
                     'name' => $user->getFieldValue('organisation'),
                     'activationUrl' => $activationUrl,
                 ]);
-            }
 
+            }
+            
+            if ($lang === 'en') {
+                $subject = 'Welcome to Hi Flanders! Activate your membership now';
+            } elseif ($lang === 'fr') {
+                $subject = 'Hi Flanders - Continuez à profiter de nos avantages !';
+            } else {
+                $subject = 'Hi Flanders - Blijf genieten van onze voordelen!';
+            }
         
             // Send the email
             $message = $mailer->compose()
                 ->setTo($user->email)
-                ->setSubject('Hi Flanders - Blijf genieten van onze voordelen!')
+                ->setSubject($subject)
                 ->setHtmlBody($htmlBody);
                                             
             if (!$mailer->send($message)) {

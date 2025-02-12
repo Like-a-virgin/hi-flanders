@@ -62,7 +62,13 @@ class DailyActivationCheck extends BaseJob
                     'activationUrl' => $activationUrl,
                 ]);
     
-                $subject = 'Psst, niets vergeten? Activeer je lidmaatschap bij Hi Flanders';
+                if ($lang === 'en') {
+                    $subject = 'Welcome to Hi Flanders! Activate your membership now';
+                } elseif ($lang === 'fr') {
+                    $subject = 'Psst, rien oublié ? Renouvelez votre adhésion à Hi Flanders';
+                } else {
+                    $subject = 'Psst, niets vergeten? Vernieuw je lidmaatschap bij Hi Flanders';
+                }
             }
 
             if ($type === 'new' && $memberType === 'individual' && $registeredBy === 'admin') {
@@ -74,7 +80,13 @@ class DailyActivationCheck extends BaseJob
                     'activationUrl' => $activationUrl,
                 ]);
     
-                $subject = 'Psst, niets vergeten? Activeer je lidmaatschap bij Hi Flanders';
+                if ($lang === 'en') {
+                    $subject = 'Welcome to Hi Flanders! Activate your membership now';
+                } elseif ($lang === 'fr') {
+                    $subject = 'Psst, rien oublié ? Activez votre adhésion à Hi Flanders';
+                } else {
+                    $subject = 'Psst, rien oublié ? Activez votre adhésion à Hi Flanders';
+                }
             }
 
             if ($type === 'new' && $memberType === 'individual' && $registeredBy === 'self') {
@@ -86,7 +98,13 @@ class DailyActivationCheck extends BaseJob
                     'activationUrl' => $activationUrl,
                 ]);
     
-                $subject = 'Psst, niets vergeten? Activeer je lidmaatschap bij Hi Flanders';
+                if ($lang === 'en') {
+                    $subject = 'Welcome to Hi Flanders! Activate your membership now';
+                } elseif ($lang === 'fr') {
+                    $subject = 'Psst, rien oublié ? Confirmez votre adresse e-mail';
+                } else {
+                    $subject = 'Psst, niets vergeten? Activeer je lidmaatschap bij Hi Flanders';
+                }
             }
 
             if ($type === 'new' && $memberType === 'group') {
@@ -98,7 +116,13 @@ class DailyActivationCheck extends BaseJob
                     'activationUrl' => $activationUrl,
                 ]);
     
-                $subject = 'Psst, niets vergeten? Activeer je lidmaatschap bij Hi Flanders';
+                if ($lang === 'en') {
+                    $subject = 'Welcome to Hi Flanders! Activate your membership now';
+                } elseif ($lang === 'fr') {
+                    $subject = 'Psst, rien oublié ? Payez votre adhésion de groupe à Hi Flanders';
+                } else {
+                    $subject = 'Psst, niets vergeten? Betaal je groepslidmaatschap bij Hi Flanders';
+                }
             }
 
             if ($type === 'new' && $memberType === 'groupYouth') {
@@ -110,7 +134,13 @@ class DailyActivationCheck extends BaseJob
                     'activationUrl' => $activationUrl,
                 ]);
     
-                $subject = 'Psst, niets vergeten? Activeer je lidmaatschap bij Hi Flanders';
+                if ($lang === 'en') {
+                    $subject = 'Welcome to Hi Flanders! Activate your membership now';
+                } elseif ($lang === 'fr') {
+                    $subject = 'Welkom bij Hi Flanders! Registratie bijna in orde …';
+                } else {
+                    $subject = 'Psst, niets vergeten? Activeer je groepslidmaatschap bij Hi Flanders';
+                }
             }
 
             $message = $mailer->compose()

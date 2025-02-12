@@ -1,4 +1,4 @@
-dateModified: 1739285833
+dateModified: 1739373718
 elementSources:
   craft\elements\Entry:
     -
@@ -325,22 +325,22 @@ plugins:
                   - settings
                   -
                     __assoc__:
-                      -
+                      0:
                         - handle
                         - hcaptcha
-                      -
+                      3:
                         - size
                         - normal
-                      -
+                      4:
                         - theme
                         - light
-                      -
+                      5:
                         - language
                         - en
-                      -
+                      6:
                         - minScore
                         - 0.5
-                      -
+                      7:
                         - scriptLoadingMethod
                         - asyncDefer
           -
@@ -360,13 +360,13 @@ plugins:
                   - settings
                   -
                     __assoc__:
-                      -
+                      0:
                         - handle
                         - friendlyCaptcha
-                      -
+                      3:
                         - language
                         - en
-                      -
+                      4:
                         - startMode
                         - none
           -
@@ -386,19 +386,19 @@ plugins:
                   - settings
                   -
                     __assoc__:
-                      -
+                      0:
                         - handle
                         - turnstile
-                      -
+                      3:
                         - scriptLoadingMethod
                         - asyncDefer
-                      -
+                      4:
                         - theme
                         - auto
-                      -
+                      5:
                         - size
                         - normal
-                      -
+                      6:
                         - appearance
                         - always
           -
@@ -430,7 +430,7 @@ plugins:
                   - verbb\formie\integrations\captchas\Honeypot
                 -
                   - enabled
-                  - '0'
+                  - '1'
                 -
                   - saveSpam
                   - true
@@ -450,7 +450,7 @@ plugins:
                   - verbb\formie\integrations\captchas\Javascript
                 -
                   - enabled
-                  - '0'
+                  - '1'
                 -
                   - saveSpam
                   - true
@@ -509,7 +509,7 @@ plugins:
   translations-admin:
     edition: standard
     enabled: true
-    licenseKey: ZYPJYSJ7XYYNOWFYSO3SHUR3
+    licenseKey: RLKHCNGLTO2R9IUIW1CI5CWI
     schemaVersion: 1.1.0
   vite:
     edition: standard

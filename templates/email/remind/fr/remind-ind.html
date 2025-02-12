@@ -4,7 +4,7 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta name="color-scheme" content="light only">
-        <title>Psst, niets vergeten? Activeer je lidmaatschap bij Hi Flanders</title>
+        <title>Psst, rien oublié ? Confirmez votre adresse e-mail</title>
         <style>
             a {
                 color: #FFCC22;
@@ -19,7 +19,7 @@
             }
         </style>
     </head>
-    <body style="font-family: Arial, sans-serif; font-size: 16px; line-height: 1.5; color: #102438; margin: 0; background-color: #FFCC22; height: 100%; padding: 50px;">
+    <body style="font-family: Arial, sans-serif; font-size: 16px; line-height: 1.5; color: #102438; margin: 0; background-color: #FFCC22; height: 100%; padding: 16px;">
         <div class="container" style=" max-width: 704px; margin: 20px auto; background: #fff; border-radius: 10px; box-shadow: 0px 3px 6px 0px rgba(black, 0.16); display: flex; flex-direction: column; align-items: center;">
             <div class="header "style="color: #102438; padding: 50px 10px 0px 10px; width: 95%; max-width: 585px">
                 <div style="width: 200px;">
@@ -27,23 +27,17 @@
                 </div>
             </div>
             <div class="content" style="padding: 20px 10px 50px 10px; width: 95%; max-width: 585px">
-                <p>Hi {{ name }},</p>
+                <p>Bonjour {{ name }},</p>
                 <p style="margin-bottom: 30px">
-                    Vorige week vroegen we jou om je lidmaatschap te bevestigen door een wachtwoord te kiezen. We denken dat je dit uit het oog verloren bent. Maar het is nog niet te laat.<br> 
-                    Activeer nu met 1 klik:
+                    La semaine dernière, nous vous avons demandé d’activer votre adhésion en confirmant votre adresse e-mail. Peut-être que cela vous a échappé… Mais il n’est pas trop tard !<br> 
+                    Finalisez cela en un seul clic :
                 </p>
-                <a class="button" href="{{ activationUrl }}">Kies een wachtwoord</a>
-                <p style="margin-top: 40px">Activeer je lidmaatschap binnen 7 dagen om zeker te zijn van toegang tot het account.</p>
-                <p><u>Extra info:</u></p>
-                <ul>
-                    <li><strong>Waarom moet ik dit doen?</strong> We hebben deze bevestiging nodig om je registratie als lid te vervolledigen. Zo wordt je toekomstige ervaring bij Hi Flanders een pak gebruiksvriendelijker.</li>
-                    <li>Als lid van Hi Flanders geniet je van <a href="https://www.hiflanders.be/nl/premium">exclusieve voordelen, kortingen</a> en <a href="https://www.hiflanders.be/nl/belevingen">inspiratie</a> voor toekomstige verblijven. Maar we gaan je niet om de haverklap bestoken met mails. <strong>Jij houdt de controle</strong> en kiest hoe vaak je van ons wil horen.</li>
-                    <li>We behandelen jouw gegevens uiteraard vertrouwelijk en veilig, volgens de geldende privacywetgeving. Bekijk onze <a href="https://www.hiflanders.be/nl/privacy-policy">privacy policy</a> voor meer info.</li>
-                </ul>
-                <p>Heb je vragen of lukt het niet om je lidmaatschap te activeren? Neem dan gerust contact met ons op. We helpen je graag verder. Mail naar <a href="mailto:hi@hiflanders.be">hi@hiflanders.be</a> of bel <a href="tel:+3232327218">+32 3 232 72 18</a> tijdens de kantooruren.</p>
-                <p>Tot binnenkort in een van onze hostels?</p>
-                <p style="margin-top: 30px">Warme groet,</p>
-                <p><strong>Het Hi Flanders-team</strong></p>
+                <a style="color: #102438;" class="button" href="{{ activationUrl }}">Je confirme mon adresse e-mail</a>
+                <p style="margin-top: 40px">Après confirmation, vous recevrez – sauf si vous avez moins de 31 ans et bénéficiez d’une adhésion gratuite – un e-mail vous invitant à régler la cotisation d’adhésion (10 €). Une fois le paiement effectué, vous pourrez découvrir tous les avantages de votre adhésion Hi Flanders en ligne : <a href="https://www.hiflanders.be/nl/premium">offres exclusives, réductions</a> en <a href="https://www.hiflanders.be/nl/belevingen">inspirations </a>pour faire de chaque séjour une expérience inoubliable !</p>
+                <p>Une question ? Besoin d’aide ? Contactez-nous à <a style="color: #FFCC22;" href="mailto:hi@hiflanders.be">hi@hiflanders.be</a> ou par téléphone au <a style="color: #FFCC22;" href="tel:+3232327218">+32 3 232 72 18</a> (pendant les heures de bureau).</p>
+                <p>À bientôt dans l’un de nos auberges ?</p>
+                <p style="margin-top: 30px">Chaleureusement,</p>
+                <p><strong>L’équipe Hi Flanders</strong></p>
             </div>
         </div>
     </body>
