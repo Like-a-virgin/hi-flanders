@@ -238,9 +238,8 @@ class PaymentController extends Controller
             $htmlBody = Craft::$app->getView()->renderTemplate($templatePath, [
                 'name' => $name,
                 'total' => $total,
-                'date' => $paymentDate
             ]);
- 
+
             if ($lang === 'en') {
                 $subject = 'Your payment receipt from Hi Flanders';
             } elseif ($lang === 'fr') {
@@ -253,8 +252,7 @@ class PaymentController extends Controller
             $message = $mailer->compose()
                 ->setTo($user->email)
                 ->setSubject($subject)
-                ->setHtmlBody($htmlBody)
-                ->send();
+                ->setHtmlBody($htmlBody);
 
             if (!$message) {
                 Craft::error('Failed to send payment confirmation email to: ' . $user->email, __METHOD__);
@@ -314,8 +312,7 @@ class PaymentController extends Controller
             $message = $mailer->compose()
                 ->setTo($user->email)
                 ->setSubject($subject)
-                ->setHtmlBody($htmlBody)
-                ->send();
+                ->setHtmlBody($htmlBody);
 
             if (!$message) {
                 Craft::error('Failed to send payment confirmation email to: ' . $user->email, __METHOD__);
@@ -349,8 +346,7 @@ class PaymentController extends Controller
             $message = $mailer->compose()
                 ->setTo('claudine@likeavirgin.be')
                 ->setSubject($subject)
-                ->setHtmlBody($htmlBody)
-                ->send();
+                ->setHtmlBody($htmlBody);
 
             if (!$message) {
                 Craft::error('Failed to send payment confirmation email to: ' . $user->email, __METHOD__);

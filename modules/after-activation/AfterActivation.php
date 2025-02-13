@@ -90,7 +90,7 @@ class AfterActivation extends BaseModule
                 ]);
     
                 if ($lang === 'en') {
-                    $subject = 'YYou are now an official Hi Flanders member';
+                    $subject = 'You are now an official Hi Flanders member';
                 } elseif ($lang === 'fr') {
                     $subject = 'Oui ! Vous êtes maintenant officiellement membre de Hi Flanders';
                 } else {
