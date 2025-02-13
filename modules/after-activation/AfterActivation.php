@@ -76,7 +76,7 @@ class AfterActivation extends BaseModule
                 ]);
     
                 if ($lang === 'en') {
-                    $subject = 'Successful: your group is now a member of Hi Flanders!';
+                    $subject = 'Success! Your group is now a Hi Flanders member!';
                 } elseif ($lang === 'fr') {
                     $subject = 'Succès : votre groupe est désormais membre de Hi Flanders !';
                 } else {
@@ -90,7 +90,7 @@ class AfterActivation extends BaseModule
                 ]);
     
                 if ($lang === 'en') {
-                    $subject = 'Yes! You are now officially a member of Hi Flanders 😁';
+                    $subject = 'YYou are now an official Hi Flanders member';
                 } elseif ($lang === 'fr') {
                     $subject = 'Oui ! Vous êtes maintenant officiellement membre de Hi Flanders';
                 } else {
@@ -107,7 +107,7 @@ class AfterActivation extends BaseModule
                 ]);
     
                 if ($lang === 'en') {
-                    $subject = 'Mail address confirmed! Follow the payment link ...';
+                    $subject = 'Email address confirmed! Follow the payment link…';
                 } elseif ($lang === 'fr') {
                     $subject = 'Adresse postale confirmée ! Suivez le lien de paiement ...';
                 } else {
@@ -134,4 +134,4 @@ class AfterActivation extends BaseModule
             Craft::error("Error sending custom activation email: " . $e->getMessage(), __METHOD__);
         }
     }
-}
+} 

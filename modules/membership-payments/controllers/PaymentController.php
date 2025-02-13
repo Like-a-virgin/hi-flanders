@@ -220,9 +220,10 @@ class PaymentController extends Controller
     private function sendPaymentConfirmationEmail(User $user, $total)
     {
         $lang = $user->getFieldValue('lang')->value;
-        $baseTemplateUrl = 'email/activation/' . $lang;
+        $baseTemplateUrl = 'email/verification/' . $lang;
         $memberType = $user->getFieldValue('memberType')->value;
         $templatePath = $baseTemplateUrl . '/verification-payment';
+        $paymentDate = new DateTime();
 
         if ($memberType === 'group' || $memberType === 'groupYouth') {
             $name = $user->getFieldValue('organisation');
@@ -236,11 +237,12 @@ class PaymentController extends Controller
 
             $htmlBody = Craft::$app->getView()->renderTemplate($templatePath, [
                 'name' => $name,
-                'total' => $total
+                'total' => $total,
+                'date' => $paymentDate
             ]);
  
             if ($lang === 'en') {
-                $subject = 'Welcome! Payment request for your group';
+                $subject = 'Your payment receipt from Hi Flanders';
             } elseif ($lang === 'fr') {
                 $subject = 'Votre reçu de paiement Hi Flanders';
             } else {
@@ -270,7 +272,7 @@ class PaymentController extends Controller
         $paymentType = $user->getFieldValue('paymentType')->value;
 
         $lang = $user->getFieldValue('lang')->value;
-        $baseTemplateUrl = 'email/verificationt/' . $lang;
+        $baseTemplateUrl = 'email/verification/' . $lang;
         
 
         try {
@@ -285,11 +287,11 @@ class PaymentController extends Controller
                 ]);
     
                 if ($lang === 'en') {
-                    $subject = 'Welcome! Payment request for your group';
+                    $subject = 'Activation successful! Your group is now a Hi Flanders member!';
                 } elseif ($lang === 'fr') {
-                    $subject = 'Votre reçu de paiement Hi Flanderse';
+                    $subject = 'Activation réussie. Votre groupe est maintenant membre de Hi Flanders !';
                 } else {
-                    $subject = 'Betaling geslaagd. Jouw groep is nu lid van Hi Flanders!';
+                    $subject = 'Activering geslaagd. Jouw groep is nu lid van Hi Flanders!';
                 }
             }
 
@@ -300,7 +302,7 @@ class PaymentController extends Controller
                 ]);
     
                 if ($lang === 'en') {
-                    $subject = 'Welcome! Payment request for your group';
+                    $subject = 'Payment successful! You are now an official Hi Flanders member';
                 } elseif ($lang === 'fr') {
                     $subject = 'Paiement réussi ! Vous êtes officiellement membre de Hi Flanders';
                 } else {

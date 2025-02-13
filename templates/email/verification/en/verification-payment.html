@@ -5,7 +5,7 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta name="color-scheme" content="light only">
-        <title>Je betalingsbewijs van Hi Flanders</title>
+        <title>Your payment receipt from Hi Flanders</title>
         <style>
             a {
                 color: #FFCC22;
@@ -29,14 +29,14 @@
             </div>
             <div class="content" style="padding: 20px 10px 50px 10px; width: 95%; max-width: 585px">
                 <p>Hi {{ name }},</p>
-                <p>Bedankt voor je betaling! Hierbij bevestigen wij dat het openstaande bedrag succesvol is voldaan. Deze mail geldt als betalingsbewijs.</p>
-                <p><strong>Details van je betaling:</strong></p>
+                <p>Thank you for your payment! This email confirms that the outstanding amount has been successfully processed. This email serves as your payment receipt</p>
+                <p><strong>Payment details:</strong></p>
                 <ul>
-                    <li>Betaald bedrag: €{{total}}</li>
-                    <li>Datum van betaling: {{ date }}</li>
+                    <li>Amount paid: €{{total}}</li>
+                    <li>Payment date: {{ date }}</li>
                 </ul>
-                <p style="margin-top: 30px">Met vriendelijke groet,</p>
-                <p><strong>Het Hi Flanders-team</strong></p>
+                <p style="margin-top: 30px">Warm regards,</p>
+                <p><strong>The Hi Flanders Team</strong></p>
             </div>
         </div>
     </body>

@@ -63,7 +63,7 @@ class DailyActivationCheck extends BaseJob
                 ]);
     
                 if ($lang === 'en') {
-                    $subject = 'Welcome to Hi Flanders! Activate your membership now';
+                    $subject = 'Psst, forgot something? Renew your Hi Flanders membership';
                 } elseif ($lang === 'fr') {
                     $subject = 'Psst, rien oublié ? Renouvelez votre adhésion à Hi Flanders';
                 } else {
@@ -81,7 +81,7 @@ class DailyActivationCheck extends BaseJob
                 ]);
     
                 if ($lang === 'en') {
-                    $subject = 'Welcome to Hi Flanders! Activate your membership now';
+                    $subject = 'Psst, forgot something? Activate your Hi Flanders membership';
                 } elseif ($lang === 'fr') {
                     $subject = 'Psst, rien oublié ? Activez votre adhésion à Hi Flanders';
                 } else {
@@ -99,7 +99,7 @@ class DailyActivationCheck extends BaseJob
                 ]);
     
                 if ($lang === 'en') {
-                    $subject = 'Welcome to Hi Flanders! Activate your membership now';
+                    $subject = 'Psst, forgot something? Confirm your email address';
                 } elseif ($lang === 'fr') {
                     $subject = 'Psst, rien oublié ? Confirmez votre adresse e-mail';
                 } else {
@@ -116,8 +116,8 @@ class DailyActivationCheck extends BaseJob
                     'activationUrl' => $activationUrl,
                 ]);
     
-                if ($lang === 'en') {
-                    $subject = 'Welcome to Hi Flanders! Activate your membership now';
+                if ($lang === 'en') { 
+                    $subject = 'Psst, forgot something? Complete your group membership payment at Hi Flanders';
                 } elseif ($lang === 'fr') {
                     $subject = 'Psst, rien oublié ? Payez votre adhésion de groupe à Hi Flanders';
                 } else {
@@ -135,7 +135,7 @@ class DailyActivationCheck extends BaseJob
                 ]);
     
                 if ($lang === 'en') {
-                    $subject = 'Welcome to Hi Flanders! Activate your membership now';
+                    $subject = 'Psst, forgot something? Activate your group membership at Hi Flanders';
                 } elseif ($lang === 'fr') {
                     $subject = 'Welkom bij Hi Flanders! Registratie bijna in orde …';
                 } else {

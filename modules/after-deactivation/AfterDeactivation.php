@@ -32,7 +32,7 @@ class AfterDeactivation extends BaseModule
         $user = $event->user;
         $usersService = Craft::$app->getUsers();
         $lang = $user->getFieldValue('lang')->value;
-        $baseTemplateUrl = 'email/remind/' . $lang;
+        $baseTemplateUrl = 'email/renew/' . $lang;
 
         // Check if the user's customStatus is `renew`
         if ($user->getFieldValue('customStatus')->value === 'renew') {
@@ -45,7 +45,7 @@ class AfterDeactivation extends BaseModule
             // Render the HTML and Text templates
             Craft::$app->getView()->setTemplatesPath(Craft::getAlias('@root/templates'));
 
-            $templatePath = $baseTemplateUrl . '/remind-renew';
+            $templatePath = $baseTemplateUrl . '/renew';
 
             if ($user->getFieldValue('memberType')->value === 'individual') {
                 $htmlBody = Craft::$app->getView()->renderTemplate($templatePath, [
@@ -62,7 +62,7 @@ class AfterDeactivation extends BaseModule
             }
             
             if ($lang === 'en') {
-                $subject = 'Welcome to Hi Flanders! Activate your membership now';
+                $subject = 'Hi Flanders – Keep enjoying your benefits!';
             } elseif ($lang === 'fr') {
                 $subject = 'Hi Flanders - Continuez à profiter de nos avantages !';
             } else {

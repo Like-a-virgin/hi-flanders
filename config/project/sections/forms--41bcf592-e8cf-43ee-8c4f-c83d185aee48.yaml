@@ -20,17 +20,17 @@ previewTargets:
         - '1'
 propagationMethod: all
 siteSettings:
-  359a39c5-8655-460f-a1b4-0c097ea0edb2: # users
+  359a39c5-8655-460f-a1b4-0c097ea0edb2: # Ledensysteem
     enabledByDefault: true
     hasUrls: true
     template: pages/form.twig
     uriFormat: '{slug}'
-  d74da9d4-3821-46f5-8cf4-f7c4d12c04df: # users fr
+  d74da9d4-3821-46f5-8cf4-f7c4d12c04df: # Ledensysteem fr
     enabledByDefault: true
     hasUrls: true
     template: pages/form.twig
     uriFormat: '{slug}'
-  dad48958-bcb3-4253-9f7e-868f67fa27b0: # users en
+  dad48958-bcb3-4253-9f7e-868f67fa27b0: # Ledensysteem en
     enabledByDefault: true
     hasUrls: true
     template: pages/form.twig

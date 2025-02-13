@@ -4,7 +4,7 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta name="color-scheme" content="light only">
-        <title>Welkom bij Hi Flanders! Verifieer je mailadres</title>
+        <title>Welcome to Hi Flanders! Activate Your Membership Now</title>
         <style>
             a {
                 color: #FFCC22;
@@ -19,7 +19,7 @@
             }
         </style>
     </head>
-    <body style="font-family: Arial, sans-serif; font-size: 16px; line-height: 1.5; color: #102438; margin: 0; background-color: #FFCC22; height: 100%; padding: 50px;">
+    <body style="font-family: Arial, sans-serif; font-size: 16px; line-height: 1.5; color: #102438; margin: 0; background-color: #FFCC22; height: 100%; padding: 16px;">
         <div class="container" style=" max-width: 704px; margin: 20px auto; background: #fff; border-radius: 10px; box-shadow: 0px 3px 6px 0px rgba(black, 0.16); display: flex; flex-direction: column; align-items: center;">
             <div class="header" style="color: #102438; padding: 50px 10px 0px 10px; width: 95%; max-width: 585px">
                 <div style="width: 200px;">
@@ -27,16 +27,31 @@
                 </div>
             </div>
             <div class="content" style="padding: 20px 10px 50px 10px; width: 95%; max-width: 585px">
-                <p>Hi {{ name }},</p>
-                <p>Wij van Hi Flanders zijn blij dat je toetreedt tot onze community. Om je gratis* lidmaatschap te vervolledigen, moet je nog 1 ding doen:</p>
-                <p style="margin-bottom: 30px">Voor ieders gemak zijn we intussen volledig gedigitaliseerd, dus met enkele klikken is jouw premium lidmaatschap gefixt:</p>
-                <a class="button" href="{{ activationUrl }}">Ik bevestig mijn mailadres</a>
-                <p style="margin-top: 40px"><strong>Welke voordelen zijn dat ook alweer? Hi Flanders Premium, dat is:</strong></p>
-                <p>Denk eraan om dit binnen 7 dagen te doen, om zeker te zijn van toegang tot je account.</p>
-                <p>Na bevestiging kan je je gegevens beheren en alle voordelen als Hi Flanders-lid ontdekken.</p>
-                <p>Heb je vragen of lukt het niet? Laat het ons weten via <a href="mailto:hi@hiflanders.be">hi@hiflanders.be</a> of bel <a href="tel:+3232327218">+32 3 232 72 18</a> tijdens de kantooruren.</p>
-                <p style="margin-top: 30px">Warme groet,</p>
-                <p>Het Hi Flanders-team</p>
+                <p>Hi  {{ name }},</p>
+                <p>Welcome to Hi Flanders! A staff member at the hostel where you’re staying has added you to our community.</p>
+                <p>To activate your membership, you need to complete two simple steps:</p>
+                <ol>
+                    <li>
+                        <div>Set a password to access your group account.</div><br> 
+                        <a style="color: #102438;" class="button" href="{{ activationUrl }}">Choose a password</a>
+                    </li>
+                    <li style="margin-top: 25px">
+                        <div>Complete the payment of €10. (Note: If you’re under 31, your membership is free, and you can skip this step.)</div><br>
+                        <a style="color: #102438;" class="button" href="{{ url }}">To the payment page</a>
+                    </li>
+                </ol>
+                <p style="margin-top: 25px">Please make sure to complete this within 7 days to ensure uninterrupted access to your account.</p>
+                <p><u>Extra info on your membership:</u></p>
+                <ul>
+                    <li><strong>Why do I need to do this? </strong> We need this confirmation to complete your membership registration. This will make your future experience with Hi Flanders much more user-friendly.</li>
+                    <li>As a Hi Flanders member, you’ll enjoy <a style="color: #FFCC22;" href="https://www.hiflanders.be/en/premium">exclusive benefits, discounts,</a> and <a style="color: #FFCC22;" href="https://www.hiflanders.be/en/experiences">inspiration</a> for future stays. But don’t worry, we won’t flood your inbox with emails. <strong>You stay in control</strong> and decide how often you hear from us.</li>
+                    <li>We handle your data with the utmost <strong>confidentiality and security</strong>, in accordance with applicable privacy laws. Check our <a style="color: #FFCC22;" href="https://www.hiflanders.be/en/privacy-policy">privacy policy</a> for more details.</li>
+                </ul>
+                <p><strong>Need help?</strong></p>
+                <p>Do you have any questions or trouble activating your membership? Feel free to contact us, we’re happy to assist! Email us at <a style="color: #FFCC22;" href="mailto:hi@hiflanders.be">hi@hiflanders.be</a> or call <a style="color: #FFCC22;" href="tel:+3232327218">+32 3 232 72 18</a> during office hours. We’re happy to assist!</p>
+                <p>Enjoy your stay, and hopefully, we’ll see you again at one of our hostels!</p>
+                <p style="margin-top: 30px">Warm regards,</p>
+                <p><strong>The Hi Flanders Team</strong></p>
             </div>
         </div>
     </body>

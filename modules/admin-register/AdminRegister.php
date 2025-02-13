@@ -107,7 +107,7 @@ class AdminRegister extends BaseModule
                 } else {
                     $value = null; // Prevents invalid data
                 }
-            }
+            } 
     
             if ($value !== null) {
                 $user->setFieldValue($fieldHandle, $value);
@@ -200,7 +200,7 @@ class AdminRegister extends BaseModule
                 ]);
     
                 if ($lang === 'en') {
-                    $subject = 'Welcome to Hi Flanders! Registration almost in done ...';
+                    $subject = 'Welcome to Hi Flanders! Registration almost complete…';
                 } elseif ($lang === 'fr') {
                     $subject = "Bienvenue chez Hi Flanders ! Enregistrement presque terminé…";
                 } else {

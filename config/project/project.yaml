@@ -1,4 +1,4 @@
-dateModified: 1739373718
+dateModified: 1739442301
 elementSources:
   craft\elements\Entry:
     -
@@ -205,7 +205,7 @@ meta:
     91c6a56d-e6ba-4757-a97d-293bf13c9115: Error # Error
     93edcc59-32ca-4780-9d52-1d1fc486519a: 'Lid ouder' # Lid ouder
     115f3616-1f1d-4238-bbd6-a35c5b4e8f28: 'Lidkaart type' # Lidkaart type
-    359a39c5-8655-460f-a1b4-0c097ea0edb2: users # users
+    359a39c5-8655-460f-a1b4-0c097ea0edb2: Ledensysteem # Ledensysteem
     590f0cba-dbfa-4eda-882d-2fe3aac82a92: Prijs # Prijs
     996e7f91-0447-4498-addc-bf91c17465f9: Taal # Taal
     5178f917-f380-440d-a326-c41e396ba39a: 'privacy policy' # privacy policy
@@ -229,12 +229,12 @@ meta:
     c1614bab-5fdd-4eae-8e0b-f4eb393c25dd: Tekst # Tekst
     c75441c9-96e6-40ff-ab4f-69ac95987e67: 'Promo codes ' # Promo codes 
     cd27b3c1-54f6-4e33-8a9f-02cba48208fa: 'Extra lid' # Extra lid
-    d74da9d4-3821-46f5-8cf4-f7c4d12c04df: 'users fr' # users fr
+    d74da9d4-3821-46f5-8cf4-f7c4d12c04df: 'Ledensysteem fr' # Ledensysteem fr
     d89a41f8-5172-403a-a340-008b38d72227: 'Inschrijven voor nieuwsbrief' # Inschrijven voor nieuwsbrief
     d8718bb0-fa18-417d-92e8-3e7b464a8356: Formulier # Formulier
     d798439f-1df3-4d92-834c-7376e46fca7c: 'Privacy policy' # Privacy policy
     da3f503c-6206-4d5d-995a-375111712445: 'Toevoegen als optie login' # Toevoegen als optie login
-    dad48958-bcb3-4253-9f7e-868f67fa27b0: 'users en' # users en
+    dad48958-bcb3-4253-9f7e-868f67fa27b0: 'Ledensysteem en' # Ledensysteem en
     db8cca95-36d6-43cd-977d-2c8d4ef17863: 'Contact Form' # Contact Form
     e6b46871-c4a9-4c54-825a-0e4ff94ad028: Branding # Branding
     e633efea-afa2-411f-9fc3-06d84f219d9b: 'Bedankt betaling' # Bedankt betaling

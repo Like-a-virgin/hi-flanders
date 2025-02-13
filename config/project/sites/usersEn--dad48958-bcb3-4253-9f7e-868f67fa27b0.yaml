@@ -3,7 +3,7 @@ enabled: '1'
 handle: usersEn
 hasUrls: true
 language: en
-name: 'users en'
+name: 'Ledensysteem en'
 primary: false
 siteGroup: 1d0447d2-95ba-4d14-95bd-e1f51bb4dd4c # users
 sortOrder: 3

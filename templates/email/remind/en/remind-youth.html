@@ -1,11 +1,10 @@
-
 <!DOCTYPE html>
 <html lang="en">
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta name="color-scheme" content="light only">
-        <title>Welcome! Payment request for your group</title>
+        <title>Psst, forgot something? Activate your group membership at Hi Flanders</title>
         <style>
             a {
                 color: #FFCC22;
@@ -22,33 +21,27 @@
     </head>
     <body style="font-family: Arial, sans-serif; font-size: 16px; line-height: 1.5; color: #102438; margin: 0; background-color: #FFCC22; height: 100%; padding: 16px;">
         <div class="container" style=" max-width: 704px; margin: 20px auto; background: #fff; border-radius: 10px; box-shadow: 0px 3px 6px 0px rgba(black, 0.16); display: flex; flex-direction: column; align-items: center;">
-            <div class="header"style="color: #102438; padding: 50px 10px 0px 10px; width: 95%; max-width: 585px">
+            <div class="header "style="color: #102438; padding: 50px 10px 0px 10px; width: 95%; max-width: 585px">
                 <div style="width: 200px;">
                     <img src="https://hiflandres.staging.liveavirgin.be//uploads/branding/Logo.svg" alt="logo hi flanders">
                 </div>
             </div>
             <div class="content" style="padding: 20px 10px 50px 10px; width: 95%; max-width: 585px">
                 <p>Hi {{ name }},</p>
-                <p>Good news: your request to register a group has been approved.</p>
-                <p>To activate your membership, there are two steps left:</p>
-                <ol>
-                    <li>
-                        <div>Set a password to access your group account.</div><br> 
-                        <a style="color: #102438;" class="button" href="{{ activationUrl }}">Choose a password</a>
-                    </li>
-                    <li style="margin-top: 25px">
-                        <div>Complete the payment. For just €30, your group will enjoy a full year of Hi Flanders membership, including all benefits.</div><br>
-                        <a style="color: #102438;" class="button" href="{{ url }}">Go to the payment page</a>
-                    </li>
-                </ol>
-                <p style="margin-top: 25px">Please complete these steps within 7 days to ensure access to your group account.</p>
+                <p style="margin-bottom: 30px">
+                    Last week, we asked you to confirm your group’s membership by choosing a password. We think this might have slipped your mind. But don’t worry—it’s not too late!<br>
+                    Activate it now with just one click:
+                </p>
+                <a style="color: #102438;" class="button" href="{{ activationUrl }}">I choose a password</a>
+                <p style="margin-top: 40px">Activate your membership within 7 days to ensure access to your group account.</p>
                 <p><u>Extra info on your membership:</u></p>
                 <ul>
+                    <li><strong>Why is this necessary?  </strong> We need this confirmation to complete your group’s registration. This will make your future experience with Hi Flanders much more convenient.</li>
                     <li>As a Hi Flanders member, your group will enjoy <a style="color: #FFCC22;" href="https://www.hiflanders.be/en/premium">exclusive benefits, discounts</a> and <a style="color: #FFCC22;" href="https://www.hiflanders.be/en/experiences">inspiration</a> for upcoming trips. But don’t worry, we won’t flood your inbox with emails. <strong>You stay in control</strong> and decide how often you hear from us.</li>
                     <li>We handle your data confidentially and securely, in accordance with applicable privacy laws. Check our <a style="color: #FFCC22;" href="https://www.hiflanders.be/en/privacy-policy">privacy policy</a> for more details.</li>
                 </ul>
                 <p><u>Need help?</u></p>
-                <p>Do you have any questions or trouble activating your membership? Feel free to contact us at <a style="color: #FFCC22;" href="mailto:hi@hiflanders.be">hi@hiflanders.be</a> or call <a style="color: #FFCC22;" href="tel:+3232327218">+32 3 232 72 18</a> during office hours.</p>
+                <p>If you have any questions or encounter issues with the payment, don’t hesitate to reach out at <a style="color: #FFCC22;" href="mailto:hi@hiflanders.be">hi@hiflanders.be</a> or call <a style="color: #FFCC22;" href="tel:+3232327218">+32 3 232 72 18</a> during office hours.</p>
                 <p style="margin-top: 30px">Warm regards,</p>
                 <p><strong>The Hi Flanders Team</strong></p>
             </div>

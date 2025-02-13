@@ -54,7 +54,7 @@ class DailyPaymentCheck extends BaseJob
             ]);
 
             if ($lang === 'en') {
-                $subject = 'Welcome to Hi Flanders! Activate your membership now';
+                $subject = 'Psst, forgot something? Complete Your Hi Flanders Membership Payment';
             } elseif ($lang === 'fr') {
                 $subject = 'Psst, rien oublié ? Payez votre adhésion à Hi Flanders';
             } else {

@@ -2,6 +2,6 @@ description: null
 handle: membersGroup
 name: 'Leden groep'
 permissions:
-  - 'editsite:359a39c5-8655-460f-a1b4-0c097ea0edb2' # users
-  - 'editsite:d74da9d4-3821-46f5-8cf4-f7c4d12c04df' # users fr
-  - 'editsite:dad48958-bcb3-4253-9f7e-868f67fa27b0' # users en
+  - 'editsite:359a39c5-8655-460f-a1b4-0c097ea0edb2' # Ledensysteem
+  - 'editsite:d74da9d4-3821-46f5-8cf4-f7c4d12c04df' # Ledensysteem fr
+  - 'editsite:dad48958-bcb3-4253-9f7e-868f67fa27b0' # Ledensysteem en
