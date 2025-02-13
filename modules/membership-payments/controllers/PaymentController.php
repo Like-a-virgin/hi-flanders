@@ -219,13 +219,11 @@ class PaymentController extends Controller
 
     private function sendPaymentConfirmationEmail(User $user, $total)
     {
-        $lang = $user->getFieldValue('lang')->value;
-        $baseTemplateUrl = 'email/verification/' . $lang;
+        // $lang = $user->getFieldValue('lang')->value;
+        $baseTemplateUrl = 'email/verification/nl';
         $memberType = $user->getFieldValue('memberType')->value;
         $templatePath = $baseTemplateUrl . '/verification-payment';
         $paymentDate = new DateTime();
-
-        Craft::dd($lang);
 
         if ($memberType === 'group' || $memberType === 'groupYouth') {
             $name = $user->getFieldValue('organisation');
@@ -243,13 +241,13 @@ class PaymentController extends Controller
                 'date' => $paymentDate
             ]);
 
-            if ($lang === 'en') {
-                $subject = 'Your payment receipt from Hi Flanders';
-            } elseif ($lang === 'fr') {
-                $subject = 'Votre reçu de paiement Hi Flanders';
-            } else {
+            // if ($lang === 'en') {
+            //     $subject = 'Your payment receipt from Hi Flanders';
+            // } elseif ($lang === 'fr') {
+            //     $subject = 'Votre reçu de paiement Hi Flanders';
+            // } else {
                 $subject = 'Je betalingsbewijs van Hi Flanders';
-            }
+            // }
 
             // Prepare and send the email
             $message = $mailer->compose()
