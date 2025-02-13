@@ -43,10 +43,10 @@ class AfterActivation extends BaseModule
             function (UserEvent $event) {
                 $user = $event->user;
 
-                $this->sendSuccesMail($user);
-                // if (!Craft::$app->getSession()->get("activation_mail_sent_{$user->id}")) {
-                //     Craft::$app->getSession()->set("activation_mail_sent_{$user->id}", true);
-                // }
+                if (!Craft::$app->getSession()->get("activation_mail_sent_{$user->id}")) {
+                    $this->sendSuccesMail($user);
+                    Craft::$app->getSession()->set("activation_mail_sent_{$user->id}", true);
+                }
             }
         );
     }

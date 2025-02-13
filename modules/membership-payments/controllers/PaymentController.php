@@ -219,10 +219,14 @@ class PaymentController extends Controller
 
     private function sendPaymentConfirmationEmail(User $user, $total)
     {
+        $memberType = $user->getFieldValue('memberType')->value;
+        
         $lang = $user->getFieldValue('lang')->value;
         $baseTemplateUrl = 'email/verification/' . $lang;
-        $memberType = $user->getFieldValue('memberType')->value;
         $templatePath = $baseTemplateUrl . '/verification-payment';
+
+        Craft::dd($lang);
+        
         $paymentDate = new DateTime();
         $formattedDate = $paymentDate->format('d-m-Y');
 
