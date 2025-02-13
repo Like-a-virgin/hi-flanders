@@ -43,6 +43,11 @@ class AfterActivation extends BaseModule
             function (UserEvent $event) {
                 $user = $event->user;
 
+                if ($user->getFieldValue('paymentType') === 'online') {
+                    Craft::info("Skipping activation email for user {$user->email} (activated via Mollie)", __METHOD__);
+                    return;
+                }    
+
                 if (!Craft::$app->getSession()->get("activation_mail_sent_{$user->id}")) {
                     $this->sendSuccesMail($user);
                     Craft::$app->getSession()->set("activation_mail_sent_{$user->id}", true);
