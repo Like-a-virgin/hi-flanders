@@ -224,8 +224,6 @@ class PaymentController extends Controller
         $lang = $user->getFieldValue('lang')->value;
         $baseTemplateUrl = 'email/verification/' . $lang;
         $templatePath = $baseTemplateUrl . '/verification-payment';
-
-        Craft::dd($lang);
         
         $paymentDate = new DateTime();
         $formattedDate = $paymentDate->format('d-m-Y');
@@ -259,7 +257,7 @@ class PaymentController extends Controller
                 ->setTo($user->email)
                 ->setSubject($subject)
                 ->setHtmlBody($htmlBody);
-                
+
             if (!$message->send()) {
                 Craft::error('Failed to send payment confirmation email to: ' . $user->email, __METHOD__);
             } else {
