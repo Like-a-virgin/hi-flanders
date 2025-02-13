@@ -83,7 +83,7 @@ class AfterActivation extends BaseModule
                     $subject = 'Gelukt: jouw groep is nu lid van Hi Flanders!';
                 }
 
-            } elseif ($memberType === 'individual' && $paymentType != null || $memberType === 'employee' || $memberType === 'life'){
+            } elseif ($memberType === 'individual' && $paymentType != null || $memberType === 'individual' && $paymentType !== 'online' || $memberType === 'employee' || $memberType === 'life'){
                 $templatePath = $baseTemplateUrl . '/verification-ind-free';
                 $htmlBody = Craft::$app->getView()->renderTemplate($templatePath , [
                     'name' => $user->getFieldValue('altFirstName'),
