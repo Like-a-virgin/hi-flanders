@@ -225,6 +225,8 @@ class PaymentController extends Controller
         $templatePath = $baseTemplateUrl . '/verification-payment';
         $paymentDate = new DateTime();
 
+        Craft::dd($lang);
+
         if ($memberType === 'group' || $memberType === 'groupYouth') {
             $name = $user->getFieldValue('organisation');
         } else {
@@ -238,6 +240,7 @@ class PaymentController extends Controller
             $htmlBody = Craft::$app->getView()->renderTemplate($templatePath, [
                 'name' => $name,
                 'total' => $total,
+                'date' => $paymentDate
             ]);
 
             if ($lang === 'en') {
