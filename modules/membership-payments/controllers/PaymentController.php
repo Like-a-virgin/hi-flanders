@@ -220,10 +220,11 @@ class PaymentController extends Controller
     private function sendPaymentConfirmationEmail(User $user, $total)
     {
         $lang = $user->getFieldValue('lang')->value;
-        $baseTemplateUrl = 'email/verification/nl';
+        $baseTemplateUrl = 'email/verification/' . $lang;
         $memberType = $user->getFieldValue('memberType')->value;
         $templatePath = $baseTemplateUrl . '/verification-payment';
         $paymentDate = new DateTime();
+        $formattedDate = $paymentDate->format('d-m-Y');
 
         if ($memberType === 'group' || $memberType === 'groupYouth') {
             $name = $user->getFieldValue('organisation');
@@ -238,7 +239,7 @@ class PaymentController extends Controller
             $htmlBody = Craft::$app->getView()->renderTemplate($templatePath, [
                 'name' => $name,
                 'total' => $total,
-                'date' => $paymentDate
+                'date' => $formattedDate
             ]);
 
             if ($lang === 'en') {
