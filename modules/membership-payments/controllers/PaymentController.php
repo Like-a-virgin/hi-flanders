@@ -258,9 +258,8 @@ class PaymentController extends Controller
             $message = $mailer->compose()
                 ->setTo($user->email)
                 ->setSubject($subject)
-                ->setHtmlBody($htmlBody)
-                ->send();
-
+                ->setHtmlBody($htmlBody);
+                
             if (!$message->send()) {
                 Craft::error('Failed to send payment confirmation email to: ' . $user->email, __METHOD__);
             } else {
