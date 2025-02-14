@@ -121,7 +121,7 @@ class PaymentController extends Controller
             ],
             "description" => "Membership Payment for " . $user->email,
             "redirectUrl" => $redirectUrl,
-            // "webhookUrl" => UrlHelper::actionUrl('membership-payments/payment/webhook'),
+            "webhookUrl" => UrlHelper::actionUrl('membership-payments/payment/webhook'),
             "metadata" => [
                 "userId" => $user->id,
                 "membershipId" => $user->getFieldValue('customMemberId'),
@@ -202,15 +202,15 @@ class PaymentController extends Controller
                 }
             }
 
-            foreach ($extraMemberIds as $extraMemberId) {
-                $extraMember = Entry::find()->id($extraMemberId)->one();
-                if ($extraMember) {
-                    $extraMember->setFieldValue('paymentDate', $paymentDate);
-                    if (!Craft::$app->elements->saveElement($extraMember, false)) {
-                        Craft::error('Failed to update extra member payment date for entry ID ' . $extraMemberId, __METHOD__);
-                    }
-                }
-            }
+            // foreach ($extraMemberIds as $extraMemberId) {
+            //     $extraMember = Entry::find()->id($extraMemberId)->one();
+            //     if ($extraMember) {
+            //         $extraMember->setFieldValue('paymentDate', $paymentDate);
+            //         if (!Craft::$app->elements->saveElement($extraMember, false)) {
+            //             Craft::error('Failed to update extra member payment date for entry ID ' . $extraMemberId, __METHOD__);
+            //         }
+            //     }
+            // }
         }
 
         return $this->asJson(['success' => true]);
