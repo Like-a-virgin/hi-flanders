@@ -184,7 +184,7 @@ class PaymentController extends Controller
 
                         $user->setFieldValue('totalPayedMembers', $metadata->membershipTotal);
                         
-                        $this->sendAccountConfirmationEmail($user);
+                        // $this->sendAccountConfirmationEmail($user);
                     }
                     
                     if ($print) {
@@ -192,7 +192,7 @@ class PaymentController extends Controller
                         
                         $user->setFieldValue('payedPrintDate', $paymentDate);
                         
-                        $this->sendPrintDetailsOwner($user);
+                        // $this->sendPrintDetailsOwner($user);
                     }
                         
                     if (!Craft::$app->elements->saveElement($user)) {
