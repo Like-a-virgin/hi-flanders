@@ -184,7 +184,7 @@ class PaymentController extends Controller
 
                         $user->setFieldValue('totalPayedMembers', $metadata->membershipTotal);
                         
-                        // $this->sendAccountConfirmationEmail($user);
+                        $this->sendAccountConfirmationEmail($user);
                     }
                     
                     if ($print) {
@@ -192,7 +192,7 @@ class PaymentController extends Controller
                         
                         $user->setFieldValue('payedPrintDate', $paymentDate);
                         
-                        // $this->sendPrintDetailsOwner($user);
+                        $this->sendPrintDetailsOwner($user);
                     }
                         
                     if (!Craft::$app->elements->saveElement($user)) {
@@ -207,7 +207,7 @@ class PaymentController extends Controller
                 $extraMember = Entry::find()->id($extraMemberId)->one();
                 if ($extraMember) {
                     $extraMember->setFieldValue('paymentDate', $paymentDate);
-                    if (!Craft::$app->elements->saveElement($extraMember)) {
+                    if (!Craft::$app->elements->saveElement($extraMember, false)) {
                         Craft::error('Failed to update extra member payment date for entry ID ' . $extraMemberId, __METHOD__);
                     }
                 }
