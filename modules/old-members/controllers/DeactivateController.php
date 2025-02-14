@@ -17,16 +17,6 @@ class DeactivateController extends Controller
 
     public function actionDeactivate(): Response
     {
-        // $currentUser = Craft::$app->getUser()->getIdentity();
-        // if (!$currentUser) {
-        //     throw new ForbiddenHttpException('You must be logged in to access this page.');
-        // }
-
-        // // ✅ Check if the user is an admin OR in the `membersAdmin` group
-        // if (!$currentUser->admin && !$currentUser->isInGroup('membersAdmin')) {
-        //     throw new ForbiddenHttpException('You do not have permission to perform this action.');
-        // }
-
         $users = User::find()
             ->group(['members', 'membersGroup']) // Adjust if needed
             ->customStatus(['old', 'oldRenew']) // Filtering users by memberType

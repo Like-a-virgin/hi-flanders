@@ -178,19 +178,19 @@ class PaymentController extends Controller
                 $user = Craft::$app->users->getUserById($userId);
                 if ($user) {
 
+                    $originalStatus = $user->status;
+                    $user->status = $originalStatus;
+
                     if ($memberships) {
                         $user->setFieldValue('paymentDate', $paymentDate);
                         $user->setFieldValue('paymentType', 'online');
-
                         $user->setFieldValue('totalPayedMembers', $metadata->membershipTotal);
-                        
                         $this->sendAccountConfirmationEmail($user);
                     }
                     
                     if ($print) {
                         $user->setFieldValue('totalPayedPrint', $metadata->printTotal);
                         $user->setFieldValue('payedPrintDate', $paymentDate);
-                        
                         $this->sendPrintDetailsOwner($user);
                     }
                         
@@ -198,19 +198,33 @@ class PaymentController extends Controller
                         Craft::error('Failed to update user payment date.', __METHOD__);
                     }
 
+                    $transaction = Craft::$app->getDb()->beginTransaction();
+                    try {
+                        if (!Craft::$app->elements->saveElement($user, false)) {
+                            Craft::error('Failed to update user payment date.', __METHOD__);
+                            $transaction->rollBack();
+                        } else {
+                            Craft::info('User saved successfully.', __METHOD__);
+                            $transaction->commit();
+                        }
+                    } catch (\Throwable $e) {
+                        Craft::error('Exception while saving user: ' . $e->getMessage(), __METHOD__);
+                        $transaction->rollBack();
+                    }
+
                     $this->sendPaymentConfirmationEmail($user, $totalAmount);
                 }
             }
 
-            foreach ($extraMemberIds as $extraMemberId) {
-                $extraMember = Entry::find()->id($extraMemberId)->one();
-                if ($extraMember) {
-                    $extraMember->setFieldValue('paymentDate', $paymentDate);
-                    if (!Craft::$app->elements->saveElement($extraMember, false)) {
-                        Craft::error('Failed to update extra member payment date for entry ID ' . $extraMemberId, __METHOD__);
-                    }
-                }
-            }
+            // foreach ($extraMemberIds as $extraMemberId) {
+            //     $extraMember = Entry::find()->id($extraMemberId)->one();
+            //     if ($extraMember) {
+            //         $extraMember->setFieldValue('paymentDate', $paymentDate);
+            //         if (!Craft::$app->elements->saveElement($extraMember, false)) {
+            //             Craft::error('Failed to update extra member payment date for entry ID ' . $extraMemberId, __METHOD__);
+            //         }
+            //     }
+            // }
         }
 
         return $this->asJson(['success' => true]);
