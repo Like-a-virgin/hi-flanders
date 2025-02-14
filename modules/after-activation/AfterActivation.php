@@ -43,8 +43,6 @@ class AfterActivation extends BaseModule
             function (UserEvent $event) {
                 $user = $event->user;
 
-                Craft::dd(Craft::$app->request->getPathInfo());
-
                 if (Craft::$app->request->getIsPost() && Craft::$app->request->getPathInfo() === 'membership-payments/payment/webhook') {
                     Craft::info("Skipping activation email for user {$user->email} (triggered by payment webhook)", __METHOD__);
                     return;
