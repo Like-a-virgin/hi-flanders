@@ -79,7 +79,7 @@ class AfterActivation extends BaseModule
             $htmlBody = null;
             $subject = null;
 
-            if ($memberType === 'groupYouth') {
+            if ($memberType === 'groupYouth' && $paymentType != null) {
                 $templatePath = $baseTemplateUrl . '/verification-youth';
                 $htmlBody = Craft::$app->getView()->renderTemplate($templatePath, [
                     'name' => $user->getFieldValue('organisation'),
