@@ -35,6 +35,8 @@ class AfterActivation extends BaseModule
 
     }
 
+    private static $emailSentUsers = [];
+    
     private function attachEventHandlers(): void 
     {
         Event::on(
@@ -43,19 +45,21 @@ class AfterActivation extends BaseModule
             function (UserEvent $event) {
                 $user = $event->user;
 
-                if (Craft::$app->request->getIsConsoleRequest() || Craft::$app->request->isPost) {
-                    Craft::info("Skipping activation email because it's triggered by payment response", __METHOD__);
+                if (isset(self::$emailSentUsers[$user->id])) {
+                    Craft::info("Skipping email, already sent during this request for user {$user->email}", __METHOD__);
                     return;
                 }
+
                 if ($user->getFieldValue('paymentType') === 'online') {
                     Craft::info("Skipping activation email for user {$user->email} (activated via Mollie)", __METHOD__);
                     return;
                 }    
 
-                if (!Craft::$app->getSession()->get("activation_mail_sent_{$user->id}")) {
-                    $this->sendSuccesMail($user);
-                    Craft::$app->getSession()->set("activation_mail_sent_{$user->id}", true);
-                }
+                self::$emailSentUsers[$user->id] = true;
+
+                // Send the email
+                $this->sendSuccesMail($user);
+
             }
         );
     }
