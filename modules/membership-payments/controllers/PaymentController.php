@@ -184,7 +184,7 @@ class PaymentController extends Controller
 
                         $user->setFieldValue('totalPayedMembers', $metadata->membershipTotal);
                         
-                        // $this->sendAccountConfirmationEmail($user);
+                        $this->sendAccountConfirmationEmail($user);
                     }
                     
                     if ($print) {
