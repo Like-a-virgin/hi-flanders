@@ -179,26 +179,26 @@ class PaymentController extends Controller
                 if ($user) {
                     
                     if ($memberships) {
-                        $user->setFieldValue('paymentDate', $paymentDate);
-                        $user->setFieldValue('paymentType', 'online');
+                        // $user->setFieldValue('paymentDate', $paymentDate);
+                        // $user->setFieldValue('paymentType', 'online');
 
-                        $user->setFieldValue('totalPayedMembers', $metadata->membershipTotal);
+                        // $user->setFieldValue('totalPayedMembers', $metadata->membershipTotal);
                         
-                        $this->sendAccountConfirmationEmail($user);
+                        // $this->sendAccountConfirmationEmail($user);
                     }
                     
                     if ($print) {
-                        $user->setFieldValue('totalPayedPrint', $metadata->printTotal);
+                        // $user->setFieldValue('totalPayedPrint', $metadata->printTotal);
                         $user->setFieldValue('payedPrintDate', $paymentDate);
                         
-                        $this->sendPrintDetailsOwner($user);
+                        // $this->sendPrintDetailsOwner($user);
                     }
                         
-                    // if (!Craft::$app->elements->saveElement($user, false)) {
-                    //     Craft::error('Failed to update user payment date.', __METHOD__);
-                    // }
+                    if (!Craft::$app->elements->saveElement($user, false)) {
+                        Craft::error('Failed to update user payment date.', __METHOD__);
+                    }
 
-                    $this->sendPaymentConfirmationEmail($user, $totalAmount);
+                    // $this->sendPaymentConfirmationEmail($user, $totalAmount);
                 }
             }
 
