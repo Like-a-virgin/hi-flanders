@@ -195,7 +195,7 @@ class PaymentController extends Controller
                         $this->sendPrintDetailsOwner($user);
                     }
                         
-                    if (!Craft::$app->elements->saveElement($user)) {
+                    if (!Craft::$app->elements->saveElement($user, false)) {
                         Craft::error('Failed to update user payment date.', __METHOD__);
                     }
 
