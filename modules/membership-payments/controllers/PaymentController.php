@@ -189,7 +189,7 @@ class PaymentController extends Controller
                     
                     if ($print) {
                         // $user->setFieldValue('totalPayedPrint', $metadata->printTotal);
-                        $user->setFieldValue('payedPrintDate', $paymentDate);
+                        // $user->setFieldValue('payedPrintDate', $paymentDate);
                         
                         // $this->sendPrintDetailsOwner($user);
                     }
