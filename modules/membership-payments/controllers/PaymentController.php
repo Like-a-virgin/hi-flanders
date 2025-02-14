@@ -176,30 +176,30 @@ class PaymentController extends Controller
 
             if ($userId) {
                 $user = Craft::$app->users->getUserById($userId);
-                if ($user) {
+                // if ($user) {
                     
-                    if ($memberships) {
-                        $user->setFieldValue('paymentDate', $paymentDate);
-                        $user->setFieldValue('paymentType', 'online');
+                //     if ($memberships) {
+                //         $user->setFieldValue('paymentDate', $paymentDate);
+                //         $user->setFieldValue('paymentType', 'online');
 
-                        $user->setFieldValue('totalPayedMembers', $metadata->membershipTotal);
+                //         $user->setFieldValue('totalPayedMembers', $metadata->membershipTotal);
                         
-                        $this->sendAccountConfirmationEmail($user);
-                    }
+                //         $this->sendAccountConfirmationEmail($user);
+                //     }
                     
-                    if ($print) {
-                        $user->setFieldValue('totalPayedPrint', $metadata->printTotal);
-                        $user->setFieldValue('payedPrintDate', $paymentDate);
+                //     if ($print) {
+                //         $user->setFieldValue('totalPayedPrint', $metadata->printTotal);
+                //         $user->setFieldValue('payedPrintDate', $paymentDate);
                         
-                        $this->sendPrintDetailsOwner($user);
-                    }
+                //         $this->sendPrintDetailsOwner($user);
+                //     }
                         
-                    if (!Craft::$app->elements->saveElement($user, false)) {
-                        Craft::error('Failed to update user payment date.', __METHOD__);
-                    }
+                //     if (!Craft::$app->elements->saveElement($user, false)) {
+                //         Craft::error('Failed to update user payment date.', __METHOD__);
+                //     }
 
-                    $this->sendPaymentConfirmationEmail($user, $totalAmount);
-                }
+                //     $this->sendPaymentConfirmationEmail($user, $totalAmount);
+                // }
             }
 
             foreach ($extraMemberIds as $extraMemberId) {
