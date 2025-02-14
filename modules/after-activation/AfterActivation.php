@@ -43,22 +43,20 @@ class AfterActivation extends BaseModule
             function (UserEvent $event) {
                 $user = $event->user;
 
-                Craft::dd('test');
+                if (Craft::$app->request->getIsPost() && Craft::$app->request->getPathInfo() === 'membership-payments/payment/webhook') {
+                    Craft::info("Skipping activation email for user {$user->email} (triggered by payment webhook)", __METHOD__);
+                    return;
+                }
 
-                // if (Craft::$app->request->getIsPost() && Craft::$app->request->getPathInfo() === 'membership-payments/payment/webhook') {
-                //     Craft::info("Skipping activation email for user {$user->email} (triggered by payment webhook)", __METHOD__);
-                //     return;
-                // }
+                if ($user->getFieldValue('paymentType') === 'online') {
+                    Craft::info("Skipping activation email for user {$user->email} (activated via Mollie)", __METHOD__);
+                    return;
+                }    
 
-                // if ($user->getFieldValue('paymentType') === 'online') {
-                //     Craft::info("Skipping activation email for user {$user->email} (activated via Mollie)", __METHOD__);
-                //     return;
-                // }    
-
-                // if (!Craft::$app->getSession()->get("activation_mail_sent_{$user->id}")) {
-                //     $this->sendSuccesMail($user);
-                //     Craft::$app->getSession()->set("activation_mail_sent_{$user->id}", true);
-                // }
+                if (!Craft::$app->getSession()->get("activation_mail_sent_{$user->id}")) {
+                    $this->sendSuccesMail($user);
+                    Craft::$app->getSession()->set("activation_mail_sent_{$user->id}", true);
+                }
             }
         );
     }
@@ -109,7 +107,7 @@ class AfterActivation extends BaseModule
                     $subject = 'Yes! Je bent nu officieel lid van Hi Flanders 😁';
                 }
 
-            } elseif ($memberType === 'individual' && $memberPrice != null && $registeredBy === 'self') {
+            } elseif ($memberType === 'individual' && $memberPrice != null && $registeredBy === 'self' && $paymentType !== 'online') {
                 $templatePath = 'email/activation/' . $lang . '/activation-pay-request';
                 $baseUrl = Craft::$app->getSites()->currentSite->getBaseUrl();
 
