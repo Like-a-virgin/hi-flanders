@@ -177,7 +177,8 @@ class PaymentController extends Controller
             if ($userId) {
                 $user = Craft::$app->users->getUserById($userId);
                 if ($user) {
-                    
+                    Craft::$app->session->set('skip_activation_email', true);
+
                     if ($memberships) {
                         $user->setFieldValue('paymentDate', $paymentDate);
                         $user->setFieldValue('paymentType', 'online');
@@ -189,7 +190,6 @@ class PaymentController extends Controller
                     
                     if ($print) {
                         $user->setFieldValue('totalPayedPrint', $metadata->printTotal);
-                        
                         $user->setFieldValue('payedPrintDate', $paymentDate);
                         
                         $this->sendPrintDetailsOwner($user);
@@ -200,6 +200,7 @@ class PaymentController extends Controller
                     }
 
                     $this->sendPaymentConfirmationEmail($user, $totalAmount);
+                    Craft::$app->session->remove('skip_activation_email');
                 }
             }
 
