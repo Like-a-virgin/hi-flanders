@@ -43,6 +43,10 @@ class AfterActivation extends BaseModule
             function (UserEvent $event) {
                 $user = $event->user;
 
+                if (Craft::$app->request->getIsConsoleRequest() || Craft::$app->request->isPost) {
+                    Craft::info("Skipping activation email because it's triggered by payment response", __METHOD__);
+                    return;
+                }
                 if ($user->getFieldValue('paymentType') === 'online') {
                     Craft::info("Skipping activation email for user {$user->email} (activated via Mollie)", __METHOD__);
                     return;
