@@ -179,17 +179,17 @@ class PaymentController extends Controller
                 if ($user) {
                     
                     if ($memberships) {
-                        // $user->setFieldValue('paymentDate', $paymentDate);
-                        // $user->setFieldValue('paymentType', 'online');
+                        $user->setFieldValue('paymentDate', $paymentDate);
+                        $user->setFieldValue('paymentType', 'online');
 
-                        // $user->setFieldValue('totalPayedMembers', $metadata->membershipTotal);
+                        $user->setFieldValue('totalPayedMembers', $metadata->membershipTotal);
                         
                         // $this->sendAccountConfirmationEmail($user);
                     }
                     
                     if ($print) {
-                        // $user->setFieldValue('totalPayedPrint', $metadata->printTotal);
-                        // $user->setFieldValue('payedPrintDate', $paymentDate);
+                        $user->setFieldValue('totalPayedPrint', $metadata->printTotal);
+                        $user->setFieldValue('payedPrintDate', $paymentDate);
                         
                         // $this->sendPrintDetailsOwner($user);
                     }
