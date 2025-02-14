@@ -177,7 +177,7 @@ class PaymentController extends Controller
             if ($userId) {
                 $user = Craft::$app->users->getUserById($userId);
                 if ($user) {
-
+                    
                     if ($memberships) {
                         $user->setFieldValue('paymentDate', $paymentDate);
                         $user->setFieldValue('paymentType', 'online');
