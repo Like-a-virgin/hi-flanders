@@ -93,7 +93,7 @@
             </div>
             <div class="formbox__column--full">                
                 <label class="formbox__label" for="birthday">{{'Geboortedatum'|t}}</label>
-                {{ input('text', 'fields[birthday]', user.birthday ?? null, {
+                {{ input('text', 'fields[birthday]', null, {
                     id: 'birthday',
                     placeholder: 'Geboortedatum'|t,
                     onFocus: "(this.type = 'date', this.placeholder = '')",
@@ -123,7 +123,7 @@
                     id: 'number',
                     placeholder: 'Nr'|t,
                     required: true
-                }) }}
+                }) }} 
             </div>
             <div class="formbox__column--1-4">
                 <label class="formbox__label" for="bus">{{ 'Bus'|t }}</label>
@@ -184,6 +184,16 @@
                 }) }} 
                 <span class="checkmark"></span>
                 <p>{{'Inschrijven voor nieuwsbrieven.'|t}}</p>
+            </div>
+            <div class="formbox__checkbox formbox__column--pp formbox__column--full">
+                <label for="newsletterSchool" class="formbox__check-label">
+                {{ input('checkbox', 'fields[newsletterSchool]', 'enrollSchool' , {
+                    id: 'newsletterSchool',
+                    required: true,
+                    checked: user.newsletterSchool.storage is defined and 'enrollSchool' in user.newsletter.storage
+                }) }} 
+                <span class="checkmark"></span>
+                <p>{{'Inschrijven voor schoolnieuwsbrieven.'|t}}</p>
             </div>
             <button class="formbox__button formbox__column--full">{{'Registreer'|t}}</button>
         </form>

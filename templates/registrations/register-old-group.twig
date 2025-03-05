@@ -202,6 +202,16 @@
                 <span class="checkmark"></span>
                 <p>{{'Inschrijven voor nieuwsbrieven.'|t}}</p>
             </div>
+            <div class="formbox__checkbox formbox__column--pp formbox__column--full">
+                <label for="newsletterSchool" class="formbox__check-label">
+                {{ input('checkbox', 'fields[newsletterSchool]', 'enrollSchool' , {
+                    id: 'newsletterSchool',
+                    required: true,
+                    checked: user.newsletterSchool.storage is defined and 'enrollSchool' in user.newsletter.storage
+                }) }} 
+                <span class="checkmark"></span>
+                <p>{{'Inschrijven voor schoolnieuwsbrieven.'|t}}</p>
+            </div>
             <button class="formbox__button formbox__column--full">{{'Registreer'|t}}</button>
         </form>
         <div class="formbox__options">

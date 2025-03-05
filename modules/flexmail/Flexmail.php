@@ -73,29 +73,34 @@ class Flexmail extends BaseModule
         $client = new Client();
 
         $newsletterField = $user->getFieldValue('newsletter');
-        $customCheckboxValue = false;
+        $newsletterSchoolField = $user->getFieldValue('newsletterSchool');
+        $language = $user->getFieldValue('lang')->value ?? 'nl';
+        $interests = [];
 
         if ($newsletterField) {
             foreach ($newsletterField as $option) {
                 if ($option->value === 'enroll' && $option->selected) {
-                    $customCheckboxValue = true;
-                    break;
+                    if ($language === 'nl') {
+                        $interests[] = '19cf14ba-4350-4e6b-8773-ee738a0b2f49';
+                    }
+                }
+            }
+        }
+        
+        if ($newsletterSchoolField) {
+            foreach ($newsletterSchoolField as $option) {
+                if ($option->value === 'enroll' && $option->selected) {
+                    if ($language === 'nl') {
+                        $interests[] = 'a30976b4-7613-42ce-a4bb-497c6616e1e3';
+                    } elseif ($language === 'fr') {
+                        $interests[] = 'e8be5ac9-597d-460c-af98-a6e4b5fb31a5';
+                    }
                 }
             }
         }
 
-        $contactData = [
-            'first_name' => $user->getFieldValue('altFirstName') ?? $user->getFieldValue('organisation'),
-            'name' => $user->getFieldValue('altLastName') ?? $user->getFieldValue('contactPerson'),
-            'language' => $user->getFieldValue('lang')->value ?? 'nl',
-            'custom_fields' => [
-                'lid_type' => $user->getFieldValue('memberType')->value ?? '',
-                'nieuwsbrief' => $customCheckboxValue ? 'true' : 'false',
-            ]        
-        ];
-
+        
         try {
-            
             $existingContactResponse = $client->get("$apiUrl?email={$user->email}", [
                 'auth' => [$apiUsername, $apiPassword]
             ]);
@@ -108,9 +113,22 @@ class Flexmail extends BaseModule
                     $updateUrl = "$apiUrl/$contactId";
                     $client->patch($updateUrl, [
                         'auth' => [$apiUsername, $apiPassword],
-                        'json' => $contactData,
+                        'json' => [
+                            'first_name' => $user->getFieldValue('altFirstName') ?? $user->getFieldValue('organisation'),
+                            'name' => $user->getFieldValue('altLastName') ?? $user->getFieldValue('contactPerson'),
+                            'language' => $language,
+                            'custom_fields' => [
+                                'lid_type' => $user->getFieldValue('memberType')->value ?? '',
+                            ],
+                        ],
                     ]);
 
+                    foreach ($interests as $interestId) {
+                        $client->post("$apiUrl/$contactId/interest-subscriptions", [
+                            'auth' => [$apiUsername, $apiPassword],
+                            'json' => ['interest_id' => $interestId],
+                        ]);
+                    }
                     
                     Craft::info("User {$user->email} updated in Flexmail.", __METHOD__);
                     return;
@@ -124,15 +142,37 @@ class Flexmail extends BaseModule
         }
 
         try {
-            $contactData['email'] = $user->email;
-            $contactData['source'] = 861500;
-            $client->post($apiUrl, [
+            $contactData = [
+                'email' => $user->email,
+                'first_name' => $user->getFieldValue('altFirstName') ?? $user->getFieldValue('organisation'),
+                'name' => $user->getFieldValue('altLastName') ?? $user->getFieldValue('contactPerson'),
+                'language' => $language,
+                'custom_fields' => [
+                    'lid_type' => $user->getFieldValue('memberType')->value ?? '',
+                ],
+                'source' => 861500,
+            ];
+            
+            $createResponse = $client->post($apiUrl, [
                 'auth' => [$apiUsername, $apiPassword],
                 'json' => $contactData,
             ]);
-            Craft::info("User {$user->email} created in Flexmail.", __METHOD__);
+            
+            $createdContact = json_decode($createResponse->getBody(), true);
+            $contactId = $createdContact['id'] ?? null;
+            
+            if ($contactId) {
+                foreach ($interests as $interestId) {
+                    $client->post("$apiUrl/$contactId/interest-subscriptions", [
+                        'auth' => [$apiUsername, $apiPassword],
+                        'json' => ['interest_id' => $interestId],
+                    ]);
+                }
+                Craft::info("User {$user->email} created and subscribed to interests in Flexmail.", __METHOD__);
+            }
         } catch (\Exception $e) {
             Craft::error('Flexmail sync error: ' . $e->getMessage(), __METHOD__);
+            Craft::dd('error');
         }
     }
 }

@@ -36,6 +36,15 @@
             }
         }
     }
+
+    &__option-btn--open {
+        background-color: $clr-secondary;
+        color: $clr-primary;
+        
+        .filter__option-icon {
+            fill: $clr-primary;
+        }
+    }
     
     &__box {
         position: absolute;

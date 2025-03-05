@@ -37,7 +37,7 @@
                 {% set errors = user.getErrors() %}
                 {% if errors|length > 0 %}                
                     <div class="formbox__error formbox__column--full">
-                        <p>Niet alle velden zijn correct ingevuld.</p>
+                        <p>{{'Niet alle velden zijn correct ingevuld'|t}}.</p>
                     </div>
                 {% endif %}
                 {% if user and user.getErrors('email') %}
@@ -153,7 +153,7 @@
                     {{ svg("assets/icons/eye.svg")|attr({class: 'formbox__see-pass-icon' }) }}
                 </button>
             </div>
-            {% if currentSite.language is not same as 'en' %}            
+            {% if currentSite.language is same as 'nl' %}            
                 <div class="formbox__checkbox formbox__column--pp formbox__column--full">
                     <label for="newsletter" class="formbox__check-label">
                     {{ input('checkbox', 'fields[newsletter]', 'enroll' , {
@@ -163,6 +163,18 @@
                     }) }} 
                     <span class="checkmark"></span>
                     <p>{{'Ik wil me inschrijven voor nieuwsbrieven.'|t}}</p>
+                </div>
+            {% endif %}
+            {% if currentSite.language is not same as 'en' %}            
+                <div class="formbox__checkbox formbox__column--pp formbox__column--full">
+                    <label for="newsletterSchool" class="formbox__check-label">
+                    {{ input('checkbox', 'fields[newsletterSchool]', 'enroll' , {
+                        id: 'newsletterSchool',
+                        required: true,
+                        checked: user.newsletterSchool.storage is defined and 'enroll' in user.newsletterSchool.storage
+                    }) }} 
+                    <span class="checkmark"></span>
+                    <p>{{'Ik wil me inschrijven voor de schoolnieuwsbrieven.'|t}}</p>
                 </div>
             {% endif %}
             <div class="formbox__checkbox formbox__column--pp formbox__column--full">

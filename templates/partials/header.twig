@@ -20,7 +20,10 @@
                     <a class="btn {{ currentUrl is same as '' ? 'btn--prim-selected' : 'btn--prim' }}" href="/">{{'Leden'|t}}</a>
                 {% endif %}
             {% endif %}
-            <a class="btn btn--prim " href="{{ craft.entries.section('mainWebsite').one().linkExtern }}">{{'Naar website'|t}}</a>
+            {% if not user or user and user.getGroups() and user.getGroups()|first.handle is same as 'members' %}
+                <a class="btn btn--prim " href="{{ craft.entries.section('mainWebsite').one().linkExtern }}">{{'Naar website'|t}}</a>
+            {% endif %}
+            
             {% if currentUser %}
                 <a class="btn btn--prim logout" href="{{ logoutUrl }}">{{'Logout'|t}}</a>
             {% else %}

@@ -50,12 +50,29 @@ class ConfirmEmail extends BaseModule
                     if ($confirmEmail !== null) {
                         // Validate that the email and confirmEmail fields match
                         if ($user->email !== $confirmEmail) {
-                            $user->addError('email', 'Email addresses do not match.');
+                            $user->addError('email', Craft::t('site', 'E-mailadressen komen niet overeen.'));
                             $event->isValid = false;
                         }
                     }
                 }
+
+                if ($event->isNew) {
+                    Craft::error("Before Save Triggered for: " . $user->email, __METHOD__);
+
+                    if ($this->checkUserExists($user)) {
+                        $user->addError('email', Craft::t('site', 'Dit e-mailadres is al in gebruik, maar is gedeactiveerd'));
+                        $event->isValid = false;
+                        Craft::$app->getSession()->setError("Dit e-mailadres is al in gebruik. Gebruik een ander e-mailadres of herstel je wachtwoord.");
+                        Craft::error("User save blocked: " . $user->email, __METHOD__);
+                        return;
+                    }
+                }
             }
         );
+    }
+
+    private function checkUserExists(User $user): bool
+    {
+        return Craft::$app->users->getUserByUsernameOrEmail($user->email) !== null;
     }
 }
