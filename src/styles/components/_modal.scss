@@ -3,7 +3,7 @@
 .modal {
     width: 100vw;
     height: 100vh;
-    overflow: scroll;
+    overflow-y: scroll;
     backdrop-filter: blur(8px); 
 
     position: fixed;

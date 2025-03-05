@@ -1,7 +1,7 @@
 {% set selectedMember = submissionsQuery|filter(i => i.id == submissionId)|first %}
 
 <div class="modal">
-    <div class="modal__content modal__content--center">
+    <div class="modal__content">
         <div class="box">        
             <div class="box__heading box__heading--center">
                 <h2>{{ selectedMember.form.title }}</h2>
@@ -108,6 +108,32 @@
                         } %}
                     </div>
                 {% endif %}
+                {% if "groupMembership" in selectedMember.form.handle %}                
+                    <div class="box__wrapper box__wrapper--labels">
+                        {% include "components/subtitle-box.twig" with {
+                            subtitle: 'Jeugdgroep'|t
+                        } %}
+                        {% include "components/info-box.twig" with {
+                            span: 4, 
+                            info: selectedMember.nieuwsbrief is same as 1 ? 'ja'|t : 'nee'|t,
+                        } %}
+                    </div>
+                {% endif %}
+                <div class="box__wrapper box__wrapper--labels">
+                    {% include "components/subtitle-box.twig" with {
+                        subtitle: 'Inschrijven nieuwsbrieven'|t
+                    } %}
+                    {% include "components/info-box.twig" with {
+                        span: 2, 
+                        info: selectedMember.nieuwsbrief ? 'ja'|t : 'nee'|t,
+                        label: 'Algemene nieuwsbrief'|t
+                    } %}
+                    {% include "components/info-box.twig" with {
+                        span: 2, 
+                        info: selectedMember.schoolNieuwsbrief ? 'ja'|t : 'nee'|t,
+                        label: 'Scholen nieuwsbrief'|t
+                    } %}
+                </div>
                 <div class="box__options">
                     <div></div>
                     <button sprig class="btn" s-val:submission-id="{{ null }}">{{'Terug naar overzicht'|t}}</button>
