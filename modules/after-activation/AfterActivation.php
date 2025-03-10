@@ -67,6 +67,7 @@ class AfterActivation extends BaseModule
         $memberRateEntry = $user->getFieldValue('memberRate')->one();
         $memberPrice = $memberRateEntry ? $memberRateEntry->getFieldValue('price') : null;
         $paymentType = $user->getFieldValue('paymentType')->value;
+        $requestPrint = $user->getFieldValue('requestPrint')->value;
         $registeredBy = $user->getFieldValue('registeredBy')->value;
         $lang = $user->getFieldValue('lang')->value;
 
@@ -93,7 +94,7 @@ class AfterActivation extends BaseModule
                     $subject = 'Gelukt: jouw groep is nu lid van Hi Flanders!';
                 }
 
-            } elseif (($memberType === 'individual' || $memberType === 'life') && $paymentType === 'free' ){
+            } elseif (($memberType === 'individual' || $memberType === 'life') && $paymentType === 'free' && $requestPrint === null ){
                 $templatePath = $baseTemplateUrl . '/verification-ind-free';
                 $htmlBody = Craft::$app->getView()->renderTemplate($templatePath , [
                     'name' => $user->getFieldValue('altFirstName'),
