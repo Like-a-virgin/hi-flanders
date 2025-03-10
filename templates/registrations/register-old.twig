@@ -26,7 +26,7 @@
         <div class="formbox__heading">
             <h1>Registreer een oud lid</h1>
         </div>
-        <form class="formbox__form" method="post" accept-charset="UTF-8" novalidate x-data="{payed: false}">
+        <form class="formbox__form" method="post" accept-charset="UTF-8" x-data="{payed: false}">
             {{ csrfInput() }}
             {{ actionInput('users/save-user') }}
             {{ redirectInput(succesUrl) }}

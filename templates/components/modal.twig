@@ -3,7 +3,7 @@
 {% set minDate = now|date_modify('-17 years')|date("Y-m-d") %} 
 {% set priceCard = craft.entries.section('rates').slug('lidkaart').one() %}
 
-<div class="modal" x-data="{editAddress: false, editPayment: false, extraMember: false, editPrint: false}" :class="extraMember ? 'model--no-overflow' : ''" >
+<div class="modal" x-data="{editAddress: false, editPayment: false, extraMember: false, editPrint: false, editBday: false}" :class="extraMember ? 'model--no-overflow' : ''" >
     <div class="modal__content" :class="statusOption ? 'modal--overflow' : ''">    
         <div class="box">
             <div class="box__heading box__heading--center">
@@ -24,10 +24,18 @@
                         } %}
                     </div>
                 {% endif %}
-                <div class="box__wrapper box__wrapper--labels">
-                    {% include "components/subtitle-box.twig" with {
-                        subtitle: 'Persoonsgegevens'|t
-                    } %}
+                <div class="box__wrapper box__wrapper--labels" x-show="!editBday">
+                    {% if selectedMember.getGroups()|first.handle is same as 'members' %}
+                        <div class="box__column box__column--4 box__column--flex-between">
+                            <h3>{{'Persoonsgegevens'|t}}</h3>
+                            <button class="box__function-btn" @click="editBday = true">{{'Wijzigen'|t}} {{ svg("assets/icons/edit.svg")|attr({class: 'box__icon-option box__icon-edit' }) }}</button>
+                        </div>
+                    {% else %}                        
+                        {% include "components/subtitle-box.twig" with {
+                            subtitle: 'Persoonsgegevens'|t
+                        } %}
+                    {% endif %}
+    
                     {% if selectedMember.getGroups()|first.handle is same as 'members' %}                    
                         {% include "components/info-box.twig" with {
                             span: 2, 
@@ -47,7 +55,7 @@
                         } %}
                         {% include "components/info-box.twig" with {
                             span: 2, 
-                            label: 'contactpersoon'|t, 
+                            label: 'Contactpersoon'|t, 
                             info: selectedMember.contactPerson
                         } %}
                     {% endif %}
@@ -65,11 +73,51 @@
                     {% else %}
                         {% include "components/info-box.twig" with {
                             span: 2, 
-                            label: 'Contactpersoon'|t, 
+                            label: 'Tel.'|t, 
                             info: selectedMember.tel
                         } %}
                     {% endif %}
                 </div>
+                {% if selectedMember.getGroups()|first.handle is same as 'members' %}
+                    <form x-show="editBday" class="edit" method="post" accept-charset="UTF-8" enctype="multipart/form-data">
+                        {{ csrfInput() }}
+                        {{ actionInput('users/save-user') }}
+                        {{ hiddenInput('userId', selectedMember.id) }}
+                        {{ redirectInput(currentSite.baseUrl ~ '?' ~ urlFilters) }}
+                        
+                        {% include "components/subtitle-box.twig" with {
+                            subtitle: 'Persoonsgegevens'|t
+                        } %}               
+                        {% include "components/info-box.twig" with {
+                            span: 2, 
+                            label: 'Voornaam'|t, 
+                            info: selectedMember.altFirstName
+                        } %}
+                        {% include "components/info-box.twig" with {
+                            span: 2, 
+                            label: 'Familienaam'|t, 
+                            info: selectedMember.altLastName
+                        } %}
+                        {% include "components/info-box.twig" with {
+                            span: 2, 
+                            label: 'E-mail'|t, 
+                            info: selectedMember.email
+                        } %}
+            
+                        <div class="edit__column--2">
+                            <label class="edit__label" for="birthday">{{'Geboortedatum'|t}}</label>
+                            {{ input('date', 'fields[birthday]', selectedMember.birthday ? selectedMember.birthday|date('Y-m-d') : '', {
+                                id: 'birthday',
+                                required: true,
+                            }) }}
+                        </div>
+                        <div class="box__column--flex">
+                            <button type="submit" class="box__function-btn box__function-btn--save">{{'Opslaan'|t}}</button>
+                            <button @click="editBday = false" type="reset" class="box__function-btn box__function-btn--cancel">{{'Annuleer'}}</button>
+                        </div>
+                    </form>
+                {% endif %}
+                
                 <div x-show="!editAddress" class="box__wrapper box__wrapper--labels">
                     <div class="box__column box__column--4 box__column--flex-between">
                         <h3>{{'Adres'|t}}</h3>

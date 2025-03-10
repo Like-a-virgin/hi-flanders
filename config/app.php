@@ -54,7 +54,7 @@ return [
         'after-activation' => AfterActivation::class,
         'daily-checks' => DailyChecks::class,
         'old-members' => OldMembers::class,
-        'flexmail' => Flexmail::class,
+        // 'flexmail' => Flexmail::class,
     ], 
     'bootstrap' => [
         'admin-register',
@@ -71,6 +71,6 @@ return [
         'after-activation',
         'daily-checks',
         'old-members',
-        'flexmail',
+        // 'flexmail',
     ],
 ];

@@ -25,7 +25,7 @@
         <div class="formbox__heading">
             <h1>Registreer een individu</h1>
         </div>
-        <form class="formbox__form" method="post" accept-charset="UTF-8" novalidate x-data="{payed: false}">
+        <form class="formbox__form" method="post" accept-charset="UTF-8" x-data="{payed: false}">
             {{ csrfInput() }}
             {{ actionInput('users/save-user') }}
             {{ redirectInput(succesUrl) }}
@@ -44,13 +44,11 @@
                 {% if user.getErrors('email') %}
                     <div class="formbox__error formbox__column--full">{{ _self.errorList(user.getErrors('email')) }}</div>
                 {% endif %}
-                {% if user.getErrors('password') %}
-                    <div class="formbox__error formbox__column--full">{{ _self.errorList(user.getErrors('password')) }}</div>
-                {% endif %}
-                {% if user.getErrors('privacyPolicy') %}
-                    <div class="formbox__error formbox__column--full"><p>{{ 'Je moet akkoord gaan met de privacy policy'|t }}</p></div>
-                {% endif %}
+            <pre>
+                {{ dump(errors) }}
+            </pre>
             {% endif %}
+
 
             <div class="formbox__column--full">
                 <label class="formbox__label" for="member-type">{{'Type lid'|t}}</label>
@@ -59,7 +57,7 @@
                     <option value="employee">{{'Werknemer'|t}}</option>
                 </select>
             </div>
-            <div class="formbox__column"> 
+            <div class="formbox__column {{ user and user.getErrors('altFirstName') ? 'formbox__column--error' }}"> 
                 <label class="formbox__label" for="alt-first-name">{{'Voornaam'|t}}</label>
                 {{ input('text', 'fields[altFirstName]', user.altFirstName ?? null, {
                     id: 'alt-first-name',
@@ -67,7 +65,7 @@
                     required: true
                 }) }}
             </div>
-            <div class="formbox__column">     
+            <div class="formbox__column {{ user and user.getErrors('altLastName') ? 'formbox__column--error' }}">     
                 <label class="formbox__label" for="alt-sur-name">{{'Familienaam'|t}}</label>
                 {{ input('text', 'fields[altLastName]', user.altLastName ?? null, {
                     id: 'alt-sur-name',
@@ -75,7 +73,7 @@
                     required: true
                 }) }}
             </div>
-            <div class="formbox__column--full">                
+            <div class="formbox__column--full {{ user and user.getErrors('email') ? 'formbox__column--error' }}">                
                 <label class="formbox__label" for="email">{{'E-mail'|t}}</label>
                 {{ input('email', 'email', user.email ?? null, {
                     id: 'email',
@@ -83,7 +81,7 @@
                     required: true
                 }) }}
             </div> 
-            <div class="formbox__column--full">
+            <div class="formbox__column--full {{ user and user.getErrors('email') ? 'formbox__column--error' }}">
                 <label class="formbox__label" for="confirm-email">{{ 'Confirm E-mail'|t }}</label>
                 {{ input('email', 'confirmEmail', null, {
                     id: 'confirm-email',
@@ -150,7 +148,7 @@
             </div>
             <div class="formbox__column--full">
                 <label class="formbox__label" for="payment-type">{{'Betaalmethode'|t}}</label>
-                <select name="fields[paymentType]" id="payment-type" required @change="payed = $event.target.value !== '' && $event.target.value !== 'free'">
+                <select name="fields[paymentType]" id="payment-type" @change="payed = $event.target.value !== '' && $event.target.value !== 'free'">
                     <option value="">{{'Nog niet betaald'|t}}</option>
                     {% for item in paymentMethods %}
                         <option value="{{item.value}}">{{item.label}}</option>
@@ -158,17 +156,16 @@
                 </select>
             </div>
             <div class="formbox__column--full" x-show="payed">
-                <label class="formbox__label" for="totalPayed">{{'Stad'|t}}</label>
+                <label class="formbox__label" for="totalPayed">{{'Totaal betaald'|t}}</label>
                 {{ input('number', 'fields[totalPayedMembers]', user.city ?? null, {
                     id: 'totalPayed',
                     placeholder: 'Betaald bedrag'|t,
-                    required: true,
                     min: 0
                 }) }}
             </div>
             <div class="formbox__column--full">
                 <label class="formbox__label" for="lang">{{'Berichttaal'|t}}</label>
-                <select name="fields[lang]" id="lang" required>
+                <select name="fields[lang]" id="lang">
                     <option value="nl">{{'Berichttaal'|t}}</option>
                     {% for item in langs %}
                         <option value="{{item.value}}">{{item.label}}</option>
@@ -179,7 +176,6 @@
                 <label for="newsletter" class="formbox__check-label">
                 {{ input('checkbox', 'fields[newsletter]', 'enroll' , {
                     id: 'newsletter',
-                    required: true,
                     checked: user.newsletter.storage is defined and 'enroll' in user.newsletter.storage
                 }) }} 
                 <span class="checkmark"></span>
@@ -189,7 +185,6 @@
                 <label for="newsletterSchool" class="formbox__check-label">
                 {{ input('checkbox', 'fields[newsletterSchool]', 'enrollSchool' , {
                     id: 'newsletterSchool',
-                    required: true,
                     checked: user.newsletterSchool.storage is defined and 'enrollSchool' in user.newsletter.storage
                 }) }} 
                 <span class="checkmark"></span>

@@ -40,13 +40,18 @@ class CustomMemberId extends BaseModule
             function (ElementEvent $event) {
                 $element = $event->element;
 
+                
                 if ($element instanceof User && !$element->id) {
-                    $existingCustomMemberId = $element->getFieldValue('customMemberId');
-
-                    if (empty($existingCustomMemberId)) {
-                        $this->assignCustomMemberId($element);
+                    if ($element->hasErrors()) {
+                        return;
                     } else {
-                        Craft::info("Skipping customMemberId generation for User {$element->email}: already set.", __METHOD__);
+                        $existingCustomMemberId = $element->getFieldValue('customMemberId');
+    
+                        if (empty($existingCustomMemberId)) {
+                            $this->assignCustomMemberId($element);
+                        } else {
+                            Craft::info("Skipping customMemberId generation for User {$element->email}: already set.", __METHOD__);
+                        }
                     }
                 }
             }

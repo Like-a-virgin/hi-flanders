@@ -172,7 +172,6 @@ class Flexmail extends BaseModule
             }
         } catch (\Exception $e) {
             Craft::error('Flexmail sync error: ' . $e->getMessage(), __METHOD__);
-            Craft::dd('error');
         }
     }
 }

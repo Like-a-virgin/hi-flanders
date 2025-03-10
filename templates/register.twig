@@ -77,7 +77,7 @@
                     required: true
                 }) }}
             </div> 
-            <div class="formbox__column--full {{ user and user.getErrors('confirmEmail') ? 'formbox__column--error' }}">
+            <div class="formbox__column--full {{ user and user.getErrors('email') ? 'formbox__column--error' }}">
                 <label class="formbox__label" for="confirm-email">{{ 'Confirm E-mail'|t }}</label>
                 {{ input('email', 'confirmEmail', null, {
                     id: 'confirm-email',

@@ -28,7 +28,7 @@
         <div class="formbox__heading">
             <h2>{{'Registreer groep'|t}}</h2>
         </div>
-        <form class="formbox__form" method="post" accept-charset="UTF-8" novalidate>
+        <form class="formbox__form" method="post" accept-charset="UTF-8">
             {{ csrfInput() }}
             {{ actionInput('users/save-user') }}
             {{ redirectInput(succesUrl) }}
