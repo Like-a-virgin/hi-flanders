@@ -1,4 +1,4 @@
-dateModified: 1741603131
+dateModified: 1741605591
 elementSources:
   craft\elements\Entry:
     -
@@ -182,6 +182,7 @@ meta:
     1d223580-d398-4fc6-af8a-8a1e08933341: 'Extra leden' # Extra leden
     1f19a7ba-f837-4abf-a622-317ac9fc02e5: Errors # Errors
     2d35b4ae-62f0-4cb2-8a94-73ebdae1ef03: 'Member type' # Member type
+    2e9932fc-c9cd-4c23-8ce1-ec6af9d45c81: 'Printaanvraag verstuurd' # Printaanvraag verstuurd
     3fa074c6-e343-4927-8f8e-9c209ddd6261: Betaalmethode # Betaalmethode
     3fab0971-effa-4787-a88b-2778ab3228d6: Notify # Notify
     4a63b33e-aa54-421b-b619-d4bc7f4888e7: Home # Home

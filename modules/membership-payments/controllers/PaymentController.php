@@ -181,36 +181,41 @@ class PaymentController extends Controller
                     if ($memberships) {
                         $user->setFieldValue('paymentDate', $paymentDate);
                         $user->setFieldValue('paymentType', 'online');
-
-                        $user->setFieldValue('totalPayedMembers', $metadata->membershipTotal);
-                        
-                        $this->sendAccountConfirmationEmail($user);
+                        $user->setFieldValue('totalPayedMembers', $metadata->membershipTotal);                       
                     }
                     
                     if ($print) {
                         $user->setFieldValue('totalPayedPrint', $metadata->printTotal);
                         $user->setFieldValue('payedPrintDate', $paymentDate);
-                        
-                        $this->sendPrintDetailsOwner($user);
                     }
                         
-                    if (!Craft::$app->elements->saveElement($user, false)) {
-                        Craft::error('Failed to update user payment date.', __METHOD__);
+                    if (Craft::$app->elements->saveElement($user, false)) {
+                        Craft::info("User payment updated successfully: {$userId}", __METHOD__);
+    
+                        if ($memberships) {
+                            $this->sendAccountConfirmationEmail($user);
+                        }
+    
+                        // if ($print) {
+                        //     $this->sendPrintDetailsOwner($user);
+                        // }
+    
+                        $this->sendPaymentConfirmationEmail($user, $totalAmount);
+                    } else {
+                        Craft::error("Failed to update user payment for user ID: {$userId}", __METHOD__);
                     }
-
-                    $this->sendPaymentConfirmationEmail($user, $totalAmount);
                 }
             }
 
-            foreach ($extraMemberIds as $extraMemberId) {
-                $extraMember = Entry::find()->id($extraMemberId)->one();
-                if ($extraMember) {
-                    $extraMember->setFieldValue('paymentDate', $paymentDate);
-                    if (!Craft::$app->elements->saveElement($extraMember, false)) {
-                        Craft::error('Failed to update extra member payment date for entry ID ' . $extraMemberId, __METHOD__);
-                    }
-                }
-            }
+            // foreach ($extraMemberIds as $extraMemberId) {
+            //     $extraMember = Entry::find()->id($extraMemberId)->one();
+            //     if ($extraMember) {
+            //         $extraMember->setFieldValue('paymentDate', $paymentDate);
+            //         if (!Craft::$app->elements->saveElement($extraMember, false)) {
+            //             Craft::error('Failed to update extra member payment date for entry ID ' . $extraMemberId, __METHOD__);
+            //         }
+            //     }
+            // }
         }
 
         return $this->asJson(['success' => true]);
@@ -315,8 +320,7 @@ class PaymentController extends Controller
             $message = $mailer->compose()
                 ->setTo($user->email)
                 ->setSubject($subject)
-                ->setHtmlBody($htmlBody)
-                ->send();
+                ->setHtmlBody($htmlBody);
 
             if (!$message->send()) {
                 Craft::error('Failed to send payment confirmation email to: ' . $user->email, __METHOD__);
