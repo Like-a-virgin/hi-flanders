@@ -157,7 +157,7 @@
             </div>
             <div class="formbox__column--full">
                 <label class="formbox__label" for="payment-type">{{'Betaalmethode'|t}}</label>
-                <select name="fields[lang]" id="payment-type" required>
+                <select name="fields[lang]" id="payment-type">
                     <option value="nl">{{'Berichttaal'|t}}</option>
                     {% for item in langs %}
                         <option value="{{item.value}}">{{item.label}}</option>
@@ -168,7 +168,6 @@
                 <label for="newsletter" class="formbox__check-label">
                 {{ input('checkbox', 'fields[newsletter]', 'enroll' , {
                     id: 'newsletter',
-                    required: true,
                     checked: user.newsletter.storage is defined and 'enroll' in user.newsletter.storage
                 }) }} 
                 <span class="checkmark"></span>
@@ -178,7 +177,6 @@
                 <label for="newsletterSchool" class="formbox__check-label">
                 {{ input('checkbox', 'fields[newsletterSchool]', 'enrollSchool' , {
                     id: 'newsletterSchool',
-                    required: true,
                     checked: user.newsletterSchool.storage is defined and 'enrollSchool' in user.newsletter.storage
                 }) }} 
                 <span class="checkmark"></span>

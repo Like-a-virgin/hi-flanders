@@ -3,7 +3,7 @@
 {% set minDate = now|date_modify('-17 years')|date("Y-m-d") %} 
 {% set priceCard = craft.entries.section('rates').slug('lidkaart').one() %}
 
-<div class="modal" x-data="{editAddress: false, editPayment: false, extraMember: false, editPrint: false, editBday: false}" :class="extraMember ? 'model--no-overflow' : ''" >
+<div class="modal" x-data="{editAddress: false, editPayment: false, extraMember: false, editPrint: false, editBday: false, editMembership: false}" :class="extraMember ? 'model--no-overflow' : ''" >
     <div class="modal__content" :class="statusOption ? 'modal--overflow' : ''">    
         <div class="box">
             <div class="box__heading box__heading--center">
@@ -25,7 +25,7 @@
                     </div>
                 {% endif %}
                 <div class="box__wrapper box__wrapper--labels" x-show="!editBday">
-                    {% if selectedMember.getGroups()|first.handle is same as 'members' %}
+                    {% if selectedMember.getGroups()|first.handle is same as 'members' and user.getGroups()|first.handle is same as 'membersAdminSuper' %} 
                         <div class="box__column box__column--4 box__column--flex-between">
                             <h3>{{'Persoonsgegevens'|t}}</h3>
                             <button class="box__function-btn" @click="editBday = true">{{'Wijzigen'|t}} {{ svg("assets/icons/edit.svg")|attr({class: 'box__icon-option box__icon-edit' }) }}</button>
@@ -78,7 +78,7 @@
                         } %}
                     {% endif %}
                 </div>
-                {% if selectedMember.getGroups()|first.handle is same as 'members' %}
+                {% if selectedMember.getGroups()|first.handle is same as 'members' and user.getGroups()|first.handle is same as 'membersAdminSuper'  %}
                     <form x-show="editBday" class="edit" method="post" accept-charset="UTF-8" enctype="multipart/form-data">
                         {{ csrfInput() }}
                         {{ actionInput('users/save-user') }}
@@ -214,10 +214,17 @@
                         <button @click="editAddress = false" type="reset" class="box__function-btn box__function-btn--cancel">{{'Annuleer'}}</button>
                     </div>
                 </form>
-                <div class="box__wrapper">
-                    <div class="box__column box__column--4">
-                        <h3>{{'Lidmaatschap'|t}}</h3>
-                    </div>
+                <div class="box__wrapper" x-show="!editMembership">
+                    {% if selectedMember.getGroups()|first.handle is same as 'members' and user.getGroups()|first.handle is same as 'membersAdminSuper' %} 
+                        <div class="box__column box__column--4 box__column--flex-between">
+                            <h3>{{'Lidmaatschap'|t}}</h3>
+                            <button class="box__function-btn" @click="editMembership = true">{{'Wijzigen'|t}} {{ svg("assets/icons/edit.svg")|attr({class: 'box__icon-option box__icon-edit' }) }}</button>
+                        </div>
+                    {% else %}                        
+                        {% include "components/subtitle-box.twig" with {
+                            subtitle: 'Lidmaatschap'|t
+                        } %}
+                    {% endif %}
                     {% include "components/info-box.twig" with {
                         span: 2, 
                         label: 'Type'|t,
@@ -240,6 +247,47 @@
                         info: selectedMember.memberDueDate|date("d/m/Y")
                     } %}
                 </div>
+                <form x-show="editMembership" class="edit" method="post" accept-charset="UTF-8" enctype="multipart/form-data">
+                    {{ csrfInput() }}
+                    {{ actionInput('users/save-user') }}
+                    {{ hiddenInput('userId', selectedMember.id) }}
+                    {{ redirectInput(currentSite.baseUrl ~ '?' ~ urlFilters) }}
+
+                    {% include "components/subtitle-box.twig" with {
+                        subtitle: 'Lidmaatschap'|t
+                    } %}
+
+                    {% include "components/info-box.twig" with {
+                        span: 2, 
+                        label: 'Type'|t,
+                        info: selectedMember.memberRate.one().title, 
+                        prim: true
+                    } %}
+                    {% include "components/info-box.twig" with {
+                        span: 2, 
+                        label: 'Registratiedatum'|t, 
+                        info: selectedMember.dateCreated|date("d/m/Y")
+                    } %}
+
+                    <div class="edit__column--2">
+                        <label class="edit__label" for="renewedDate">{{'Vernieuwd op'|t}}</label>
+                        {{ input('date', 'fields[renewedDate]', selectedMember.renewedDate ? selectedMember.renewedDate|date('Y-m-d') : '', {
+                            id: 'renewedDate',
+                        }) }}
+                    </div>
+
+                    <div class="edit__column--2">
+                        <label class="edit__label" for="memberDueDate">{{'Vervaldatum'|t}}</label>
+                        {{ input('date', 'fields[memberDueDate]', selectedMember.memberDueDate ? selectedMember.memberDueDate|date('Y-m-d') : '', {
+                            id: 'memberDueDate',
+                        }) }}
+                    </div>
+
+                    <div class="box__column--flex">
+                        <button type="submit" class="box__function-btn box__function-btn--save">{{'Opslaan'|t}}</button>
+                        <button @click="editMembership = false" type="reset" class="box__function-btn box__function-btn--cancel">{{'Annuleer'}}</button>
+                    </div>
+                </form>
                 {% if selectedMember.getGroups()|first.handle is same as 'members' %}  
                     <div class="box__wrapper">
                         <div class="box__column box__column--4 box__column--flex-between">

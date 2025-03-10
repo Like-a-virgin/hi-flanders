@@ -8,7 +8,7 @@
         {% redirect 'login' %}
     {% endif %}
     {% set langs = [{label: 'Nederlands'|t, value: 'nl' }, {label: 'Engels'|t, value: 'en' }, {label: 'Frans'|t, value: 'fr' }] %}
-    {% set memberTypes = [{label: 'Individueel'|t, value: 'individual' }, {label: 'Life member'|t, value: 'life' }, {label: 'Werknemer'|t, value: 'employee' }] %}
+    {% set memberTypes = [{label: 'Individueel'|t, value: 'individual' }, {label: 'Life member'|t, value: 'life' }] %}
     {% set paymentMethods = [{value: 'hostel', label: 'Hostel'|t}, {value: 'transfer', label: 'Overschrijving'|t}, {value: 'free', label: 'Gratis'|t}] %}
 
     {% set maxDate = now|date_modify('-3 years')|date("Y-m-d") %}
@@ -60,7 +60,7 @@
             <div class="formbox__column--full">
                 <label class="formbox__label" for="member-type">{{'Type lid'|t}}</label>
                 <select name="fields[memberType]" id="member-type" required>
-                    <option value="individual">{{ 'Selecteer een lidtype'|t }}</option>
+                    <option value="">{{ 'Selecteer een lidtype'|t }}</option>
                     {% for item in memberTypes %}                        
                         <option value="{{item.value}}">{{ item.label }}</option>
                     {% endfor %}
@@ -76,7 +76,7 @@
             </div>
             <div class="formbox__column--full">
                 <label class="formbox__label" for="payment-type">{{'Betaalmethode'|t}}</label>
-                <select name="fields[paymentType]" id="payment-type" required @change="payed = $event.target.value !== '' && $event.target.value !== 'free'">
+                <select name="fields[paymentType]" id="payment-type" @change="payed = $event.target.value !== '' && $event.target.value !== 'free'">
                     <option value="">{{ 'Nog niet betaald'|t }}</option>
                     {% for item in paymentMethods %}                        
                         <option value="{{item.value}}">{{ item.label }}</option>
@@ -84,11 +84,10 @@
                 </select>
             </div>
             <div class="formbox__column--full" x-show="payed">
-                <label class="formbox__label" for="totalPayed">{{'Stad'|t}}</label>
+                <label class="formbox__label" for="totalPayed">{{'Totaal betaald'|t}}</label>
                 {{ input('number', 'fields[totalPayedMembers]', null, {
                     id: 'totalPayed',
                     placeholder: 'Betaald bedrag'|t,
-                    required: true,
                     min: 0
                 }) }}
             </div>
@@ -98,7 +97,6 @@
                     id: 'due-date',
                     placeholder: 'Vervaldatum'|t,
                     onFocus: "(this.type = 'date', this.placeholder = '')",
-                    required: true,
                     max: maxDate
                 }) }}
             </div>  
@@ -195,7 +193,7 @@
 
             <div class="formbox__column--full">
                 <label class="formbox__label" for="lang">{{'Berichttaal'|t}}</label>
-                <select name="fields[lang]" id="lang" required>
+                <select name="fields[lang]" id="lang">
                     <option value="nl">{{'Berichttaal'|t}}</option>
                     {% for item in langs %}
                         <option value="{{item.value}}">{{item.label}}</option>
@@ -206,7 +204,6 @@
                 <label for="newsletter" class="formbox__check-label">
                 {{ input('checkbox', 'fields[newsletter]', 'enroll' , {
                     id: 'newsletter',
-                    required: true,
                     checked: user.newsletter.storage is defined and 'enroll' in user.newsletter.storage
                 }) }} 
                 <span class="checkmark"></span>
@@ -216,7 +213,6 @@
                 <label for="newsletterSchool" class="formbox__check-label">
                 {{ input('checkbox', 'fields[newsletterSchool]', 'enrollSchool' , {
                     id: 'newsletterSchool',
-                    required: true,
                     checked: user.newsletterSchool.storage is defined and 'enrollSchool' in user.newsletter.storage
                 }) }} 
                 <span class="checkmark"></span>
