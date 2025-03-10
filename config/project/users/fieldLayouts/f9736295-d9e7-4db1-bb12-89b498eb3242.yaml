@@ -939,6 +939,33 @@ tabs:
         userCondition: null
         warning: null
         width: 100
+      -
+        dateAdded: '2025-03-10T11:49:57+00:00'
+        elementCondition:
+          class: craft\elements\conditions\users\UserCondition
+          conditionRules:
+            -
+              class: craft\elements\conditions\users\GroupConditionRule
+              operator: in
+              uid: 48753541-90e9-4c2a-8391-e33fa3d4616b
+              values:
+                - 50a6f7cb-84e7-4d68-9aa9-3af2d9001e79 # Leden
+                - a21d7477-05ca-43ea-ae84-fc44c3e16a70 # Leden groep
+          elementType: craft\elements\User
+          fieldContext: global
+        fieldUid: 2e9932fc-c9cd-4c23-8ce1-ec6af9d45c81 # Printaanvraag verstuurd
+        handle: null
+        includeInCards: false
+        instructions: null
+        label: null
+        providesThumbs: false
+        required: false
+        tip: null
+        type: craft\fieldlayoutelements\CustomField
+        uid: 1f049913-2115-4170-b8e9-855d70b7911e
+        userCondition: null
+        warning: null
+        width: 100
     name: Lidmaatschap
     uid: 19cf21ec-6b32-476c-a140-abf35779079d
     userCondition: null

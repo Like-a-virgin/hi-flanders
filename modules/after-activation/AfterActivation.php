@@ -67,7 +67,7 @@ class AfterActivation extends BaseModule
         $memberRateEntry = $user->getFieldValue('memberRate')->one();
         $memberPrice = $memberRateEntry ? $memberRateEntry->getFieldValue('price') : null;
         $paymentType = $user->getFieldValue('paymentType')->value;
-        $requestPrint = $user->getFieldValue('requestPrint')->value;
+        $requestPrint = $user->getFieldValue('requestPrint');
         $registeredBy = $user->getFieldValue('registeredBy')->value;
         $lang = $user->getFieldValue('lang')->value;
 

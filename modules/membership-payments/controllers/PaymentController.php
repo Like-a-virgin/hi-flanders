@@ -196,9 +196,9 @@ class PaymentController extends Controller
                             $this->sendAccountConfirmationEmail($user);
                         }
     
-                        // if ($print) {
-                        //     $this->sendPrintDetailsOwner($user);
-                        // }
+                        if ($print) {
+                            $this->sendPrintDetailsOwner($user);
+                        }
     
                         $this->sendPaymentConfirmationEmail($user, $totalAmount);
                     } else {
@@ -335,6 +335,11 @@ class PaymentController extends Controller
     private function sendPrintDetailsOwner(User $user)
     {
         try {
+            if ($user->getFieldValue('requestPrintSend')) {
+                Craft::info("Skipping duplicate print request email for user: {$user->email}", __METHOD__);
+                return;
+            }
+
             $mailer = Craft::$app->mailer;
             Craft::$app->getView()->setTemplatesPath(Craft::getAlias('@root/templates'));
 
@@ -360,6 +365,9 @@ class PaymentController extends Controller
                 Craft::error('Failed to send payment confirmation email to: ' . $user->email, __METHOD__);
             } else {
                 Craft::info('Payment confirmation email sent to: ' . $user->email, __METHOD__);
+
+                $user->setFieldValue('requestPrintSend', true);
+                Craft::$app->elements->saveElement($user, false);
             }
         } catch (\Throwable $e) {
             Craft::error("Error sending payment confirmation email: " . $e->getMessage(), __METHOD__);
