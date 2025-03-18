@@ -4,9 +4,9 @@ instructions: null
 name: LinkExtern
 searchable: false
 settings:
+  fullGraphqlData: false
   maxLength: 255
   showLabelField: false
-  showTargetField: false
   typeSettings:
     __assoc__:
       -
@@ -22,5 +22,5 @@ settings:
   types:
     - url
 translationKeyFormat: null
-translationMethod: none
+translationMethod: site
 type: craft\fields\Link

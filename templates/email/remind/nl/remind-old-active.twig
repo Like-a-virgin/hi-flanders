@@ -1,0 +1,20 @@
+{% extends "email/base.twig" %}
+{% block content %}
+    <p>Hi {{ name }},</p>
+    <p>Vorige week vroegen we jou om je lidmaatschap digitaal te activeren door een wachtwoord te kiezen. We denken dat je dit uit het oog verloren bent. Maar het is nog niet te laat.</p>
+    <p style="margin-bottom: 30px">Activeer nu met 1 klik:</p>
+    <a style="color: #102438;" class="button" href="{{ activationUrl }}">Ik stel mijn wachtwoord in</a>
+    <p style="margin-top: 40px"><u>Activeer je lidmaatschap binnen 7 dagen om zeker te zijn van toegang tot je account.</u></p>
+    <p>Vergeet niet:</p>
+    <ul>
+        <li>Als digitaal lid van Hi Flanders geniet je van <a style="color: #fac000;" href="https://www.hiflanders.be/nl/premium">exclusieve voordelen, kortingen</a> en <a style="color: #fac000;" href="https://www.hiflanders.be/nl/belevingen">inspiratie</a> voor toekomstige verblijven. Maar we gaan je niet om de haverklap bestoken met mails. Jij houdt de controle en kiest hoe vaak je van ons wil horen.</li>
+        <li>Geen paperassen of lidkaart meer bijhouden, alles wordt online geregeld</li>
+        <li>We behandelen jouw gegevens uiteraard vertrouwelijk en veilig, volgens de geldende privacywetgeving. Bekijk onze <a style="color: #fac000;" href="www.hiflanders.be/nl/privacy-policy">privacy policy</a> voor meer info.</li>
+    </u>
+    <p>Bang voor spam? Hoeft niet! Jij houdt de controle en kiest hoe vaak je van ons wil horen. En uiteraard behandelen we jouw gegevens vertrouwelijk en veilig, volgens de geldende privacywetgeving. Bekijk onze <a style="color: #fac000;" href="www.hiflanders.be/nl/privacy-policy">privacy policy</a> voor meer info.</p>
+    <p>Psst, onze <a style="color: #fac000;" href="https://www.hiflanders.be/nl/home">nieuwe website</a> al gezien? Laat je inspireren door onze <a style="color: #fac000;" href="https://www.hiflanders.be/nl/belevingen">belevingspagina</a> en begin alvast je volgende trip te plannen! </p>
+    <p>Heb je vragen of ondervind je problemen online? Dan helpen we je graag verder. Mail naar <a style="color: #fac000;" href="mailto:hi@hiflanders.be">hi@hiflanders.be</a> of bel <a style="color: #fac000;" href="tel:+3232327218">+32 3 232 72 18</a> tijdens de kantooruren.</p>
+    <p>Tot binnenkort in een van onze hostels?</p>
+    <p style="margin-top: 30px">Warme groet & graag tot binnekort,</p>
+    <p>Het Hi Flanders-team</p>
+{% endblock %}

@@ -88,22 +88,26 @@
                         {% include "components/subtitle-box.twig" with {
                             subtitle: 'Persoonsgegevens'|t
                         } %}               
-                        {% include "components/info-box.twig" with {
-                            span: 2, 
-                            label: 'Voornaam'|t, 
-                            info: selectedMember.altFirstName
-                        } %}
-                        {% include "components/info-box.twig" with {
-                            span: 2, 
-                            label: 'Familienaam'|t, 
-                            info: selectedMember.altLastName
-                        } %}
+
+                        <div class="edit__column--2">
+                            <label class="edit__label" for="alt-first-name">{{'Voornaam'|t}}</label>
+                            {{ input('text', 'fields[altFirstName]', selectedMember.altFirstName ? selectedMember.altFirstName : null, {
+                                id: 'alt-first-name',
+                                required: true,
+                            }) }}
+                        </div>
+                        <div class="edit__column--2">
+                            <label class="edit__label" for="alt-sur-name">{{'Familienaam'|t}}</label>
+                            {{ input('text', 'fields[altLastName]', selectedMember.altLastName ? selectedMember.altLastName : null, {
+                                id: 'alt-sur-name',
+                                required: true,
+                            }) }}
+                        </div>
                         {% include "components/info-box.twig" with {
                             span: 2, 
                             label: 'E-mail'|t, 
                             info: selectedMember.email
                         } %}
-            
                         <div class="edit__column--2">
                             <label class="edit__label" for="birthday">{{'Geboortedatum'|t}}</label>
                             {{ input('date', 'fields[birthday]', selectedMember.birthday ? selectedMember.birthday|date('Y-m-d') : '', {
@@ -285,14 +289,14 @@
 
                     <div class="box__column--flex">
                         <button type="submit" class="box__function-btn box__function-btn--save">{{'Opslaan'|t}}</button>
-                        <button @click="editMembership = false" type="reset" class="box__function-btn box__function-btn--cancel">{{'Annuleer'}}</button>
+                        <button @click="editMembership = false" type="reset" class="box__function-btn box__function-btn--cancel">{{'Annuleer'|t}}</button>
                     </div>
                 </form>
                 {% if selectedMember.getGroups()|first.handle is same as 'members' %}  
                     <div class="box__wrapper">
                         <div class="box__column box__column--4 box__column--flex-between">
                             <h3>{{'Kinderen'|t}}</h3>
-                            <button class="box__function-btn box__function-btn--prim" @click="extraMember = true">{{'Kind toevoegen'}} {{ svg("assets/icons/add.svg")|attr({class: 'box__icon-option box__icon-edit' }) }}</button>
+                            <button class="box__function-btn box__function-btn--prim" @click="extraMember = true">{{'Kind toevoegen'|t}} {{ svg("assets/icons/add.svg")|attr({class: 'box__icon-option box__icon-edit' }) }}</button>
                         </div>
                         {% if extraMembers|length > 0 %}
                             {% for item in extraMembers %}
@@ -321,7 +325,7 @@
                 {% endif %}
                 <div x-show="!editPayment" class="box__wrapper">
                     <div class="box__column box__column--4 box__column--flex-between">
-                        <h3>Betaal status</h3>
+                        <h3>{{'Betaal status'|t}}</h3>
                         <button class="box__function-btn" @click="editPayment = true">{{'Wijzigen'|t}} {{ svg("assets/icons/edit.svg")|attr({class: 'box__icon-option box__icon-edit' }) }}</button>
                     </div>
                     {% include "components/info-box.twig" with {
@@ -381,7 +385,7 @@
                 </form>
                 <div class="box__wrapper">
                     <div class="box__column box__column--4 box__column--flex-between">
-                        <h3>{{'Lidkaart'}}</h3>
+                        <h3>{{'Lidkaart'|t}}</h3>
                         <div class="box__row">
                             {% if selectedMember.requestPrint and selectedMember.payedPrintDate %}
                                 <form method="post" accept-charset="UTF-8" enctype="multipart/form-data">
@@ -406,7 +410,7 @@
                     {% include "components/info-box.twig" with {
                         span: 4, 
                         label: selectedMember.requestPrint and selectedMember.payedPrintDate ? 'Type kaart'|t : null, 
-                        info: not selectedMember.requestPrint and not selectedMember.payedPrintDate ? 'Online'|t : selectedMember.requestPrint and not selectedMember.payedPrintDate ? 'Print'|t ~ ' ' ~ 'Nog niet betaald'|t : 'Print en online'|t,
+                        info: not selectedMember.requestPrint and not selectedMember.payedPrintDate ? 'Online'|t : selectedMember.requestPrint and not selectedMember.payedPrintDate ? 'Fysieke lidkaart'|t ~ ' ' ~ 'Nog niet betaald'|t : 'Fysieke lidkaart en online'|t,
                         error: selectedMember.requestPrint and not selectedMember.payedPrintDate
                     } %}
                     {% if selectedMember.requestPrint and selectedMember.payedPrintDate %}
@@ -462,6 +466,12 @@
                                 <button s-val:selectedMember="{{null}}" class="btn" type="submit">
                                     {{'Lid activeren'|t}}
                                 </button>
+                            </form>
+                        {% elseif selectedMember.status is same as 'pending' %}
+                            <form method="POST" action="{{ url('resend-activation') }}">
+                                {{ csrfInput() }}
+                                <input type="hidden" name="id" value="{{ selectedMember.id }}">
+                                <button type="submit" class="btn">{{'Verstuur activatiemail'|t}}</button>
                             </form>
                         {% else %}
                             <button @click="statusOption = true" class="btn btn--red">{{'Lid deactiveren'|t}}</button>

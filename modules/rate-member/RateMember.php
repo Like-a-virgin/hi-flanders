@@ -34,8 +34,10 @@ class RateMember extends BaseModule
                     $customStatus = $element->getFieldValue('customStatus')->value;
                     $memberRate = $element->getFieldValue('memberRate')->one();
                     $status = $element->status;
+                    $currentUser = (Craft::$app->user->identity && Craft::$app->user->identity->isInGroup('membersAdminSuper'));
 
-                    if ($customStatus === 'new' && $status !== 'active' || $customStatus === 'renew' && $status === 'pending' || !$memberRate) {
+                    
+                    if ($customStatus === 'new' && $status !== 'active' || $customStatus === 'renew' && $status === 'pending' || !$memberRate || $currentUser) {
                         $this->assignMemberRate($element);
                     }
                 }

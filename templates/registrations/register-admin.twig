@@ -24,7 +24,7 @@
 
     <div class="formbox">
         <div class="formbox__heading">
-            <h1>Registreer een oud lid</h1>
+            <h1>{{'Registreer een beheerder'|t}}</h1>
         </div>
         <form class="formbox__form" method="post" accept-charset="UTF-8" x-data="{payed: false}">
             {{ csrfInput() }}
@@ -39,6 +39,12 @@
                     <div class="formbox__error formbox__column--full">
                         <p>{{ 'Niet alle velden zijn correct ingevuld.'|t }}</p>
                     </div>
+                    {% if user and user.getErrors('username') %}
+                        <div class="formbox__error formbox__column--full">{{_self.errorList(user.getErrors('username'))}}</div>
+                    {% endif %}
+                    {% if user and user.getErrors('email') %}
+                        <div class="formbox__error formbox__column--full">{{_self.errorList(user.getErrors('email'))}}</div>
+                    {% endif %}
                 {% endif %}
                 {% if user.getErrors('email') %}
                     <div class="formbox__error formbox__column--full">{{ _self.errorList(user.getErrors('email')) }}</div>
@@ -51,15 +57,15 @@
                 {% endif %}
             {% endif %}
 
-            <div class="formbox__column--full"> 
+            <div class="formbox__column--full {{ user and user.getErrors('username') ? 'formbox__column--error' }}"> 
                 <label class="formbox__label" for="username">{{'Gebruikersnaam'|t}}</label>
-                {{ input('text', 'username',  null, {
+                {{ input('text', 'username', user.username ??  null, {
                     id: 'username',
                     placeholder: 'Gebruikersnaam'|t,
                     required: true
                 }) }}
             </div> 
-            <div class="formbox__column--full">                
+            <div class="formbox__column--full {{ user and user.getErrors('email') ? 'formbox__column--error' }}">                
                 <label class="formbox__label" for="email">{{'E-mail'|t}}</label>
                 {{ input('email', 'email', user.email ?? null, {
                     id: 'email',
@@ -67,9 +73,9 @@
                     required: true
                 }) }}
             </div> 
-            <div class="formbox__column--full">
+            <div class="formbox__column--full {{ user and user.getErrors('email') ? 'formbox__column--error' }}">
                 <label class="formbox__label" for="confirm-email">{{ 'Confirm E-mail'|t }}</label>
-                {{ input('email', 'confirmEmail', null, {
+                {{ input('email', 'confirmEmail', craft.app.request.getBodyParam('confirmEmail') ?? null, {
                     id: 'confirm-email',
                     placeholder: 'Bevestig E-mailadres'|t,
                     required: true
@@ -79,7 +85,7 @@
         </form>
         <div class="formbox__options">
             <p class="formbox__or">{{'Of'|t}}</p>
-            <a class="formbox__button formbox__button--sec" href="{{ url('/') }}">{{'Annuleer'|t}}</a>
+            <a class="formbox__button formbox__button--sec" href="{{currentSite.baseUrl}}">{{'Annuleer'|t}}</a>
         </div>
     </div>
 {% endblock %}

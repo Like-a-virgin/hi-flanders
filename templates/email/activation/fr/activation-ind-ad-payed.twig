@@ -1,0 +1,18 @@
+{% extends "email/base.twig" %}
+{% block content %}
+    <p>Bonjour {{ name }},</p>
+    <p>Bienvenue chez Hi Flanders ! Un membre du personnel de l'auberge où vous séjournez vous a ajouté à notre communauté.</p>
+    <p style="margin-bottom: 30px">Cet e-mail confirme votre adhésion. Il ne vous reste plus qu’à choisir un mot de passe pour l’activer. Cliquez sur le button ci-dessous pour continuer :</p>
+    <a style="color: #102438;" class="button" href="{{ activationUrl }}">Choisir un mot de passe</a>
+    <p style="margin-top: 40px">Activez votre compte dans les 7 jours pour garantir l'accès.</p>
+    <p><u>Infos utiles :</u></p>
+    <ul>
+        <li><strong>Pourquoi est-ce nécessaire ?</strong> Nous avons besoin de cette confirmation pour finaliser votre inscription. Cela rendra votre future expérience chez Hi Flanders beaucoup plus fluide.</li>
+        <li>En tant que membre de Hi Flanders, vous bénéficiez <a style="color: #fac000;" href="https://www.hiflanders.be/fr/premium">d'avantages exclusifs, de réductions</a> et <a style="color: #fac000;" href="https://www.hiflanders.be/fr/experiences">d'inspiration</a> pour vos prochains séjours. Mais ne vous inquiétez pas, nous n'allons pas vous inonder d'e-mails. <strong>Vous gardez le contrôle</strong> et choisissez la fréquence à laquelle vous souhaitez recevoir de nos nouvelles.</li>
+        <li>Nous traitons vos données en toute <strong>confidentialité et sécurité</strong>, conformément à la législation en vigueur sur la protection de la vie privée. Consultez notre <a style="color: #fac000;" href="https://www.hiflanders.be/fr/privacy-policy">politique de confidentialité</a> pour en savoir plus.</li>
+    </ul>
+    <p>Vous avez des questions ou des difficultés à activer votre adhésion ? N’hésitez pas à nous contacter. Envoyez un e-mail à <a style="color: #fac000;" href="mailto:hi@hiflanders.be">hi@hiflanders.be</a> ou appelez le <a style="color: #fac000;" href="tel:+3232327218">+32 3 232 72 18</a> pendant les heures de bureau.</p>
+    <p>Profitez de votre séjour et, nous l'espérons, à bientôt dans l'une de nos auberges !</p>
+    <p style="margin-top: 30px">Chaleureusement,</p>
+    <p><strong>L’équipe Hi Flanders</strong></p>
+{% endblock %}

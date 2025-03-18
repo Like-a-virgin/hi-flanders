@@ -1,0 +1,18 @@
+{% extends "email/base.twig" %}
+{% block content %}
+    <p>Hi {{ name }},</p>
+    <p>Last week, we asked you to digitally activate your membership by choosing a password. We think this might have slipped your mind. But don’t worry—it’s not too late!</p>
+    <p style="margin-bottom: 30px">Activate now with just one click:</p>
+    <a style="color: #102438;" class="button" href="{{ activationUrl }}">I choose a password</a>
+    <p style="margin-top: 40px"><u>Activate your membership within 7 days to ensure access to your account.</u></p>
+    <p>Don't forget:</p>
+    <ul>
+        <li>As a digital Hi Flanders member, you’ll enjoy <a style="color: #fac000;" href="https://www.hiflanders.be/en/premium">exclusive discounts</a> and <a style="color: #fac000;" href="https://www.hiflanders.be/en/experiences">nspiration</a> for future stays. But don’t worry - we won’t flood your inbox with emails. You stay in control and decide how often you hear from us.</li>
+        <li>No more paperwork or physical membership card - everything is online and easy to access.</li>
+        <li>We handle your data securely and confidentially in compliance with privacy laws. Check our <a style="color: #fac000;" href="www.hiflanders.be/nl/privacy-policy">privacy policy</a> for more details.</li>
+    </u>
+    <p>If you have any questions or trouble activating your membership, feel free to contact us at <a style="color: #fac000;" href="mailto:hi@hiflanders.be">hi@hiflanders.be</a> or call <a style="color: #fac000;" href="tel:+3232327218">+32 3 232 72 18</a> during office hours. We’re happy to assist!</p>
+    <p>Warm regards,</p>
+    <p style="margin-top: 30px">Warme groet & graag tot binnekort,</p>
+    <p>The Hi Flanders Team</p>
+{% endblock %}

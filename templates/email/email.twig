@@ -1,0 +1,6 @@
+{% extends "email/base.twig" %}
+
+{% block content %}
+    {% set subject = 'Bevestig email' %}
+    {{ body ?? contentHtml }}
+{% endblock %}

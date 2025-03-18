@@ -1,0 +1,25 @@
+{% extends "email/base.twig" %}
+{% block content %}
+    <p>Bonjour {{ name }},</p>
+    <p>Bonne nouvelle : votre demande d’enregistrement de groupe a été approuvée.</p>
+    <p>Pour activer l’adhésion, il vous reste deux étapes à compléter :</p>
+    <ol>
+        <li>
+            <div>Définir un mot de passe pour accéder à votre compte de groupe.</div><br> 
+            <a style="color: #102438;" class="button" href="{{ activationUrl }}">Choisir un mot de passe</a>
+        </li>
+        <li style="margin-top: 25px">
+            <div>Effectuer le paiement. Pour seulement 30 €, votre groupe devient membre de Hi Flanders pendant un an, avec tous les avantages inclus.</div><br>
+            <a style="color: #102438;" class="button" href="{{ url }}">Accéder à la page de paiement</a>
+        </li>
+    </ol>
+    <p style="margin-top: 25px">Finalisez ces étapes dans les 7 jours afin de garantir l’accès à votre compte de groupe.</p>
+    <p><u>Informations utiles :</u></p>
+    <ul>
+        <li>En tant que membre de Hi Flanders, votre groupe profite n <a style="color: #fac000;" href="https://www.hiflanders.be/fr/premium">d’offres exclusives, de réductions</a> en <a style="color: #fac000;" href="https://www.hiflanders.be/fr/experiences">d’inspiration</a> pour vos futurs séjours. Mais ne vous inquiétez pas, nous ne vous inonderons pas d’e-mails. <strong>Vous gardez le contrôle </strong> et choisissez la fréquence à laquelle vous souhaitez recevoir nos nouvelles.</li>
+        <li>Nous traitons vos informations de manière <strong>sécurisée et conforme à la législation</strong>en vigueur. Consultez notre <a style="color: #fac000;" href="https://www.hiflanders.be/fr/privacy-policy">politique de confidentialité</a> pour plus d’informations.</li>
+    </ul>
+    <p>Une question ? Un problème pour activer votre adhésion ? Contactez-nous à <a style="color:#FFCC22" href="mailto:hi@hiflanders.be">hi@hiflanders.be</a> ou par téléphone au <a style="color:#FFCC22" href="tel:+3232327218">+32 3 232 72 18</a> (pendant les heures de bureau).</p>
+    <p style="margin-top: 30px">Chaleureusement,</p>
+    <p><strong>L’équipe Hi Flanders</strong></p>
+{% endblock %}

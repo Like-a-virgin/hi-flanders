@@ -1,0 +1,22 @@
+{% extends "email/base.twig" %}
+{% block content %}
+    <p>Bonjour {{ name }},</p>
+    <p>Cela fait un moment que vous n’avez plus été membre actif des Auberges de Jeunesse Flamandes. Mais nous ne vous avons pas oublié(e) ! Entre-temps, beaucoup de choses ont changé : les Auberges de Jeunesse sont devenues Hi Flanders, nous avons lancé un <a href="https://www.hiflanders.be/nl/home"><strong>nouveau site web</strong></a> et nous avons pris le virage digital. Bonne nouvelle : il reste une place pour vous !</p>
+    <p>Renouvelez votre adhésion maintenant et bénéficiez immédiatement de 10 % de réduction sur votre prochaine réservation, en Flandre et à l’étranger.</p>
+    <p style="margin-bottom: 30px"><strong>Que devez-vous faire ? </strong> C’est simple : cliquez sur le button ci-dessous et inscrivez-vous en ligne en quelques clics :</p>
+    <a style="color: #102438;" class="button" href="{{ activationUrl }}">Je renouvelle mon adhésion</a>
+    <p style="margin-top: 40px">
+        → Accès aux <a style="color: #fac000;" href="https://www.hiflanders.be/fr/premium">avantages exclusifs, réductions</a> et <a style="color: #fac000;" href="https://www.hiflanders.be/fr/experiences">inspirations</a> pour vos séjours chez Hi Flanders et via <a style="color: #fac000;" href="https://www.hiflanders.be/fr/hostelling-international">Hostelling International</a><br>
+        → Fini les documents papier et la carte de membre, tout est désormais digital<br>
+        → Pas de spams ! Vous gardez le contrôle et choisissez la fréquence de nos communications. Nous traitons également vos données de manière confidentielle et sécurisée, conformément à la législation en vigueur. Consultez notre <a style="color: #fac000;" href="www.hiflanders.be/nl/privacy-policy">politique de confidentialité</a> pour plus d’informations.
+    </p>
+    <p><strong>Combien ça coûte ?</strong></p>
+    <ul>
+        <li>Vous avez 30 ans ou moins ? Votre adhésion est gratuite !</li>
+        <li>À partir de 31 ans : 10 € par an. Mais vous récupérez vite cette somme grâce à la réduction de 10 % sur toutes vos réservations.</li>
+    </ul>
+    <p>Une question ? Un problème en ligne ? Contactez-nous à <a style="color: #fac000;" href="mailto:hi@hiflanders.be">hi@hiflanders.be</a> ou par téléphone au <a style="color: #fac000;" href="tel:+3232327218">+32 3 232 72 18</a> (pendant les heures de bureau). Nous sommes là pour vous aider.</p>
+    <p>À bientôt dans l’une de nos auberges !</p>
+    <p style="margin-top: 30px">Chaleureusement,</p>
+    <p>L’équipe Hi Flanders</p>
+{% endblock %}

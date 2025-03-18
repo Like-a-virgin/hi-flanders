@@ -1,7 +1,8 @@
 defaultPlacement: end
 enableVersioning: true
 entryTypes:
-  - f374ab43-38fa-4b2e-870f-70e2cccc4272 # Branding
+  -
+    uid: f374ab43-38fa-4b2e-870f-70e2cccc4272 # Branding
 handle: branding
 maxAuthors: 1
 name: Branding
@@ -21,17 +22,17 @@ propagationMethod: all
 siteSettings:
   359a39c5-8655-460f-a1b4-0c097ea0edb2: # Ledensysteem
     enabledByDefault: true
-    hasUrls: true
+    hasUrls: false
     template: null
-    uriFormat: branding
+    uriFormat: null
   d74da9d4-3821-46f5-8cf4-f7c4d12c04df: # Ledensysteem fr
     enabledByDefault: true
-    hasUrls: true
+    hasUrls: false
     template: null
-    uriFormat: branding
+    uriFormat: null
   dad48958-bcb3-4253-9f7e-868f67fa27b0: # Ledensysteem en
     enabledByDefault: true
-    hasUrls: true
+    hasUrls: false
     template: null
-    uriFormat: branding
+    uriFormat: null
 type: single

@@ -1,7 +1,8 @@
 defaultPlacement: end
 enableVersioning: true
 entryTypes:
-  - 6a5cdbf8-b455-4bcd-a555-6a3fcad805f9 # Hoofd website
+  -
+    uid: 6a5cdbf8-b455-4bcd-a555-6a3fcad805f9 # Hoofd website
 handle: mainWebsite
 maxAuthors: 1
 name: 'Main website'
@@ -21,17 +22,17 @@ propagationMethod: all
 siteSettings:
   359a39c5-8655-460f-a1b4-0c097ea0edb2: # Ledensysteem
     enabledByDefault: true
-    hasUrls: true
-    template: main-website/_entry.twig
-    uriFormat: main-website
+    hasUrls: false
+    template: null
+    uriFormat: null
   d74da9d4-3821-46f5-8cf4-f7c4d12c04df: # Ledensysteem fr
     enabledByDefault: true
-    hasUrls: true
-    template: main-website/_entry.twig
-    uriFormat: main-website
+    hasUrls: false
+    template: null
+    uriFormat: null
   dad48958-bcb3-4253-9f7e-868f67fa27b0: # Ledensysteem en
     enabledByDefault: true
-    hasUrls: true
-    template: main-website/_entry.twig
-    uriFormat: main-website
+    hasUrls: false
+    template: null
+    uriFormat: null
 type: single

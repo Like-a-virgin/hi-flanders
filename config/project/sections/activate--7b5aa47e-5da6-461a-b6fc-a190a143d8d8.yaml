@@ -1,7 +1,8 @@
 defaultPlacement: end
 enableVersioning: true
 entryTypes:
-  - 3fab0971-effa-4787-a88b-2778ab3228d6 # Notify
+  -
+    uid: 3fab0971-effa-4787-a88b-2778ab3228d6 # Notify
 handle: activate
 maxAuthors: 1
 name: 'Activeer email'
@@ -28,10 +29,10 @@ siteSettings:
     enabledByDefault: true
     hasUrls: true
     template: pages/notify.twig
-    uriFormat: activer-compte
+    uriFormat: activeer-account
   dad48958-bcb3-4253-9f7e-868f67fa27b0: # Ledensysteem en
     enabledByDefault: true
     hasUrls: true
     template: pages/notify.twig
-    uriFormat: activate-account
+    uriFormat: activeer-account
 type: single

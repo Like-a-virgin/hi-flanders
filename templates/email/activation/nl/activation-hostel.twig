@@ -1,0 +1,8 @@
+{% extends "email/base.twig" %}
+{% block content %}
+    <p>Hey {{ name }},</p>
+    <p>Welkom</p>
+    <a style="color:#102438" class="button" href="{{ activationUrl }}">Kies een wachtwoord</a>
+    <p style="margin-top: 30px">Warme groet,</p>
+    <p><strong>Het Hi Flanders-team</strong></p>
+{% endblock %}

@@ -33,7 +33,7 @@
         {% if not activeUserMember %}
             <div class="box-error__error">
                 <p>! {{'Je lidmaatschap is nog niet actief'|t}}</p>
-                <a class="box-error__mobile" href="#payment">Betaal om je lidmaatschap te activeren</a>
+                <a class="box-error__mobile" href="#payment">{{'Betaal om je lidmaatschap te activeren'|t}}</a>
             </div>
         {% endif %}
     </div>
@@ -209,7 +209,7 @@
                                 {{ hiddenInput('userId', user.id) }}
                                 {{ hiddenInput('fields[requestPrint]', null) }}
 
-                                <button class="box__function-btn box__function-btn--delete">{{'Print annuleren'|t}}</button>
+                                <button class="box__function-btn box__function-btn--delete">{{'Fysieke lidkaart annuleren'|t}}</button>
                             </form>
                         {% elseif not user.requestPrint and not user.payedPrintDate %}
                             <form method="post" accept-charset="UTF-8" enctype="multipart/form-data">
@@ -218,7 +218,7 @@
                                 {{ hiddenInput('userId', user.id) }}
                                 {{ hiddenInput('fields[requestPrint]', today) }}
 
-                                <button class="box__function-btn box__function-btn--save">{{'Aanvraag print lidkaart'|t}}</button>
+                                <button class="box__function-btn box__function-btn--save">{{'Aanvraag fysieke lidkaart'|t}}</button>
                             </form>
                         {% endif %}
                     </div>  
@@ -228,11 +228,11 @@
                                 span: 4,
                                 info: 'Online'|t
                             } %}
-                            <p>{{'Je hebt een print aangevraagd op'|t}} {{user.requestPrint|date('d-m-Y')}} {{'je aanvraag wordt verstuurd wanneer je hebt betaald.'|t}}</p>
+                            <p>{{'Je hebt een fysieke lidkaart aangevraagd op'|t}} {{user.requestPrint|date('d-m-Y')}}. {{'je aanvraag wordt verstuurd wanneer je hebt betaald.'|t}}</p>
                         {% elseif user.requestPrint and user.payedPrintDate %}       
                             {% include "components/info-box.twig" with {
                                 span: 4,
-                                info: 'Print & Online'|t
+                                info: 'Fysieke lidkaart & Online'|t
                             } %}                    
                         {% else %}            
                             {% include "components/info-box.twig" with {

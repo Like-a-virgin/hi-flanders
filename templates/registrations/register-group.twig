@@ -41,7 +41,7 @@
                 {% set errors = user.getErrors() %}
                 {% if errors|length > 0 %}                
                     <div class="formbox__error formbox__column--full">
-                        <p>Niet alle velden zijn correct ingevuld.</p>
+                        <p>{{'Niet alle velden zijn correct ingevuld.'|t}}</p>
                     </div>
                 {% endif %}
                 {% if user and user.getErrors('email') %}
@@ -55,7 +55,7 @@
                 {% endif %}   
                 {% if user and user.getErrors('privacyPolicy') %}
                     <div class="formbox__error formbox__column--full">
-                        <p>Je moet akkoord gaan met het privacy beleid om verder te gaan.</p>
+                        <p>{{'Je moet akkoord gaan met het privacy beleid om verder te gaan'|t}}.</p>
                     </div>
                 {% endif %}   
             {% endif %}
@@ -102,7 +102,7 @@
             </div>    
             <div class="formbox__column--full {{ user and user.getErrors('email') ? 'formbox__column--error' }}">                
                 <label class="formbox__label" for="confirm-email">{{'Confirm E-mail'|t }}</label>
-                {{ input('email', 'confirmEmail', null, {
+                {{ input('email', 'confirmEmail', craft.app.request.getBodyParam('confirmEmail') ?? null, {
                     id: 'confirm-email',
                     placeholder: 'Bevestig E-mailadres'|t,
                     required: true
@@ -160,7 +160,7 @@
                 <select name="fields[lang]" id="payment-type">
                     <option value="nl">{{'Berichttaal'|t}}</option>
                     {% for item in langs %}
-                        <option value="{{item.value}}">{{item.label}}</option>
+                        <option value="{{item.value}}" {{ craft.app.request.getBodyParam('fields[lang]')  is same as item.value ? 'selected'}}>{{item.label}}</option>
                     {% endfor %}
                 </select>
             </div>
@@ -168,7 +168,7 @@
                 <label for="newsletter" class="formbox__check-label">
                 {{ input('checkbox', 'fields[newsletter]', 'enroll' , {
                     id: 'newsletter',
-                    checked: user.newsletter.storage is defined and 'enroll' in user.newsletter.storage
+                    checked: user.newsletter.storage is defined and 'enroll' in user.newsletter.storage or craft.app.request.getBodyParam('fields[newsletter]') is same as 'enroll'
                 }) }} 
                 <span class="checkmark"></span>
                 <p>{{'Inschrijven voor nieuwsbrieven.'|t}}</p>
@@ -177,7 +177,7 @@
                 <label for="newsletterSchool" class="formbox__check-label">
                 {{ input('checkbox', 'fields[newsletterSchool]', 'enrollSchool' , {
                     id: 'newsletterSchool',
-                    checked: user.newsletterSchool.storage is defined and 'enrollSchool' in user.newsletter.storage
+                    checked: user.newsletterSchool.storage is defined and 'enrollSchool' in user.newsletter.storage or craft.app.request.getBodyParam('fields[newsletterSchool]') is same as 'enrollSchool'
                 }) }} 
                 <span class="checkmark"></span>
                 <p>{{'Inschrijven voor schoolnieuwsbrieven.'|t}}</p>
@@ -187,7 +187,7 @@
         </form>
         <div class="formbox__options">
             <p class="formbox__or">{{'Of'|t}}</p>
-            <a class="formbox__button formbox__button--sec" href="{{ url('/') }}">{{'Annuleer'|t}}</a>
+            <a class="formbox__button formbox__button--sec" href="{{currentSite.baseUrl}}">{{'Annuleer'|t}}</a>
         </div>
     </div>
 {% endblock %}

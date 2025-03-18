@@ -20,6 +20,12 @@ class AdminRegister extends BaseModule
     {
         Craft::setAlias('@modules/adminregister', __DIR__);
 
+        if (Craft::$app->request->isConsoleRequest) {
+            $this->controllerNamespace = 'modules\\adminregister\\console\\controllers';
+        } else {
+            $this->controllerNamespace = 'modules\\adminregister\\controllers';
+        }
+
         parent::init();
 
         $this->attachEventHandlers();
@@ -213,7 +219,7 @@ class AdminRegister extends BaseModule
                     'name' => $user->getFieldValue('altFirstName'),
                     'activationUrl' => $activationUrl,
                 ]);
-
+                
                 if ($lang === 'en') {
                     $subject = 'Welcome to Hi Flanders! Activate your membership now';
                 } elseif ($lang === 'fr') {
@@ -221,12 +227,13 @@ class AdminRegister extends BaseModule
                 } else {
                     $subject = 'Welkom bij Hi Flanders! Activeer meteen je lidmaatschap';
                 }
-
+                
             } elseif ($registeredBy === 'admin' && $memberType === 'individual' && $paymentType === '' && $customStatus === 'new' && $memberPrice != null) {
                 $templatePath = $baseTemplateUrl . '/activation-ind-ad';
                 $htmlBody = Craft::$app->getView()->renderTemplate($templatePath, [
                     'name' => $user->getFieldValue('altFirstName'),
                     'activationUrl' => $activationUrl,
+                    'url' => $baseUrl,
                 ]);
 
                 if ($lang === 'en') {

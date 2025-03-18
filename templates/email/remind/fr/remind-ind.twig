@@ -1,0 +1,14 @@
+{% extends "email/base.twig" %}
+{% block content %}
+    <p>Bonjour {{ name }},</p>
+    <p style="margin-bottom: 30px">
+        La semaine dernière, nous vous avons demandé d’activer votre adhésion en confirmant votre adresse e-mail. Peut-être que cela vous a échappé… Mais il n’est pas trop tard !<br> 
+        Finalisez cela en un seul clic :
+    </p>
+    <a style="color: #102438;" class="button" href="{{ activationUrl }}">Je confirme mon adresse e-mail</a>
+    <p style="margin-top: 40px">Après confirmation, vous recevrez – sauf si vous avez moins de 31 ans et bénéficiez d’une adhésion gratuite – un e-mail vous invitant à régler la cotisation d’adhésion (10 €). Une fois le paiement effectué, vous pourrez découvrir tous les avantages de votre adhésion Hi Flanders en ligne : <a href="https://www.hiflanders.be/fr/premium">offres exclusives, réductions</a> en <a href="https://www.hiflanders.be/fr/experiences">inspirations </a>pour faire de chaque séjour une expérience inoubliable !</p>
+    <p>Une question ? Besoin d’aide ? Contactez-nous à <a style="color: #fac000;" href="mailto:hi@hiflanders.be">hi@hiflanders.be</a> ou par téléphone au <a style="color: #fac000;" href="tel:+3232327218">+32 3 232 72 18</a> (pendant les heures de bureau).</p>
+    <p>À bientôt dans l’un de nos auberges ?</p>
+    <p style="margin-top: 30px">Chaleureusement,</p>
+    <p><strong>L’équipe Hi Flanders</strong></p>
+{% endblock %}

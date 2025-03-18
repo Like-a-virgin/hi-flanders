@@ -1,0 +1,17 @@
+{% extends "email/base.twig" %}
+{% block content %}
+    <p>Hi {{ name }},</p>
+    <p style="margin-bottom: 30px">Vorige week vertelden we jou dat Hi Flanders de digitale (lid)kaart kiest. Met dit mailtje vragen we jou een wachtwoord in te stellen om je digitale lidmaatschap te activeren en voortaan met 1 klik te kunnen inloggen:</p>
+    <a style="color: #102438;" class="button" href="{{ activationUrl }}">Ik stel mijn wachtwoord in</a>
+    <p style="margin-top: 40px">Hier de voordelen van een online lidmaatschap nog eens op een rijtje:</p>
+    <ul>
+        <li>Je toekomstige ervaring bij Hi Flanders wordt een pak gebruiksvriendelijker</li>
+        <li>Je bent altijd direct op de hoogte van onze acties, events en exclusieve ledenvoordelen – binnenkort zelfs via de Hi Flanders-app!</li>
+        <li>Geen paperassen of lidkaart meer bijhouden, alles wordt online geregeld</li>
+    </u>
+    <p>Bang voor spam? Hoeft niet! Jij houdt de controle en kiest hoe vaak je van ons wil horen. En uiteraard behandelen we jouw gegevens vertrouwelijk en veilig, volgens de geldende privacywetgeving. Bekijk onze <a style="color: #fac000;" href="www.hiflanders.be/nl/privacy-policy">privacy policy</a> voor meer info.</p>
+    <p>Psst, onze <a style="color: #fac000;" href="https://www.hiflanders.be/nl/home">nieuwe website</a> al gezien? Laat je inspireren door onze <a style="color: #fac000;" href="https://www.hiflanders.be/nl/belevingen">belevingspagina</a> en begin alvast je volgende trip te plannen! </p>
+    <p>Heb je vragen of ondervind je problemen online? Dan helpen we je graag verder. Mail naar <a style="color: #fac000;" href="mailto:hi@hiflanders.be">hi@hiflanders.be</a> of bel <a style="color: #fac000;" href="tel:+3232327218">+32 3 232 72 18</a> tijdens de kantooruren.</p>
+    <p style="margin-top: 30px">Warme groet & graag tot binnekort,</p>
+    <p>Het Hi Flanders-team</p>
+{% endblock %}

@@ -1,0 +1,20 @@
+{% extends "email/base.twig" %}
+{% block content %}
+    <p>Bonjour {{ name }},</p>
+    <p>La semaine dernière, nous vous avons demandé d’activer votre adhésion numérique en choisissant un mot de passe. Peut-être que cela vous a échappé… Mais il n’est pas trop tard !</p>
+    <p style="margin-bottom: 30px">Activez-la en un clic :</p>
+    <a style="color: #102438;" class="button" href="{{ activationUrl }}">Je choisis un mot de passe</a>
+    <p style="margin-top: 40px"><u>Activez votre adhésion dans les 7 jours afin de garantir l’accès à votre compte.</u></p>
+    <p>N’oubliez pas :</p>
+    <ul>
+        <li>En tant que membre digital de Hi Flanders, vous bénéficiez <a style="color: #fac000;" href="https://www.hiflanders.be/fr/premium">d’avantages exclusifs, de réductions</a> et <a style="color: #fac000;" href="https://www.hiflanders.be/fr/experiences">d’inspiration pour vos futurs séjours.</a> Mais rassurez-vous, nous ne vous inonderons pas d’e-mails. Vous gardez le contrôle et choisissez la fréquence à laquelle vous souhaitez recevoir nos nouvelles.</li>
+        <li>Fini les papiers et la carte de membre, tout est géré en ligne.</li>
+        <li>Nous traitons vos données de manière confidentielle et sécurisée, conformément à la législation en vigueur. Consultez notre <a style="color: #fac000;" href="www.hiflanders.be/nl/privacy-policy">politique de confidentialité</a> pour plus d’informations.</li>
+    </u>
+    <p>Bang voor spam? Hoeft niet! Jij houdt de controle en kiest hoe vaak je van ons wil horen. En uiteraard behandelen we jouw gegevens vertrouwelijk en veilig, volgens de geldende privacywetgeving. Bekijk onze <a style="color: #fac000;" href="www.hiflanders.be/nl/privacy-policy">privacy policy</a> voor meer info.</p>
+    <p>Psst, onze <a style="color: #fac000;" href="https://www.hiflanders.be/nl/home">nieuwe website</a> al gezien? Laat je inspireren door onze <a style="color: #fac000;" href="https://www.hiflanders.be/fr/experiences">Belevingspagina</a> en begin alvast je volgende trip te plannen! </p>
+    <p>Une question ? Un problème en ligne ? Contactez-nous à <a style="color: #fac000;" href="mailto:hi@hiflanders.be">hi@hiflanders.be</a> ou par téléphone au <a style="color: #fac000;" href="tel:+3232327218">+32 3 232 72 18</a> (pendant les heures de bureau). Nous sommes là pour vous aider.</p>
+    <p>À bientôt dans l’une de nos auberges !</p>
+    <p style="margin-top: 30px">Chaleureusement,</p>
+    <p>L’équipe Hi Flanders</p>
+{% endblock %}

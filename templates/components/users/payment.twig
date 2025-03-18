@@ -43,13 +43,13 @@
         </div>
         {% if totalPrice %}
             <div class="box__column box__column--total box__column--2">            
-                <p>Totaal:</p>
+                <p>{{'Totaal'|t}}:</p>
                 <p>{{ totalPrice|money }}</p>
             </div>
             <form  method="post">
                 {{ csrfInput() }}
                 {{ actionInput('membership-payments/payment/initiate-payment') }}
-                <button class="btn" type="submit" class="pay-button">{{'Betaal'}}</button>
+                <button class="btn" type="submit" class="pay-button">{{'Betaal'|t}}</button>
             </form>
         {% endif %}
     </div>

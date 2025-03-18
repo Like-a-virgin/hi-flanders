@@ -73,6 +73,10 @@ class ConfirmEmail extends BaseModule
 
     private function checkUserExists(User $user): bool
     {
+        if (empty($user->email)) {
+            return false; // Avoids calling getUserByUsernameOrEmail with a null value
+        }
+        
         return Craft::$app->users->getUserByUsernameOrEmail($user->email) !== null;
     }
 }

@@ -17,7 +17,7 @@
 
                 {% if userGroup is same as 'membersAdmin' or userGroup is same as 'membersAdminSuper' %}
                     <a class="btn {{ currentUrl is same as 'submissions' ? 'btn--prim-selected' : 'btn--prim' }}" href="submissions">{{'Aanvragen'|t}}</a>
-                    <a class="btn {{ currentUrl is same as '' ? 'btn--prim-selected' : 'btn--prim' }}" href="/">{{'Leden'|t}}</a>
+                    <a class="btn {{ currentUrl is same as '' ? 'btn--prim-selected' : 'btn--prim' }}" href="{{currentSite.baseUrl}}">{{'Leden'|t}}</a>
                 {% endif %}
             {% endif %}
             {% if not user or user and user.getGroups() and user.getGroups()|first.handle is same as 'members' %}

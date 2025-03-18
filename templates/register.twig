@@ -19,7 +19,7 @@
 
     <div class="formbox">
         <div class="formbox__heading">
-            <h2>{{'Registreer'|t}}</h2>
+            <h2>{{'Registreer om lid te worden'|t}}</h2>
         </div>
         <form class="formbox__form register-form" method="post" accept-charset="UTF-8" novalidate>
             {{ csrfInput() }}
@@ -79,7 +79,7 @@
             </div> 
             <div class="formbox__column--full {{ user and user.getErrors('email') ? 'formbox__column--error' }}">
                 <label class="formbox__label" for="confirm-email">{{ 'Confirm E-mail'|t }}</label>
-                {{ input('email', 'confirmEmail', null, {
+                {{ input('email', 'confirmEmail', craft.app.request.getBodyParam('confirmEmail') ?? null, {
                     id: 'confirm-email',
                     placeholder: 'Bevestig E-mailadres'|t,
                     required: true
@@ -143,46 +143,49 @@
                 }) }}
             </div>
             <div class="formbox__column--full  {{ user and user.getErrors('password') ? 'formbox__column--error' }}">         
-                <label class="formbox__label" for="password">{{'Password'|t}}</label>
+                <label class="formbox__label formbox__label--show" for="password">{{'(minimum 6 characters)'|t}}</label>
                 {{ input('password', 'password', null, {
                     id: 'password',
                     placeholder: 'Kies een wachtwoord'|t,
                     required: true
                 }) }}
-                <button class="formbox__see-pass" type="button" id="togglePassword" aria-label="Show Password">
+                <button class="formbox__see-pass formbox__see-pass-register" type="button" id="togglePassword" aria-label="Show Password">
                     {{ svg("assets/icons/eye.svg")|attr({class: 'formbox__see-pass-icon' }) }}
                 </button>
             </div>
             {% if currentSite.language is same as 'nl' %}            
                 <div class="formbox__checkbox formbox__column--pp formbox__column--full">
+                    {% set isSelectedNews = user ? user.newsletter.getOptions()|filter(o => o.value == 'enroll' and o.selected) : null %}
                     <label for="newsletter" class="formbox__check-label">
                     {{ input('checkbox', 'fields[newsletter]', 'enroll' , {
                         id: 'newsletter',
                         required: true,
-                        checked: user.newsletter.storage is defined and 'enroll' in user.newsletter.storage
+                        checked: isSelectedNews|length > 0
                     }) }} 
                     <span class="checkmark"></span>
-                    <p>{{'Ik wil me inschrijven voor nieuwsbrieven.'|t}}</p>
+                    <p>{{'Ja, hou me op de hoogte van nieuws, inspiratie en exclusieve updates van HI Flanders!'|t}}</p>
                 </div>
             {% endif %}
             {% if currentSite.language is not same as 'en' %}            
                 <div class="formbox__checkbox formbox__column--pp formbox__column--full">
+                    {% set isSelectedNewsS = user ? user.newsletterSchool.getOptions()|filter(o => o.value == 'enroll' and o.selected) : null %}
                     <label for="newsletterSchool" class="formbox__check-label">
                     {{ input('checkbox', 'fields[newsletterSchool]', 'enroll' , {
                         id: 'newsletterSchool',
                         required: true,
-                        checked: user.newsletterSchool.storage is defined and 'enroll' in user.newsletterSchool.storage
+                        checked: isSelectedNewsS|length > 0
                     }) }} 
                     <span class="checkmark"></span>
-                    <p>{{'Ik wil me inschrijven voor de schoolnieuwsbrieven.'|t}}</p>
+                    <p>{{'Ja, hou ons op de hoogte van nieuws, inspiratie en exclusieve updates voor scholen!'|t}}</p>
                 </div>
             {% endif %}
             <div class="formbox__checkbox formbox__column--pp formbox__column--full">
+                {% set isSelectedPp = user ? user.privacyPolicy.getOptions()|filter(o => o.value == 'accepted' and o.selected) : null %}
                 <label for="privacy-policy" class="formbox__check-label">
                 {{ input('checkbox', 'fields[privacyPolicy]', 'accepted' , {
                     id: 'privacy-policy',
                     required: true,
-                    checked: user.privacyPolicy.storage is defined and 'accepted' in user.privacyPolicy.storage
+                    checked: isSelectedPp|length > 0
                 }) }} 
                 <span class="checkmark"></span>
                 <p>{{'Ik ga akkoord dat mijn gegevens gebruikt worden zoals beschreven in de'|t}} <a class="formbox__link" target="_blank" href="{{pp}}">{{'privacy policy'|t}}</a>.</p>

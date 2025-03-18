@@ -1,4 +1,4 @@
-dateModified: 1741607397
+dateModified: 1742294269
 elementSources:
   craft\elements\Entry:
     -
@@ -149,11 +149,10 @@ email:
   fromEmail: lara@likeavirgin.be
   fromName: 'Hi Flanders'
   replyToEmail: null
-  template: email/email.html
+  template: email/email.twig
   transportSettings:
-    messageStream: ''
-    token: $POSTMARK_API_KEY
-  transportType: craftcms\postmark\Adapter
+    command: '/usr/local/bin/mailpit sendmail -t --smtp-addr 127.0.0.1:1025'
+  transportType: craft\mail\transportadapters\Sendmail
 fs:
   branding:
     hasUrls: true
@@ -326,22 +325,22 @@ plugins:
                   - settings
                   -
                     __assoc__:
-                      0:
+                      -
                         - handle
                         - hcaptcha
-                      3:
+                      -
                         - size
                         - normal
-                      4:
+                      -
                         - theme
                         - light
-                      5:
+                      -
                         - language
                         - en
-                      6:
+                      -
                         - minScore
                         - 0.5
-                      7:
+                      -
                         - scriptLoadingMethod
                         - asyncDefer
           -
@@ -361,13 +360,13 @@ plugins:
                   - settings
                   -
                     __assoc__:
-                      0:
+                      -
                         - handle
                         - friendlyCaptcha
-                      3:
+                      -
                         - language
                         - en
-                      4:
+                      -
                         - startMode
                         - none
           -
@@ -387,19 +386,19 @@ plugins:
                   - settings
                   -
                     __assoc__:
-                      0:
+                      -
                         - handle
                         - turnstile
-                      3:
+                      -
                         - scriptLoadingMethod
                         - asyncDefer
-                      4:
+                      -
                         - theme
                         - auto
-                      5:
+                      -
                         - size
                         - normal
-                      6:
+                      -
                         - appearance
                         - always
           -
@@ -497,7 +496,7 @@ plugins:
       submissionsBehaviour: all
       useCssLayers: false
       useQueueForIntegrations: true
-      useQueueForNotifications: false
+      useQueueForNotifications: true
       validateCustomTemplates: true
   postmark:
     edition: standard

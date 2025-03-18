@@ -1,0 +1,15 @@
+{% extends "email/base.twig" %}
+{% block content %}
+    <p>Hi {{ name }},</p>
+    <p style="margin-bottom: 30px">
+        Last week, we asked you to activate your membership by confirming your email address. We think this might have slipped your mind, but don’t worry – it’s not too late!<br> 
+        Complete it with just one click:
+    </p>
+    <a style="color: #102438;" class="button" href="{{ activationUrl }}">I confirm my email address</a>
+    <p style="margin-top: 40px">Once confirmed, you will receive another email with payment instructions for the membership fee (€10) – unless you are under 31, in which case your membership is free. Once your payment is processed, you can start enjoying all the benefits of being a Hi Flanders member: <a href="https://www.hiflanders.be/en/premium">exclusive benefits and discounts</a> and <a href="https://www.hiflanders.be/en/experiences">plenty of inspiration</a> to make every trip an unforgettable experience!</p>
+    <p><u>Need help?</u></p>
+    <p>If you have any questions or run into any issues, feel free to contact us at <a style="color: #fac000;" href="mailto:hi@hiflanders.be">hi@hiflanders.be</a> or call <a style="color: #fac000;" href="tel:+3232327218">+32 3 232 72 18</a> during office hours.</p>
+    <p>Looking forward to welcoming you to one of our hostels soon!</p>
+    <p style="margin-top: 30px">Warm regards,</p>
+    <p><strong>The Hi Flanders Team</strong></p>
+{% endblock %}

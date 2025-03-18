@@ -1,0 +1,19 @@
+{% extends "email/base.twig" %}
+{% block content %}
+    <p>Hi {{ name }},</p>
+    <p>Het is intussen een jaar geleden dat we jou mochten verwelkomen in onze Hi Flanders-community. Intussen is je lidmaatschap verlopen. Maar geen nood: je kan blijven genieten van de voordelen, als je nu je aansluiting vernieuwt!</p>
+    <p style="margin-bottom: 30px">Voor ieders gemak zijn we intussen volledig gedigitaliseerd, dus met enkele klikken is jouw premium lidmaatschap gefixt:</p>
+    <a class="button" href="{{ activationUrl }}">Ik wil geen enkel voordeel missen!</a>
+    <p style="margin-top: 40px"><strong>Welke voordelen zijn dat ook alweer? Hi Flanders Premium, dat is:</strong></p>
+    <ul>
+        <li>Premium comfort tegen een minimumprijs</li>
+        <li><a style="color: #fac000;" href="https://www.hiflanders.be/nl/premium">Bijkomende kortingen</a> bovenop onze lage prijzen</li>
+        <li>Waardevolle inspiratie voor toekomstige verblijven op onze <a style="color: #fac000;" href="https://www.hiflanders.be/nl/belevingen">belevingspagina</a></li>
+        <li>Je bent automatisch ook lid van Hostelling International. Zo bespaar je ook in het buitenland op hostelverblijven. <a style="color: #fac000;" href="https://www.hiflanders.be/nl/hostelling-international">Vind hier inspiratie</a></li>
+        <li>Digitaal gemak: eenvoudig inloggen op onze site, en binnenkort ook met de Hi Flanders-app</li>
+    </ul>
+    <p>Twijfel dus niet langer en blijf lid van onze club!</p>
+    <p>Heb je vragen of lukt het niet om je lidmaatschap te vernieuwen? Neem dan gerust contact met ons op. We helpen je graag verder. Mail naar <a style="color: #fac000;" href="mailto:hi@hiflanders.be">hi@hiflanders.be</a> of bel <a style="color: #fac000;" href="tel:+3232327218">+32 3 232 72 18</a> tijdens de kantooruren.</p>
+    <p style="margin-top: 30px">Warme groet,</p>
+    <p>Het Hi Flanders-team</p>
+{% endblock %}

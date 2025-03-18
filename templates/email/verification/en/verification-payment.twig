@@ -1,0 +1,12 @@
+{% extends "email/base.twig" %}
+{% block content %}
+    <p>Hi {{ name }},</p>
+    <p>Thank you for your payment! This email confirms that the outstanding amount has been successfully processed. This email serves as your payment receipt</p>
+    <p><strong>Payment details:</strong></p>
+    <ul>
+        <li>Amount paid: €{{total}}</li>
+        <li>Payment date: {{ date }}</li>
+    </ul>
+    <p style="margin-top: 30px">Warm regards,</p>
+    <p><strong>The Hi Flanders Team</strong></p>
+{% endblock %}

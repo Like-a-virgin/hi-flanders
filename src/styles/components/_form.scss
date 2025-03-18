@@ -32,6 +32,13 @@
 
     &__label {
         display: none;
+
+        &--show {
+            display: block;
+            margin-left: 0.5rem;
+            font-size: .8125rem;
+            margin-bottom: 0.25rem;
+        }
     }
 
     &__heading {
@@ -153,10 +160,14 @@
         position: absolute;
         right: 1.5rem;
         top: calc(50% - (1.15rem/2));
-
+        
         &:hover {
             cursor: pointer;
         }
+    }
+    
+    &__see-pass-register {
+        top: calc(50% + 0.075rem);
     }
 
     &__options {
@@ -271,4 +282,8 @@
     .formbox__formie {
         padding-bottom: 2rem;
     }
+}
+
+.formbox__form--padding-bottom {
+    padding-bottom: 2rem;
 }

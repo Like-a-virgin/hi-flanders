@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="color-scheme" content="light only">
+        <title>{{ subject ?? 'Email' }}</title>
+        <style>
+            p {
+                color: #102438;
+            }
+            a {
+                color: #fac000;
+            }
+            .button {
+                background-color: #FFCC22;
+                color: #102438;
+                padding: 14px 26.4px;
+                font-weight: bold;
+                border-radius: 160px;
+                text-decoration: none;
+            }
+        </style>
+    </head>
+    <body style="font-family: Arial, sans-serif; font-size: 16px; line-height: 1.5; color: #102438; margin: 0; background-color: #FFCC22; padding: 16px;">
+        <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" bgcolor="#FFCC22">
+            <tr>
+                <td align="center">
+                    <table role="presentation" width="704" cellspacing="0" cellpadding="0" border="0" bgcolor="#ffffff" style="max-width: 704px; margin: 20px auto; border-radius: 10px;">
+                        <tr>
+                            <td align="left" style="padding: 50px 20px 0px 20px;">
+                                <div style="max-width: 585px; width: 100%; margin: 0 auto; text-align: left;">
+                                    <img src="{{ siteUrl('uploads/branding/Logo.svg')}}" alt="logo hi flanders" width="200" height="auto" style="display: block; border: 0;">
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td align="center" style="padding: 20px 20px 50px 20px; color: #102438;">
+                                <div style="max-width: 585px; width: 100%; margin: 0 auto; text-align: left;">
+                                    {% block content %}{% endblock %}
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+        </table>
+    </body>
+</html>

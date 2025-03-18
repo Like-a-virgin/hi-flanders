@@ -16,4 +16,5 @@ return [
     'send-activation-old' => 'old-members/send-activation/send-email',
     'send-reminder-old' => 'old-members/send-reminder/send-email',
     'deactivate-old' => 'old-members/deactivate/deactivate',
+    'resend-activation' => 'admin-register/resend-activation/send-activation-email',
 ];

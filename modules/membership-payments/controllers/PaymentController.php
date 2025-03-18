@@ -201,6 +201,8 @@ class PaymentController extends Controller
                         }
     
                         $this->sendPaymentConfirmationEmail($user, $totalAmount);
+
+                        return $this->asJson(['success' => true]);
                     } else {
                         Craft::error("Failed to update user payment for user ID: {$userId}", __METHOD__);
                     }
