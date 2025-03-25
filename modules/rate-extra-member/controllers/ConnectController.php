@@ -6,6 +6,7 @@ use Craft;
 use yii\web\Response;
 use craft\web\Controller;
 use craft\elements\Entry;
+use craft\elements\User;
 
 class ConnectController extends Controller
 {
@@ -14,9 +15,24 @@ class ConnectController extends Controller
     public function actionSave(): Response
     {
         $request = Craft::$app->getRequest();
-        $user = Craft::$app->getUser()->getIdentity();
-        $entryId = $request->getBodyParam('entryId');
+        $currentUser = Craft::$app->getUser()->getIdentity();
 
+        // Get optional selected member (for admin use)
+        $selectedMemberId = $request->getBodyParam('selectedMemberId') ?? null;
+
+        // If selectedMemberId is passed, fetch that user, otherwise fallback to current user
+        /** @var User|null $user */
+        $user = $selectedMemberId
+            ? User::find()->id($selectedMemberId)->one()
+            : $currentUser;
+
+        // Guard against invalid selected user
+        if (!$user) {
+            Craft::$app->getSession()->setError(Craft::t('site', 'Lid niet gevonden.'));
+            return $this->redirectToPostedUrl();
+        }
+
+        $entryId = $request->getBodyParam('entryId');
         $entry = Entry::find()->id($entryId)->one();
 
         if (!$entry) {
@@ -31,7 +47,7 @@ class ConnectController extends Controller
 
         $existing = $entry->getFieldValue('parentMember')->ids();
         if (in_array($user->id, $existing)) {
-            Craft::$app->getSession()->setError(Craft::t('site', 'Je bent al gekoppeld aan dit kind.'));
+            Craft::$app->getSession()->setError(Craft::t('site', 'Deze gebruiker is al gekoppeld aan dit kind.'));
             return $this->redirectToPostedUrl();
         }
 
@@ -40,6 +56,8 @@ class ConnectController extends Controller
 
         if (!Craft::$app->getElements()->saveElement($entry)) {
             Craft::$app->getSession()->setError(Craft::t('site', 'Kon kind niet koppelen.'));
+        } else {
+            Craft::$app->getSession()->setNotice(Craft::t('site', 'Kind succesvol gekoppeld.'));
         }
 
         return $this->redirectToPostedUrl();

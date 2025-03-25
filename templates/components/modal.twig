@@ -320,9 +320,14 @@
                                         {{ redirectInput(currentSite.baseUrl ~ '?' ~ urlFilters) }}
                                         {{ input('hidden', 'entryId', item.id) }}
                                         
-                                        {% for parentId in newParents %}
-                                            {{ input('hidden', 'fields[parentMember][]', parentId) }}
-                                        {% endfor %}
+                                        {% if newParents|length > 0 %}
+                                            {% for parentId in newParents %}
+                                                {{ input('hidden', 'fields[parentMember][]', parentId) }}
+                                            {% endfor %}
+                                        {% else %}
+                                            {{ input('hidden', 'fields[parentMember][]', null) }}
+                                        {% endif %}
+                                        
                                         <button type="submit" class="btn btn--red btn--square">{{svg('assets/icons/link-slash.svg')|attr({class: "btn__icon"})}}</button>
                                     </form>
                                     <form class="form-delete form-delete--full" method="post" accept-charset="UTF-8">
@@ -594,11 +599,25 @@
                 <h2>{{'Kind koppelen'|t}}</h2>
             </div>
             <form class="formbox__form formbox__form--no-options" method="post" accept-charset="UTF-8">
+                {% if craft.app.session.hasFlash('error') %}
+                    <div class="formbox__error formbox__column--full">
+                        <p class="formbox__errorText">
+                            {{ craft.app.session.getFlash('error') }}
+                        </p>
+                    </div>
+                {% endif %}
+
+                {% if craft.app.session.hasFlash('notice') %}
+                    <div x-init="connectExtraMember = false"></div>
+                {% endif %}
+
+
                 {{ csrfInput() }}
-                {{ actionInput('entries/save-entry') }}
+                {{ actionInput('rate-extra-member/connect/save') }}
                 {{ redirectInput(currentSite.baseUrl ~ '?' ~ urlFilters) }}
 
                 {{ input('hidden', 'sectionId', craft.entries.section('extraMembers').sectionId|first) }}
+                {{ input('hidden', 'selectedMemberId', selectedMember.id) }}
 
                 {# Preserve existing parentMember connections #}
                 {% set entryId = craft.app.request.getParam('entryId') ?? null %}

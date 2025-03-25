@@ -3,7 +3,7 @@
     {{ ul(errors, {class: 'errors'}) }}
 {% endif %}
 {% endmacro %}
-
+ 
 {% set minDate = now|date_modify('-17 years')|date("Y-m-d") %}
 
 <div class="box-container" x-data="{ openForm: false }">
