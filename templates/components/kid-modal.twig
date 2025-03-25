@@ -1,0 +1,98 @@
+{% set selectedKid = craft.entries().id(kidId).one() %}
+{% set parents = selectedKid.parentMember.all() %}
+
+<button sprig class="btn" s-val:kid-id="{{ null }}" class="modal-close">
+    {{ svg('assets/icons/x.svg')|attr({class:"modal-close__icon"})}} 
+</button>
+<div class="modal" x-data="{ editChild: false }">
+    <div class="modal__content">
+        <div class="box">
+            <div class="box__heading box__heading--center">
+                <h2>{{ selectedKid.altFirstName }} {{ selectedKid.altLastName }}</h2>
+                <p class="box__membership">{{ selectedKid.id}}</p>
+            </div>
+            <div class="box__content">
+                <div class="box__wrapper box__wrapper--labels" x-show="!editChild">
+                    <div class="box__column box__column--4 box__column--flex-between">
+                        <h3>{{'Persoonsgegevens'|t}}</h3>
+                        <button class="box__function-btn" @click="editChild = true">{{'Wijzigen'|t}} {{ svg("assets/icons/edit.svg")|attr({class: 'box__icon-option box__icon-edit' }) }}</button>
+                    </div>
+                    {% include "components/info-box.twig" with {
+                        span: 2, 
+                        label: 'Voornaam'|t, 
+                        info: selectedKid.altFirstName
+                    } %}
+                    {% include "components/info-box.twig" with {
+                        span: 2, 
+                        label: 'Familienaam'|t, 
+                        info: selectedKid.altLastName
+                    } %}
+                    {% include "components/info-box.twig" with {
+                        span: 4, 
+                        label: 'Geboortedatum'|t, 
+                        info: selectedKid.birthday|date('d-m-Y')
+                    } %}
+                </div>
+                <form x-show="editChild" class="edit" method="post" accept-charset="UTF-8" enctype="multipart/form-data">
+                    {{ csrfInput() }}
+                    {{ actionInput('entries/save-entry') }}
+                    {{ hiddenInput('entryId', selectedKid.id) }}
+                    {{ redirectInput(currentSite.baseUrl ~ '/kids?kidId=' ~ selectedKid.id) }}
+
+                    <div class="box__column box__column--4">
+                        <h3>{{'Persoonsgegevenss'|t}}</h3>
+                    </div>
+                    <div class="edit__column--2">
+                        <label class="edit__label" for="first-name">{{'Voornaam'|t}}</label>
+                        {{ input('text', 'fields[altFirstName]', selectedKid.altFirstName ?? null, {
+                            id: 'first-name',
+                            required: true,
+                        }) }}
+                    </div>
+                    <div class="edit__column--2">
+                        <label class="edit__label" for="first-name">{{'Familienaam'|t}}</label>
+                        {{ input('text', 'fields[altLastName]', selectedKid.altLastName ?? null, {
+                            id: 'first-name',
+                            required: true,
+                        }) }}
+                    </div>
+                    <div class="edit__column--4">
+                        <label class="edit__label" for="b-day">{{'Geboortedatum'|t}}</label>
+                        {{ input('date', 'fields[birthday]', selectedKid.birthday ? selectedKid.birthday|date('Y-m-d') : '', {
+                            id: 'b-day',
+                            required: true,
+                        }) }}
+                    </div>
+                    <div class="box__column--flex">
+                        <button type="submit" class="box__function-btn box__function-btn--save">{{'Opslaan'|t}}</button>
+                        <button @click="editChild = false" type="reset" class="box__function-btn box__function-btn--cancel">{{'Annuleer'}}</button>
+                    </div>
+                </form>
+                <div class="box__wrapper box__wrapper--labels">
+                    <div class="box__column box__column--4 box__column--flex-between">
+                        <h3>{{'Gekoppelt lidmaatchap'|t}}</h3>
+                    </div>
+                    {% for item in parents %}     
+                        <div class="box__column box__column--4">                        
+                            <div class="box__info box__info--prim">
+                                <p>{{ item.altFirstName }} {{ item.altLastName }} - (008) {{item.customMemberId|slice(0, 3)}} {{item.customMemberId|slice(3, 3)}} {{item.customMemberId|slice(6, 3)}} {{item.customMemberId|slice(9, 3)}}</p>
+                                <a class="box__link" href="/?memberId={{ item.id }}">{{ 'Bekijk info'|t }}</a>
+                            </div>                   
+                        </div>
+                    {% endfor %}
+                </div>                
+                <div class="box__options">
+                    <div class="box__options-wrapper">
+                        <form class="form-delete form-delete--full" method="post" accept-charset="UTF-8">
+                            {{ csrfInput() }}
+                            {{ actionInput('elements/delete') }}
+                            {{ redirectInput(currentSite.baseUrl ~ '/kids') }}
+                            {{ input('hidden', 'elementId', selectedKid.id) }}
+                            <button type="submit" class="btn btn--red">{{'Verwijder kind'|t}}</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

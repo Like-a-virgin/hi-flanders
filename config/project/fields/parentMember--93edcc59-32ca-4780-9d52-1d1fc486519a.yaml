@@ -7,11 +7,11 @@ settings:
   allowSelfRelations: false
   branchLimit: null
   maintainHierarchy: false
-  maxRelations: 1
+  maxRelations: null
   minRelations: null
   selectionLabel: null
   showCardsInGrid: false
-  showSiteMenu: false
+  showSiteMenu: true
   sources:
     - 'group:50a6f7cb-84e7-4d68-9aa9-3af2d9001e79' # Leden
   targetSiteId: null

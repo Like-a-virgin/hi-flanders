@@ -26,7 +26,7 @@
                 <label class="formbox__label" for="alt-first-name">{{'Voornaam'|t}}</label>
                 {{ input('text', 'fields[altFirstName]', null, {
                     id: 'alt-first-name',
-                    placeholder: 'Voornaam',
+                    placeholder: 'Voornaam'|t,
                     required: true
                 }) }}
             </div>
@@ -34,7 +34,7 @@
                 <label class="formbox__label" for="alt-sur-namee">{{'Familienaam'|t}}</label>
                 {{ input('text', 'fields[altLastName]', null, {
                     id: 'alt-sur-name',
-                    placeholder: 'Achternaam',
+                    placeholder: 'Familienaam'|t,
                     required: true
                 }) }}
             </div>
@@ -42,13 +42,58 @@
                 <label class="formbox__label" for="birthday">{{'Geboortedatum'|t}}</label>
                 {{ input('text', 'fields[birthday]', null, {
                     id: 'birthday',
-                    placeholder: 'Geboortedatum',
+                    placeholder: 'Geboortedatum'|t,
                     onFocus: "(this.type = 'date', this.placeholder = '')",
                     required: true,
                     min: minDate
                 }) }}
             </div>   
             <button class="formbox__button formbox__button--sec formbox__column">{{'Voeg toe'|t}}</button>
+        </form>
+    </div>
+</div>
+<div class="box-container" x-data="{ openForm: $persist(false) }">
+    <div class="formbox formbox--wider formbox--member" :class="openForm ? 'formbox--member-open' : ''">
+        <button @click="openForm = ! openForm" class="form__heading box__add">{{ svg("assets/icons/add.svg")|attr({class: 'box__icon box__icon--add' }) }} {{'Kind koppelen'|t}}</button>
+        <form x-collapse x-show="openForm" class="formbox__form" method="post" accept-charset="UTF-8">
+            {% if craft.app.session.hasFlash('error') %}
+                <div class="formbox__error formbox__column--full">
+                    <p class="formbox__errorText">
+                        {{ craft.app.session.getFlash('error') }}
+                    </p>
+                </div>
+            {% endif %}
+
+            {% if craft.app.session.hasFlash('notice') %}
+                <div class="formbox__notice formbox__column--full">
+                    <p class="formbox__noticeText">{{ craft.app.session.getFlash('notice') }}</p>
+                </div>
+            {% endif %}
+
+            {{ csrfInput() }}
+            {{ actionInput('rate-extra-member/connect/save') }}
+            {{ redirectInput(craft.app.request.url) }}
+
+            {{ input('hidden', 'sectionId', craft.entries.section('extraMembers').sectionId|first) }}
+            
+            {% set entryId = craft.app.request.getParam('entryId') ?? null %}
+            {% set existingParentMembers = craft.entries.id(entryId).one().parentMember.all() ?? [] %}
+
+            {% for member in existingParentMembers %}
+                {{ input('hidden', 'fields[parentMember][]', member.id) }}
+            {% endfor %}
+
+            {{ input('hidden', 'fields[parentMember][]', user.id) }}
+
+            <div class="formbox__column">                
+                <label class="formbox__label" for="kid-id">{{'KidId'|t}}</label>
+                {{ input('text', 'entryId', null, {
+                    id: 'kid-id',
+                    placeholder: 'KidId'|t,
+                    required: true
+                }) }}
+            </div>   
+            <button class="formbox__button formbox__button--sec formbox__column">{{'Koppelen'|t}}</button>
         </form>
     </div>
 </div>

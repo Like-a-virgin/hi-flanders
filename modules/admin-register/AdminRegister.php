@@ -93,6 +93,7 @@ class AdminRegister extends BaseModule
             'paymentDate' => null,
             'cardType' => null,
             'totalPayedPrint' => null,
+            'dateSendPrint' => null
         ];
 
         foreach ($fields as $fieldHandle => $coreField) {

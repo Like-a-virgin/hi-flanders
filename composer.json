@@ -3,7 +3,7 @@
   "prefer-stable": true,
   "require": {
     "craftcms/ckeditor": "4.6.0",
-    "craftcms/cms": "5.6.11",
+    "craftcms/cms": "5.6.13",
     "craftcms/feed-me": "6.8.0",
     "craftcms/postmark": "^3.1.0",
     "mollie/mollie-api-php": "^2.76",
@@ -59,7 +59,8 @@
       "modules\\activationreminder\\": "modules/activation-reminder/",
       "modules\\dailychecks\\": "modules/daily-checks/",
       "modules\\oldmembers\\": "modules/old-members/",
-      "modules\\flexmail\\": "modules/flexmail/"
+      "modules\\flexmail\\": "modules/flexmail/",
+      "modules\\etigenerator\\": "modules/eti-generator/"
     }
   }
 }

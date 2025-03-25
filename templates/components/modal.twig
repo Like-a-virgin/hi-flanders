@@ -1,9 +1,13 @@
-{% set selectedMember = craft.users.id(memberId).one() %}
+{% set selectedMember = craft.users.id(memberId).one() %} 
 {% set extraMembers = craft.entries.section('extraMembers').parentMember(memberId).all() %}
 {% set minDate = now|date_modify('-17 years')|date("Y-m-d") %} 
 {% set priceCard = craft.entries.section('rates').slug('lidkaart').one() %}
+{% set printStatuses = [{value: 'send', label: 'Verstuurd'|t}, {value: 'requested' , label: 'Aangevraagd'|t}] %}
 
-<div class="modal" x-data="{editAddress: false, editPayment: false, extraMember: false, editPrint: false, editBday: false, editMembership: false}" :class="extraMember ? 'model--no-overflow' : ''" >
+<button sprig class="btn" s-val:member-id="{{ null }}" class="modal-close">
+    {{ svg('assets/icons/x.svg')|attr({class:"modal-close__icon"})}}
+</button>
+<div class="modal" x-data="{editAddress: false, editPayment: false, editPrint: false, editBday: false, editMembership: false}" :class="extraMember ? 'model--no-overflow' : ''" >
     <div class="modal__content" :class="statusOption ? 'modal--overflow' : ''">    
         <div class="box">
             <div class="box__heading box__heading--center">
@@ -121,7 +125,6 @@
                         </div>
                     </form>
                 {% endif %}
-                
                 <div x-show="!editAddress" class="box__wrapper box__wrapper--labels">
                     <div class="box__column box__column--4 box__column--flex-between">
                         <h3>{{'Adres'|t}}</h3>
@@ -296,15 +299,32 @@
                     <div class="box__wrapper">
                         <div class="box__column box__column--4 box__column--flex-between">
                             <h3>{{'Kinderen'|t}}</h3>
-                            <button class="box__function-btn box__function-btn--prim" @click="extraMember = true">{{'Kind toevoegen'|t}} {{ svg("assets/icons/add.svg")|attr({class: 'box__icon-option box__icon-edit' }) }}</button>
+                            <div class="box__row">
+                                <button class="box__function-btn box__function-btn--prim" @click="extraMember = true">{{'Kind toevoegen'|t}} {{ svg("assets/icons/add.svg")|attr({class: 'box__icon-option box__icon-edit' }) }}</button>
+                                <button class="box__function-btn box__function-btn--prim" @click="connectExtraMember = true">{{'Kind koppelen'|t}} {{ svg("assets/icons/add.svg")|attr({class: 'box__icon-option box__icon-edit' }) }}</button>
+                            </div>
                         </div>
                         {% if extraMembers|length > 0 %}
                             {% for item in extraMembers %}
                                 <div class="box__column box__column--4 box__column--flex">
                                     <div class="box__info box__info box__info--prim">
-                                        <p>{{ item.altFirstName }} {{ item.altLastName }} - {{ item.birthday|date('d/m/Y') }}</p>
-                                        <p>{{ item.memberRate.one().title }}</p>
+                                        <p>{{ item.altFirstName }} {{ item.altLastName }} - {{ item.id }}</p>
+                                        {# <p>{{ item.memberRate.one().title }}</p> #}
+                                        <a class="box__link" href="/kids?kidId={{ item.id }}">{{'Bekijk info'|t}}</a>
                                     </div>
+                                    <form class="form-delete form-delete--full" method="post" accept-charset="UTF-8">
+                                        {% set newParents = item.parentMember.ids()|filter(i => i != selectedMember.id) %}
+                                        
+                                        {{ csrfInput() }}
+                                        {{ actionInput('entries/save-entry') }}
+                                        {{ redirectInput(currentSite.baseUrl ~ '?' ~ urlFilters) }}
+                                        {{ input('hidden', 'entryId', item.id) }}
+                                        
+                                        {% for parentId in newParents %}
+                                            {{ input('hidden', 'fields[parentMember][]', parentId) }}
+                                        {% endfor %}
+                                        <button type="submit" class="btn btn--red btn--square">{{svg('assets/icons/link-slash.svg')|attr({class: "btn__icon"})}}</button>
+                                    </form>
                                     <form class="form-delete form-delete--full" method="post" accept-charset="UTF-8">
                                         {{ csrfInput() }}
                                         {{ actionInput('elements/delete') }}
@@ -343,7 +363,7 @@
                         {% include "components/info-box.twig" with {
                             span: 2, 
                             label: 'Betaald bedrag'|t, 
-                            info: selectedMember.totalPayedMembers ? selectedMember.totalPayedMembers|money : 0,
+                            info: selectedMember.totalPayedMembers ? selectedMember.totalPayedMembers|money : '€ 0',
                         } %}
                     {% endif %}
                 </div>
@@ -383,7 +403,7 @@
                         <button @click="editPayment = false" type="reset" class="box__function-btn box__function-btn--cancel">{{'Annuleer'}}</button>
                     </div>
                 </form>
-                <div class="box__wrapper">
+                <div class="box__wrapper" x-show="!editPrint">
                     <div class="box__column box__column--4 box__column--flex-between">
                         <h3>{{'Lidkaart'|t}}</h3>
                         <div class="box__row">
@@ -413,6 +433,20 @@
                         info: not selectedMember.requestPrint and not selectedMember.payedPrintDate ? 'Online'|t : selectedMember.requestPrint and not selectedMember.payedPrintDate ? 'Fysieke lidkaart'|t ~ ' ' ~ 'Nog niet betaald'|t : 'Fysieke lidkaart en online'|t,
                         error: selectedMember.requestPrint and not selectedMember.payedPrintDate
                     } %}
+                    {% if selectedMember.requestPrint %}
+                        {% include "components/info-box.twig" with {
+                            span: 2, 
+                            label: 'Status Fysieke lidkaart'|t, 
+                            info: selectedMember.printStatus.label,
+                        } %}
+                    {% endif %}
+                    {% if selectedMember.requestPrint %}
+                        {% include "components/info-box.twig" with {
+                            span: 2, 
+                            label: 'Fysieke lidkaart verstuurd op'|t, 
+                            info: selectedMember.dateSendPrint ? selectedMember.dateSendPrint|date('d-m-Y') : 'Nog niet verstuurd',
+                        } %}
+                    {% endif %}
                     {% if selectedMember.requestPrint and selectedMember.payedPrintDate %}
                         {% include "components/info-box.twig" with {
                             span: 2, 
@@ -427,31 +461,54 @@
                             info: selectedMember.totalPayedPrint ? selectedMember.totalPayedPrint|money : 0,
                         } %}
                     {% endif %}
-                    <form class="box__column box__column--4 edit" method="post" accept-charset="UTF-8" enctype="multipart/form-data" x-show="editPrint">
-                        {{ csrfInput() }}
-                        {{ actionInput('users/save-user') }}
-                        {{ redirectInput(currentSite.baseUrl ~ '?' ~ urlFilters) }}
-
-                        {{ hiddenInput('userId', selectedMember.id) }}
-                        {{ hiddenInput('fields[totalPayedPrint]', priceCard.price|money) }}
-
-                        <div class="edit__column--2">
-                            <label class="edit__label" for="pay-date">{{'Betaaldatum'|t}}</label>
-                            {{ input('date', 'fields[payedPrintDate]', selectedMember.payedPrintDate ? selectedMember.payedPrintDate|date('Y-m-d') : '', {
-                                id: 'pay-date',
-                            }) }}
-                        </div>
-                        {% include "components/info-box.twig" with {
-                            span: 2, 
-                            label: 'Betaald bedrag'|t, 
-                            info: priceCard.price|money,
-                        } %}
-                        <div class="box__column--flex">
-                            <button type="submit" class="box__function-btn box__function-btn--save">{{'Opslaan'|t}}</button>
-                            <button @click="editPrint = false" type="reset" class="box__function-btn box__function-btn--cancel">{{'Annuleer'}}</button>
-                        </div>
-                    </form>
                 </div> 
+                <form class="box__column box__column--4 edit" method="post" accept-charset="UTF-8" enctype="multipart/form-data" x-show="editPrint">
+                    {{ csrfInput() }}
+                    {{ actionInput('users/save-user') }}
+                    {{ redirectInput(currentSite.baseUrl ~ '?' ~ urlFilters) }}
+
+                    {{ hiddenInput('userId', selectedMember.id) }}
+                    {{ hiddenInput('fields[totalPayedPrint]', priceCard.price|money) }}
+                    <div class="box__column box__column--4">
+                        <h3>{{'Lidkaart'|t}}</h3>
+                    </div>
+
+                    {% include "components/info-box.twig" with {
+                        span: 4, 
+                        label: selectedMember.requestPrint and selectedMember.payedPrintDate ? 'Type kaart'|t : null, 
+                        info: not selectedMember.requestPrint and not selectedMember.payedPrintDate ? 'Online'|t : selectedMember.requestPrint and not selectedMember.payedPrintDate ? 'Fysieke lidkaart'|t ~ ' ' ~ 'Nog niet betaald'|t : 'Fysieke lidkaart en online'|t,
+                        error: selectedMember.requestPrint and not selectedMember.payedPrintDate
+                    } %}
+                    <div class="edit__column--2">
+                        <label class="edit__label" for="print-status">{{'Status Fysieke lidkaart'|t}}</label>
+                        <select name="fields[printStatus]" id="print-status">
+                            {% for item in printStatuses %}                        
+                                <option value="{{item.value}}" {{craft.app.request.getBodyParam('fields[printStatus]') is same as item.value ? 'selected'}}>{{ item.label }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="edit__column--2">
+                        <label class="edit__label" for="send-date">{{'Fysieke lidkaart verstuurd op'|t}}</label>
+                        {{ input('date', 'fields[dateSendPrint]', selectedMember.dateSendPrint ? selectedMember.dateSendPrint|date('Y-m-d') : '', {
+                            id: 'send-date',
+                        }) }}
+                    </div>
+                    <div class="edit__column--2">
+                        <label class="edit__label" for="pay-date">{{'Betaaldatum'|t}}</label>
+                        {{ input('date', 'fields[payedPrintDate]', selectedMember.payedPrintDate ? selectedMember.payedPrintDate|date('Y-m-d') : '', {
+                            id: 'pay-date',
+                        }) }}
+                    </div>
+                    {% include "components/info-box.twig" with {
+                        span: 2, 
+                        label: 'Betaald bedrag'|t, 
+                        info: priceCard.price|money,
+                    } %}
+                    <div class="box__column--flex">
+                        <button type="submit" class="box__function-btn box__function-btn--save">{{'Opslaan'|t}}</button>
+                        <button @click="editPrint = false" type="reset" class="box__function-btn box__function-btn--cancel">{{'Annuleer'}}</button>
+                    </div>
+                </form>
                 <div class="box__options">
                     <div class="box__options-wrapper">
                         {% if selectedMember.customStatus.value is same as 'deactivated' and selectedMember.status is same as 'inactive' %}
@@ -477,57 +534,98 @@
                             <button @click="statusOption = true" class="btn btn--red">{{'Lid deactiveren'|t}}</button>
                         {% endif %}
                     </div>
-                    <button sprig class="btn" s-val:member-id="{{ null }}">{{'Terug naar overzicht'|t}}</button>
+                    {# <button sprig class="btn" s-val:member-id="{{ null }}">{{'Terug naar overzicht'|t}}</button> #}
+                    <a href="{{ url('generate-eti', { memberId: selectedMember.id }) }}" class="btn">
+                        {{ 'Download .ETI bestand'|t }}
+                    </a>
                 </div>
             </div>
         </div>
     </div>
-    {% if selectedMember.getGroups()|first.handle is same as 'members' %}    
-        <div class="extra-modal" x-show="extraMember">
-            <div class="formbox box--extra">
-                <div class="formbox__heading">
-                    <h2>{{'Kind toevoegen'|t}}</h2>
-                </div>
-                <form class="formbox__form formbox__form--no-options" method="post" accept-charset="UTF-8">
-                    {{ csrfInput() }}
-                    {{ actionInput('entries/save-entry') }}
-                    {{ redirectInput(currentSite.baseUrl ~ '?' ~ urlFilters) }}
-                    {{ input('hidden', 'sectionId', craft.entries.section('extraMembers').sectionId|first) }}
-                    {{ input('hidden', 'fields[parentMember][]', selectedMember.id) }}
-
-                    <div class="formbox__column">                
-                        <label class="formbox__label" for="alt-first-name">{{'Voornaam'|t}}</label>
-                        {{ input('text', 'fields[altFirstName]', null, {
-                            id: 'alt-first-name',
-                            placeholder: 'Voornaam',
-                            required: true
-                        }) }}
-                    </div>
-                    <div class="formbox__column">                
-                        <label class="formbox__label" for="alt-sur-namee">{{'Familienaam'|t}}</label>
-                        {{ input('text', 'fields[altLastName]', null, {
-                            id: 'alt-sur-name',
-                            placeholder: 'Achternaam',
-                            required: true
-                        }) }}
-                    </div>
-                    <div class="formbox__column--full">                
-                        <label class="formbox__label" for="birthday">{{'Geboortedatum'|t}}</label>
-                        {{ input('text', 'fields[birthday]', null, {
-                            id: 'birthday',
-                            placeholder: 'Geboortedatum',
-                            onFocus: "(this.type = 'date', this.placeholder = '')",
-                            required: true,
-                            min: minDate
-                        }) }}
-                    </div>   
-                    <button @click="extraMember = false" type="reset" class="formbox__button formbox__button--sec formbox__column">{{'Annuleer'|t}}</button>
-                    <button type="submit" class="formbox__button formbox__button--sec formbox__column">{{'Voeg toe'|t}}</button>
-                </form>
-            </div>
-        </div>
-    {% endif %}
 </div>
+{% if selectedMember.getGroups()|first.handle is same as 'members' %}    
+    <div class="extra-modal" x-show="extraMember">
+        <div class="formbox box--extra">
+            <div class="formbox__heading">
+                <h2>{{'Kind toevoegen'|t}}</h2>
+            </div>
+            <form class="formbox__form formbox__form--no-options" method="post" accept-charset="UTF-8">
+                {{ csrfInput() }}
+                {{ actionInput('entries/save-entry') }}
+                {{ redirectInput(currentSite.baseUrl ~ '?' ~ urlFilters) }}
+
+                {{ input('hidden', 'sectionId', craft.entries.section('extraMembers').sectionId|first) }}
+                {{ input('hidden', 'fields[parentMember][]', selectedMember.id) }}
+
+                <div class="formbox__column">                
+                    <label class="formbox__label" for="alt-first-name">{{'Voornaam'|t}}</label>
+                    {{ input('text', 'fields[altFirstName]', null, {
+                        id: 'alt-first-name',
+                        placeholder: 'Voornaam'|t,
+                        required: true
+                    }) }}
+                </div>
+                <div class="formbox__column">                
+                    <label class="formbox__label" for="alt-sur-namee">{{'Familienaam'|t}}</label>
+                    {{ input('text', 'fields[altLastName]', null, {
+                        id: 'alt-sur-name',
+                        placeholder: 'Familienaam'|t,
+                        required: true
+                    }) }}
+                </div>
+                <div class="formbox__column--full">                
+                    <label class="formbox__label" for="birthday">{{'Geboortedatum'|t}}</label>
+                    {{ input('text', 'fields[birthday]', null, {
+                        id: 'birthday',
+                        placeholder: 'Geboortedatum'|t,
+                        onFocus: "(this.type = 'date', this.placeholder = '')",
+                        required: true,
+                        min: minDate
+                    }) }}
+                </div>   
+                <button @click="extraMember = false" type="reset" class="formbox__button formbox__button--sec formbox__column">{{'Annuleer'|t}}</button>
+                <button type="submit" class="formbox__button formbox__button--sec formbox__column">{{'Voeg toe'|t}}</button>
+            </form>
+        </div>
+    </div>
+    <div class="extra-modal" x-show="connectExtraMember">
+        <div class="formbox box--extra">
+            <div class="formbox__heading">
+                <h2>{{'Kind koppelen'|t}}</h2>
+            </div>
+            <form class="formbox__form formbox__form--no-options" method="post" accept-charset="UTF-8">
+                {{ csrfInput() }}
+                {{ actionInput('entries/save-entry') }}
+                {{ redirectInput(currentSite.baseUrl ~ '?' ~ urlFilters) }}
+
+                {{ input('hidden', 'sectionId', craft.entries.section('extraMembers').sectionId|first) }}
+
+                {# Preserve existing parentMember connections #}
+                {% set entryId = craft.app.request.getParam('entryId') ?? null %}
+                {% set existingParentMembers = craft.entries.id(entryId).one().parentMember.all() ?? [] %}
+
+                {% for member in existingParentMembers %}
+                    {{ input('hidden', 'fields[parentMember][]', member.id) }}
+                {% endfor %}
+
+                {# Add the new selected member #}
+                {{ input('hidden', 'fields[parentMember][]', selectedMember.id) }}
+
+                <div class="formbox__column formbox__column--full">                
+                    <label class="formbox__label" for="kid-id">{{'KidId'|t}}</label>
+                    {{ input('text', 'entryId', null, {
+                        id: 'kid-id',
+                        placeholder: 'KidId'|t,
+                        required: true
+                    }) }}
+                </div> 
+
+                <button @click="connectExtraMember = false" type="reset" class="formbox__button formbox__button--sec formbox__column">{{'Annuleer'|t}}</button>
+                <button type="submit" class="formbox__button formbox__button--sec formbox__column">{{'Koppelen'|t}}</button>
+            </form>
+        </div>
+    </div>
+{% endif %}
 <div class="extra-modal" x-show="statusOption">    
     <div class="box box--delete">
         <div class="box__heading">

@@ -1,7 +1,8 @@
 {% set paymentMethods = [{value: 'hostel', label: 'Hostel'|t}, {value: 'online', label: 'Online'|t}, {value: 'transfer', label: 'Overschrijving'|t}, {value: 'free', label: 'Gratis'|t}] %}
-{% set cardTypes = [{value: 'printed', label: 'Geprint'|t}, {value: 'online', label: 'Enkel online'|t}] %}
+{% set cardTypes = [{value: 'printed', label: 'Fysieke lidkaart'|t}, {value: 'online', label: 'Enkel online'|t}] %}
 {% set statusValues = [{value: 'active', label: 'Actief'|t}, {value: 'new', label: 'Nieuw'|t}, {value: 'renew', label: 'Vernieuw'|t}, {value: 'deactivated', label: 'Gedeactiveerd'|t},  {value: 'old', label: 'Oud systeem'|t}] %}
 {% set memberTypes = [{value: 'individual', label: 'Individueel'|t}, {value: 'group', label: 'Groep'|t}, {value: 'groupYouth', label: 'Jeugdgroep'|t}, {value: 'employee', label: 'Werknemer'|t},  {value: 'life', label: 'Life member'|t}] %}
+{% set printStatuses = [{value: 'send', label: 'Reeds verstuurd'|t}, {value: 'requested' , label: 'Aangevraagd'|t}] %}
 {% set limits = [{value: 10}, {value: 20}, {value: 30} , {value: 40}, {value: 50}, {value: 80}, {value: 100}, {value: 150}] %}
 {% set ageGroups = craft.entries.section('rates').memberType('individual').all() %}
 
@@ -20,7 +21,8 @@
 {% set payMax = payMax ?? null %}
 {% set payMin = payMin ?? null %}
 {% set status = status ?? null %}
-{% set memberType = memberType ?? null %}
+{% set printStatus = printStatus ?? null %}
+{% set memberType = memberType ?? null %} 
 
 {% set limit = limit ?? limits[0].value %}
 {% set page = page ?? 1 %}
@@ -38,6 +40,7 @@
 	status: status,
 	memberType: memberType,
 	limit: limit,
+	printStatus: printStatus
 } %}
 
 {% set dateFilterReg = [] %}
@@ -69,6 +72,7 @@
     limit: limit, 
 	customStatus: status,
 	memberType: memberType,
+	printStatus: printStatus
 }) %}
 
 {% set oldMembers = craft.users({group: ['members', 'membersGroup'], customStatus: ['old', 'oldRenew']}).all() %}
@@ -81,15 +85,22 @@
 {% set entries = pageInfo.pageResults %}
 
 <div class="table-mobile">
-	{{'Dashboard is enkel zichtbaar op ipad of desktop'|t}}
+	{{'Dashboard is enkel zichtbaar op ipad of desktop of op tablet'|t}}
 </div>
-<div class="box-container table" x-data="{statusOption: false}">
+<div class="box-container table" x-data="{statusOption: false, extraMember: false, connectExtraMember: false}">
 	<h1>{{'Leden'|t }}</h1>
 	<div class="table__options" x-data="{openOption: $persist(0)}">
 		<div class="table__option-search">
 			{{ svg("assets/icons/search.svg")|attr({class: 'table__icon-search' }) }}
 			<input sprig  type="text" class="table__search" name="search" value="{{search}}" placeholder="{{'Zoeken'|t}}">
 			<button sprig s-val:search="{{null}}" class="table__option-search-delete">{{ svg("assets/icons/x.svg")|attr({class: 'table__icon-search' }) }}</button>
+		</div>
+		<div class="filter">
+			<select sprig  class="filter__limit" name="limit" id="">
+                {% for item in limits %}
+                    <option class="filter__option" value="{{item.value}}" {{ limit == item.value ? 'selected'}}>{{item.value}}</option>
+                {% endfor %}
+            </select>
 		</div>
 		<div class="filter">
 			<button @click="openOption === 1 ? openOption = 0 : openOption = 1" title="Filter" aria-label="{{ 'Filter' }}" class="filter__option-btn" :class="openOption === 1 ? 'filter__option-btn--open' : ''">{{svg('assets/icons/filter.svg')|attr({class: 'filter__option-icon' })}}</button>
@@ -109,13 +120,17 @@
 					</div>
 				</div>
 				<div class="filter__select-box">
-					<p class="filter__title">{{'Rijen per pagina'|t}}</p>
+					<p class="filter__title">{{'Lidkaart type'|t}}</p>
 					<div class="filter__select-row">					
-						<select sprig  class="filter__select" name="limit" id="">
-							{% for item in limits %}
-								<option class="filter__option" value="{{item.value}}" {{ limit == item.value ? 'selected'}}>{{item.value}}</option>
+						<select sprig  class="filter__select" name="cardType" id="">
+							<option value="" {{ not cardType ? 'selected'}}>{{ 'Selecteer een lidkaart type'|t }}</option>
+							{% for item in cardTypes %}
+								<option class="filter__option" value="{{item.value}}" {{ cardType == item.value ? 'selected'}}>{{item.label}}</option>
 							{% endfor %}
 						</select>
+						{% if cardType %}
+							<button class="filter__remove" sprig s-val:card-type="{{null}}">{{svg('assets/icons/x.svg')|attr({class:"filter__remove-icon"})}}</button>
+						{% endif %}
 					</div>
 				</div>
 				<div class="filter__select-box">
@@ -133,16 +148,16 @@
 					</div>
 				</div>
 				<div class="filter__select-box">
-					<p class="filter__title">{{'Lidkaart type'|t}}</p>
+					<p class="filter__title">{{'Fysieke lidkaart'|t}}</p>
 					<div class="filter__select-row">					
-						<select sprig  class="filter__select" name="cardType" id="">
-							<option value="" {{ not cardType ? 'selected'}}>{{ 'Selecteer een lidkaart type'|t }}</option>
-							{% for item in cardTypes %}
-								<option class="filter__option" value="{{item.value}}" {{ cardType == item.value ? 'selected'}}>{{item.label}}</option>
+						<select sprig  class="filter__select" name="printStatus" id="">
+							<option value="" {{ not printStatus ? 'selected'}}>{{ 'Selecteer een type'|t }}</option>
+							{% for item in printStatuses %}
+								<option class="filter__option" value="{{item.value}}" {{ printStatus == item.value ? 'selected'}}>{{item.label}}</option>
 							{% endfor %}
 						</select>
-						{% if cardType %}
-							<button class="filter__remove" sprig s-val:card-type="{{null}}">{{svg('assets/icons/x.svg')|attr({class:"filter__remove-icon"})}}</button>
+						{% if printStatus %}
+							<button class="filter__remove" sprig s-val:print-status="{{null}}">{{svg('assets/icons/x.svg')|attr({class:"filter__remove-icon"})}}</button>
 						{% endif %}
 					</div>
 				</div>
@@ -201,7 +216,7 @@
 				<button class="filter__remove-all btn" sprig s-val:pay-method="{{null}}" s-val:card-type="{{null}}" s-val:age-group="{{null}}" s-val:reg-min="{{null}}" s-val:reg-max="{{null}}" s-val:pay-min="{{null}}" s-val:pay-max="{{null}}" s-val:search="{{null}}" s-val:status="{{null}}" s-val:member-type="{{null}}">{{'Verwijder alle filters'}}</button>
 			</div>
 		</div>
-			<div class="filter">
+		<div class="filter">
 				<button @click="openOption === 2 ? openOption = 0 : openOption = 2" title="{{'Nieuwe lid'|t}}" aria-label="{{'Nieuwe lid'|t}}" class="filter__option-btn" :class="openOption === 2 ? 'filter__option-btn--open' : ''">{{svg('assets/icons/user-plus.svg')|attr({class: 'filter__option-icon' })}}</button>
 				<div class="filter__box filter__box--new" x-show="openOption === 2" @click.outside="openOption = 0">
 					<a @click="openOption = 0" class="filter__btn" href="{{currentSite.baseUrl}}register-individual">{{'Nieuw individu'|t}}</a>
@@ -212,7 +227,7 @@
 						<a @click="openOption = 0" class="filter__btn" href="/register-hostel">{{'Hostel toevoegen'|t}}</a>
 					{% endif %}
 				</div>
-			</div>
+		</div>
 		<a href="/export-users?{{ filters|url_encode }}" title="{{'Download excel'|t}}" class="table__download">{{svg('assets/icons/download.svg')|attr({class: "table__download-icon"})}}</a>
 		{% if oldMembers and userGroup is same as 'membersAdminSuper' %}		
 			<div class="filter">

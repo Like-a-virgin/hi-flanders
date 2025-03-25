@@ -966,6 +966,38 @@ tabs:
         userCondition: null
         warning: null
         width: 100
+      -
+        dateAdded: '2025-03-24T14:27:59+00:00'
+        elementCondition: null
+        fieldUid: b0a94379-cf08-4479-b96d-403ba096ee06 # Print status
+        handle: null
+        includeInCards: false
+        instructions: null
+        label: null
+        providesThumbs: false
+        required: false
+        tip: null
+        type: craft\fieldlayoutelements\CustomField
+        uid: a60cf354-0242-40e1-9253-dcf3b40cd9ae
+        userCondition: null
+        warning: null
+        width: 100
+      -
+        dateAdded: '2025-03-24T13:35:20+00:00'
+        elementCondition: null
+        fieldUid: ab51ff2a-5865-41c8-897f-008e0b288a70 # Date
+        handle: dateSendPrint
+        includeInCards: false
+        instructions: null
+        label: 'Fysiek lidkaart verstuurd op'
+        providesThumbs: false
+        required: false
+        tip: null
+        type: craft\fieldlayoutelements\CustomField
+        uid: 139193d1-91d7-4892-bbc0-522c04b8d2b8
+        userCondition: null
+        warning: null
+        width: 100
     name: Lidmaatschap
     uid: 19cf21ec-6b32-476c-a140-abf35779079d
     userCondition: null

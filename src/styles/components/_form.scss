@@ -245,6 +245,10 @@
             border: solid 0.075rem $clr-error-text;
         }
     }
+
+    &__column--no-actions {
+        pointer-events: none;
+    }
 }
 
 .formbox--wider {

@@ -390,6 +390,7 @@
     &__profile-img {
         width: 100%;
         height: 100%;
+        object-fit: cover;
         overflow: hidden;
         border-radius: 0.5rem;
         aspect-ratio: 1/1;
@@ -417,6 +418,16 @@
         display: flex;
         flex-direction: row;
         gap: $sp-s;
+    }
+
+    &__link {
+        color: $clr-secondary;
+        transition: all 0.15s ease-in-out;
+        font-weight: $fw-regular;
+
+        &:hover {
+            text-decoration: none;
+        }
     }
 }
 

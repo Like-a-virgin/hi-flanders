@@ -1,0 +1,6 @@
+siteUid: null
+sortOrder: 7
+template: pages/kids.twig
+uriParts:
+  - kids
+uriPattern: kids

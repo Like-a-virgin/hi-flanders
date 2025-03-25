@@ -26,11 +26,12 @@ use modules\afteractivation\AfterActivation;
 use modules\afterdeactivation\AfterDeactivation;
 use modules\beforeactivationuser\BeforeActivationUser;
 use modules\confirmemail\ConfirmEmail;
-use modules\flexmail\Flexmail;
 use modules\custommemberid\CustomMemberId;
 use modules\dailychecks\DailyChecks;
 use modules\deactivateuser\DeactivateUser;
+use modules\etigenerator\EtiGenerator;
 use modules\excelusers\ExcelUsers;
+use modules\flexmail\Flexmail;
 use modules\membershippayments\MembershipPayments;
 use modules\oldmembers\OldMembers;
 use modules\rateextramember\RateExtraMember;
@@ -54,7 +55,8 @@ return [
         'after-activation' => AfterActivation::class,
         'daily-checks' => DailyChecks::class,
         'old-members' => OldMembers::class,
-        // 'flexmail' => Flexmail::class,
+        'eti-generator' => EtiGenerator::class,
+        'flexmail' => Flexmail::class,
     ], 
     'bootstrap' => [
         'admin-register',
@@ -71,6 +73,7 @@ return [
         'after-activation',
         'daily-checks',
         'old-members',
-        // 'flexmail',
+        'eti-generator',
+        'flexmail',
     ],
 ];

@@ -110,10 +110,11 @@
             </div>    
             <div class="formbox__column--full {{ user and user.getErrors('country') ? 'formbox__column--error' }}">
                 <label class="formbox__label" for="country">{{'Land'|t}}</label>
-                {{ input('text', 'fields[country]', user.country ?? null, {
+                {{ input('text', 'fields[country]', 'België'|t, {
                     id: 'country',
                     placeholder: 'Land'|t,
-                    required: true
+                    required: true,
+                    readonly: true
                 }) }}
             </div>
             <div class="formbox__column {{ user and user.getErrors('street') ? 'formbox__column--error' }}">

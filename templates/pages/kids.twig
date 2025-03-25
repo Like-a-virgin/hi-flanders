@@ -1,0 +1,14 @@
+{% extends "layouts/base.twig" %}
+    
+{% requireLogin %}
+
+{% block content %}
+    {% set user = user ?? currentUser %}
+    {% set userGroup = user.getGroups()|first.handle %}
+
+    {% if userGroup is same as 'membersAdmin' or userGroup is same as 'membersAdminSuper'  %}
+        {{ sprig('sprig-components/kids.twig')}}
+    {% else %}
+        {% exit 403 %}
+    {% endif %}
+{% endblock %}

@@ -33,56 +33,100 @@ class AfterDeactivation extends BaseModule
         $usersService = Craft::$app->getUsers();
         $lang = $user->getFieldValue('lang')->value;
         $baseTemplateUrl = 'email/renew/' . $lang;
+        $baseTemplateUrlDeactivate = 'email/deactivate/' . $lang;
 
         // Check if the user's customStatus is `renew`
         if ($user->getFieldValue('customStatus')->value === 'renew') {
             $activationUrl = $usersService->getEmailVerifyUrl($user);
 
-        // Use the mailer to compose and send the email
-        try {
-            $mailer = Craft::$app->mailer;
-        
-            // Render the HTML and Text templates
-            Craft::$app->getView()->setTemplatesPath(Craft::getAlias('@root/templates'));
-
-            $templatePath = $baseTemplateUrl . '/renew';
-
-            if ($user->getFieldValue('memberType')->value === 'individual') {
-                $htmlBody = Craft::$app->getView()->renderTemplate($templatePath, [
-                    'name' => $user->getFieldValue('altFirstName'),
-                    'activationUrl' => $activationUrl,
-                ]);
-
-            } else {
-                $htmlBody = Craft::$app->getView()->renderTemplate($templatePath, [
-                    'name' => $user->getFieldValue('organisation'),
-                    'activationUrl' => $activationUrl,
-                ]);
-
-            }
+            // Use the mailer to compose and send the email
+            try {
+                $mailer = Craft::$app->mailer;
             
-            if ($lang === 'en') {
-                $subject = 'Hi Flanders – Keep enjoying your benefits!';
-            } elseif ($lang === 'fr') {
-                $subject = 'Hi Flanders - Continuez à profiter de nos avantages !';
-            } else {
-                $subject = 'Hi Flanders - Blijf genieten van onze voordelen!';
+                // Render the HTML and Text templates
+                Craft::$app->getView()->setTemplatesPath(Craft::getAlias('@root/templates'));
+
+                $templatePath = $baseTemplateUrl . '/renew';
+
+                if ($user->getFieldValue('memberType')->value === 'individual') {
+                    $htmlBody = Craft::$app->getView()->renderTemplate($templatePath, [
+                        'name' => $user->getFieldValue('altFirstName'),
+                        'activationUrl' => $activationUrl,
+                    ]);
+
+                } else {
+                    $htmlBody = Craft::$app->getView()->renderTemplate($templatePath, [
+                        'name' => $user->getFieldValue('organisation'),
+                        'activationUrl' => $activationUrl,
+                    ]);
+
+                }
+                
+                if ($lang === 'en') {
+                    $subject = 'Hi Flanders – Keep enjoying your benefits!';
+                } elseif ($lang === 'fr') {
+                    $subject = 'Hi Flanders - Continuez à profiter de nos avantages !';
+                } else {
+                    $subject = 'Hi Flanders - Blijf genieten van onze voordelen!';
+                }
+            
+                // Send the email
+                $message = $mailer->compose()
+                    ->setTo($user->email)
+                    ->setSubject($subject)
+                    ->setHtmlBody($htmlBody);
+                                                
+                if (!$mailer->send($message)) {
+                    Craft::error('Failed to send renewal email to user: ' . $user->email, __METHOD__);
+                } else {
+                    Craft::info('Renewal email sent to user: ' . $user->email, __METHOD__);
+                }
+            } catch (\Throwable $e) {
+                Craft::error('Error sending renewal email: ' . $e->getMessage(), __METHOD__);
             }
-        
-            // Send the email
-            $message = $mailer->compose()
-                ->setTo($user->email)
-                ->setSubject($subject)
-                ->setHtmlBody($htmlBody);
-                                            
-            if (!$mailer->send($message)) {
-                Craft::error('Failed to send renewal email to user: ' . $user->email, __METHOD__);
-            } else {
-                Craft::info('Renewal email sent to user: ' . $user->email, __METHOD__);
+        } else {
+            try {
+                $mailer = Craft::$app->mailer;
+            
+                // Render the HTML and Text templates
+                Craft::$app->getView()->setTemplatesPath(Craft::getAlias('@root/templates'));
+
+                $templatePath = $baseTemplateUrlDeactivate . '/account-deactivated';
+
+                if ($user->getFieldValue('memberType')->value === 'individual') {
+                    $htmlBody = Craft::$app->getView()->renderTemplate($templatePath, [
+                        'name' => $user->getFieldValue('altFirstName'),
+                    ]);
+
+                } else {
+                    $htmlBody = Craft::$app->getView()->renderTemplate($templatePath, [
+                        'name' => $user->getFieldValue('organisation'),
+                    ]);
+
+                }
+                
+                if ($lang === 'en') {
+                    $subject = 'Je account is gedeactiveerd';
+                } elseif ($lang === 'fr') {
+                    $subject = 'Je account is gedeactiveerd';
+                } else {
+                    $subject = 'Je account is gedeactiveerd';
+                }
+            
+                // Send the email
+                $message = $mailer->compose()
+                    ->setTo($user->email)
+                    ->setSubject($subject)
+                    ->setHtmlBody($htmlBody);
+                                                
+                if (!$mailer->send($message)) {
+                    Craft::error('Failed to send renewal email to user: ' . $user->email, __METHOD__);
+                } else {
+                    Craft::info('Renewal email sent to user: ' . $user->email, __METHOD__);
+                }
+            } catch (\Throwable $e) {
+                Craft::error('Error sending renewal email: ' . $e->getMessage(), __METHOD__);
             }
-        } catch (\Throwable $e) {
-            Craft::error('Error sending renewal email: ' . $e->getMessage(), __METHOD__);
         }
-    }
     }
 }

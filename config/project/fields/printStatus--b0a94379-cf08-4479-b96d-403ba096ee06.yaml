@@ -1,0 +1,44 @@
+columnSuffix: null
+handle: printStatus
+instructions: null
+name: 'Print status'
+searchable: false
+settings:
+  customOptions: false
+  options:
+    -
+      __assoc__:
+        -
+          - label
+          - 'Geen Print'
+        -
+          - value
+          - ''
+        -
+          - default
+          - '1'
+    -
+      __assoc__:
+        -
+          - label
+          - Aangevraagd
+        -
+          - value
+          - requested
+        -
+          - default
+          - ''
+    -
+      __assoc__:
+        -
+          - label
+          - Verstuurd
+        -
+          - value
+          - send
+        -
+          - default
+          - ''
+translationKeyFormat: null
+translationMethod: none
+type: craft\fields\Dropdown

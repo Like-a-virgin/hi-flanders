@@ -17,4 +17,5 @@ return [
     'send-reminder-old' => 'old-members/send-reminder/send-email',
     'deactivate-old' => 'old-members/deactivate/deactivate',
     'resend-activation' => 'admin-register/resend-activation/send-activation-email',
+    'generate-eti' => 'eti-generator/eti/generate',
 ];
