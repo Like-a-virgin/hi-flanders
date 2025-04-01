@@ -9,8 +9,8 @@
             <div class="box__column box__column--4">            
                 <div class="box__info {{activeUserMember ? 'box__info--sec'}}">
                     <p>{{ userRate.title }}</p>
-                    {% if userRate.price is same as null %}
-                        <p>{{ 'Gratis' }}</p>
+                    {% if userRate.price.amount is same as "0" %}
+                        <p>{{ 'Gratis'|t }}</p>
                     {% else %}
                         <p>{{ activeUserMember ? 'Reeds betaald'|t : userRate.price|money }}</p>
                     {% endif %}
@@ -23,7 +23,7 @@
                     <div class="box__column box__column--4">            
                         <div class="box__info {{activeExtraMember ? 'box__info--sec'}}">
                             <p>{{ rate.title }}</p>
-                            {% if rate.price is same as null %}
+                            {% if rate.price.amount is same as "0" %}
                                 <p>{{'Gratis'|t}}</p>
                             {% else %}
                                 <p>{{activeExtraMember ? 'Reeds betaald'|t : rate.price|money }}</p>
