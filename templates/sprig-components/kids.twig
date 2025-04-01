@@ -6,6 +6,9 @@
 {% set page = page ?? 1 %}
 {% set limit = limit ?? limits[0].value %}
 
+{% set birthdayMin = birthdayMin ?? null %}
+{% set birthdayMax = birthdayMax ?? null %}
+
 {% set filters = {
     kidId: kidId,
 	limit: limit,
@@ -72,7 +75,7 @@
 				{{ pageInfo.first }}-{{ pageInfo.last }}
 				{{'van de'|t}}
 				{{ pageInfo.total }}
-				{{'aanvragen'|t}}.
+				{{'kinderen'|t}}.
 			</p>
 			<div class="pagination__controls">
 				<button class="pagination__btn {{page is same as 1 ? 'pagination__btn--false'}}" sprig s-val:page="{{ 1 }}">

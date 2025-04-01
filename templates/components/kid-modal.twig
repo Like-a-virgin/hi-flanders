@@ -28,9 +28,14 @@
                         info: selectedKid.altLastName
                     } %}
                     {% include "components/info-box.twig" with {
-                        span: 4, 
+                        span: 2, 
                         label: 'Geboortedatum'|t, 
                         info: selectedKid.birthday|date('d-m-Y')
+                    } %}
+                    {% include "components/info-box.twig" with {
+                        span: 2, 
+                        label: 'Toegevoegd op'|t, 
+                        info: selectedKid.dateCreated|date('d-m-Y')
                     } %}
                 </div>
                 <form x-show="editChild" class="edit" method="post" accept-charset="UTF-8" enctype="multipart/form-data">
@@ -72,14 +77,19 @@
                     <div class="box__column box__column--4 box__column--flex-between">
                         <h3>{{'Gekoppelt lidmaatchap'|t}}</h3>
                     </div>
-                    {% for item in parents %}     
-                        <div class="box__column box__column--4">                        
-                            <div class="box__info box__info--prim">
-                                <p>{{ item.altFirstName }} {{ item.altLastName }} - (008) {{item.customMemberId|slice(0, 3)}} {{item.customMemberId|slice(3, 3)}} {{item.customMemberId|slice(6, 3)}} {{item.customMemberId|slice(9, 3)}}</p>
-                                <a class="box__link" href="/?memberId={{ item.id }}">{{ 'Bekijk info'|t }}</a>
-                            </div>                   
-                        </div>
-                    {% endfor %}
+                    {% if parents|length %}
+                        {% for item in parents %}     
+                            <div class="box__column box__column--4">                        
+                                <div class="box__info box__info--prim">
+                                    <p>{{ item.altFirstName }} {{ item.altLastName }} - (008) {{item.customMemberId|slice(0, 3)}} {{item.customMemberId|slice(3, 3)}} {{item.customMemberId|slice(6, 3)}} {{item.customMemberId|slice(9, 3)}}</p>
+                                    <a class="box__link" href="/?memberId={{ item.id }}">{{ 'Bekijk info'|t }}</a>
+                                </div>                   
+                            </div>
+                        {% endfor %}
+                    {% else %}
+                        <p>{{'Geen accounts gekoppeld'|t}}</p>
+                    {% endif %}
+                    
                 </div>                
                 <div class="box__options">
                     <div class="box__options-wrapper">
