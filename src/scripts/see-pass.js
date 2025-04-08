@@ -4,11 +4,12 @@ if (eye) {
     document.addEventListener('DOMContentLoaded', () => {
         const passwordInput = document.getElementById('password');
         const togglePasswordButton = document.getElementById('togglePassword');
+        console.log(passwordInput);
+        console.log(togglePasswordButton);
     
         togglePasswordButton.addEventListener('click', () => {
             // Toggle the input type between 'password' and 'text'
             const isPasswordVisible = passwordInput.type === 'text';
-            console.log(isPasswordVisible);
             passwordInput.type = isPasswordVisible ? 'password' : 'text';
 
     
