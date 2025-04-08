@@ -8,7 +8,9 @@ if (eye) {
         togglePasswordButton.addEventListener('click', () => {
             // Toggle the input type between 'password' and 'text'
             const isPasswordVisible = passwordInput.type === 'text';
+            console.log(isPasswordVisible);
             passwordInput.type = isPasswordVisible ? 'password' : 'text';
+
     
             if (eye.classList.contains('show-eye')) {
                 eye.classList.remove('show-eye');
