@@ -20,7 +20,7 @@
         <main class="center">
             {% block content %}{% endblock %}
         </main>
-        {{ craft.vite.script("src/scripts/main.js") }} 
+        {# {{ craft.vite.script("src/scripts/main.js") }}  #}
         <script src="{{ craft.app.sites.primarySite.baseUrl }}dist/assets/app-BBOAVRPn.js"></script>
         {% if craft.app.request.getFullPath() is same as 'register' %}
             <script>
