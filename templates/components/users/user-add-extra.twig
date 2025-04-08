@@ -75,6 +75,10 @@
             {{ redirectInput(craft.app.request.url) }}
 
             {{ input('hidden', 'sectionId', craft.entries.section('extraMembers').sectionId|first) }}
+
+            <div class="formbox__column formbox__column--full">    
+                <p>{{'Je kunt een bestaand kind toevoegen aan jouw account met het KidsID.'|t}}</p>
+            </div>
             
             {% set entryId = craft.app.request.getParam('entryId') ?? null %}
             {% set existingParentMembers = craft.entries.id(entryId).one().parentMember.all() ?? [] %}

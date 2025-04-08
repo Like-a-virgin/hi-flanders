@@ -91,7 +91,7 @@
                         {% include "components/info-box.twig" with {
                             span: 2,
                             label: 'Geboortedatum'|t, 
-                            info: user.birthday|date("m/d/Y")
+                            info: user.birthday|date("d/m/Y")
                         } %}
                     {% endif %}
                 </div>
