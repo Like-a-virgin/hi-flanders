@@ -28,23 +28,57 @@ class EtiController extends Controller
 
         $fields = $user->getFieldValues();
 
-        $etiContent = <<<ETI
-        [Member]
-        lastName={$fields['altFirstName']}
-        firstName={$fields['altLastName']}
-        Street={$fields['street']} {$fields['streetNr']} 
-        Bus {$fields['bus']}
-        City={$fields['postalCode']} {$fields['city']}
-        Country={$fields['country']}
+        // Static label header (based on uploaded .eti sample)
+        $etiHeader = <<<ETI
+        US
+        FK"vjh"
+        FS"vjh"
+        V00,14,N,"lidnummer"
+        V01,30,N,"vereniging"
+        V02,30,N,"naam"
+        V03,46,N,"STRAAT"
+        V04,30,N,"GEMEENTE"
+        q711
+        Q203,19+0
+        S2
+        D8
+        ZT
+        A400,10,0,2,1,1,N,V00
+        A18,40,0,3,1,1,N,V01
+        A18,70,0,3,1,1,N,V02
+        A18,110,0,3,1,1,N,V03
+        A18,150,0,3,1,1,N,V04
+        FE
         ETI;
+
+        // Dynamic content block
+        $memberNumber = $fields['memberNumber'] ?? '';
+        $validityDate = $fields['validityDate'] ?? '';
+        $fullName = $user->fullName ?? '';
+        $street = trim(($fields['street'] ?? '') . ' ' . ($fields['streetNr'] ?? ''));
+        $zipCity = trim(($fields['postalCode'] ?? '') . ' ' . ($fields['city'] ?? ''));
+
+        $etiContent = <<<ETI
+
+        US
+        FR"vjh"
+        ?
+        {$memberNumber}|{$validityDate}
+
+        {$fullName}
+        {$street}
+        {$zipCity}
+        P1,1
+        ETI;
+
+        $output = $etiHeader . $etiContent;
 
         $response = Craft::$app->response;
         $response->format = Response::FORMAT_RAW;
         $response->headers->set('Content-Type', 'text/plain');
-        $response->headers->set('Content-Disposition', 'attachment; filename="member_' . $user->id . '.eti"');
-        $response->data = $etiContent;
+        $customMemberId = $fields['customMemberId'] ?? $user->id;
+        $response->headers->set('Content-Disposition', 'attachment; filename="member_' . $customMemberId . '.eti"');        $response->data = $output;
 
         return $response;
     }
-
 }

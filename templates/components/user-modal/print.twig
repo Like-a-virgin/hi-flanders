@@ -1,0 +1,106 @@
+<div class="box__wrapper" x-show="!editPrint">
+    <div class="box__column box__column--4 box__column--flex-between">
+        <h3>{{'Lidkaart'|t}}</h3>
+        <div class="box__row">
+            {% if selectedMember.requestPrint and selectedMember.payedPrintDate %}
+                <form method="post" accept-charset="UTF-8" enctype="multipart/form-data" onsubmit="return confirm('Weet je zeker dat je deze kaart als verloren wil markeren?');">
+                    {{ csrfInput() }}
+                    {{ actionInput('users/save-user') }}
+                    {{ redirectInput(currentSite.baseUrl ~ '?' ~ urlFilters) }}
+
+                    {{ hiddenInput('userId', selectedMember.id) }}
+                    {{ hiddenInput('fields[totalPayedPrint]', '') }}
+                    {{ hiddenInput('fields[requestPrint]', '') }}
+                    {{ hiddenInput('fields[payedPrintDate]', '') }}
+                    {{ hiddenInput('fields[requestPrintSend]', false) }}
+
+                    <button type="submit" class="box__function-btn box__function-btn--delete">{{'Kaart verloren'|t}}</button>
+                </form>
+            {% endif %}
+            {% if selectedMember.requestPrint %}
+                <button class="box__function-btn" @click="editPrint = true">{{'Wijzigen'|t}} {{ svg("assets/icons/edit.svg")|attr({class: 'box__icon-option box__icon-edit' }) }}</button>
+            {% endif %}
+        </div>
+    </div>
+    {% include "components/info-box.twig" with {
+        span: 4, 
+        label: selectedMember.requestPrint and selectedMember.payedPrintDate ? 'Type kaart'|t : null, 
+        info: not selectedMember.requestPrint and not selectedMember.payedPrintDate ? 'Online'|t : selectedMember.requestPrint and not selectedMember.payedPrintDate ? 'Fysieke lidkaart'|t ~ ' ' ~ 'Nog niet betaald'|t : 'Fysieke lidkaart en online'|t,
+        error: selectedMember.requestPrint and not selectedMember.payedPrintDate
+    } %}
+    {% if selectedMember.requestPrint %}
+        {% include "components/info-box.twig" with {
+            span: 2, 
+            label: 'Status Fysieke lidkaart'|t, 
+            info: selectedMember.printStatus.label,
+        } %}
+    {% endif %}
+    {% if selectedMember.requestPrint %}
+        {% include "components/info-box.twig" with {
+            span: 2, 
+            label: 'Fysieke lidkaart verstuurd op'|t, 
+            info: selectedMember.dateSendPrint ? selectedMember.dateSendPrint|date('d-m-Y') : 'Nog niet verstuurd',
+        } %}
+    {% endif %}
+    {% if selectedMember.requestPrint and selectedMember.payedPrintDate %}
+        {% include "components/info-box.twig" with {
+            span: 2, 
+            label: 'Betaaldatum'|t, 
+            info: selectedMember.payedPrintDate|date('d-m-Y'),
+        } %}
+    {% endif %}
+    {% if selectedMember.requestPrint and selectedMember.payedPrintDate %}
+        {% include "components/info-box.twig" with {
+            span: 2, 
+            label: 'Betaald bedrag'|t, 
+            info: selectedMember.totalPayedPrint ? selectedMember.totalPayedPrint|money : 0,
+        } %}
+    {% endif %}
+</div> 
+<form class="box__column box__column--4 edit" method="post" accept-charset="UTF-8" enctype="multipart/form-data" x-show="editPrint">
+    {{ csrfInput() }}
+    {{ actionInput('users/save-user') }}
+    {{ redirectInput(currentSite.baseUrl ~ '?' ~ urlFilters) }}
+
+    {{ hiddenInput('userId', selectedMember.id) }}
+    {{ hiddenInput('fields[totalPayedPrint]', priceCard.price|money) }}
+    <div class="box__column box__column--4">
+        <h3>{{'Lidkaart'|t}}</h3>
+    </div>
+
+    {% include "components/info-box.twig" with {
+        span: 4, 
+        label: selectedMember.requestPrint and selectedMember.payedPrintDate ? 'Type kaart'|t : null, 
+        info: not selectedMember.requestPrint and not selectedMember.payedPrintDate ? 'Online'|t : selectedMember.requestPrint and not selectedMember.payedPrintDate ? 'Fysieke lidkaart'|t ~ ' ' ~ 'Nog niet betaald'|t : 'Fysieke lidkaart en online'|t,
+        error: selectedMember.requestPrint and not selectedMember.payedPrintDate
+    } %}
+    <div class="edit__column--2">
+        <label class="edit__label" for="print-status">{{'Status Fysieke lidkaart'|t}}</label>
+        <select name="fields[printStatus]" id="print-status">
+            {% for item in printStatuses %}                        
+                <option value="{{item.value}}" {{craft.app.request.getBodyParam('fields[printStatus]') is same as item.value ? 'selected'}}>{{ item.label }}</option>
+            {% endfor %}
+        </select>
+    </div>
+    <div class="edit__column--2">
+        <label class="edit__label" for="send-date">{{'Fysieke lidkaart verstuurd op'|t}}</label>
+        {{ input('date', 'fields[dateSendPrint]', selectedMember.dateSendPrint ? selectedMember.dateSendPrint|date('Y-m-d') : '', {
+            id: 'send-date',
+        }) }}
+    </div>
+    <div class="edit__column--2">
+        <label class="edit__label" for="pay-date">{{'Betaaldatum'|t}}</label>
+        {{ input('date', 'fields[payedPrintDate]', selectedMember.payedPrintDate ? selectedMember.payedPrintDate|date('Y-m-d') : '', {
+            id: 'pay-date',
+        }) }}
+    </div>
+    {% include "components/info-box.twig" with {
+        span: 2, 
+        label: 'Betaald bedrag'|t, 
+        info: priceCard.price|money,
+    } %}
+    <div class="box__column--flex">
+        <button type="submit" class="box__function-btn box__function-btn--save">{{'Opslaan'|t}}</button>
+        <button @click="editPrint = false" type="reset" class="box__function-btn box__function-btn--cancel">{{'Annuleer'}}</button>
+    </div>
+</form>

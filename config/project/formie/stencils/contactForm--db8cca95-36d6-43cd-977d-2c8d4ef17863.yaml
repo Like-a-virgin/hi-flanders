@@ -60,7 +60,7 @@ data:
     validationOnFocus: false
     validationOnSubmit: true
   userDeletedAction: retain
-defaultStatus: 9a41348d-b717-4688-9000-767870baae38 # New
+defaultStatus: 9a41348d-b717-4688-9000-767870baae38 # In aanvraag
 handle: contactForm
 name: 'Contact Form'
 submitActionEntry: null

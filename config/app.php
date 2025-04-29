@@ -36,6 +36,7 @@ use modules\membershippayments\MembershipPayments;
 use modules\oldmembers\OldMembers;
 use modules\rateextramember\RateExtraMember;
 use modules\ratemember\RateMember;
+use modules\submissions\Submissions;
 use modules\userfullname\UserFullName;
 
 return [
@@ -57,6 +58,7 @@ return [
         'old-members' => OldMembers::class,
         'eti-generator' => EtiGenerator::class,
         'flexmail' => Flexmail::class,
+        'submissions' => Submissions::class,
     ], 
     'bootstrap' => [
         'admin-register',
@@ -75,5 +77,6 @@ return [
         'old-members',
         'eti-generator',
         'flexmail',
+        'submissions',
     ],
 ];

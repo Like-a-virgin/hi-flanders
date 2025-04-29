@@ -1,0 +1,96 @@
+<div x-show="!editAddress" class="box__wrapper box__wrapper--labels">
+    <div class="box__column box__column--4 box__column--flex-between">
+        <h3>{{'Adres'|t}}</h3>
+        <button class="box__function-btn" @click="editAddress = true">{{'Wijzigen'|t}} {{ svg("assets/icons/edit.svg")|attr({class: 'box__icon-option box__icon-edit' }) }}</button>
+    </div>
+    {% include "components/info-box.twig" with {
+        span: 2, 
+        label: 'Straat'|t, 
+        info: selectedMember.street|capitalize
+    } %}
+    {% include "components/info-box.twig" with {
+        span: 1, 
+        label: 'Nr'|t, 
+        info: selectedMember.streetNr
+    } %}
+    {% include "components/info-box.twig" with {
+        span: 1, 
+        label: 'Bus'|t, 
+        info: selectedMember.bus|capitalize
+    } %}
+    {% include "components/info-box.twig" with {
+        span: 2, 
+        label: 'Land'|t, 
+        info: selectedMember.country|capitalize
+    } %}
+    {% include "components/info-box.twig" with {
+        span: 1, 
+        label: 'Stad'|t, 
+        info: selectedMember.city|capitalize
+    } %}
+    {% include "components/info-box.twig" with {
+        span: 1, 
+        label: 'Postcode'|t, 
+        info: selectedMember.postalCode
+    } %}
+</div>
+<form x-show="editAddress" class="edit" method="post" accept-charset="UTF-8" enctype="multipart/form-data">
+    {{ csrfInput() }}
+    {{ actionInput('users/save-user') }}
+    {{ hiddenInput('userId', selectedMember.id) }}
+    {{ redirectInput(currentSite.baseUrl ~ '?' ~ urlFilters) }}
+    <div class="box__column box__column--4">
+        <h3>{{'Adres'|t}}</h3>
+    </div>
+    <div class="edit__column--2">
+        <label class="edit__label" for="street">{{ 'Straat'|t }}</label>
+        {{ input('text', 'fields[street]', selectedMember.street ?? null, {
+            id: 'street',
+            placeholder: 'Straat',
+            required: true
+        }) }}
+    </div>
+    <div class="edit__column--1-4">
+        <label class="edit__label" for="number">{{'Nr'|t}}</label>
+        {{ input('text', 'fields[streetNr]', selectedMember.streetNr ?? null, {
+            id: 'number',
+            placeholder: 'Nr',
+            required: true
+        }) }}
+    </div>
+    <div class="edit__column--1-4">
+        <label class="edit__label" for="bus">{{ 'Bus'|t }}</label>
+        {{ input('text', 'fields[bus]', selectedMember.bus ?? null, {
+            id: 'bus',
+            placeholder: 'bus'
+        }) }}
+    </div>
+    <div class="edit__column--2">
+        <label class="edit__label" for="country">{{'Land'|t}}</label>
+        {{ input('text', 'fields[country]', selectedMember.country ?? null, {
+            id: 'country',
+            placeholder: 'Land',
+            required: true
+        }) }}
+    </div>
+    <div class="edit__column">
+        <label class="edit__label" for="postal-code">{{'Postcode'|t}}</label>
+        {{ input('text', 'fields[postalCode]', selectedMember.postalCode ?? null, {
+            id: 'postal-code',
+            placeholder: 'Postcode',
+            required: true
+        }) }}
+    </div>
+    <div class="edit__column">
+        <label class="edit__label" for="city">{{'Stad'|t}}</label>
+        {{ input('text', 'fields[city]', selectedMember.city ?? null, {
+            id: 'city',
+            placeholder: 'Stad',
+            required: true
+        }) }}
+    </div>
+    <div class="box__column--flex">
+        <button type="submit" class="box__function-btn box__function-btn--save">{{'Opslaan'|t}}</button>
+        <button @click="editAddress = false" type="reset" class="box__function-btn box__function-btn--cancel">{{'Annuleer'}}</button>
+    </div>
+</form>

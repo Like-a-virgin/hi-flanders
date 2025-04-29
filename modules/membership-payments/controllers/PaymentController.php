@@ -187,6 +187,7 @@ class PaymentController extends Controller
                     if ($print) {
                         $user->setFieldValue('totalPayedPrint', $metadata->printTotal);
                         $user->setFieldValue('payedPrintDate', $paymentDate);
+                        $user->setFieldValue('printStatus', 'requested');
                     }
                         
                     if (Craft::$app->elements->saveElement($user, false)) {

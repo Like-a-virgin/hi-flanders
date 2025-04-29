@@ -25,7 +25,7 @@ class ExportController extends Controller
             throw new ForbiddenHttpException('You must be logged in to access this resource.');
         }
 
-        $isMemberAdmin = false;
+        $isMemberAdmin = $currentUser->admin;
         foreach ($currentUser->getGroups() as $group) {
             if ($group->handle === 'membersAdmin' || $group->handle === 'membersAdminSuper') {
                 $isMemberAdmin = true;
@@ -219,7 +219,7 @@ class ExportController extends Controller
         }
         
         // Set file name and path
-        $fileName = 'members-export-' . date('Y-m-d') . '.xlsx';
+        $fileName = 'members-export-' . date('d-m-Y') . '.xlsx';
         $tempFilePath = Craft::$app->path->getTempPath() . DIRECTORY_SEPARATOR . $fileName;
 
         // Save spreadsheet to temporary file

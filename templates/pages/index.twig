@@ -3,18 +3,17 @@
 {% requireLogin %}
 
 {% block content %}
-    {% if craft.app.user.identity and craft.app.user.identity.admin %}
+    {# {% if craft.app.user.identity and craft.app.user.identity.admin %}
         {% redirect url('admin') %}
-    {% else %}
+    {% else %} #}
     
         {% set user = user ?? currentUser %}
-        {% set userGroup = user.getGroups()|first.handle %}
 
-        {% if userGroup is same as 'members' or userGroup is same as 'membersGroup' %}    
+        {% if user.inGroup('members') or user.inGroup('membersGroup') %}    
             {% include "pages/user.twig" %} 
-        {% elseif userGroup is same as 'membersAdmin' or userGroup is same as 'membersAdminSuper' %}
+        {% elseif user.inGroup('membersAdmin') or user.inGroup('membersAdminSuper') or (craft.app.user.identity and craft.app.user.identity.admin) %}
             {{ sprig('sprig-components/dashboard.twig')}}
         {% endif %}
 
-    {% endif %}
+    {# {% endif %} #}
 {% endblock %}

@@ -1,121 +1,153 @@
-{% set selectedMember = submissionsQuery|filter(i => i.id == submissionId)|first %}
+{% set selectedSubmission = submissionsQuery|filter(i => i.id == submissionId)|first %}
 
 <div class="modal">
     <div class="modal__content">
-        <div class="box">        
+        <div class="box" x-data="{ editStatus: false }">        
             <div class="box__heading box__heading--center">
-                <h2>{{ selectedMember.form.title }}</h2>
+                <h2>{{ selectedSubmission.form.title }}</h2>
             </div>
             <div class="box__content">
+                <div class="box__wrapper box__wrapper--labels" x-show="!editStatus">
+                    <div class="box__column box__column--4 box__column--flex-between">
+                        <h3>{{'Status aanvraag'|t}}</h3>
+                        <button class="box__function-btn" @click="editStatus = true">{{'Wijzigen'|t}} {{ svg("assets/icons/edit.svg")|attr({class: 'box__icon-option box__icon-edit' }) }}</button>
+                    </div>
+                    {% include "components/info-box.twig" with {
+                        span: 4, 
+                        info: statuses[selectedSubmission.statusId - 1]|t,
+                    } %}
+                </div>
+                <form class="edit" method="post" accept-charset="UTF-8" enctype="multipart/form-data" x-show="editStatus">
+                    {{ csrfInput() }}
+                    {{ actionInput('submissions/status/update-status') }}
+                    {{ hiddenInput('submissionId', selectedSubmission.id) }}
+
+                    <div class="box__column box__column--4 box__column--flex-between">
+                        <h3>{{'Status aanvraag'|t}}</h3>
+                        <button class="box__function-btn" @click="editStatus = true">{{'Wijzigen'|t}} {{ svg("assets/icons/edit.svg")|attr({class: 'box__icon-option box__icon-edit' }) }}</button>
+                    </div>
+                    
+                    <div class="edit__column--4">
+                        <select name="statusHandle" id="status">
+                            {% for status in statuses %}
+                                <option value="{{ status.handle }}">{{ status.name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="box__column--flex">
+                        <button type="submit" class="box__function-btn box__function-btn--save">{{'Opslaan'|t}}</button>
+                        <button @click="editBday = false" type="reset" class="box__function-btn box__function-btn--cancel">{{'Annuleer'}}</button>
+                    </div>
+                </form>
                 <div class="box__wrapper box__wrapper--labels">
                     {% include "components/subtitle-box.twig" with {
                         subtitle: 'Persoonsgegevens'|t
                     } %}
-                    {% if "groupMembership" in selectedMember.form.handle %}
+                    {% if "groupMembership" in selectedSubmission.form.handle %}
                         {% include "components/info-box.twig" with {
                             span: 2, 
-                            info: selectedMember.organisation,
+                            info: selectedSubmission.organisation,
                             label: 'Organisatie'|t
                         } %}
                         {% include "components/info-box.twig" with {
                             span: 2, 
-                            info: selectedMember.contactPerson,
+                            info: selectedSubmission.contactPerson,
                             label: 'Contact Persoon'|t
                         } %}
                         {% include "components/info-box.twig" with {
                             span: 2, 
-                            info: selectedMember.tel,
+                            info: selectedSubmission.tel,
                             label: 'Tel'|t
                         } %}
                         {% include "components/info-box.twig" with {
                             span: 2, 
-                            info: selectedMember.email,
+                            info: selectedSubmission.email,
                             label: 'Email'|t
                         } %}
-                    {% elseif "oldMember" in selectedMember.form.handle %}
+                    {% elseif "oldMember" in selectedSubmission.form.handle %}
                         {% include "components/info-box.twig" with {
                             span: 2, 
-                            info: selectedMember.name,
+                            info: selectedSubmission.name,
                             label: 'Voornaam'|t
                         } %}
                         {% include "components/info-box.twig" with {
                             span: 2, 
-                            info: selectedMember.lastName,
+                            info: selectedSubmission.lastName,
                             label: 'Familienaam'|t
                         } %}
                         {% include "components/info-box.twig" with {
                             span: 2, 
-                            info: selectedMember.membershipId,
+                            info: selectedSubmission.membershipId,
                             label: 'Lidnummer'|t
                         } %}
                         {% include "components/info-box.twig" with {
                             span: 2, 
-                            info: selectedMember.email,
+                            info: selectedSubmission.email,
                             label: 'E-mail'|t
                         } %}
-                    {% elseif "event" in selectedMember.form.handle %}
+                    {% elseif "event" in selectedSubmission.form.handle %}
                         {% include "components/info-box.twig" with {
                             span: 2, 
-                            info: selectedMember.name,
+                            info: selectedSubmission.name,
                             label: 'Voornaam'|t
                         } %}
                         {% include "components/info-box.twig" with {
                             span: 2, 
-                            info: selectedMember.lastName,
+                            info: selectedSubmission.lastName,
                             label: 'Familienaam'|t
                         } %}
                         {% include "components/info-box.twig" with {
                             span: 2, 
-                            info: selectedMember.email,
+                            info: selectedSubmission.email,
                             label: 'E-mail'|t
                         } %}
                     {% endif %}
                 </div>
-                {% if "groupMembership" in selectedMember.form.handle or "event" in selectedMember.form.handle %}
+                {% if "groupMembership" in selectedSubmission.form.handle or "event" in selectedSubmission.form.handle %}
                     <div class="box__wrapper box__wrapper--labels">
                         {% include "components/subtitle-box.twig" with {
                             subtitle: 'Adres'|t
                         } %}
                         {% include "components/info-box.twig" with {
                             span: 4, 
-                            info: selectedMember.country,
+                            info: selectedSubmission.country,
                             label: 'Land'|t
                         } %}
                         {% include "components/info-box.twig" with {
                             span: 2, 
-                            info: selectedMember.street,
+                            info: selectedSubmission.street,
                             label: 'Straat'|t
                         } %}
                         {% include "components/info-box.twig" with {
                             span: 1, 
-                            info: selectedMember.streetNr,
+                            info: selectedSubmission.streetNr,
                             label: 'Nr.'|t
                         } %}
                         {% include "components/info-box.twig" with {
                             span: 1, 
-                            info: selectedMember.bus,
+                            info: selectedSubmission.bus,
                             label: 'Bus'|t
                         } %}
                         {% include "components/info-box.twig" with {
                             span: 2, 
-                            info: selectedMember.postalCode,
+                            info: selectedSubmission.postalCode,
                             label: 'Postcode'|t
                         } %}
                         {% include "components/info-box.twig" with {
                             span: 2, 
-                            info: selectedMember.city,
+                            info: selectedSubmission.city,
                             label: 'Stad'|t
                         } %}
                     </div>
                 {% endif %}
-                {% if "groupMembership" in selectedMember.form.handle %}                
+                {% if "groupMembership" in selectedSubmission.form.handle %}                
                     <div class="box__wrapper box__wrapper--labels">
                         {% include "components/subtitle-box.twig" with {
                             subtitle: 'Jeugdgroep'|t
                         } %}
                         {% include "components/info-box.twig" with {
                             span: 4, 
-                            info: selectedMember.nieuwsbrief is same as 1 ? 'ja'|t : 'nee'|t,
+                            info: selectedSubmission.nieuwsbrief is same as 1 ? 'ja'|t : 'nee'|t,
                         } %}
                     </div>
                 {% endif %}
@@ -125,12 +157,12 @@
                     } %}
                     {% include "components/info-box.twig" with {
                         span: 2, 
-                        info: selectedMember.nieuwsbrief ? 'ja'|t : 'nee'|t,
+                        info: selectedSubmission.nieuwsbrief ? 'ja'|t : 'nee'|t,
                         label: 'Algemene nieuwsbrief'|t
                     } %}
                     {% include "components/info-box.twig" with {
                         span: 2, 
-                        info: selectedMember.schoolNieuwsbrief ? 'ja'|t : 'nee'|t,
+                        info: selectedSubmission.schoolNieuwsbrief ? 'ja'|t : 'nee'|t,
                         label: 'Scholen nieuwsbrief'|t
                     } %}
                 </div>

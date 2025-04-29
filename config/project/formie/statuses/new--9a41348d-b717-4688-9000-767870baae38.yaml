@@ -1,6 +1,6 @@
 color: green
-description: null
+description: ''
 handle: new
 isDefault: true
-name: New
-sortOrder: 1
+name: 'In aanvraag'
+sortOrder: null

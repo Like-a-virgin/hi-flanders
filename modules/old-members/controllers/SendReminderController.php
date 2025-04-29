@@ -59,7 +59,7 @@ class SendReminderController extends Controller
                     'activationUrl' => $activationUrl
                 ]);
 
-                $subject = 'Jeugdherbergen werd Hi Flanders, en neemt jou mee op (digitale) weg!';
+                $subject = 'Vlaamse Jeugdherbergen werd Hi Flanders, en neemt jou mee op (digitale) weg!';
             }
 
             if ($userCustomStatus === 'oldRenew') {
@@ -68,7 +68,7 @@ class SendReminderController extends Controller
                     'activationUrl' => $activationUrl
                 ]);
             
-                $subject = 'Jeugdherbergen werd Hi Flanders, en neemt jou mee op (digitale) weg!';
+                $subject = 'Vlaamse Jeugdherbergen werd Hi Flanders, en neemt jou mee op (digitale) weg!';
             }
 
             $message = $mailer->compose()

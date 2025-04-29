@@ -1,0 +1,195 @@
+{% set selectedMember = craft.users.id(memberId).one() %} 
+{% set extraMembers = craft.entries.section('extraMembers').parentMember(memberId).all() %}
+{% set minDate = now|date_modify('-17 years')|date("Y-m-d") %} 
+{% set priceCard = craft.entries.section('rates').slug('lidkaart').one() %}
+{% set printStatuses = [{value: 'send', label: 'Verstuurd'|t}, {value: 'requested' , label: 'Aangevraagd'|t}] %}
+
+<button sprig class="btn" s-method="post" s-val:member-id="{{ null }}" class="modal-close">
+    {{ svg('assets/icons/x.svg')|attr({class:"modal-close__icon"})}}
+</button>
+<div class="modal" x-data="{editAddress: false, editPayment: false, editPrint: false, editBday: false, editMembership: false}" :class="extraMember ? 'model--no-overflow' : ''" >
+    <div class="modal__content" :class="statusOption ? 'modal--overflow' : ''">    
+        <div class="box">
+            <div class="box__heading box__heading--center">
+                {% if selectedMember.inGroup('members') %}
+                    <h2>{{ selectedMember.altFirstName }} {{ selectedMember.altLastName }}</h2>
+                {% else %}
+                    <h2>{{ selectedMember.organisation }}</h2>
+                {% endif %}
+                <p class="box__membership">(008) {{selectedMember.customMemberId|slice(0, 3)}} {{selectedMember.customMemberId|slice(3, 3)}} {{selectedMember.customMemberId|slice(6, 3)}} {{selectedMember.customMemberId|slice(9, 3)}}</p>
+            </div>
+            <div class="box__content">
+                {% if selectedMember.customStatus.value is not same as 'active' %}                    
+                    <div class="box__wrapper box__wrapper--labels">
+                        {% include "components/info-box.twig" with {
+                            span: 4, 
+                            info: 'Dit account is niet actief of is nog niet geactiveert!'|t,
+                            error: true
+                        } %}
+                    </div>
+                {% endif %}
+                {% include "components/user-modal/personal-data" %}
+                {% include "components/user-modal/address" %}
+                {% include "components/user-modal/membership" %}
+                {% if selectedMember.inGroup('members') %}  
+                    {% include "components/user-modal/extra-members" %}
+                {% endif %}
+                {% include "components/user-modal/payment" %}
+                {% include "components/user-modal/print" %}
+
+                <div class="box__options">
+                    <div class="box__options-wrapper">
+                        {% if selectedMember.customStatus.value is same as 'deactivated' and selectedMember.status is same as 'inactive' %}
+                            <form class="form-delete" method="post" accept-charset="UTF-8" enctype="multipart/form-data">
+                                {{ csrfInput() }}
+                                {{ actionInput('users/save-user') }}
+                                {{ redirectInput(currentSite.baseUrl ~ '?' ~ urlFilters) }}
+                                
+                                {{ hiddenInput('userId', selectedMember.id) }}
+                                {{ hiddenInput('fields[customStatus]', 'active') }}
+
+                                <button s-val:selectedMember="{{null}}" class="btn" type="submit">
+                                    {{'Lid activeren'|t}}
+                                </button>
+                            </form>
+                        {% elseif selectedMember.status is same as 'pending' %}
+                            <form method="POST" action="{{ url('resend-activation') }}">
+                                {{ csrfInput() }}
+                                <input type="hidden" name="id" value="{{ selectedMember.id }}">
+                                <button type="submit" class="btn">{{'Verstuur activatiemail'|t}}</button>
+                            </form>
+                        {% else %}
+                            <button @click="statusOption = true" class="btn btn--red">{{'Lid deactiveren'|t}}</button>
+                        {% endif %}
+                    </div>
+                    {# <button sprig class="btn" s-val:member-id="{{ null }}">{{'Terug naar overzicht'|t}}</button> #}
+                    <a href="{{ url('generate-eti', { memberId: selectedMember.id }) }}" class="btn">
+                        {{ 'Download .ETI bestand'|t }}
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% if selectedMember.inGroup('members') %}    
+    <div class="extra-modal" x-show="extraMember">
+        <div class="formbox box--extra">
+            <div class="formbox__heading">
+                <h2>{{'Kind toevoegen'|t}}</h2>
+            </div>
+            <form class="formbox__form formbox__form--no-options" method="post" accept-charset="UTF-8">
+                {{ csrfInput() }}
+                {{ actionInput('entries/save-entry') }}
+                {{ redirectInput(currentSite.baseUrl ~ '?' ~ urlFilters) }}
+
+                {{ input('hidden', 'sectionId', craft.entries.section('extraMembers').sectionId|first) }}
+                {{ input('hidden', 'fields[parentMember][]', selectedMember.id) }}
+
+                <div class="formbox__column">                
+                    <label class="formbox__label" for="alt-first-name">{{'Voornaam'|t}}</label>
+                    {{ input('text', 'fields[altFirstName]', null, {
+                        id: 'alt-first-name',
+                        placeholder: 'Voornaam'|t,
+                        required: true
+                    }) }}
+                </div>
+                <div class="formbox__column">                
+                    <label class="formbox__label" for="alt-sur-namee">{{'Familienaam'|t}}</label>
+                    {{ input('text', 'fields[altLastName]', null, {
+                        id: 'alt-sur-name',
+                        placeholder: 'Familienaam'|t,
+                        required: true
+                    }) }}
+                </div>
+                <div class="formbox__column--full">                
+                    <label class="formbox__label" for="birthday">{{'Geboortedatum'|t}}</label>
+                    {{ input('text', 'fields[birthday]', null, {
+                        id: 'birthday',
+                        placeholder: 'Geboortedatum'|t,
+                        onFocus: "(this.type = 'date', this.placeholder = '')",
+                        required: true,
+                        min: minDate
+                    }) }}
+                </div>   
+                <button @click="extraMember = false" type="reset" class="formbox__button formbox__button--sec formbox__column">{{'Annuleer'|t}}</button>
+                <button type="submit" class="formbox__button formbox__button--sec formbox__column">{{'Voeg toe'|t}}</button>
+            </form>
+        </div>
+    </div>
+    <div class="extra-modal" x-show="connectExtraMember">
+        <div class="formbox box--extra">
+            <div class="formbox__heading">
+                <h2>{{'Kind koppelen'|t}}</h2>
+            </div>
+            <form class="formbox__form formbox__form--no-options" method="post" accept-charset="UTF-8">
+                {% if craft.app.session.hasFlash('error') %}
+                    <div class="formbox__error formbox__column--full">
+                        <p class="formbox__errorText">
+                            {{ craft.app.session.getFlash('error') }}
+                        </p>
+                    </div>
+                {% endif %}
+
+                {% if craft.app.session.hasFlash('notice') %}
+                    <div x-init="connectExtraMember = false"></div>
+                {% endif %}
+
+
+                {{ csrfInput() }}
+                {{ actionInput('rate-extra-member/connect/save') }}
+                {{ redirectInput(currentSite.baseUrl ~ '?' ~ urlFilters) }}
+
+                {{ input('hidden', 'sectionId', craft.entries.section('extraMembers').sectionId|first) }}
+                {{ input('hidden', 'selectedMemberId', selectedMember.id) }}
+
+                {# Preserve existing parentMember connections #}
+                {% set entryId = craft.app.request.getParam('entryId') ?? null %}
+                {% set existingParentMembers = craft.entries.id(entryId).one().parentMember.all() ?? [] %}
+
+                {% for member in existingParentMembers %}
+                    {{ input('hidden', 'fields[parentMember][]', member.id) }}
+                {% endfor %}
+
+                {# Add the new selected member #}
+                {{ input('hidden', 'fields[parentMember][]', selectedMember.id) }}
+
+                <div class="formbox__column formbox__column--full">                
+                    <label class="formbox__label" for="kid-id">{{'KidId'|t}}</label>
+                    {{ input('text', 'entryId', null, {
+                        id: 'kid-id',
+                        placeholder: 'KidId'|t,
+                        required: true
+                    }) }}
+                </div> 
+
+                <button @click="connectExtraMember = false" type="reset" class="formbox__button formbox__button--sec formbox__column">{{'Annuleer'|t}}</button>
+                <button type="submit" class="formbox__button formbox__button--sec formbox__column">{{'Koppelen'|t}}</button>
+            </form>
+        </div>
+    </div>
+{% endif %}
+<div class="extra-modal" x-show="statusOption">    
+    <div class="box box--delete">
+        <div class="box__heading">
+            <h2>{{'Lid deactiveren?'|t}}</h2>
+        </div>
+        <div class="box__content">
+            <p>{{'Ben je zeker dat je'|t}} <strong>{{ selectedMember.fullName }}</strong> {{'met lidnummer'|t}} <strong>(008) {{selectedMember.customMemberId|slice(0, 3)}} {{selectedMember.customMemberId|slice(3, 3)}} {{selectedMember.customMemberId|slice(6, 3)}} {{selectedMember.customMemberId|slice(9, 3)}}</strong> {{'wilt deactiveren?'|t}}</p>
+            <div class="box__btns">
+                <button class="btn" @click="statusOption = false">{{'Annuleer'|t}}</button>                
+                <form class="form-delete" method="post" accept-charset="UTF-8" enctype="multipart/form-data">
+                    {{ csrfInput() }}
+                    {{ actionInput('users/save-user') }}
+                    {{ redirectInput(currentSite.baseUrl ~ '?' ~ urlFilters) }}
+                    
+                    {{ hiddenInput('userId', selectedMember.id) }}
+                    {{ hiddenInput('fields[customStatus]', 'deactivated') }}
+                    {{ hiddenInput('fields[statusChangeDate]', now|date('d-m-Y')) }}
+                    <button class="btn" type="submit">
+                        {{'Lid deactiveren'|t}}
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

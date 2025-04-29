@@ -4,9 +4,8 @@
 
 {% block content %}
     {% set user = user ?? currentUser %}
-    {% set userGroup = user.getGroups()|first.handle %}
 
-    {% if userGroup is same as 'membersAdmin' or userGroup is same as 'membersAdminSuper'  %}
+    {% if user.inGroup('membersAdmin') or user.inGroup('membersAdminSuper') or (craft.app.user.identity and craft.app.user.identity.admin)  %}
         {{ sprig('sprig-components/submissions.twig')}}
     {% else %}
         {% exit 403 %}

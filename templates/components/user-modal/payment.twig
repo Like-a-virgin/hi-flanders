@@ -1,0 +1,69 @@
+<div x-show="!editPayment" class="box__wrapper">
+    {% if user.inGroup('membersAdminSuper') %}                    
+        <div class="box__column box__column--4 box__column--flex-between">
+            <h3>{{'Betaal status'|t}}</h3>
+            <button class="box__function-btn" @click="editPayment = true">{{'Wijzigen'|t}} {{ svg("assets/icons/edit.svg")|attr({class: 'box__icon-option box__icon-edit' }) }}</button>
+        </div>
+    {% else %}
+        <div class="box__column box__column--4 box__column--flex-between">
+            <h3>{{'Betaal status'|t}}</h3>
+        </div>
+    {% endif %}
+    
+    {% include "components/info-box.twig" with {
+        span: 4, 
+        label: 'Betaalmethode'|t, 
+        info: selectedMember.paymentType.label,
+        error: selectedMember.paymentType.value is same as ''
+    } %}
+    {% if selectedMember.paymentType.value is not same as '' %}                    
+        {% include "components/info-box.twig" with {
+            span: 2, 
+            label: 'Betaaldatum'|t, 
+            info: selectedMember.paymentType.value is same as 'free' ? selectedMember.paymentType.label : selectedMember.paymentDate ? selectedMember.paymentDate|date("d/m/Y")
+        } %}
+        {% include "components/info-box.twig" with {
+            span: 2, 
+            label: 'Betaald bedrag'|t, 
+            info: selectedMember.totalPayedMembers ? selectedMember.totalPayedMembers|money : '€ 0',
+        } %}
+    {% endif %}
+</div>
+{% if isAdmin %} 
+    <form x-show="editPayment" class="edit" method="post" accept-charset="UTF-8" enctype="multipart/form-data">
+        {{ csrfInput() }}
+        {{ actionInput('users/save-user') }}
+        {{ hiddenInput('userId', selectedMember.id) }}
+        {{ hiddenInput('fields[totalPayedMembers]', selectedMember.memberRate.one().price|money) }}
+        {{ redirectInput(currentSite.baseUrl ~ '?' ~ urlFilters) }}
+
+        <div class="box__column box__column--4">
+            <h3>{{'Betaal status'|t}}</h3>
+        </div>
+        <div class="edit__column--4">
+            <label class="edit__label" for="payment-type">{{'Betaalmethode'|t}}</label>
+            <select required name="fields[paymentType]" id="payment-type" >
+                <option value="">{{'Nog niet betaald'|t}}</option>
+                {% for item in paymentMethods %}
+                    <option {{selectedMember.paymentType.value is same as item.value ? 'selected'}} value="{{item.value}}">{{item.label}}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="edit__column--2">
+            <label class="edit__label" for="pay-date">{{'Betaaldatum'|t}}</label>
+            {{ input('date', 'fields[paymentDate]', selectedMember.paymentDate ? selectedMember.paymentDate|date('Y-m-d') : '', {
+                id: 'pay-date',
+                required: true,
+            }) }}
+        </div>
+        {% include "components/info-box.twig" with {
+            span: 2, 
+            label: 'Betaald bedrag'|t, 
+            info: selectedMember.memberRate.one().price|money,
+        } %}
+        <div class="box__column--flex">
+            <button type="submit" class="box__function-btn box__function-btn--save">{{'Opslaan'|t}}</button>
+            <button @click="editPayment = false" type="reset" class="box__function-btn box__function-btn--cancel">{{'Annuleer'}}</button>
+        </div>
+    </form>
+{% endif %}

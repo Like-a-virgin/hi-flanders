@@ -1,0 +1,74 @@
+<div class="box__wrapper" x-show="!editMembership">
+    {% if selectedMember.inGroup('members') and isAdmin %} 
+        <div class="box__column box__column--4 box__column--flex-between">
+            <h3>{{'Lidmaatschap'|t}}</h3>
+            <button class="box__function-btn" @click="editMembership = true">{{'Wijzigen'|t}} {{ svg("assets/icons/edit.svg")|attr({class: 'box__icon-option box__icon-edit' }) }}</button>
+        </div>
+    {% else %}                        
+        {% include "components/subtitle-box.twig" with {
+            subtitle: 'Lidmaatschap'|t
+        } %}
+    {% endif %}
+    {% include "components/info-box.twig" with {
+        span: 2, 
+        label: 'Type'|t,
+        info: selectedMember.memberRate.one().title, 
+        prim: true
+    } %}
+    {% include "components/info-box.twig" with {
+        span: 2, 
+        label: 'Registratiedatum'|t, 
+        info: selectedMember.dateCreated|date("d/m/Y")
+    } %}
+    {% include "components/info-box.twig" with {
+        span: 2, 
+        label: 'Vernieuwd op'|t, 
+        info: selectedMember.renewedDate ? selectedMember.renewedDate|date("d/m/Y") : 'Nog niet vernieuwd'|t
+    } %}
+    {% include "components/info-box.twig" with {
+        span: 2, 
+        label: 'Vervaldatum'|t, 
+        info: selectedMember.memberDueDate|date("d/m/Y")
+    } %}
+</div>
+<form x-show="editMembership" class="edit" method="post" accept-charset="UTF-8" enctype="multipart/form-data">
+    {{ csrfInput() }}
+    {{ actionInput('users/save-user') }}
+    {{ hiddenInput('userId', selectedMember.id) }}
+    {{ redirectInput(currentSite.baseUrl ~ '?' ~ urlFilters) }}
+
+    {% include "components/subtitle-box.twig" with {
+        subtitle: 'Lidmaatschap'|t
+    } %}
+
+    {% include "components/info-box.twig" with {
+        span: 2, 
+        label: 'Type'|t,
+        info: selectedMember.memberRate.one().title, 
+        prim: true
+    } %}
+    {% include "components/info-box.twig" with {
+        span: 2, 
+        label: 'Registratiedatum'|t, 
+        info: selectedMember.dateCreated|date("d/m/Y")
+    } %}
+
+    <div class="edit__column--2">
+        <label class="edit__label" for="renewedDate">{{'Vernieuwd op'|t}}</label>
+        {{ input('date', 'fields[renewedDate]', selectedMember.renewedDate ? selectedMember.renewedDate|date('Y-m-d') : '', {
+            id: 'renewedDate',
+        }) }}
+    </div>
+
+    <div class="edit__column--2">
+        <label class="edit__label" for="memberDueDate">{{'Vervaldatum'|t}}</label>
+        {{ input('date', 'fields[memberDueDate]', selectedMember.memberDueDate ? selectedMember.memberDueDate|date('Y-m-d') : '', {
+            id: 'memberDueDate',
+        }) }}
+    </div>
+
+    <div class="box__column--flex">
+        <button type="submit" class="box__function-btn box__function-btn--save">{{'Opslaan'|t}}</button>
+        <button @click="editMembership = false" type="reset" class="box__function-btn box__function-btn--cancel">{{'Annuleer'|t}}</button>
+    </div>
+</form>

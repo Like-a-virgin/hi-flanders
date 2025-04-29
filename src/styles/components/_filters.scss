@@ -137,17 +137,24 @@
         font-family: $ff;
     }
 
-    &__limit {
+    &__limit, &__status {
         background-color: $clr-primary;
         border-radius: $br;
         padding: $sp-s;
         padding-right: 2rem;
-        width: 5rem;
         height: 3.2rem;
-
+        
         background-position: right $sp-s top 50%;
         font-weight: $fw-bold;
         text-align: center;
+    }
+    
+    &__limit {
+        width: 5rem;
+    }
+
+    &__status {
+        width: 15rem;
     }
 
     &__title {

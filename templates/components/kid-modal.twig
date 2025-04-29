@@ -75,7 +75,7 @@
                 </form>
                 <div class="box__wrapper box__wrapper--labels">
                     <div class="box__column box__column--4 box__column--flex-between">
-                        <h3>{{'Gekoppelt lidmaatchap'|t}}</h3>
+                        <h3>{{'Gekoppeld lidmaatschap'|t}}</h3>
                     </div>
                     {% if parents|length %}
                         {% for item in parents %}     
@@ -93,7 +93,7 @@
                 </div>                
                 <div class="box__options">
                     <div class="box__options-wrapper">
-                        <form class="form-delete form-delete--full" method="post" accept-charset="UTF-8">
+                        <form class="form-delete form-delete--full" method="post" accept-charset="UTF-8" onsubmit="return confirm('Weet je zeker dat je dit kind wilt verwijderen?');">
                             {{ csrfInput() }}
                             {{ actionInput('elements/delete') }}
                             {{ redirectInput(currentSite.baseUrl ~ '/kids') }}

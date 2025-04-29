@@ -4,14 +4,17 @@
 {% set submissionId = submissionId ?? null %}
 {% set page = page ?? 1 %}
 {% set limit = limit ?? limits[0].value %}
+{% set status = status ?? '' %}
 
 {% set filters = {
     submissionId: submissionId,
+	status: status,
 	limit: limit,
 } %}
 
 {% set submissionsQuery = craft.formie.submissions({
     orderBy: 'dateCreated DESC', 
+	statusId: status,
     limit: limit
 }) %}
 
@@ -20,18 +23,29 @@
 {% set entries = pageInfo.pageResults %}
 
 {% set submissionsAll = submissionsQuery.all() %}
+{% set statuses = craft.formie.statuses %}
 
 <div class="box-container table">
-    <div  class="table__heading">
-        <h1>{{'Aanvragen'}}</h1>
-        <div class="filter">
-            <select sprig  class="filter__limit" name="limit" id="">
-                {% for item in limits %}
-                    <option class="filter__option" value="{{item.value}}" {{ limit == item.value ? 'selected'}}>{{item.value}}</option>
-                {% endfor %}
-            </select>
-        </div>
-    </div>
+	<div class="table__heading">
+    	<h1>{{'Aanvragen'}}</h1>
+		<div class="table__options table__options--heading">
+			<div class="filter">
+				<select sprig  class="filter__limit" name="limit" id="">
+					{% for item in limits %}
+						<option class="filter__option" value="{{item.value}}" {{ limit == item.value ? 'selected'}}>{{item.value}}</option>
+					{% endfor %}
+				</select>
+			</div>
+			<div class="filter">
+				<select sprig  class="filter__status" name="status" id="">
+					<option class="filter__option" value="" {{ not status ? 'selected' }}>{{ 'Toon alle'|t }}</option>
+					{% for item in statuses %}
+						<option class="filter__option" value="{{ item.id }}" {{ status == item.id ? 'selected'}}>{{ item.name }}</option>
+					{% endfor %}
+				</select>
+			</div>
+		</div>
+	</div>
     <div class="table__content" id="table-members">
         <table class="table__table">
             <thead>            
@@ -39,6 +53,7 @@
                     <th>{{'Soort'|t}}</th>
                     <th>{{'E-mail'|t}}</th>
                     <th>{{'Datum'|t}}</th>
+                    <th>{{'Status'|t}}</th>
                     <th>{{'Details'|t}}</th>
                 </tr>
             </thead>
@@ -48,6 +63,9 @@
                         <td>{{ submission.form.title}}</td>
                         <td>{{ submission.email}}</td>
                         <td>{{ submission.dateCreated|date('d-m-Y') }}</td>
+                        <td>
+							<div class="table__status {{ submission.statusId is same as 1 ? 'table__status--true' : 'table__status--disabled' }}">{{ statuses[submission.statusId - 1]|t }}</div>
+						</td>
                         <td>
 							<button sprig class="table__more" s-val:submission-id="{{ submission.id }}">{{'Bekijk details'}}</button>
 						</td>

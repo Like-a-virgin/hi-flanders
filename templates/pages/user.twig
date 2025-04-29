@@ -51,7 +51,7 @@
                     {% include "components/subtitle-box.twig" with {
                         subtitle: 'Gegevens'|t
                     } %}
-                    {% if userGroup is same as 'membersGroup' %}
+                    {% if user.inGroup('membersGroup') %}
                         {% include "components/info-box.twig" with {
                             span: 2,
                             label: 'Organisatie'|t, 
@@ -189,7 +189,7 @@
                     <button type="submit" @click="edit = false" class="box__function-btn box__function-btn--save">{{'Opslaan'|t}}</button>
                 </form>
                 <div class="box__wrapper">            
-                    <div class="box__column {{userGroup is same as 'membersOrganisation' ? 'box__column--2' : 'box__column--4'}}">
+                    <div class="box__column {{ user.inGroup('membersOrganisation') ? 'box__column--2' : 'box__column--4'}}">
                         <p class="box__text-bold">{{'Lidmaatschap'|t}}</p>
                         <div class="box__info box__info--prim">
                             <p>{{ user.memberRate.one().title }}</p>
@@ -244,7 +244,7 @@
                 </div>
             </div>
         </div>
-        {% if userGroup is same as 'members' %}        
+        {% if user.inGroup('members') %}        
             {% if extraMembers|length > 0 %}
                 {% include "components/users/user-extras.twig" %}
             {% endif %}

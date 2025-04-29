@@ -2,16 +2,16 @@
   "minimum-stability": "dev",
   "prefer-stable": true,
   "require": {
-    "craftcms/ckeditor": "4.6.0",
-    "craftcms/cms": "5.6.13",
+    "craftcms/ckeditor": "4.7.0",
+    "craftcms/cms": "5.7.4",
     "craftcms/feed-me": "6.8.0",
     "craftcms/postmark": "^3.1.0",
     "mollie/mollie-api-php": "^2.76",
     "mutation/translate": "4.1.1",
     "nystudio107/craft-vite": "^5.0.1",
     "phpoffice/phpspreadsheet": "^1.29",
-    "putyourlightson/craft-sprig": "3.5.2",
-    "verbb/formie": "3.0.21",
+    "putyourlightson/craft-sprig": "3.6.1",
+    "verbb/formie": "3.0.27",
     "vlucas/phpdotenv": "^5.4.0"
   },
   "require-dev": {
@@ -60,7 +60,8 @@
       "modules\\dailychecks\\": "modules/daily-checks/",
       "modules\\oldmembers\\": "modules/old-members/",
       "modules\\flexmail\\": "modules/flexmail/",
-      "modules\\etigenerator\\": "modules/eti-generator/"
+      "modules\\etigenerator\\": "modules/eti-generator/",
+      "modules\\submissions\\": "modules/submissions/"
     }
   }
 }

@@ -1,0 +1,51 @@
+<div class="box__wrapper">
+    <div class="box__column box__column--4 box__column--flex-between">
+        <h3>{{'Kinderen'|t}}</h3>
+        <div class="box__row">
+            <button class="box__function-btn box__function-btn--prim" @click="extraMember = true">{{'Kind toevoegen'|t}} {{ svg("assets/icons/add.svg")|attr({class: 'box__icon-option box__icon-edit' }) }}</button>
+            <button class="box__function-btn box__function-btn--prim" @click="connectExtraMember = true">{{'Kind koppelen'|t}} {{ svg("assets/icons/add.svg")|attr({class: 'box__icon-option box__icon-edit' }) }}</button>
+        </div>
+    </div>
+    {% if extraMembers|length > 0 %}
+        {% for item in extraMembers %}
+            <div class="box__column box__column--4 box__column--flex">
+                <div class="box__info box__info box__info--prim">
+                    <p>{{ item.altFirstName }} {{ item.altLastName }} - {{ item.id }}</p>
+                    {# <p>{{ item.memberRate.one().title }}</p> #}
+                    <a class="box__link" href="/kids?kidId={{ item.id }}">{{'Bekijk info'|t}}</a>
+                </div>
+                <form class="form-delete form-delete--full" method="post" accept-charset="UTF-8" onsubmit="return confirm('Weet je zeker dat je dit kind wilt ontkoppelen?');">
+                    {% set newParents = item.parentMember.ids()|filter(i => i != selectedMember.id) %}
+                    
+                    {{ csrfInput() }}
+                    {{ actionInput('entries/save-entry') }}
+                    {{ redirectInput(currentSite.baseUrl ~ '?' ~ urlFilters) }}
+                    {{ input('hidden', 'entryId', item.id) }}
+                    
+                    {% if newParents|length > 0 %}
+                        {% for parentId in newParents %}
+                            {{ input('hidden', 'fields[parentMember][]', parentId) }}
+                        {% endfor %}
+                    {% else %}
+                        {{ input('hidden', 'fields[parentMember][]', null) }}
+                    {% endif %}
+                    
+                    <button type="submit" class="btn btn--red btn--square">{{svg('assets/icons/link-slash.svg')|attr({class: "btn__icon"})}}</button>
+                </form>
+                {# <form class="form-delete form-delete--full" method="post" accept-charset="UTF-8" onsubmit="return confirm('Weet je zeker dat je dit kind wilt verwijderen?');">
+                    {{ csrfInput() }}
+                    {{ actionInput('elements/delete') }}
+                    {{ redirectInput(currentSite.baseUrl ~ '?' ~ urlFilters) }}
+                    {{ input('hidden', 'elementId', item.id) }}
+                    <button type="submit" class="btn btn--red btn--square">{{svg('assets/icons/trash.svg')|attr({class: "btn__icon"})}}</button>
+                </form> #}
+            </div>                                    
+        {% endfor %}
+    {% else %}
+        <div class="box__column box__column--4">
+            <div class="box__info box__info">
+                <p>{{'Geen kinderen'|t}}</p>
+            </div>
+        </div> 
+    {% endif %}
+</div>

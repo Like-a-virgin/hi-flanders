@@ -13,9 +13,11 @@ return [
     'actions/entries/delete-entry' => 'entries/delete-entry',
     'membership-payments/payment/webhook' => 'membership-payments/payment/webhook',
     'export-users' => 'excel-users/export/users',
+    'export-kids' => 'excel-users/export-kids/kids',
     'send-activation-old' => 'old-members/send-activation/send-email',
     'send-reminder-old' => 'old-members/send-reminder/send-email',
     'deactivate-old' => 'old-members/deactivate/deactivate',
     'resend-activation' => 'admin-register/resend-activation/send-activation-email',
     'generate-eti' => 'eti-generator/eti/generate',
+    'bulk-generate-eti' => 'eti-generator/bulk-eti/generate-all',
 ];

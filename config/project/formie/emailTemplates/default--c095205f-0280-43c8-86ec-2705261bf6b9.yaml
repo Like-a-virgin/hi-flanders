@@ -1,4 +1,4 @@
 handle: default
 name: Default
-sortOrder: 1
-template: email/email.html
+sortOrder: null
+template: email/email.twig

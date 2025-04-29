@@ -1,3 +1,5 @@
+{% set baseUrl = craft.app.sites.primarySite.baseUrl %}
+
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -5,12 +7,14 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Hi flanders</title>
         <link rel="stylesheet" href="https://use.typekit.net/dgq7cxw.css">
-        <link rel="icon" type="image/png" href="{{ craft.app.sites.primarySite.baseUrl }}/assets/favicons/favicon-96x96.png" sizes="96x96" />
-        <link rel="icon" type="image/svg+xml" href="{{ craft.app.sites.primarySite.baseUrl }}/assets/favicons/favicon.svg" />
-        <link rel="shortcut icon" href="{{ craft.app.sites.primarySite.baseUrl }}/assets/favicons/favicon.ico" />
-        <link rel="apple-touch-icon" sizes="180x180" href="{{ craft.app.sites.primarySite.baseUrl }}/assets/favicons/apple-touch-icon.png" />
-        <link rel="manifest" href="{{ craft.app.sites.primarySite.baseUrl }}/assets/favicons/site.webmanifest" />
-        <link rel="stylesheet" href="{{ craft.app.sites.primarySite.baseUrl }}dist/assets/app-C1HKitvh.css">
+        <link rel="icon" type="image/png" href="{{ baseUrl }}/assets/favicons/favicon-96x96.png" sizes="96x96" />
+        <link rel="icon" type="image/svg+xml" href="{{ baseUrl }}/assets/favicons/favicon.svg" />
+        <link rel="shortcut icon" href="{{ baseUrl }}/assets/favicons/favicon.ico" />
+        <link rel="apple-touch-icon" sizes="180x180" href="{{ baseUrl }}/assets/favicons/apple-touch-icon.png" />
+        <link rel="manifest" href="{{ baseUrl }}/assets/favicons/site.webmanifest" />
+
+        {# <link rel="stylesheet" href="{{ baseUrl }}dist/assets/app-C1HKitvh.css"> #}
+        
         {% if craft.app.request.getFullPath() is same as 'register' %}
             <script src="https://www.google.com/recaptcha/api.js?render={{ getenv('RECAPTCHA_SITE_KEY') }}"></script>
         {% endif %}
@@ -20,8 +24,8 @@
         <main class="center">
             {% block content %}{% endblock %}
         </main>
-        {# {{ craft.vite.script("src/scripts/main.js") }}  #}
-        <script src="{{ craft.app.sites.primarySite.baseUrl }}dist/assets/app-Xee7FNdh.js"></script>
+        {{ craft.vite.script("src/scripts/main.js") }} 
+        {# <script src="{{ baseUrl }}dist/assets/app-Xee7FNdh.js"></script> #}
         {% if craft.app.request.getFullPath() is same as 'register' %}
             <script>
                 function onSubmit(token) {
