@@ -1,0 +1,45 @@
+{% set succesPage = craft.entries().section('succesEmailEdit').one() %}
+<div class="extra-modal" x-show="edit">
+    <div class="formbox box--extra">
+        <div class="formbox__heading">
+            <h2>{{'E-mail adres wijzigen'|t}}</h2>
+        </div>
+        <form class="formbox__form formbox__form--no-options" method="post" accept-charset="UTF-8" enctype="multipart/form-data">
+            {% if user %}
+                {% set errors = user.getErrors() %}
+                {% if user and user.getErrors('email') %}
+                    <div class="formbox__error formbox__column--full">{{_self.errorList(user.getErrors('email'))}}</div>
+                {% endif %}   
+                {% if user and user.getErrors('password') %}
+                    <div class="formbox__error formbox__column--full">{{_self.errorList(user.getErrors('password'))}}</div>
+                {% endif %} 
+            {% endif %}
+            {{ csrfInput() }}
+            {{ actionInput('users/save-user') }}
+            {{ hiddenInput('userId', user.id) }}
+            {{ redirectInput(succesPage.url) }}
+            
+            <div class="formbox__column formbox__column--full">
+                <label class="edit__label" for="email">{{'Nieuw e-mail'|t}}</label>
+                {{ input('text', 'email', null, {
+                    id: 'email',
+                    placeholder: 'E-mail'|t,
+                    required: true
+                }) }}
+            </div>
+            <div class="formbox__column--full  {{ user and user.getErrors('password') ? 'formbox__column--error' }}">         
+                <label class="formbox__label formbox__label--show" for="password">{{'Wachtwoord'|t}}</label>
+                {{ input('password', 'password', null, {
+                    id: 'password',
+                    placeholder: 'Wachtwoord'|t,
+                    required: true
+                }) }}
+                <button class="formbox__see-pass formbox__see-pass-register" type="button" id="togglePassword" aria-label="Show Password">
+                    {{ svg("assets/icons/eye.svg")|attr({class: 'formbox__see-pass-icon' }) }}
+                </button>
+            </div>
+            <button type="reset"  class="formbox__button formbox__button--sec formbox__column" @click="edit = false">{{'Annuleer'|t}}</button>
+            <button type="submit" class="formbox__button formbox__button--sec formbox__column">{{'Opslaan'|t}}</button>
+        </form>
+    </div>
+</div>

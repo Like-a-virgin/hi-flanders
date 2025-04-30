@@ -1,4 +1,4 @@
-dateModified: 1745922627
+dateModified: 1746006456
 elementSources:
   craft\elements\Entry:
     -
@@ -37,14 +37,33 @@ elementSources:
           -
             class: craft\elements\conditions\entries\SectionConditionRule
             operator: in
-            uid: 462bbf2f-a4d3-4f5a-bccf-f8a550569ba6
+            uid: c5f44f3e-dcd3-41ca-8e5e-fe9e7c411d1f
             values:
-              - 3a447095-116f-4a81-b2f7-43b6b4c1cf53
-              - 7b5aa47e-5da6-461a-b6fc-a190a143d8d8 # Activeer email
-              - e633efea-afa2-411f-9fc3-06d84f219d9b # Bedankt betaling
               - 4a63b33e-aa54-421b-b619-d4bc7f4888e7 # Home
               - ac77cfdb-37a0-4f35-9ca7-e353977a477d # Privacy policy
               - 22e6beae-01af-4451-b3d5-29bf90a51e80 # Reset wachtwoord
+        elementType: craft\elements\Entry
+        fieldContext: global
+      defaultSort:
+        - id
+        - asc
+      defaultViewMode: ''
+      key: 'custom:ac40ed88-76f6-4c0c-b352-d044a6450711'
+      label: 'Vaste pagina''s'
+      tableAttributes: '-'
+      type: custom
+    -
+      condition:
+        class: craft\elements\conditions\entries\EntryCondition
+        conditionRules:
+          -
+            class: craft\elements\conditions\entries\SectionConditionRule
+            operator: in
+            uid: 462bbf2f-a4d3-4f5a-bccf-f8a550569ba6
+            values:
+              - 7b5aa47e-5da6-461a-b6fc-a190a143d8d8 # Activeer email
+              - e633efea-afa2-411f-9fc3-06d84f219d9b # Bedankt betaling
+              - b79564a0-5366-488d-b437-7257e8b76275 # Succes e-mail wijziging
               - af17efa6-765d-4c48-99b6-d836a037abd9 # Succes registratie
         elementType: craft\elements\Entry
         fieldContext: global
@@ -53,7 +72,7 @@ elementSources:
         - asc
       defaultViewMode: ''
       key: 'custom:25a0c0a6-3dc5-41de-af42-23c27ec98692'
-      label: 'Vaste pagina''s'
+      label: 'Melding pagina''s'
       tableAttributes: '-'
       type: custom
     -
@@ -62,7 +81,7 @@ elementSources:
         - desc
       defaultViewMode: ''
       disabled: false
-      key: 'section:41bcf592-e8cf-43ee-8c4f-c83d185aee48' # Forms
+      key: 'section:41bcf592-e8cf-43ee-8c4f-c83d185aee48' # Formulieren
       tableAttributes:
         - status
         - postDate
@@ -105,20 +124,6 @@ elementSources:
         - link
       type: native
     -
-      defaultSort:
-        - postDate
-        - desc
-      defaultViewMode: ''
-      disabled: false
-      key: 'section:3999db0f-4dbd-4784-8c12-a18c1f1ee8dd'
-      tableAttributes:
-        - status
-        - postDate
-        - expiryDate
-        - authors
-        - link
-      type: native
-    -
       heading: Globals
       type: heading
     -
@@ -142,18 +147,14 @@ elementSources:
       label: 'Bedrijfs gegevens'
       tableAttributes: '-'
       type: custom
-    -
-      heading: ''
-      type: heading
 email:
   fromEmail: lara@likeavirgin.be
   fromName: 'Hi Flanders'
   replyToEmail: null
   template: email/email.twig
   transportSettings:
-    messageStream: ''
-    token: $POSTMARK_API_KEY
-  transportType: craftcms\postmark\Adapter
+    command: '/usr/local/bin/mailpit sendmail -t --smtp-addr 127.0.0.1:1025'
+  transportType: craft\mail\transportadapters\Sendmail
 fs:
   branding:
     hasUrls: true
@@ -198,7 +199,7 @@ meta:
     22e6beae-01af-4451-b3d5-29bf90a51e80: 'Reset wachtwoord' # Reset wachtwoord
     26a45535-8ce1-455f-b5ed-13bc2228f792: Behandeld # Behandeld
     40f481eb-0ec0-4642-ae8d-142718436d91: Nummer # Nummer
-    41bcf592-e8cf-43ee-8c4f-c83d185aee48: Forms # Forms
+    41bcf592-e8cf-43ee-8c4f-c83d185aee48: Formulieren # Formulieren
     44a841e6-e727-4500-9e81-386090b011f6: memberRate # memberRate
     50a6f7cb-84e7-4d68-9aa9-3af2d9001e79: Leden # Leden
     52ac72a5-0a6a-42ba-9e72-995b76380054: Logo # Logo
@@ -225,6 +226,7 @@ meta:
     ac77cfdb-37a0-4f35-9ca7-e353977a477d: 'Privacy policy' # Privacy policy
     af17efa6-765d-4c48-99b6-d836a037abd9: 'Succes registratie' # Succes registratie
     b0a94379-cf08-4479-b96d-403ba096ee06: 'Print status' # Print status
+    b79564a0-5366-488d-b437-7257e8b76275: 'Succes e-mail wijziging' # Succes e-mail wijziging
     baf8aa85-b95e-4451-95dd-49dd26a47f81: 'Account status' # Account status
     bbdfff72-14f8-4e5d-b59e-12d5b73c9a17: Home # Home
     be1c673f-0962-430c-8f77-56c215ba3ba8: 'Form Select' # Form Select

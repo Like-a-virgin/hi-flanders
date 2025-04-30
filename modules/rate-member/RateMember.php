@@ -28,7 +28,7 @@ class RateMember extends BaseModule
             Elements::class,
             Elements::EVENT_BEFORE_SAVE_ELEMENT,
             function (ElementEvent $event) {
-                $element = $event->element;
+                $element = $event->element; 
 
                 if ($element instanceof User) {
                     $customStatus = $element->getFieldValue('customStatus')->value;

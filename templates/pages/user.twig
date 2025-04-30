@@ -47,10 +47,18 @@
                 <h2>(008)  {{user.customMemberId|slice(0, 3) ~ ' ' ~ user.customMemberId|slice(3, 3) ~ ' ' ~ user.customMemberId|slice(6, 3) ~ ' ' ~ user.customMemberId|slice(9, 3)}}</h2>
             </div>
             <div class="box__content" x-data="{ edit: false }">
-                <div class="box__wrapper box__wrapper--labels">        
-                    {% include "components/subtitle-box.twig" with {
-                        subtitle: 'Gegevens'|t
-                    } %}
+                <div class="box__wrapper box__wrapper--labels">
+                    {% if user.inGroup('membersGroup') %}
+                        <div class="box__column box__column--4 box__column--flex-between">
+                            <h3>{{'Gegevens'|t}}</h3>
+                            <button @click="edit = true" class="box__function-btn">{{'E-mail adres wijzigen'|t}} {{ svg("assets/icons/edit.svg")|attr({class: 'box__icon-option box__icon-edit' }) }}</button>
+                        </div> 
+                    {% else %}
+                        {% include "components/subtitle-box.twig" with {
+                            subtitle: 'Gegevens'|t
+                        } %}
+                    {% endif %}
+                            
                     {% if user.inGroup('membersGroup') %}
                         {% include "components/info-box.twig" with {
                             span: 2,
@@ -93,6 +101,9 @@
                             label: 'Geboortedatum'|t, 
                             info: user.birthday|date("d/m/Y")
                         } %}
+                    {% endif %}
+                    {% if user.inGroup('membersGroup') %}
+                        {% include "components/users/edit-email.twig" %} 
                     {% endif %}
                 </div>
                 <div class="box__wrapper box__wrapper--labels" x-show="!edit">   
@@ -256,3 +267,4 @@
         {% include "components/users/settings.twig" %} 
     </div>
 </div>
+
