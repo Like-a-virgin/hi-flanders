@@ -181,11 +181,11 @@ class PaymentController extends Controller
                 if ($user) {
                     
                     if ($memberships) {
-                        $user->setFieldValue('paymentDate', $paymentDate);
                         $user->setFieldValue('renewedDate', $paymentDate);
+                        $user->setFieldValue('memberDueDate', $paymentDate);
+                        $user->setFieldValue('paymentDate', $paymentDate);
                         $user->setFieldValue('paymentType', 'online');
                         $user->setFieldValue('customStatus', 'active');
-                        $user->setFieldValue('memberDueDate', $nextYearDate);
                         $user->setFieldValue('totalPayedMembers', $metadata->membershipTotal);                       
                     }
                     
