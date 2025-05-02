@@ -25,6 +25,19 @@ class DailyDeactivationCheck extends BaseJob
         foreach ($usersToDeactivate as $user) {
             $this->deactivateUser($user);
         }
+
+        $start = (new DateTime('now', new DateTimeZone('CET')))->modify('-358 days')->format('Y-m-d 00:00:00');
+        $end = (new DateTime('now', new DateTimeZone('CET')))->modify('-357 days')->format('Y-m-d 00:00:00');
+
+        $usersToRemind = User::find()
+            ->status('pending')
+            ->statusChangeDate(['and', ">= $start", "< $end"])
+            ->group(['members', 'membersGroup'])
+            ->all();
+
+        foreach ($usersToRemind as $user) {
+            $this->sendReminderEmail($user);
+        }
     }
 
     public function deactivateUser(User $user): void
@@ -44,6 +57,47 @@ class DailyDeactivationCheck extends BaseJob
 
         if (!$usersService->deactivateUser($user)) {
             Craft::error('Failed to deactivate user: ' . $user->id, __METHOD__);
+        }
+    }
+
+    public function sendReminderEmail(User $user): void
+    {
+        $email = $user->email;
+        $lang = $user->getFieldValue('lang')->value ?? 'nl';
+        $memberType = $user->getFieldValue('memberType')->value ?? 'individual';
+
+        $name = $memberType === 'individual'
+            ? ($user->getFieldValue('altFirstName') ?? 'lid')
+            : ($user->getFieldValue('organisation') ?? 'organisatie');
+
+        $templatePath = 'email/remind/' . $lang . '/remind-before-deactivation';
+
+        try {
+            Craft::$app->getView()->setTemplatesPath(Craft::getAlias('@root/templates'));
+            $htmlBody = Craft::$app->getView()->renderTemplate($templatePath, [
+                'name' => $name,
+            ]);
+
+            $subject = match ($lang) {
+                'en' => 'Reminder: Your account will be deactivated soon',
+                'fr' => 'Rappel : Votre compte sera bientôt désactivé',
+                default => 'Herinnering: Je account wordt binnenkort gedeactiveerd',
+            };
+
+            $success = Craft::$app->mailer->compose()
+                ->setTo($email)
+                ->setSubject($subject)
+                ->setHtmlBody($htmlBody)
+                ->send();
+
+            if ($success) {
+                Craft::info("Reminder email sent to user: $email", __METHOD__);
+            } else {
+                Craft::error("Failed to send reminder email to user: $email", __METHOD__);
+            }
+
+        } catch (\Throwable $e) {
+            Craft::error("Error sending reminder to $email: " . $e->getMessage(), __METHOD__);
         }
     }
 
