@@ -26,16 +26,11 @@ class DailyRenewalCheck extends BaseJob
 
         foreach ($users as $user) {
             $user->setFieldValue('customStatus', 'renew');
+            $user->setFieldValue('statusChangeDate', $currentDate);
 
             if (!$elementsService->saveElement($user)) {
                 Craft::error('Failed to update customStatus to renew for user: ' . $user->id, __METHOD__);
                 continue;
-            }
-
-            // Deactivate the user
-            $usersService = Craft::$app->getUsers();
-            if (!$usersService->deactivateUser($user)) {
-                Craft::error('Failed to deactivate user: ' . $user->id, __METHOD__);
             }
         }
     }

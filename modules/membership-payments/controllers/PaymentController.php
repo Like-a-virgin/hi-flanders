@@ -173,6 +173,7 @@ class PaymentController extends Controller
             $memberships = $metadata->memberships ?? false;
 
             $paymentDate = new DateTime();
+            $nextYearDate = $paymentDate->add(new DateInterval('P1Y'));
 
             if ($userId) {
                 $user = Craft::$app->users->getUserById($userId);
@@ -180,7 +181,9 @@ class PaymentController extends Controller
                     
                     if ($memberships) {
                         $user->setFieldValue('paymentDate', $paymentDate);
+                        $user->setFieldValue('renewedDate', $paymentDate);
                         $user->setFieldValue('paymentType', 'online');
+                        $user->setFieldValue('customStatus', 'active');
                         $user->setFieldValue('totalPayedMembers', $metadata->membershipTotal);                       
                     }
                     

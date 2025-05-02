@@ -12,48 +12,22 @@ class DailyDeactivationCheck extends BaseJob
 {
     public function execute($queue): void
     {
-        $currentDate = new DateTime('now', new DateTimeZone('CET'));
-        $fourteenDaysAgo = $currentDate->modify('-14 days')->format('Y-m-d');
+        $oneYearAgo = (new DateTime('now', new DateTimeZone('CET')))
+            ->modify('-1 year')
+            ->format('Y-m-d');
 
-        $fourteenDaysAgoStart = (new \DateTime('-14 days'))->format('Y-m-d 00:00:00');
-        $fourteenDaysAgoEnd = (new \DateTime('-13 days'))->format('Y-m-d 00:00:00');
-
-        $usersNew = User::find()
+        $usersToDeactivate = User::find()
             ->status('pending')
-            ->customStatus('new') 
-            ->dateCreated(['and', ">= $fourteenDaysAgoStart", "< $fourteenDaysAgoEnd"]) 
-            ->group(['members', 'membersGroup'])
-            ->all();
-        
-        $usersRenew = User::find()
-            ->status('pending')
-            ->customStatus('renew')
-            ->statusChangeDate($fourteenDaysAgo) 
+            ->statusChangeDate("< $oneYearAgo")
             ->group(['members', 'membersGroup'])
             ->all();
 
-        $usersNotPayed = User::find()
-            ->status('active')
-            ->customStatus('active')
-            ->paymentType(null)
-            ->statusChangeDate($fourteenDaysAgo) 
-            ->group(['members', 'membersGroup'])
-            ->all();
-
-        foreach ($usersNew as $user) {
-            $this->deactivateUser($user, 'new');
-        }
-
-        foreach ($usersRenew as $user) {
-            $this->deactivateUser($user, 'renew');
-        }
- 
-        foreach ($usersNotPayed as $user) {
-            $this->deactivateUser($user, 'notPayed');
+        foreach ($usersToDeactivate as $user) {
+            $this->deactivateUser($user);
         }
     }
 
-    public function deactivateUser(User $user)
+    public function deactivateUser(User $user): void
     {
         $currentDate = new DateTime('now', new DateTimeZone('CET'));
         $elementsService = Craft::$app->getElements();
@@ -62,10 +36,10 @@ class DailyDeactivationCheck extends BaseJob
         $user->setFieldValue('statusChangeDate', $currentDate);
 
         if (!$elementsService->saveElement($user)) {
-            Craft::error('Failed to update customStatus to renew for user: ' . $user->id, __METHOD__);
+            Craft::error('Failed to update customStatus to deactivated for user: ' . $user->id, __METHOD__);
             return;
         }
-        
+
         $usersService = Craft::$app->getUsers();
 
         if (!$usersService->deactivateUser($user)) {
@@ -75,6 +49,6 @@ class DailyDeactivationCheck extends BaseJob
 
     protected function defaultDescription(): string
     {
-        return 'Processing deactivation users.';
+        return 'Deactivating users who have been pending for over a year.';
     }
 }

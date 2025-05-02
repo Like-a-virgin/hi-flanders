@@ -29,7 +29,7 @@ class AfterDeactivation extends BaseModule
         $user = $event->user;
         $userId = $user->id;
         $email = $user->email;
-
+        
         // Prevent duplicate sends
         $cacheKey = 'after-deactivation-email-sent-' . $userId;
         if (Craft::$app->cache->get($cacheKey)) {
@@ -40,36 +40,24 @@ class AfterDeactivation extends BaseModule
 
         $lang = $user->getFieldValue('lang')->value ?? 'nl';
         $memberType = $user->getFieldValue('memberType')->value ?? 'individual';
-
-        $isRenew = $user->getFieldValue('customStatus')->value === 'renew';
-        $templateBase = $isRenew ? 'email/renew/' : 'email/deactivate/';
-        $templatePath = $templateBase . $lang . ($isRenew ? '/renew' : '/account-deactivated');
-
+        
+        $templateBase = 'email/deactivate/';
+        $templatePath = $templateBase . $lang . '/account-deactivated';
+        
         $name = $memberType === 'individual'
             ? ($user->getFieldValue('altFirstName') ?? 'lid')
             : ($user->getFieldValue('organisation') ?? 'organisatie');
-
-        if ($isRenew) {
-            $activationUrl = Craft::$app->getUsers()->getEmailVerifyUrl($user);
-        }
 
         try {
             Craft::$app->getView()->setTemplatesPath(Craft::getAlias('@root/templates'));
             $htmlBody = Craft::$app->getView()->renderTemplate($templatePath, [
                 'name' => $name,
-                'activationUrl' => $isRenew ? $activationUrl : null,
             ]);
 
             $subject = match ($lang) {
-                'en' => $isRenew
-                    ? 'Hi Flanders – Keep enjoying your benefits!'
-                    : 'Your account has been deactivated',
-                'fr' => $isRenew
-                    ? 'Hi Flanders - Continuez à profiter de nos avantages !'
-                    : 'Votre compte a été désactivé',
-                default => $isRenew
-                    ? 'Hi Flanders - Blijf genieten van onze voordelen!'
-                    : 'Je account is gedeactiveerd',
+                'en' => 'Your account has been deactivated',
+                'fr' => 'Votre compte a été désactivé',
+                default => 'Je account is gedeactiveerd',
             };
 
             $success = Craft::$app->mailer->compose()
@@ -79,7 +67,7 @@ class AfterDeactivation extends BaseModule
                 ->send();
 
             if ($success) {
-                $logType = $isRenew ? 'Renewal' : 'Deactivation';
+                $logType = 'Deactivation';
                 Craft::info("$logType email sent to user: $email", __METHOD__);
             } else {
                 Craft::error("Failed to send email to user: $email", __METHOD__);

@@ -35,13 +35,27 @@ class RateMember extends BaseModule
                     $memberRate = $element->getFieldValue('memberRate')->one();
                     $status = $element->status;
                     $currentUser = (Craft::$app->user->identity && Craft::$app->user->identity->isInGroup('membersAdminSuper'));
-
                     
-                    if ($customStatus === 'new' && $status !== 'active' || $customStatus === 'renew' && $status === 'pending' || !$memberRate || $currentUser) {
+                    if ($customStatus === 'new' || $customStatus === 'renew' || !$memberRate || $currentUser) {
                         $this->assignMemberRate($element);
                     }
                 }
             },
+        );
+        
+        Event::on(
+            Elements::class,
+            Elements::EVENT_AFTER_SAVE_ELEMENT,
+            function (ElementEvent $event) {
+                $element = $event->element;
+        
+                if ($element instanceof User) {
+                    $customStatus = $element->getFieldValue('customStatus')->value;
+                    if ($customStatus === 'renew') {
+                        $this->handleRenewalNotification($element);
+                    }
+                }
+            }
         );
     }
 
@@ -90,9 +104,13 @@ class RateMember extends BaseModule
     {
         if (!($birthday instanceof \DateTime)) {
             try {
-                $birthday = new \DateTime($birthday);
-            } catch (\Exception $e) {
-                Craft::error('Invalid birthday format for user ID ' . $user->id, __METHOD__);
+                if (is_array($birthday) && isset($birthday['date'])) {
+                    $birthday = new \DateTime($birthday['date'], new \DateTimeZone($birthday['timezone'] ?? 'UTC'));
+                } else {
+                    $birthday = new \DateTime($birthday);
+                }
+            } catch (\Throwable $e) {
+                Craft::error('Invalid birthday value for user ID ' . $user->id . ': ' . $e->getMessage(), __METHOD__);
                 return;
             }
         }
@@ -138,15 +156,19 @@ class RateMember extends BaseModule
 
         $paymentType = $user->getFieldValue('paymentType')->value ?? $request->getBodyParam('fields.paymentType');
         
-        if ($paymentType) {
+        if ($paymentType and $user->getFieldValue('customStatus') != 'renew') {
             $user->setFieldValue('paymentDate', $paymentDate);
             $user->setFieldValue('paymentType', $paymentType);
 
+        } elseif ($paymentType and $user->getFieldValue('customStatus') == 'renew'){ 
+            $user->setFieldValue('paymentDate', null);
+            $user->setFieldValue('paymentType', null);
+            $user->setFieldValue('totalPayedMembers', 0);
         } elseif ($ratePrice === null || (float) $ratePrice <= 0) {
             $user->setFieldValue('paymentDate', $paymentDate);
             $user->setFieldValue('paymentType', 'free');
             $user->setFieldValue('totalPayedMembers', 0);
-
+            
         } else {
             $user->setFieldValue('paymentDate', null);
             $user->setFieldValue('paymentType', null);
@@ -154,5 +176,91 @@ class RateMember extends BaseModule
         }
 
         $user->setDirtyFields(['paymentDate', 'paymentType']);
+    }
+
+    private function handleRenewalNotification(User $user): void
+    {   
+        $customStatus = $user->getFieldValue('customStatus')->value;
+        if ($customStatus !== 'renew') {
+            return;
+        }
+
+        
+        $lang = $user->getFieldValue('lang')->value ?? 'nl';
+        $memberType = $user->getFieldValue('memberType')->value ?? 'individual';
+        $email = $user->email;
+        
+        $templateBase = 'email/renew/';
+        $templatePath = $templateBase . $lang . '/renew';
+        
+        $name = $memberType === 'individual'
+        ? ($user->getFieldValue('altFirstName') ?? 'lid')
+        : ($user->getFieldValue('organisation') ?? 'organisatie');
+        
+        $url = Craft::$app->getSites()->getCurrentSite()->getBaseUrl();
+        
+        $rate = $user->getFieldValue('memberRate')->one();
+        if (!$rate) return;
+        
+        $price = $rate->getFieldValue('price');
+        if ($price instanceof \Money\Money) {
+            $price = (float) $price->getAmount() / 100;
+        } elseif (is_numeric($price)) {
+            $price = (float) $price;
+        } else {
+            $price = null;
+        }
+        
+        if ($price === null || $price <= 0) return;
+        
+        $minAge = $rate->getFieldValue('minAge');
+        $birthday = $user->getFieldValue('birthday');
+        
+        try {
+            if (!($birthday instanceof \DateTime)) {
+                if (is_array($birthday) && isset($birthday['date'])) {
+                    $birthday = new \DateTime($birthday['date'], new \DateTimeZone($birthday['timezone'] ?? 'UTC'));
+                } else {
+                    $birthday = new \DateTime($birthday);
+                }
+            }
+        
+            if ($birthday instanceof \DateTime) {
+                $age = (new \DateTime())->diff($birthday)->y;
+                if ($minAge !== null && $age === $minAge) {
+                    $templatePath = 'email/renew/' . $lang . '/renew-at-age';
+                }
+            }
+        } catch (\Throwable $e) {
+            Craft::error('Error calculating age for user ID ' . $user->id . ': ' . $e->getMessage(), __METHOD__);
+        }
+        
+        try {
+            Craft::$app->getView()->setTemplatesPath(Craft::getAlias('@root/templates'));
+            $htmlBody = Craft::$app->getView()->renderTemplate($templatePath, [
+                'name' => $name,
+                'url' => $url,
+            ]);
+
+            $subject = match ($lang) {
+                'en' => 'Hi Flanders – Keep enjoying your benefits!',
+                'fr' => 'Hi Flanders - Continuez à profiter de nos avantages !',
+                default => 'Hi Flanders - Blijf genieten van onze voordelen!',
+            };
+            
+            $success = Craft::$app->mailer->compose()
+                ->setTo($email)
+                ->setSubject($subject)
+                ->setHtmlBody($htmlBody)
+                ->send();
+
+            if ($success) {
+                Craft::info("Renewal email sent to user: $email", __METHOD__);
+            } else {
+                Craft::error("Failed to send renewal email to user: $email", __METHOD__);
+            }
+        } catch (\Throwable $e) {
+            Craft::error("Failed to render/send renewal email to user: $email - " . $e->getMessage(), __METHOD__);
+        }
     }
 }
