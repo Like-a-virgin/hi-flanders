@@ -182,7 +182,6 @@ class RateMember extends BaseModule
         if ($customStatus !== 'renew') {
             return;
         }
-
         
         $lang = $user->getFieldValue('lang')->value ?? 'nl';
         $memberType = $user->getFieldValue('memberType')->value ?? 'individual';
