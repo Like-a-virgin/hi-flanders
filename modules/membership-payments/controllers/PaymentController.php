@@ -184,6 +184,7 @@ class PaymentController extends Controller
                         $user->setFieldValue('renewedDate', $paymentDate);
                         $user->setFieldValue('paymentType', 'online');
                         $user->setFieldValue('customStatus', 'active');
+                        $user->setFieldValue('memberDueDate', $nextYearDate);
                         $user->setFieldValue('totalPayedMembers', $metadata->membershipTotal);                       
                     }
                     

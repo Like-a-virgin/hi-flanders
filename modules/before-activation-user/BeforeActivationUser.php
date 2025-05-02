@@ -77,7 +77,6 @@ class BeforeActivationUser extends BaseModule
                 $user->setFieldValue('totalPayedMembers', null);
                 $user->setFieldValue('renewedDate', $currentDate);
                 $user->setFieldValue('statusChangeDate', $currentDate);
-                $user->setFieldValue('memberDueDate', $newDate);
                 
                 // Save the updated user to persist the changes
                 if (!Craft::$app->elements->saveElement($user)) {
@@ -93,9 +92,6 @@ class BeforeActivationUser extends BaseModule
                     ->all();
 
                 foreach ($relatedEntries as $entry) {
-                    // ✅ Update memberDueDate for related entry
-                    $entry->setFieldValue('memberDueDate', $newDate);
-            
                     // ✅ Save the updated entry
                     if (!Craft::$app->elements->saveElement($entry)) {
                         Craft::error('Failed to update memberDueDate for related entry ID: ' . $entry->id, __METHOD__);

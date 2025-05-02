@@ -159,7 +159,6 @@ class RateMember extends BaseModule
         if ($paymentType and $user->getFieldValue('customStatus') != 'renew') {
             $user->setFieldValue('paymentDate', $paymentDate);
             $user->setFieldValue('paymentType', $paymentType);
-
         } elseif ($paymentType and $user->getFieldValue('customStatus') == 'renew'){ 
             $user->setFieldValue('paymentDate', null);
             $user->setFieldValue('paymentType', null);
@@ -168,7 +167,6 @@ class RateMember extends BaseModule
             $user->setFieldValue('paymentDate', $paymentDate);
             $user->setFieldValue('paymentType', 'free');
             $user->setFieldValue('totalPayedMembers', 0);
-            
         } else {
             $user->setFieldValue('paymentDate', null);
             $user->setFieldValue('paymentType', null);
