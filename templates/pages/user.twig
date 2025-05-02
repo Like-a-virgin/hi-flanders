@@ -202,7 +202,7 @@
                 <div class="box__wrapper">            
                     <div class="box__column {{ user.inGroup('membersOrganisation') ? 'box__column--2' : 'box__column--4'}}">
                         <p class="box__text-bold">{{'Lidmaatschap'|t}}</p>
-                            {% if not paymentType %}
+                            {% if not user.paymentType.value %}
                                 <p>{{'Je hebt nog geen actieve lidmaatschap.'|t}}</p>
                             {% else %}
                                 <div class="box__info box__info--prim">
