@@ -202,12 +202,16 @@
                 <div class="box__wrapper">            
                     <div class="box__column {{ user.inGroup('membersOrganisation') ? 'box__column--2' : 'box__column--4'}}">
                         <p class="box__text-bold">{{'Lidmaatschap'|t}}</p>
-                        <div class="box__info box__info--prim">
-                            <p>{{ user.memberRate.one().title }}</p>
-                            {% if user.memberDueDate %}
-                                <p>{{'Vervalt op'|t}} {{user.memberDueDate|date('d-m-Y')}}</p>
+                            {% if !paymentType %}
+                                <p>{{'Je hebt nog geen actieve lidmaatschap.'|t}}</p>
+                            {% else %}
+                                <div class="box__info box__info--prim">
+                                    <p>{{ user.memberRate.one().title }}</p>
+                                    {% if user.memberDueDate %}
+                                        <p>{{'Vervalt op'|t}} {{user.memberDueDate|date('d-m-Y')}}</p>
+                                    {% endif %}
+                                </div>
                             {% endif %}
-                        </div>
                     </div>
                 </div>
                 <div class="box__wrapper">

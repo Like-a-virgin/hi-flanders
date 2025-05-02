@@ -9,7 +9,6 @@
     {% set maxDate = now|date_modify('-3 years')|date("Y-m-d") %}
     {% set memberRates = craft.entries.section('rates').all() %}
     {% set forms = craft.entries.section('forms').addOption(true).all() %}
-    {% set todayPlusOneYear = now|date_modify('+1 year')|date('Y-m-d') %}
 
     {% macro errorList(errors) %}
         {% if errors %}
@@ -27,7 +26,6 @@
             {{ redirectInput(activationPage) }}
 
             {{ input('hidden', 'groupHandle', 'members') }}
-            {{ input('hidden', 'fields[memberDueDate]', todayPlusOneYear) }}
             {{ input('hidden', 'fields[lang]', currentSite.language) }}
             {{ input('hidden', 'fields[registeredBy]', 'self') }}
             {{ input('hidden', 'fields[customStatus]', 'new') }}
