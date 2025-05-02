@@ -8,6 +8,8 @@ use craft\elements\Entry;
 use craft\events\ElementEvent;
 use craft\services\Elements;
 use yii\base\Event;
+use DateTime;
+use DateTimeZone;
 
 use yii\base\Module as BaseModule;
 
@@ -48,7 +50,6 @@ class RateMember extends BaseModule
             Elements::EVENT_AFTER_SAVE_ELEMENT,
             function (ElementEvent $event) {
                 $element = $event->element;
-        
                 if ($element instanceof User) {
                     $customStatus = $element->getFieldValue('customStatus')->value;
                     if ($customStatus === 'renew') {
@@ -105,7 +106,7 @@ class RateMember extends BaseModule
         if (!($birthday instanceof \DateTime)) {
             try {
                 if (is_array($birthday) && isset($birthday['date'])) {
-                    $birthday = new \DateTime($birthday['date'], new \DateTimeZone($birthday['timezone'] ?? 'UTC'));
+                    $birthday = new \DateTime($birthday['date'], new DateTimeZone($birthday['timezone'] ?? 'UTC'));
                 } else {
                     $birthday = new \DateTime($birthday);
                 }
@@ -150,7 +151,7 @@ class RateMember extends BaseModule
             $ratePrice = null; // Default fallback if price cannot be determined
         }
 
-        $currentDate = new \DateTime();
+        $currentDate = new DateTime();
         $paymentDate = $currentDate->format('Y-m-d');
         $expirationDate = $currentDate->modify('+1 year')->format('Y-m-d');
 
@@ -216,14 +217,14 @@ class RateMember extends BaseModule
         try {
             if (!($birthday instanceof \DateTime)) {
                 if (is_array($birthday) && isset($birthday['date'])) {
-                    $birthday = new \DateTime($birthday['date'], new \DateTimeZone($birthday['timezone'] ?? 'UTC'));
+                    $birthday = new DateTime($birthday['date'], new \DateTimeZone($birthday['timezone'] ?? 'UTC'));
                 } else {
-                    $birthday = new \DateTime($birthday);
+                    $birthday = new DateTime($birthday);
                 }
             }
         
             if ($birthday instanceof \DateTime) {
-                $age = (new \DateTime())->diff($birthday)->y;
+                $age = (new DateTime())->diff($birthday)->y;
                 if ($minAge !== null && $age === $minAge) {
                     $templatePath = 'email/renew/' . $lang . '/renew-at-age';
                 }
