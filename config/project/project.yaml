@@ -1,4 +1,4 @@
-dateModified: 1746174304
+dateModified: 1746195824
 elementSources:
   craft\elements\Entry:
     -
@@ -153,8 +153,9 @@ email:
   replyToEmail: null
   template: email/email.twig
   transportSettings:
-    command: '/usr/local/bin/mailpit sendmail -t --smtp-addr 127.0.0.1:1025'
-  transportType: craft\mail\transportadapters\Sendmail
+    messageStream: ''
+    token: $POSTMARK_API_KEY
+  transportType: craftcms\postmark\Adapter
 fs:
   branding:
     hasUrls: true
