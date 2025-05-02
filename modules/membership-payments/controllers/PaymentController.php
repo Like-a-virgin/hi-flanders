@@ -163,7 +163,7 @@ class PaymentController extends Controller
 
         $payment = $mollie->payments->get($paymentId);
 
-        Craft::dd($mollie);
+        // Craft::dd($mollie);
 
         if ($payment->isPaid()) {
             $metadata = $payment->metadata;
