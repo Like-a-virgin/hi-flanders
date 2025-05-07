@@ -1,19 +1,21 @@
 {% extends "email/base.twig" %}
 {% block content %}
-    <p>Bonjour  {{ name }},</p>
-    <p>Cela fait déjà un an que nous vous avons accueilli dans la communauté Hi Flanders. Entre-temps, votre adhésion a expiré. Mais pas de panique : vous pouvez continuer à profiter de tous les avantages en renouvelant dès maintenant votre adhésion ! Nous avons entièrement digitalisé le processus, alors en quelques clics, votre adhésion premium est réglée :</p>
+    <p>Bonjour {{ name }},</p>
+    <p>Ton adhésion à Hi Flanders expire aujourd’hui.</p>
+    <p>Mais tu ne vas pas laisser faire ça, hein ? Renouvelle-la vite et continue à profiter de tous les avantages en tant que membre Premium !</p>
     <p style="margin-bottom: 30px">Voor ieders gemak zijn we intussen volledig gedigitaliseerd, dus met enkele klikken is jouw premium lidmaatschap gefixt:</p>
-    <a class="button" href="{{ url }}">Je ne veux manquer aucun avantage !</a>
-    <p style="margin-top: 40px"><strong>Quels sont ces avantages déjà ? Avec Hi Flanders Premium, vous bénéficiez de :</strong></p>
+    <a class="button" href="{{ url }}">Je reste membre Premium !</a>
+    <p style="margin-top: 40px"><strong>Quels sont déjà tous ces avantages ?</strong></p>
+    <p><strong>Hi Flanders Premium, c’est :</strong></p>
     <ul>
-        <li>Un confort premium à prix mini</li>
+        <li>Le confort Premium à un prix mini</li>
         <li>Des <a style="color: #fac000;" href="https://www.hiflanders.be/fr/premium">réductions supplémentaires</a> en plus de nos prix déjà bas</li>
-        <li>De l’inspiration pour vos futurs séjours sur <a style="color: #fac000;" href="https://www.hiflanders.be/nl/belevingen">notre page Expériences</a></li>
-        <li>Une adhésion automatique à Hostelling International, pour économiser aussi sur vos séjours à l’étranger. <a style="color: #fac000;" href="https://www.hiflanders.be/nl/hostelling-international">Trouvez ici des idées de voyages</a></li>
-        <li>Un accès digital simplifié : connexion facile sur notre site, et bientôt aussi via l’application Hi Flanders</li>
+        <li>Une <a style="color: #fac000;" href="https://www.hiflanders.be/nl/belevingen">source d’inspiration</a> pour tes prochains séjours sur notre page Expériences</li>
+        <li>Une adhésion automatique à Hostelling International. Tu économises aussi à l’étranger sur tes nuitées en auberge. <a style="color: #fac000;" href="https://www.hiflanders.be/nl/hostelling-international">Trouve l’inspiration ici.</a></li>
+        <li>Facilité digitale : connexion simple à notre site, et bientôt aussi via l’appli Hi Flanders</li>
     </ul>
-    <p>Ne tardez plus et restez membre de notre club !/p>
-    <p>Une question ? Besoin d’aide pour renouveler votre adhésion ? Contactez-nous à <a style="color: #fac000;" href="mailto:hi@hiflanders.be">hi@hiflanders.be</a> ou par téléphone au <a style="color: #fac000;" href="tel:+3232327218">+32 3 232 72 18</a> (pendant les heures de bureau).</p>
+    <p>N’hésite plus et reste membre de notre club !</p>
+    <p>Des questions ou des soucis pour renouveler ton adhésion ? N’hésite pas à nous contacter. On t’aide avec plaisir. Envoie un mail à <a style="color: #fac000;" href="mailto:hi@hiflanders.be">hi@hiflanders.be</a> ou appelle le <a style="color: #fac000;" href="tel:+3232327218">+32 3 232 72 18</a> pendant les heures de bureau.</p>
     <p style="margin-top: 30px">Chaleureusement,</p>
     <p>L’équipe Hi Flanders</p>
 {% endblock %}

@@ -49,7 +49,7 @@ class SendActivationEmailJob extends BaseJob
                 return;
             }
 
-            $subject = 'Vlaamse Jeugdherbergen werd Hi Flanders, en neemt jou mee op (digitale) weg!';
+            $subject = 'Heractiveer je lidmaatschap bij Hi Flanders';
 
             $message = $mailer->compose()
                 ->setTo($user->email)

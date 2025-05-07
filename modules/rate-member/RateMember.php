@@ -243,7 +243,7 @@ class RateMember extends BaseModule
             $subject = match ($lang) {
                 'en' => 'Hi Flanders – Keep enjoying your benefits!',
                 'fr' => 'Hi Flanders - Continuez à profiter de nos avantages !',
-                default => 'Hi Flanders - Blijf genieten van onze voordelen!',
+                default => 'Vernieuw je lidmaatschap bij Hi Flanders',
             };
             
             $success = Craft::$app->mailer->compose()

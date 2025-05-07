@@ -1,6 +1,7 @@
 {% extends "email/base.twig" %}
 {% block content %}
     <p>Hi {{ name }},</p>
-    <p style="margin-top: 30px">Warm regards,</p>
-    <p><strong>The Hi Flanders Team</strong></p>
+    <p>Wat jammer dat je geen lid meer wil zijn van de Hi Flanders club! Jouw account werd bij deze verwijderd.</p>
+    <p style="margin-bottom: 30px">Mocht je in de toekomst toch weer graag bij ons verblijven en Premium lid willen worden, kan dat eenvoudig via deze knop.</p>
+    <a class="button" href="{{ url }}">Ik wil toch terug lid worden!</a>
 {% endblock %}
