@@ -12,7 +12,8 @@ use modules\loginapi\LoginApi;
 
 class AuthController extends Controller
 {
-    // Allow anonymous access to this action
+    public bool $enableCsrfValidation = false;
+    
     protected array|bool|int $allowAnonymous = ['login'];
 
     public function actionLogin(): Response
