@@ -6,6 +6,7 @@
     "craftcms/cms": "5.7.4",
     "craftcms/feed-me": "6.8.0",
     "craftcms/postmark": "^3.1.0",
+    "firebase/php-jwt": "^6.11",
     "mollie/mollie-api-php": "^2.76",
     "mutation/translate": "4.1.1",
     "nystudio107/craft-vite": "^5.0.1",
@@ -61,7 +62,8 @@
       "modules\\oldmembers\\": "modules/old-members/",
       "modules\\flexmail\\": "modules/flexmail/",
       "modules\\etigenerator\\": "modules/eti-generator/",
-      "modules\\submissions\\": "modules/submissions/"
+      "modules\\submissions\\": "modules/submissions/",
+      "modules\\loginapi\\": "modules/login-api/"
     }
   }
 }

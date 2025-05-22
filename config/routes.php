@@ -20,4 +20,5 @@ return [
     'resend-activation' => 'admin-register/resend-activation/send-activation-email',
     'generate-eti' => 'eti-generator/eti/generate',
     'bulk-generate-eti' => 'eti-generator/bulk-eti/generate-all',
+    'api' => 'graphql/api',
 ];

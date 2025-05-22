@@ -32,6 +32,7 @@ use modules\deactivateuser\DeactivateUser;
 use modules\etigenerator\EtiGenerator;
 use modules\excelusers\ExcelUsers;
 use modules\flexmail\Flexmail;
+use modules\loginapi\LoginApi;
 use modules\membershippayments\MembershipPayments;
 use modules\oldmembers\OldMembers;
 use modules\rateextramember\RateExtraMember;
@@ -59,6 +60,7 @@ return [
         'eti-generator' => EtiGenerator::class,
         'flexmail' => Flexmail::class,
         'submissions' => Submissions::class,
+        'login-api' => LoginApi::class,
     ], 
     'bootstrap' => [
         'admin-register',
@@ -78,5 +80,6 @@ return [
         'eti-generator',
         'flexmail',
         'submissions',
+        'login-api',
     ],
 ];
