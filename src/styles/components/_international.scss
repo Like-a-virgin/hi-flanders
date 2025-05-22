@@ -1,0 +1,27 @@
+@use "../abstracts" as *;
+
+.international {
+    display: grid;
+    grid-template-columns: 2rem auto;
+    gap: 1rem;
+    align-items: center;
+    width: 100%;
+    max-width: $screen-xxl;
+    // border: solid $clr-primary 0.1rem;
+    border-radius: $br;
+    padding: $sp-s;
+    margin-bottom: -1rem;
+
+    @include screen($screen-m) {
+        grid-template-columns: 3rem auto;
+    }
+
+    &__icon {
+        width: 2rem;
+        height: auto;
+
+        @include screen($screen-m) {
+            width: 3rem;
+        }
+    }
+}

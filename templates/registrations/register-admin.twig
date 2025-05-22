@@ -17,9 +17,9 @@
     {% set succesUrl = craft.entries.section('succesRegister').one().url %}
 
     {% macro errorList(errors) %}
-    {% if errors %}
-        {{ ul(errors, {class: 'errors'}) }}
-    {% endif %}
+        {% if errors %}
+            {{ ul(errors, {class: 'errors'}) }}
+        {% endif %}
     {% endmacro %}
 
     <div class="formbox">

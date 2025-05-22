@@ -4,7 +4,7 @@
 
 {% block content %}
     {% set userGroups = currentUser.getGroups()|column('handle') %}
-    {% if not craft.app.user.identity or not userGroups|intersect(['membersAdmin', 'membersAdminSuper'])%}
+    {% if not craft.app.user.identity or not userGroups|intersect(['membersAdminSuper'])%}
         {% redirect 'login' %}
     {% endif %}
     {% set langs = [{label: 'Nederlands'|t, value: 'nl' }, {label: 'Engels'|t, value: 'en' }, {label: 'Frans'|t, value: 'fr' }] %}

@@ -218,9 +218,9 @@
 				<div class="filter__box filter__box--new" x-show="openOption === 2" @click.outside="openOption = 0">
 					<a @click="openOption = 0" class="filter__btn" href="{{currentSite.baseUrl}}register-individual">{{'Nieuw individu'|t}}</a>
 					<a @click="openOption = 0" class="filter__btn" href="{{currentSite.baseUrl}}register-group">{{'Nieuw groep'|t}}</a>
-					<a @click="openOption = 0" class="filter__btn" href="{{currentSite.baseUrl}}register-old">{{'Oud lid'|t}}</a>
-					<a @click="openOption = 0" class="filter__btn" href="{{currentSite.baseUrl}}register-old-group">{{'Oud groep'|t}}</a>
 					{% if isAdmin %}
+						<a @click="openOption = 0" class="filter__btn" href="{{currentSite.baseUrl}}register-old">{{'Oud lid'|t}}</a>
+						<a @click="openOption = 0" class="filter__btn" href="{{currentSite.baseUrl}}register-old-group">{{'Oud groep'|t}}</a>
 						<a @click="openOption = 0" class="filter__btn" href="/register-hostel">{{'Hostel toevoegen'|t}}</a>
 					{% endif %}
 				</div>

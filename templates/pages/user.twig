@@ -28,6 +28,11 @@
 
 {% requireLogin %}
 
+{# <div class="international">
+    {{ svg('assets/icons/HI_svg.svg')|attr({class:"international__icon"})}}
+    <p>{{ 'Hi Flanders maakt deel uit van het van Hostelling International.'|t }}</p>
+</div> #}
+
 {% if not activeUserMember %}
     <div class="box-error">    
         {% if not activeUserMember %}
