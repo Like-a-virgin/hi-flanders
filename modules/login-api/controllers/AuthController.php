@@ -24,7 +24,7 @@ class AuthController extends Controller
         $email = $request->getRequiredBodyParam('email');
         $password = $request->getRequiredBodyParam('password');
 
-        $user = User::find()->email($email)->one();
+        $user = Craft::$app->getUsers()->getUserByUsernameOrEmail($email);
 
         if (!$user || !Craft::$app->getSecurity()->validatePassword($password, $user->password)) {
             throw new UnauthorizedHttpException('Invalid email or password');
@@ -37,15 +37,13 @@ class AuthController extends Controller
             'exp' => time() + 3600, // Token valid for 1 hour
         ];
 
-        $jwt = JWT::encode($payload, LoginApi::$jwtSecret, 'HS256');
+        $token = \Firebase\JWT\JWT::encode($payload, \modules\loginapi\LoginApi::$jwtSecret, 'HS256');
 
         return $this->asJson([
-            'token' => $jwt,
+            'token' => $token,
             'user' => [
                 'id' => $user->id,
                 'email' => $user->email,
-                'firstName' => $user->firstName,
-                'lastName' => $user->lastName,
             ]
         ]);
     }
