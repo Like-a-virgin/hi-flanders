@@ -5,5 +5,6 @@ scope:
   - 'sites.d74da9d4-3821-46f5-8cf4-f7c4d12c04df:read' # Ledensysteem fr
   - 'sites.dad48958-bcb3-4253-9f7e-868f67fa27b0:read' # Ledensysteem en
   - 'sections.1d223580-d398-4fc6-af8a-8a1e08933341:read' # Extra leden
+  - 'usergroups.everyone:read'
   - 'usergroups.50a6f7cb-84e7-4d68-9aa9-3af2d9001e79:read' # Leden
   - 'usergroups.a21d7477-05ca-43ea-ae84-fc44c3e16a70:read' # Leden groep
