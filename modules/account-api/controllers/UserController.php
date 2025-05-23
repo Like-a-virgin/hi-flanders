@@ -12,7 +12,8 @@ use yii\web\Response;
 class UserController extends Controller
 {
     protected array|bool|int $allowAnonymous = ['deactivate'];
-    public bool $enableCsrfValidation = false;
+
+    public $enableCsrfValidation = false;
 
     public function actionDeactivate(): Response
     {
