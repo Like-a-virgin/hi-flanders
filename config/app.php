@@ -21,6 +21,7 @@
  */
 
 use craft\helpers\App;
+use modules\accountapi\AccountApi;
 use modules\adminregister\AdminRegister;
 use modules\afteractivation\AfterActivation;
 use modules\afterdeactivation\AfterDeactivation;
@@ -61,6 +62,7 @@ return [
         'flexmail' => Flexmail::class,
         'submissions' => Submissions::class,
         'login-api' => LoginApi::class,
+        'account-api' => AccountApi::class,
     ], 
     'bootstrap' => [
         'admin-register',
@@ -81,5 +83,6 @@ return [
         'flexmail',
         'submissions',
         'login-api',
+        'account-api',
     ],
 ];
