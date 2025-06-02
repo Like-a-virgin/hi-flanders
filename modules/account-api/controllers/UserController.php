@@ -8,26 +8,24 @@ use Firebase\JWT\JWT;
 use Firebase\JWT\Key;
 use yii\web\ForbiddenHttpException;
 use yii\web\Response;
+use modules\accountapi\AccountApi;
 
 class UserController extends Controller
 {
-    protected array|bool|int $allowAnonymous = ['deactivate'];
-
+    protected array|bool|int $allowAnonymous = ['login', 'deactivate', 'me', 'membership'];
     public $enableCsrfValidation = false;
 
-    public function actionDeactivate(): Response
+    // 🔐 Helper to extract and validate JWT
+    private function requireJwtAuth(): User
     {
-        $this->requirePostRequest();
-
-        $request = Craft::$app->getRequest();
-        $authHeader = $request->getHeaders()->get('Authorization');
+        $authHeader = Craft::$app->getRequest()->getHeaders()->get('Authorization');
 
         if (!$authHeader || !str_starts_with($authHeader, 'Bearer ')) {
             throw new ForbiddenHttpException('Missing or invalid Authorization header');
         }
 
         $token = substr($authHeader, 7);
-        $secret = \modules\loginapi\LoginApi::$jwtSecret;
+        $secret = AccountApi::$jwtSecret;
 
         try {
             $decoded = JWT::decode($token, new Key($secret, 'HS256'));
@@ -43,19 +41,49 @@ class UserController extends Controller
                 throw new ForbiddenHttpException('User not found');
             }
 
-            $user->suspended = true;
-
-            if (!Craft::$app->elements->saveElement($user)) {
-                return $this->asJson([
-                    'success' => false,
-                    'errors' => $user->getErrors(),
-                ]);
-            }
-
-            return $this->asJson(['success' => true, 'message' => 'Account deactivated']);
-
+            return $user;
         } catch (\Exception $e) {
-            throw new ForbiddenHttpException('Invalid or expired token');
+            throw new ForbiddenHttpException('Invalid or expired token: ' . $e->getMessage());
         }
+    }
+
+    // 🔐 POST /actions/accountapi/user/deactivate
+    public function actionDeactivate(): Response
+    {
+        $this->requirePostRequest();
+        $user = $this->requireJwtAuth();
+        $user->suspended = true;
+
+        if (!Craft::$app->elements->saveElement($user)) {
+            return $this->asJson([
+                'success' => false,
+                'errors' => $user->getErrors(),
+            ]);
+        }
+
+        return $this->asJson(['success' => true, 'message' => 'Account deactivated']);
+    }
+
+    // 🔐 GET /actions/accountapi/user/me
+    public function actionMe(): Response
+    {
+        $user = $this->requireJwtAuth();
+
+        return $this->asJson([
+            'id' => $user->id,
+            'email' => $user->email,
+            'firstName' => $user->firstName,
+            'lastName' => $user->lastName,
+        ]);
+    }
+
+    // 🔐 GET /actions/accountapi/user/membership
+    public function actionMembership(): Response
+    {
+        $user = $this->requireJwtAuth();
+
+        return $this->asJson([
+            'isActive' => !$user->suspended,
+        ]);
     }
 }
