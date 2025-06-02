@@ -53,17 +53,26 @@ class UserController extends Controller
         $this->requirePostRequest();
         $user = $this->requireJwtAuth();
 
-        if (!Craft::$app->getUsers()->deactivateUser($user)) {
+        try {
+            if (!Craft::$app->getUsers()->deactivateUser($user)) {
+                return $this->asJson([
+                    'success' => false,
+                    'message' => 'Failed to deactivate user — method returned false.',
+                ]);
+            }
+        
+            return $this->asJson([
+                'success' => true,
+                'message' => 'Account deactivated',
+            ]);
+        
+        } catch (\Throwable $e) {
+            Craft::error('Deactivation error: ' . $e->getMessage(), __METHOD__);
             return $this->asJson([
                 'success' => false,
-                'message' => 'Failed to deactivate user.',
+                'message' => 'Exception: ' . $e->getMessage(),
             ]);
         }
-
-        return $this->asJson([
-            'success' => true,
-            'message' => 'Account deactivated'
-        ]);
     }
 
     // 🔐 GET /actions/accountapi/user/me
