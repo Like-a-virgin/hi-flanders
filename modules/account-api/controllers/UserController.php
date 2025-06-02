@@ -53,21 +53,39 @@ class UserController extends Controller
         $this->requirePostRequest();
         $user = $this->requireJwtAuth();
 
+        // Check user status before
+        Craft::info('Before deactivation: ' . json_encode([
+            'id' => $user->id,
+            'email' => $user->email,
+            'active' => $user->active,
+            'pending' => $user->pending,
+            'suspended' => $user->suspended,
+            'archived' => $user->archived,
+        ]), __METHOD__);
+
         try {
-            if (!Craft::$app->getUsers()->deactivateUser($user)) {
-                return $this->asJson([
-                    'success' => false,
-                    'message' => 'Failed to deactivate user — method returned false.' . $user->id,
-                ]);
-            }
-        
+            Craft::$app->getUsers()->deactivateUser($user);
+
+            // Re-fetch user from DB to confirm new state
+            $updatedUser = User::find()->id($user->id)->one();
+
+            Craft::info('After deactivation: ' . json_encode([
+                'id' => $updatedUser->id,
+                'active' => $updatedUser->active,
+                'pending' => $updatedUser->pending,
+            ]), __METHOD__);
+
             return $this->asJson([
                 'success' => true,
-                'message' => 'Account deactivated',
+                'message' => 'Deactivation attempted. Check logs for actual effect.',
+                'status' => [
+                    'active' => $updatedUser->active,
+                    'pending' => $updatedUser->pending,
+                ],
             ]);
-        
+
         } catch (\Throwable $e) {
-            Craft::error('Deactivation error: ' . $e->getMessage(), __METHOD__);
+            Craft::error('Deactivation exception: ' . $e->getMessage(), __METHOD__);
             return $this->asJson([
                 'success' => false,
                 'message' => 'Exception: ' . $e->getMessage(),
