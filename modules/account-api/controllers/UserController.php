@@ -54,7 +54,7 @@ class UserController extends Controller
         $user = $this->requireJwtAuth();
 
         try {
-            if (!Craft::$app->getUsers()->deactivateUser($user->id)) {
+            if (!Craft::$app->getUsers()->deactivateUser($user)) {
                 return $this->asJson([
                     'success' => false,
                     'message' => 'Failed to deactivate user — method returned false.' . $user->id,
