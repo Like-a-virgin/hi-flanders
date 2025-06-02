@@ -2,8 +2,8 @@
   "minimum-stability": "dev",
   "prefer-stable": true,
   "require": {
-    "craftcms/ckeditor": "4.8.0",
-    "craftcms/cms": "5.7.4",
+    "craftcms/ckeditor": "4.9.0",
+    "craftcms/cms": "5.7.8.2",
     "craftcms/feed-me": "6.8.0",
     "craftcms/postmark": "^3.1.0",
     "firebase/php-jwt": "^6.11",
@@ -12,7 +12,7 @@
     "nystudio107/craft-vite": "^5.0.1",
     "phpoffice/phpspreadsheet": "^1.29",
     "putyourlightson/craft-sprig": "3.6.1",
-    "verbb/formie": "3.0.27",
+    "verbb/formie": "3.0.28",
     "vlucas/phpdotenv": "^5.4.0"
   },
   "require-dev": {
