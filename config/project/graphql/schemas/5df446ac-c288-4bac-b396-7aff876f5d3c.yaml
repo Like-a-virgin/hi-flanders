@@ -1,2 +1,127 @@
 isPublic: true
 name: 'Public Schema'
+scope:
+  - 'sites.359a39c5-8655-460f-a1b4-0c097ea0edb2:read' # Ledensysteem
+  - 'sites.d74da9d4-3821-46f5-8cf4-f7c4d12c04df:read' # Ledensysteem fr
+  - 'sites.dad48958-bcb3-4253-9f7e-868f67fa27b0:read' # Ledensysteem en
+  - 'elements.drafts:read'
+  - 'elements.revisions:read'
+  - 'elements.inactive:read'
+  - 'sections.7b5aa47e-5da6-461a-b6fc-a190a143d8d8:read' # Activeer email
+  - 'sections.e633efea-afa2-411f-9fc3-06d84f219d9b:read' # Bedankt betaling
+  - 'sections.e6b46871-c4a9-4c54-825a-0e4ff94ad028:read' # Branding
+  - 'sections.4a63b33e-aa54-421b-b619-d4bc7f4888e7:read' # Home
+  - 'sections.4bf3f29c-fce9-401f-9b64-c00e46646ddc:read' # Main website
+  - 'sections.ac77cfdb-37a0-4f35-9ca7-e353977a477d:read' # Privacy policy
+  - 'sections.22e6beae-01af-4451-b3d5-29bf90a51e80:read' # Reset wachtwoord
+  - 'sections.b79564a0-5366-488d-b437-7257e8b76275:read' # Succes e-mail wijziging
+  - 'sections.af17efa6-765d-4c48-99b6-d836a037abd9:read' # Succes registratie
+  - 'sections.1f19a7ba-f837-4abf-a622-317ac9fc02e5:read' # Errors
+  - 'sections.1d223580-d398-4fc6-af8a-8a1e08933341:read' # Extra leden
+  - 'sections.41bcf592-e8cf-43ee-8c4f-c83d185aee48:read' # Formulieren
+  - 'sections.5978149a-5b05-4ba3-95ff-72c6250597fe:read' # Tariefformules
+  - 'nestedentryfields.c1614bab-5fdd-4eae-8e0b-f4eb393c25dd:read' # Tekst
+  - 'volumes.9fa38d43-f532-46e6-a754-46a74621fb10:read' # Branding
+  - 'volumes.9b6463ce-f83c-4bd6-ad35-a79ab9818286:read' # Users
+  - 'usergroups.everyone:read'
+  - 'usergroups.c573f0bd-29d4-4985-8cff-271a6ee231a2:read' # Beheerder
+  - 'usergroups.24815bbb-0421-4b52-9edb-4d6aa36625dc:read' # Beheerder Super
+  - 'usergroups.50a6f7cb-84e7-4d68-9aa9-3af2d9001e79:read' # Leden
+  - 'usergroups.a21d7477-05ca-43ea-ae84-fc44c3e16a70:read' # Leden groep
+  - 'formieForms.all:read'
+  - 'formieForms.f86574ce-cad7-4553-b2b7-d3e40f3f0423:read'
+  - 'formieForms.460434fe-8829-48a9-b0b7-d6d84f72b803:read'
+  - 'formieForms.c161d709-6719-4bf2-b798-09987a9585dc:read'
+  - 'formieForms.aceacb9c-ef40-44a8-b818-615c16dabd1e:read'
+  - 'formieForms.f8aa3350-39d8-4257-b0b6-0e2b6bb0b1bd:read'
+  - 'formieForms.eb8afb61-787b-4847-a801-5016df446aaa:read'
+  - 'formieForms.9700b5ae-0f12-4a90-a5da-6c5bfd680dfb:read'
+  - 'formieForms.51c87d52-4e8a-4fc6-bf1d-560fc217fcfb:read'
+  - 'formieForms.1d68ab06-37fc-4374-b916-1dd091e734ff:read'
+  - 'formieSubmissions.all:read'
+  - 'formieSubmissions.f86574ce-cad7-4553-b2b7-d3e40f3f0423:read'
+  - 'formieSubmissions.460434fe-8829-48a9-b0b7-d6d84f72b803:read'
+  - 'formieSubmissions.c161d709-6719-4bf2-b798-09987a9585dc:read'
+  - 'formieSubmissions.aceacb9c-ef40-44a8-b818-615c16dabd1e:read'
+  - 'formieSubmissions.f8aa3350-39d8-4257-b0b6-0e2b6bb0b1bd:read'
+  - 'formieSubmissions.eb8afb61-787b-4847-a801-5016df446aaa:read'
+  - 'formieSubmissions.9700b5ae-0f12-4a90-a5da-6c5bfd680dfb:read'
+  - 'formieSubmissions.51c87d52-4e8a-4fc6-bf1d-560fc217fcfb:read'
+  - 'formieSubmissions.1d68ab06-37fc-4374-b916-1dd091e734ff:read'
+  - 'sections.7b5aa47e-5da6-461a-b6fc-a190a143d8d8:save' # Activeer email
+  - 'sections.e633efea-afa2-411f-9fc3-06d84f219d9b:save' # Bedankt betaling
+  - 'sections.e6b46871-c4a9-4c54-825a-0e4ff94ad028:save' # Branding
+  - 'sections.4a63b33e-aa54-421b-b619-d4bc7f4888e7:save' # Home
+  - 'sections.4bf3f29c-fce9-401f-9b64-c00e46646ddc:save' # Main website
+  - 'sections.ac77cfdb-37a0-4f35-9ca7-e353977a477d:save' # Privacy policy
+  - 'sections.22e6beae-01af-4451-b3d5-29bf90a51e80:save' # Reset wachtwoord
+  - 'sections.b79564a0-5366-488d-b437-7257e8b76275:save' # Succes e-mail wijziging
+  - 'sections.af17efa6-765d-4c48-99b6-d836a037abd9:save' # Succes registratie
+  - 'sections.1f19a7ba-f837-4abf-a622-317ac9fc02e5:edit' # Errors
+  - 'sections.1f19a7ba-f837-4abf-a622-317ac9fc02e5:create' # Errors
+  - 'sections.1f19a7ba-f837-4abf-a622-317ac9fc02e5:save' # Errors
+  - 'sections.1f19a7ba-f837-4abf-a622-317ac9fc02e5:delete' # Errors
+  - 'sections.1d223580-d398-4fc6-af8a-8a1e08933341:edit' # Extra leden
+  - 'sections.1d223580-d398-4fc6-af8a-8a1e08933341:create' # Extra leden
+  - 'sections.1d223580-d398-4fc6-af8a-8a1e08933341:save' # Extra leden
+  - 'sections.1d223580-d398-4fc6-af8a-8a1e08933341:delete' # Extra leden
+  - 'sections.41bcf592-e8cf-43ee-8c4f-c83d185aee48:edit' # Formulieren
+  - 'sections.41bcf592-e8cf-43ee-8c4f-c83d185aee48:create' # Formulieren
+  - 'sections.41bcf592-e8cf-43ee-8c4f-c83d185aee48:save' # Formulieren
+  - 'sections.41bcf592-e8cf-43ee-8c4f-c83d185aee48:delete' # Formulieren
+  - 'sections.5978149a-5b05-4ba3-95ff-72c6250597fe:edit' # Tariefformules
+  - 'sections.5978149a-5b05-4ba3-95ff-72c6250597fe:create' # Tariefformules
+  - 'sections.5978149a-5b05-4ba3-95ff-72c6250597fe:save' # Tariefformules
+  - 'sections.5978149a-5b05-4ba3-95ff-72c6250597fe:delete' # Tariefformules
+  - 'nestedentryfields.c1614bab-5fdd-4eae-8e0b-f4eb393c25dd:edit' # Tekst
+  - 'nestedentryfields.c1614bab-5fdd-4eae-8e0b-f4eb393c25dd:create' # Tekst
+  - 'nestedentryfields.c1614bab-5fdd-4eae-8e0b-f4eb393c25dd:save' # Tekst
+  - 'nestedentryfields.c1614bab-5fdd-4eae-8e0b-f4eb393c25dd:delete' # Tekst
+  - 'volumes.9fa38d43-f532-46e6-a754-46a74621fb10:edit' # Branding
+  - 'volumes.9fa38d43-f532-46e6-a754-46a74621fb10:create' # Branding
+  - 'volumes.9fa38d43-f532-46e6-a754-46a74621fb10:save' # Branding
+  - 'volumes.9fa38d43-f532-46e6-a754-46a74621fb10:delete' # Branding
+  - 'volumes.9b6463ce-f83c-4bd6-ad35-a79ab9818286:edit' # Users
+  - 'volumes.9b6463ce-f83c-4bd6-ad35-a79ab9818286:create' # Users
+  - 'volumes.9b6463ce-f83c-4bd6-ad35-a79ab9818286:save' # Users
+  - 'volumes.9b6463ce-f83c-4bd6-ad35-a79ab9818286:delete' # Users
+  - 'formieSubmissions.all:edit'
+  - 'formieSubmissions.all:create'
+  - 'formieSubmissions.all:save'
+  - 'formieSubmissions.all:delete'
+  - 'formieSubmissions.f86574ce-cad7-4553-b2b7-d3e40f3f0423:edit'
+  - 'formieSubmissions.f86574ce-cad7-4553-b2b7-d3e40f3f0423:create'
+  - 'formieSubmissions.f86574ce-cad7-4553-b2b7-d3e40f3f0423:save'
+  - 'formieSubmissions.f86574ce-cad7-4553-b2b7-d3e40f3f0423:delete'
+  - 'formieSubmissions.460434fe-8829-48a9-b0b7-d6d84f72b803:edit'
+  - 'formieSubmissions.460434fe-8829-48a9-b0b7-d6d84f72b803:create'
+  - 'formieSubmissions.460434fe-8829-48a9-b0b7-d6d84f72b803:save'
+  - 'formieSubmissions.460434fe-8829-48a9-b0b7-d6d84f72b803:delete'
+  - 'formieSubmissions.c161d709-6719-4bf2-b798-09987a9585dc:edit'
+  - 'formieSubmissions.c161d709-6719-4bf2-b798-09987a9585dc:create'
+  - 'formieSubmissions.c161d709-6719-4bf2-b798-09987a9585dc:save'
+  - 'formieSubmissions.c161d709-6719-4bf2-b798-09987a9585dc:delete'
+  - 'formieSubmissions.aceacb9c-ef40-44a8-b818-615c16dabd1e:edit'
+  - 'formieSubmissions.aceacb9c-ef40-44a8-b818-615c16dabd1e:create'
+  - 'formieSubmissions.aceacb9c-ef40-44a8-b818-615c16dabd1e:save'
+  - 'formieSubmissions.aceacb9c-ef40-44a8-b818-615c16dabd1e:delete'
+  - 'formieSubmissions.f8aa3350-39d8-4257-b0b6-0e2b6bb0b1bd:edit'
+  - 'formieSubmissions.f8aa3350-39d8-4257-b0b6-0e2b6bb0b1bd:create'
+  - 'formieSubmissions.f8aa3350-39d8-4257-b0b6-0e2b6bb0b1bd:save'
+  - 'formieSubmissions.f8aa3350-39d8-4257-b0b6-0e2b6bb0b1bd:delete'
+  - 'formieSubmissions.eb8afb61-787b-4847-a801-5016df446aaa:edit'
+  - 'formieSubmissions.eb8afb61-787b-4847-a801-5016df446aaa:create'
+  - 'formieSubmissions.eb8afb61-787b-4847-a801-5016df446aaa:save'
+  - 'formieSubmissions.eb8afb61-787b-4847-a801-5016df446aaa:delete'
+  - 'formieSubmissions.9700b5ae-0f12-4a90-a5da-6c5bfd680dfb:edit'
+  - 'formieSubmissions.9700b5ae-0f12-4a90-a5da-6c5bfd680dfb:create'
+  - 'formieSubmissions.9700b5ae-0f12-4a90-a5da-6c5bfd680dfb:save'
+  - 'formieSubmissions.9700b5ae-0f12-4a90-a5da-6c5bfd680dfb:delete'
+  - 'formieSubmissions.51c87d52-4e8a-4fc6-bf1d-560fc217fcfb:edit'
+  - 'formieSubmissions.51c87d52-4e8a-4fc6-bf1d-560fc217fcfb:create'
+  - 'formieSubmissions.51c87d52-4e8a-4fc6-bf1d-560fc217fcfb:save'
+  - 'formieSubmissions.51c87d52-4e8a-4fc6-bf1d-560fc217fcfb:delete'
+  - 'formieSubmissions.1d68ab06-37fc-4374-b916-1dd091e734ff:edit'
+  - 'formieSubmissions.1d68ab06-37fc-4374-b916-1dd091e734ff:create'
+  - 'formieSubmissions.1d68ab06-37fc-4374-b916-1dd091e734ff:save'
+  - 'formieSubmissions.1d68ab06-37fc-4374-b916-1dd091e734ff:delete'
