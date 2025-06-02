@@ -1,0 +1,8 @@
+fromEmail: lara@likeavirgin.be
+fromName: 'Hi Flanders'
+replyToEmail: null
+template: email/email.twig
+transportSettings:
+  messageStream: ''
+  token: $POSTMARK_API_KEY
+transportType: craftcms\postmark\Adapter
