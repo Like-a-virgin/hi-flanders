@@ -116,4 +116,38 @@ class UserController extends Controller
             'memberRate' => $user->getFieldValue('memberRate')->one()?->title,
         ]);
     }
+
+    public function actionUpdateAddress(): Response
+    {
+        $this->requirePostRequest();
+        $user = $this->requireJwtAuth();
+
+        $request = Craft::$app->getRequest();
+
+        // Update only specific fields
+        $user->setFieldValue('street', $request->getBodyParam('street'));
+        $user->setFieldValue('streetNr', $request->getBodyParam('streetNr'));
+        $user->setFieldValue('bus', $request->getBodyParam('bus'));
+        $user->setFieldValue('city', $request->getBodyParam('city'));
+        $user->setFieldValue('postalCode', $request->getBodyParam('postalCode'));
+
+        if (!Craft::$app->elements->saveElement($user)) {
+            return $this->asJson([
+                'success' => false,
+                'errors' => $user->getErrors(),
+            ]);
+        }
+
+        return $this->asJson([
+            'success' => true,
+            'message' => 'Address updated successfully.',
+            'address' => [
+                'street' => $user->getFieldValue('street'),
+                'streetNr' => $user->getFieldValue('streetNr'),
+                'bus' => $user->getFieldValue('bus'),
+                'city' => $user->getFieldValue('city'),
+                'postalCode' => $user->getFieldValue('postalCode'),
+            ],
+        ]);
+    }
 }
