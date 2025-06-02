@@ -70,7 +70,7 @@ class UserController extends Controller
             Craft::error('Deactivation error: ' . $e->getMessage(), __METHOD__);
             return $this->asJson([
                 'success' => false,
-                'message' => 'Exception: ' . $e->getMessage(),
+                'message' => 'Exception: ' . $e->getMessage() . $user,
             ]);
         }
     }
