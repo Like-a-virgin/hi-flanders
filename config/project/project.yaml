@@ -1,4 +1,4 @@
-dateModified: 1748851958
+dateModified: 1748870806
 elementSources:
   craft\elements\Entry:
     -
@@ -28,7 +28,7 @@ elementSources:
         - link
       type: native
     -
-      heading: 'Pagina''s'
+      heading: "Pagina's"
       type: heading
     -
       condition:
@@ -49,7 +49,7 @@ elementSources:
         - asc
       defaultViewMode: ''
       key: 'custom:ac40ed88-76f6-4c0c-b352-d044a6450711'
-      label: 'Vaste pagina''s'
+      label: "Vaste pagina's"
       tableAttributes: '-'
       type: custom
     -
@@ -72,7 +72,7 @@ elementSources:
         - asc
       defaultViewMode: ''
       key: 'custom:25a0c0a6-3dc5-41de-af42-23c27ec98692'
-      label: 'Melding pagina''s'
+      label: "Melding pagina's"
       tableAttributes: '-'
       type: custom
     -
@@ -153,9 +153,8 @@ email:
   replyToEmail: null
   template: email/email.twig
   transportSettings:
-    messageStream: ''
-    token: $POSTMARK_API_KEY
-  transportType: craftcms\postmark\Adapter
+    command: '/usr/local/bin/mailpit sendmail -t --smtp-addr 127.0.0.1:1025'
+  transportType: craft\mail\transportadapters\Sendmail
 fs:
   branding:
     hasUrls: true
