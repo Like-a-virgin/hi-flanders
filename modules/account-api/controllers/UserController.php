@@ -72,8 +72,19 @@ class UserController extends Controller
         return $this->asJson([
             'id' => $user->id,
             'email' => $user->email,
-            'firstName' => $user->firstName,
-            'lastName' => $user->lastName,
+            'fullName' => $user->fullName,
+            'firstName' => $user->getFieldValue('altFirstName'),
+            'lastName' => $user->getFieldValue('altLastName'),
+            'birthday' => $user->getFieldValue('birthday'),
+            'street' => $user->getFieldValue('street'),
+            'streetNr' => $user->getFieldValue('streetNr'),
+            'bus' => $user->getFieldValue('bus'),
+            'city' => $user->getFieldValue('city'),
+            'postalCode' => $user->getFieldValue('postalCode'),
+            'customMemberId' => $user->getFieldValue('customMemberId'),
+            'memberDueDate' => $user->getFieldValue('memberDueDate'),
+            'paymentDate' => $user->getFieldValue('paymentDate'),
+            'memberRate' => $user->getFieldValue('memberRate')->one()?->title,
         ]);
     }
 
@@ -83,6 +94,8 @@ class UserController extends Controller
         $user = $this->requireJwtAuth();
 
         return $this->asJson([
+            'membershipLevel' => $user->getFieldValue('membershipLevel'),
+            'expiryDate' => $user->getFieldValue('membershipExpiry'),
             'isActive' => !$user->suspended,
         ]);
     }
