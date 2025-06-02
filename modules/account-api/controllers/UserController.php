@@ -12,7 +12,7 @@ use modules\accountapi\AccountApi;
 
 class UserController extends Controller
 {
-    protected array|bool|int $allowAnonymous = ['login', 'deactivate', 'me', 'membership'];
+    protected array|bool|int $allowAnonymous = ['login', 'deactivate', 'me', 'update-address'];
     public $enableCsrfValidation = false;
 
     // 🔐 Helper to extract and validate JWT
