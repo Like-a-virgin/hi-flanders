@@ -57,7 +57,7 @@ class UserController extends Controller
             if (!Craft::$app->getUsers()->deactivateUser($user)) {
                 return $this->asJson([
                     'success' => false,
-                    'message' => 'Failed to deactivate user — method returned false.' . $user,
+                    'message' => 'Failed to deactivate user — method returned false.' . $user->id,
                 ]);
             }
         
