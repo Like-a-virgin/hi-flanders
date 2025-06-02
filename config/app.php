@@ -61,8 +61,8 @@ return [
         'eti-generator' => EtiGenerator::class,
         // 'flexmail' => Flexmail::class,
         'submissions' => Submissions::class,
-        'login-api' => LoginApi::class,
-        'account-api' => AccountApi::class,
+        // 'login-api' => LoginApi::class,
+        // 'account-api' => AccountApi::class,
     ], 
     'bootstrap' => [
         'admin-register',
@@ -82,7 +82,7 @@ return [
         'eti-generator',
         // 'flexmail',
         'submissions',
-        'login-api',
-        'account-api',
+        // 'login-api',
+        // 'account-api',
     ],
 ];
