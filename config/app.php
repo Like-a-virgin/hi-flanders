@@ -59,9 +59,8 @@ return [
         'daily-checks' => DailyChecks::class,
         'old-members' => OldMembers::class,
         'eti-generator' => EtiGenerator::class,
-        // 'flexmail' => Flexmail::class,
+        'flexmail' => Flexmail::class,
         'submissions' => Submissions::class,
-        // 'login-api' => LoginApi::class,
         'account-api' => AccountApi::class,
     ], 
     'bootstrap' => [
@@ -80,9 +79,8 @@ return [
         'daily-checks',
         'old-members',
         'eti-generator',
-        // 'flexmail',
+        'flexmail',
         'submissions',
-        // 'login-api',
         'account-api',
     ],
 ];
