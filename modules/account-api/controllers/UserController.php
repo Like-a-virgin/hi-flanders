@@ -52,16 +52,18 @@ class UserController extends Controller
     {
         $this->requirePostRequest();
         $user = $this->requireJwtAuth();
-        $user->suspended = true;
 
-        if (!Craft::$app->elements->saveElement($user)) {
+        if (!Craft::$app->getUsers()->deactivateUser($user)) {
             return $this->asJson([
                 'success' => false,
-                'errors' => $user->getErrors(),
+                'message' => 'Failed to deactivate user.',
             ]);
         }
 
-        return $this->asJson(['success' => true, 'message' => 'Account deactivated']);
+        return $this->asJson([
+            'success' => true,
+            'message' => 'Account deactivated'
+        ]);
     }
 
     // 🔐 GET /actions/accountapi/user/me
@@ -85,18 +87,6 @@ class UserController extends Controller
             'memberDueDate' => $user->getFieldValue('memberDueDate'),
             'paymentDate' => $user->getFieldValue('paymentDate'),
             'memberRate' => $user->getFieldValue('memberRate')->one()?->title,
-        ]);
-    }
-
-    // 🔐 GET /actions/accountapi/user/membership
-    public function actionMembership(): Response
-    {
-        $user = $this->requireJwtAuth();
-
-        return $this->asJson([
-            'membershipLevel' => $user->getFieldValue('membershipLevel'),
-            'expiryDate' => $user->getFieldValue('membershipExpiry'),
-            'isActive' => !$user->suspended,
         ]);
     }
 }
