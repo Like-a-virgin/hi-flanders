@@ -98,6 +98,11 @@ class UserController extends Controller
     {
         $user = $this->requireJwtAuth();
 
+        $extraMembers = \craft\elements\Entry::find()
+            ->section('extraMembers')
+            ->relatedTo(['targetElement' => $user, 'field' => 'parentMember'])
+            ->all();
+
         return $this->asJson([
             'id' => $user->id,
             'email' => $user->email,
@@ -114,6 +119,16 @@ class UserController extends Controller
             'memberDueDate' => $user->getFieldValue('memberDueDate'),
             'paymentDate' => $user->getFieldValue('paymentDate'),
             'memberRate' => $user->getFieldValue('memberRate')->one()?->title,
+
+            'extraMembers' => array_map(function($entry) {
+                return [
+                    'id' => $entry->id,
+                    'firstName' => $entry->getFieldValue('altFirstName'),
+                    'lastName' => $entry->getFieldValue('altLastName'),
+                    'birthday' => $entry->getFieldValue('birthday'),
+                    'memberRate' => $entry->getFieldValue('memberRate')->one()?->title,
+                ];
+            }, $extraMembers),
         ]);
     }
 
