@@ -15,6 +15,28 @@ class UserController extends Controller
     protected array|bool|int $allowAnonymous = ['login', 'deactivate', 'me', 'update-address'];
     public $enableCsrfValidation = false;
 
+    public function beforeAction($action): bool
+    {
+        $request = Craft::$app->getRequest();
+
+        if ($request->getMethod() === 'OPTIONS') {
+            $origin = $request->getOrigin();
+            $allowedOrigins = ['http://localhost:4200', 'https://app.hiflanders.be'];
+
+            if (in_array($origin, $allowedOrigins, true)) {
+                $headers = Craft::$app->getResponse()->getHeaders();
+                $headers->set('Access-Control-Allow-Origin', $origin);
+                $headers->set('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
+                $headers->set('Access-Control-Allow-Headers', 'Authorization, Content-Type');
+                $headers->set('Access-Control-Allow-Credentials', 'true');
+            }
+
+            Craft::$app->end(); // Ends preflight request cleanly
+        }
+
+        return parent::beforeAction($action);
+    }
+
     // 🔐 Helper to extract and validate JWT
     private function requireJwtAuth(): User
     {
