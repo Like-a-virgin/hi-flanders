@@ -1,4 +1,4 @@
-fromEmail: lara@likeavirgin.be
+fromEmail: premium@hiflanders.be
 fromName: 'Hi Flanders'
 replyToEmail: null
 template: email/email.twig

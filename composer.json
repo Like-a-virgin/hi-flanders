@@ -3,7 +3,7 @@
   "prefer-stable": true,
   "require": {
     "craftcms/ckeditor": "4.9.0",
-    "craftcms/cms": "5.7.8.2",
+    "craftcms/cms": "5.7.9",
     "craftcms/feed-me": "6.8.0",
     "craftcms/postmark": "^3.1.0",
     "firebase/php-jwt": "^6.11",

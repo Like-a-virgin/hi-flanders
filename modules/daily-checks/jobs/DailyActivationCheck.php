@@ -13,22 +13,22 @@ class DailyActivationCheck extends BaseJob
     public function execute($queue): void
     {
         $currentDate = new DateTime('now', new DateTimeZone('CET'));
-        $daysAgo = $currentDate->modify('-3 days')->format('Y-m-d');
+        $daysAgo = $currentDate->modify('-7 days')->format('Y-m-d');
 
-        $daysAgoStart = (new \DateTime('-3 days'))->format('Y-m-d 00:00:00');
-        $daysAgoEnd = (new \DateTime('-2 days'))->format('Y-m-d 00:00:00');
+        $daysAgoStart = (new \DateTime('-7 days'))->format('Y-m-d 00:00:00');
+        $daysAgoEnd = (new \DateTime('-6 days'))->format('Y-m-d 00:00:00');
 
         $usersNew = User::find()
             ->status('pending')
             ->customStatus('new') // Assuming customStatus is a field handle
-            ->dateCreated(['and', ">= $daysAgoStart", "< $daysAgoEnd"]) // Created 7 days ago
+            ->dateCreated(['and', ">= $daysAgoStart", "< $daysAgoEnd"]) // Created 3 days ago
             ->group(['members', 'membersGroup'])
             ->all();
         
         $usersRenew = User::find()
             ->status('pending')
             ->customStatus('renew')
-            ->statusChangeDate($daysAgo) // Status changed 7 days ago
+            ->statusChangeDate($daysAgo) // Status changed 3 days ago
             ->group(['members', 'membersGroup'])
             ->all();
 

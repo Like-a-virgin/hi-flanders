@@ -77,7 +77,7 @@ class CustomMemberId extends BaseModule
 
         do {
             // Generate a random 10-digit number
-            $randomNumber = str_pad((string)random_int(0, 9999999999), 10, '0', STR_PAD_LEFT);
+            $randomNumber = str_pad((string)random_int(0, 9999999), 7, '0', STR_PAD_LEFT);
 
             // Construct the custom ID
             $customId = "{$year}{$randomNumber}";
