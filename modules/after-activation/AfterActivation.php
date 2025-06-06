@@ -43,6 +43,20 @@ class AfterActivation extends BaseModule
             function (UserEvent $event) {
                 $user = $event->user;
 
+                $status = $user->getFieldValue('customStatus')?->value;
+                if (in_array($status, ['old', 'oldRenew'])) {
+                    $user->setFieldValue('customStatus', 'active');
+
+                    $today = new \DateTime('now', new \DateTimeZone('CET'));
+                    $user->setFieldValue('statusChangeDate', $today);
+
+                    if (!Craft::$app->elements->saveElement($user)) {
+                        Craft::error("Failed to update user status to active for user {$user->email}", __METHOD__);
+                    } else {
+                        Craft::info("Updated user status to active for user {$user->email}", __METHOD__);
+                    }
+                }
+
                 if (Craft::$app->request->getIsPost() && Craft::$app->request->getPathInfo() === 'membership-payments/payment/webhook') {
                     Craft::info("Skipping activation email for user {$user->email} (triggered by payment webhook)", __METHOD__);
                     return;

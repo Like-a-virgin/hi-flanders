@@ -63,26 +63,30 @@ class RateMember extends BaseModule
     private function assignMemberRate(User $user): void
     {
         $request = Craft::$app->getRequest();
-        
-        $request = Craft::$app->getRequest();
-        if (!$request->getIsConsoleRequest()) {
-            $birthday = $request->getBodyParam("fields.birthday") ?? $user->getFieldValue('birthday');
-            $memberType = $request->getBodyParam('fields.memberType') ?? $user->getFieldValue('memberType')->value;
-        } else {
-            // If in console mode (e.g., queue job), get values directly from the user
-            $birthday = $user->getFieldValue('birthday');
-            $memberType = $user->getFieldValue('memberType')->value ?? null;
-        }
+        $isConsole = $request->getIsConsoleRequest();
 
+        $birthday = $isConsole
+            ? $user->getFieldValue('birthday')
+            : ($request->getBodyParam("fields.birthday") ?? $user->getFieldValue('birthday'));
+
+        $memberType = $isConsole
+            ? $user->getFieldValue('memberType')->value ?? null
+            : ($request->getBodyParam('fields.memberType') ?? $user->getFieldValue('memberType')->value ?? null);
+
+        // 🛑 Skip if birthday is missing
+        if (empty($birthday)) {
+            Craft::info("Skipping rate assignment: no birthday set for user ID {$user->id}", __METHOD__);
+            return;
+        }
 
         if (!$memberType) {
             Craft::error('No memberType set for user ID ' . $user->id, __METHOD__);
             return;
         }
-        
+
         $memberRates = Entry::find()
-        ->section('rates')
-        ->all();
+            ->section('rates')
+            ->all();
 
         $filteredRates = array_filter($memberRates, function ($rate) use ($memberType) {
             $rateMemberType = $rate->getFieldValue('memberType')->value;
@@ -90,14 +94,14 @@ class RateMember extends BaseModule
         });
 
         if (empty($filteredRates)) {
-            Craft::error('No rates found for memberType: ' . $memberType . ' for user ID ' . $user->id, __METHOD__);
+            Craft::error("No rates found for memberType: $memberType for user ID {$user->id}", __METHOD__);
             return;
         }
-    
+
         if ($memberType === 'individual') {
             $this->handleIndividualRate($user, $birthday, $filteredRates);
         } else {
-            $this->assignRateWithOptionalPayment($user, reset($filteredRates)); // Assign the first rate for non-individual memberType
+            $this->assignRateWithOptionalPayment($user, reset($filteredRates));
         }
     }
 
