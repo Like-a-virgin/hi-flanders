@@ -52,7 +52,7 @@ class AfterDeactivation extends BaseModule
             Craft::$app->getView()->setTemplatesPath(Craft::getAlias('@root/templates'));
             $htmlBody = Craft::$app->getView()->renderTemplate($templatePath, [
                 'name' => $name,
-                'url' => 'https://premium.hiflanders.be/' . ($lang !== 'nl' ? '/' . $lang : '') . '/register'
+                'url' => 'https://premium.hiflanders.be/' . ($lang !== 'nl' ? $lang . '/' : '') . 'register'
             ]);
 
             $subject = match ($lang) {
