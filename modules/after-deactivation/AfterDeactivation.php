@@ -37,7 +37,7 @@ class AfterDeactivation extends BaseModule
             return;
         }
         Craft::$app->cache->set($cacheKey, true, 300); // 5 min lock
-
+ 
         $lang = $user->getFieldValue('lang')->value ?? 'nl';
         $memberType = $user->getFieldValue('memberType')->value ?? 'individual';
         
@@ -52,6 +52,7 @@ class AfterDeactivation extends BaseModule
             Craft::$app->getView()->setTemplatesPath(Craft::getAlias('@root/templates'));
             $htmlBody = Craft::$app->getView()->renderTemplate($templatePath, [
                 'name' => $name,
+                'url' => 'https://premium.hiflanders.be/' . $lang . '/register'
             ]);
 
             $subject = match ($lang) {

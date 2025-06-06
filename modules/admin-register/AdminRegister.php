@@ -99,11 +99,11 @@ class AdminRegister extends BaseModule
         foreach ($fields as $fieldHandle => $coreField) {
             $value = $request->getBodyParam("fields.{$fieldHandle}");
 
-            if ($fieldHandle === 'memberDueDate' && empty($value)) {
-                // Automatically set memberDueDate to today + 1 year
-                $currentDate = new \DateTime();
-                $value = $currentDate->modify('+1 year')->format('Y-m-d');
-            }
+            // if ($fieldHandle === 'memberDueDate' && empty($value)) {
+            //     // Automatically set memberDueDate to today + 1 year
+            //     $currentDate = new \DateTime();
+            //     $value = $currentDate->modify('+1 year')->format('Y-m-d');
+            // }
 
             if ($fieldHandle === 'totalPayedMembers' || $fieldHandle === 'totalPayedPrint') {
                 if ($value !== null && is_numeric($value)) {
