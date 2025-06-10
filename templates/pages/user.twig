@@ -37,12 +37,12 @@
             </div>
         {% endif %}
     </div>
-{% else %}
+{# {% else %}
     <div class="box-valid">    
         <div class="box-valid__valid">
             <p>{{'Vervalt op '|t}} {{user.memberDueDate|date('d-m-Y')}}</p>
         </div>
-    </div>
+    </div> #}
 {% endif %}
 
 <div class="grid grid--user">
