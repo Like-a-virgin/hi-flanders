@@ -42,7 +42,7 @@
         </div>
         <div class="edit__column--4">
             <label class="edit__label" for="payment-type">{{'Betaalmethode'|t}}</label>
-            <select required name="fields[paymentType]" id="payment-type" >
+            <select name="fields[paymentType]" id="payment-type" >
                 <option value="">{{'Nog niet betaald'|t}}</option>
                 {% for item in paymentMethods %}
                     <option {{selectedMember.paymentType.value is same as item.value ? 'selected'}} value="{{item.value}}">{{item.label}}</option>
@@ -53,14 +53,14 @@
             <label class="edit__label" for="pay-date">{{'Betaaldatum'|t}}</label>
             {{ input('date', 'fields[paymentDate]', selectedMember.paymentDate ? selectedMember.paymentDate|date('Y-m-d') : '', {
                 id: 'pay-date',
-                required: true,
             }) }}
         </div>
-        {% include "components/info-box.twig" with {
-            span: 2, 
-            label: 'Betaald bedrag'|t, 
-            info: selectedMember.memberRate.one().price|money,
-        } %}
+        <div class="edit__column--2">
+            <label class="edit__label" for="pay-amount">{{'Betaald bedrag'|t}} {{'(altijd 2 decimalen, bijv. 10,00)'|t}}</label>
+            {{ input('text', 'fields[totalPayedMembers]', selectedMember.totalPayedMembers ? selectedMember.totalPayedMembers|money : '', {
+                id: 'pay-amount',
+            }) }}
+        </div>
         <div class="box__column--flex">
             <button type="submit" class="box__function-btn box__function-btn--save">{{'Opslaan'|t}}</button>
             <button @click="editPayment = false" type="reset" class="box__function-btn box__function-btn--cancel">{{'Annuleer'}}</button>

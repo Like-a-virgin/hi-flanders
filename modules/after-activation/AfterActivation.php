@@ -8,6 +8,8 @@ use yii\base\Event;
 use craft\services\Users;
 use craft\elements\User;
 use craft\events\UserEvent;
+use DateTime;
+use DateTimeZone;
 
 use yii\base\Module as BaseModule;
 
@@ -50,6 +52,20 @@ class AfterActivation extends BaseModule
                     $today = new \DateTime('now', new \DateTimeZone('CET'));
                     $user->setFieldValue('statusChangeDate', $today);
 
+                    $memberRate = $user->getFieldValue('memberRate')->one()->getFieldValue('price')->getAmount();
+                    $memberDueDate = $user->getFieldValue('memberDueDate');
+                    $dueDate = $memberDueDate instanceof DateTime ? $memberDueDate : new DateTime($memberDueDate);
+                    
+                    if ($memberRate == 0 and $dueDate < $today) {
+                        $user->setFieldValue('renewedDate', $today);
+                        $oneYearLater = clone $today;
+                        $oneYearLater->modify('+1 year');
+                        $user->setFieldValue('memberDueDate', $oneYearLater);
+                        $user->setFieldValue('totalPayedMembers', 0);
+                        $user->setFieldValue('paymentType', 'free');
+                        $user->setFieldValue('paymentDate', $today);
+                    }
+
                     if (!Craft::$app->elements->saveElement($user)) {
                         Craft::error("Failed to update user status to active for user {$user->email}", __METHOD__);
                     } else {
@@ -68,7 +84,7 @@ class AfterActivation extends BaseModule
                 }    
 
                 if (!Craft::$app->getSession()->get("activation_mail_sent_{$user->id}")) {
-                    $this->sendSuccesMail($user);
+                    // $this->sendSuccesMail($user);
                     Craft::$app->getSession()->set("activation_mail_sent_{$user->id}", true);
                 }
             }

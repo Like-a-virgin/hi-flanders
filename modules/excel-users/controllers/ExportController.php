@@ -61,6 +61,9 @@ class ExportController extends Controller
         if (!empty($queryParams['memberType'])) {
             $usersQuery->memberType($queryParams['memberType']);
         }
+        if (!empty($queryParams['printStatus'])) {
+            $usersQuery->printStatus($queryParams['printStatus']);
+        }
         if (!empty($queryParams['regMin']) && !empty($queryParams['regMax'])) {
             $usersQuery->andWhere(['between', 'dateCreated', $queryParams['regMin'], $queryParams['regMax']]);
         }

@@ -27,6 +27,7 @@ use modules\afteractivation\AfterActivation;
 use modules\afterdeactivation\AfterDeactivation;
 use modules\beforeactivationuser\BeforeActivationUser;
 use modules\confirmemail\ConfirmEmail;
+use modules\csvgenerator\CsvGenerator;
 use modules\custommemberid\CustomMemberId;
 use modules\dailychecks\DailyChecks;
 use modules\deactivateuser\DeactivateUser;
@@ -62,6 +63,7 @@ return [
         'flexmail' => Flexmail::class,
         'submissions' => Submissions::class,
         'account-api' => AccountApi::class,
+        'csv-generator' => CsvGenerator::class,
     ], 
     'bootstrap' => [
         'admin-register',
@@ -82,5 +84,6 @@ return [
         'flexmail',
         'submissions',
         'account-api',
+        'csv-generator',
     ],
 ];

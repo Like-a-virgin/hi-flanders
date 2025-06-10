@@ -58,6 +58,7 @@
         {{ actionInput('users/save-user') }}
         {{ hiddenInput('userId', selectedMember.id) }}
         {{ redirectInput(currentSite.baseUrl ~ '?' ~ urlFilters) }}
+        {{ input('hidden', 'username', selectedMember.email ? selectedMember.email : '') }}
         
         {% include "components/subtitle-box.twig" with {
             subtitle: 'Persoonsgegevens'|t
@@ -77,11 +78,13 @@
                 required: true,
             }) }}
         </div>
-        {% include "components/info-box.twig" with {
-            span: 2, 
-            label: 'E-mail'|t, 
-            info: selectedMember.email
-        } %}
+        <div class="edit__column--2">
+            <label class="edit__label" for="email">{{'E-mail'|t}}</label>
+            {{ input('text', 'email', selectedMember.email ? selectedMember.email : '', {
+                id: 'email',
+                required: true,
+            }) }}
+        </div>
         <div class="edit__column--2">
             <label class="edit__label" for="birthday">{{'Geboortedatum'|t}}</label>
             {{ input('date', 'fields[birthday]', selectedMember.birthday ? selectedMember.birthday|date('Y-m-d') : '', {

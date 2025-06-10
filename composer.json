@@ -63,7 +63,8 @@
       "modules\\flexmail\\": "modules/flexmail/",
       "modules\\etigenerator\\": "modules/eti-generator/",
       "modules\\submissions\\": "modules/submissions/",
-      "modules\\accountapi\\": "modules/account-api/"
+      "modules\\accountapi\\": "modules/account-api/",
+      "modules\\csvgenerator\\": "modules/csv-generator/"
     }
   }
 }

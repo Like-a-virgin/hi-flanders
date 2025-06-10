@@ -1,6 +1,6 @@
 <?php
 
-namespace modules\etigenirator\controllers;
+namespace modules\csvgenerator\controllers;
 
 use Craft;
 use craft\elements\User;
@@ -8,7 +8,7 @@ use craft\web\Controller;
 use yii\web\Response;
 use yii\web\ForbiddenHttpException;
 
-class BulkEtiController extends Controller
+class BulkCsvController extends Controller
 {
     protected array|int|bool $allowAnonymous = ['generate-all'];
 
@@ -58,13 +58,11 @@ class BulkEtiController extends Controller
             $usersQuery->printStatus($queryParams['printStatus']);
         }
         if (!empty($queryParams['regMin']) && !empty($queryParams['regMax'])) {
-            $usersQuery->dateCreated(
-                [
-                    'and',
-                    ">={$queryParams['regMin']}",
-                    "<={$queryParams['regMax']}"
-                ]
-            );
+            $usersQuery->dateCreated([
+                'and',
+                ">={$queryParams['regMin']}",
+                "<={$queryParams['regMax']}"
+            ]);
         }
         if (!empty($queryParams['payMin']) && !empty($queryParams['payMax'])) {
             $usersQuery->paymentDate([
@@ -77,64 +75,66 @@ class BulkEtiController extends Controller
         $usersQuery->group(['members', 'membersGroup']);
         $users = $usersQuery->all();
 
-        $etiHeader = <<<ETI
-        US
-        FK"vjh"
-        FS"vjh"
-        V00,14,N,"lidnummer"
-        V01,30,N,"vereniging"
-        V02,30,N,"naam"
-        V03,46,N,"STRAAT"
-        V04,30,N,"GEMEENTE"
-        q711
-        Q203,19+0
-        S2
-        D8
-        ZT
-        A400,10,0,2,1,1,N,V00
-        A18,40,0,3,1,1,N,V01
-        A18,70,0,3,1,1,N,V02
-        A18,110,0,3,1,1,N,V03
-        A18,150,0,3,1,1,N,V04
-        FE
-        ETI;
+        // Create CSV
+        $csvHeaders = [
+            'Lidnummer',
+            'Geldig tot',
+            'Naam / organisatie',
+            'Familienaam / contactpersoon',
+            'Straat',
+            'StraatNr',
+            'Bus',
+            'Gemeente',
+            'Postcode',
+            'E-mail',
+        ];
 
-        $allContent = $etiHeader;
+        $handle = fopen('php://temp', 'r+');
+        fputcsv($handle, $csvHeaders);
 
         foreach ($users as $user) {
             $fields = $user->getFieldValues();
 
             $memberNumber = $fields['customMemberId'] ?? '';
             $validityDate = $fields['memberDueDate'] ? $fields['memberDueDate']->format('d/m/Y') : '';
-            $customMemberId = $fields['customMemberId'] ?? 'unknown';
-            $fullName = $user->fullName ?? '';
-            $street = trim(($fields['street'] ?? '') . ' ' . ($fields['streetNr'] ?? ''));
-            $zipCity = trim(($fields['postalCode'] ?? '') . ' ' . ($fields['city'] ?? ''));
+            $firstName = $fields['altFirstName'] ? $fields['altFirstName'] : $fields['organisation'];
+            $lastName = $fields['altLastName'] ? $fields['altLastName']  : $fields['contactPerson'];
+            $street = $fields['street'] ?? '';
+            $streetNumber = $fields['streetNr'] ?? '';
+            $bus = $fields['bus'] ?? '';
+            $city = $fields['city'] ?? '';
+            $zipCity = $fields['postalCode'] ?? '';
+            $email = $user->email ?? '';
 
-            $etiBlock = <<<ETI
+            $row = [
+                $memberNumber,
+                $validityDate,
+                $firstName,
+                $lastName,
+                $street,
+                $streetNumber,
+                $bus,
+                $city,
+                $zipCity,
+                $email,
+            ];
 
-            US
-            FR"vjh"
-            ?
-            {$memberNumber}|{$validityDate}
-
-            {$fullName}
-            {$street}
-            {$zipCity}
-            P1,1
-            ETI;
-
-            $allContent .= $etiBlock;
+            fputcsv($handle, $row);
         }
 
-        $fileName = 'members_bulk_' . date('Y-m-d_H-i-s') . '.eti';
+        rewind($handle);
+        $csvOutput = stream_get_contents($handle);
+        fclose($handle);
+
+        $fileName = 'members_bulk_' . date('d-m-Y_H-i-s') . '.csv';
 
         $response = Craft::$app->response;
         $response->format = Response::FORMAT_RAW;
-        $response->headers->set('Content-Type', 'text/plain');
+        $response->headers->set('Content-Type', 'text/csv');
         $response->headers->set('Content-Disposition', 'attachment; filename="' . $fileName . '"');
-        $response->data = $allContent;
+        $response->data = $csvOutput;
 
         return $response;
     }
+
 }

@@ -63,9 +63,14 @@
                         {% endif %}
                     </div>
                     {# <button sprig class="btn" s-val:member-id="{{ null }}">{{'Terug naar overzicht'|t}}</button> #}
-                    <a href="{{ url('generate-eti', { memberId: selectedMember.id }) }}" class="btn">
-                        {{ 'Download .ETI bestand'|t }}
-                    </a>
+                    <div class="box__row">
+                        <a href="{{ url('generate-eti', { memberId: selectedMember.id }) }}" class="btn">
+                            {{ 'Download .ETI bestand'|t }}
+                        </a>
+                        <a href="{{ url('generate-csv', { memberId: selectedMember.id }) }}" class="btn">
+                            {{ 'Download csv bestand'|t }}
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>

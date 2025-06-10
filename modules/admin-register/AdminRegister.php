@@ -43,6 +43,11 @@ class AdminRegister extends BaseModule
                 if ($element instanceof User && $event->isNew) {
                     $this->prepareUserFields($element);
                 }
+
+                if ($element instanceof User) {
+                    // Keep username in sync with email
+                    $element->username = $element->email;
+                }
             },
         );
 
