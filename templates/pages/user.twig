@@ -28,11 +28,6 @@
 
 {% requireLogin %}
 
-<div class="international">
-    {{ svg('assets/icons/HI_svg.svg')|attr({class:"international__icon"})}}
-    <p>{{ 'Hi Flanders maakt deel uit van Hosteling International.'|t }}</p>
-</div>
-
 {% if not activeUserMember %}
     <div class="box-error">    
         {% if not activeUserMember %}
@@ -41,6 +36,12 @@
                 <a class="box-error__mobile" href="#payment">{{'Betaal om je lidmaatschap te activeren'|t}}</a>
             </div>
         {% endif %}
+    </div>
+{% else %}
+    <div class="box-valid">    
+        <div class="box-valid__valid">
+            <p>{{'Vervalt op '|t}} {{user.memberDueDate|date('d-m-Y')}}</p>
+        </div>
     </div>
 {% endif %}
 
@@ -275,6 +276,10 @@
     <div class="grid__right">
         {% include "components/users/payment.twig" %} 
         {% include "components/users/settings.twig" %} 
+        <div class="international">
+            {{ svg('assets/icons/HI_svg.svg')|attr({class:"international__icon"})}}
+            <p>{{ 'Hi Flanders maakt deel uit van Hosteling International.'|t }}</p>
+        </div>
     </div>
 </div>
 
