@@ -48,9 +48,13 @@ class PaymentController extends Controller
         $paymentDate = $user->getFieldValue('paymentDate');
         $memberDueDate = $user->getFieldValue('memberDueDate');
 
-        if (!$paymentDate || $paymentDate > $memberDueDate) {
-            if (!$this->isWithinPaymentPeriod($user)) {
-                $totalMembershipRate = $totalMembershipRate->add($userRate);
+        $today = new DateTime();
+
+        if ($memberDueDate <= $today) {
+            if (!$paymentDate || $paymentDate < $memberDueDate) {
+                if (!$this->isWithinPaymentPeriod($user)) {
+                    $totalMembershipRate = $totalMembershipRate->add($userRate);
+                }
             }
         }
 
@@ -99,6 +103,7 @@ class PaymentController extends Controller
         $totalRate = $totalMembershipRate->add($totalPrintRate);
         $totalAmount = $totalRate->getAmount(); // Convert to cents
         $totalFormatted = number_format($totalAmount / 100, 2); 
+
 
         if ($totalAmount === 0) {
             return $this->asFailure('No payment required. All members are already paid.');

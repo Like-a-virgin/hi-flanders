@@ -6,7 +6,7 @@
     <div class="box__content" x-collapse x-show="openTotal">
         <div class="box__wrapper">     
             <div class="box__column box__column--4">            
-                <div class="box__info {{activeUserMember ? 'box__info--sec'}}">
+                <div class="box__info {{ activeUserMember or userRate.price.amount is same as "0"  ? 'box__info--sec'}}">
                     <p>{{ userRate.title }}</p>
                     {% if userRate.price.amount is same as "0" %}
                         <p>{{ 'Gratis'|t }}</p>
@@ -20,7 +20,7 @@
                     {% set activeExtraMember = extra.paymentDate and user.memberDueDate and (now >= extra.paymentDate) and (now <= user.memberDueDate) %}
                     {% set rate = extra.memberRate.one() %}
                     <div class="box__column box__column--4">            
-                        <div class="box__info {{activeExtraMember ? 'box__info--sec'}}">
+                        <div class="box__info {{ activeExtraMember ? 'box__info--sec' }}">
                             <p>{{ rate.title }}</p>
                             {% if rate.price.amount is same as "0" %}
                                 <p>{{'Gratis'|t}}</p>
@@ -32,15 +32,15 @@
                 {% endfor %}
             {% endif %}
             {% if user.requestPrint %}
-                <div class="box__column box__column--4">            
-                    <div class="box__info {{ user.payedPrintDate and user.payedPrintDate|date('m-d-Y') <= now|date('m-d-Y') ? 'box__info--sec' }}">
+                <div class="box__column box__column--4">     
+                    <div class="box__info {{ user.payedPrintDate and user.payedPrintDate <= now ? 'box__info--sec' }}">
                         <p>{{ cardRate.title }}</p>
-                        <p>{{ user.payedPrintDate and user.payedPrintDate|date('m-d-Y') <= now|date('m-d-Y') ? 'Reeds betaald'|t : cardRate.price|money }}</p>
+                        <p>{{ user.payedPrintDate and user.payedPrintDate <= now ? 'Reeds betaald'|t : cardRate.price|money }}</p>
                     </div>
                 </div>
             {% endif %}
         </div>
-        {% if totalPrice %}
+        {% if totalPrice and totalPrice.amount > 0 %}
             <div class="box__column box__column--total box__column--2">            
                 <p>{{'Totaal'|t}}:</p>
                 <p>{{ totalPrice|money }}</p>
