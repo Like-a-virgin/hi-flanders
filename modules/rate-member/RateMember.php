@@ -172,6 +172,8 @@ class RateMember extends BaseModule
             $user->setFieldValue('paymentDate', $paymentDate);
             $user->setFieldValue('paymentType', 'free');
             $user->setFieldValue('totalPayedMembers', 0);
+            $user->setFieldValue('renewedDate', $paymentDate);
+            $user->setFieldValue('memberDueDate', $expirationDate);
         } else {
             $user->setFieldValue('paymentDate', null);
             $user->setFieldValue('paymentType', null);
