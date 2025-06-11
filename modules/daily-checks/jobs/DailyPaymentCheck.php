@@ -13,12 +13,13 @@ class DailyPaymentCheck extends BaseJob
     public function execute($queue): void
     {
         $currentDate = new DateTime('now', new DateTimeZone('CET'));
+        $today = $currentDate->format('Y-m-d 00:00:00');
         $daysAgo = $currentDate->modify('-7 days')->format('Y-m-d');
 
         $usersRemind = User::find() 
             ->status('active')
             ->customStatus('active')
-            ->paymentType(null)
+            ->memberDueDate(['<', $today])
             ->statusChangeDate($daysAgo) 
             ->group(['members', 'membersGroup'])
             ->all();

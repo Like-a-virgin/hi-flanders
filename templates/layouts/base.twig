@@ -18,6 +18,9 @@
         {% if craft.app.request.getFullPath() is same as 'register' %}
             <script src="https://www.google.com/recaptcha/api.js?render={{ getenv('RECAPTCHA_SITE_KEY') }}"></script>
         {% endif %}
+        {% if craft.app.request.getFullPath() is same as 'login' %}
+            <script src="https://cdn.jsdelivr.net/npm/js-cookie@2/src/js.cookie.min.js"></script>
+        {% endif %}
     </head>
     <body>
         {% include "partials/header.twig" %}
@@ -25,7 +28,7 @@
             {% block content %}{% endblock %}
         </main>
         {# {{ craft.vite.script("src/scripts/main.js") }}  #}
-        <script src="{{ baseUrl }}dist/assets/app-D-khOQol.js"></script>
+        <script src="{{ baseUrl }}dist/assets/app-3Bf2luTe.js"></script>
         {% if craft.app.request.getFullPath() is same as 'register' %}
             <script>
                 function onSubmit(token) {

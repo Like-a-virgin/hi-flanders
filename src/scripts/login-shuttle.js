@@ -4,27 +4,40 @@ window.addEventListener("load", () => {
     if (window.location.search.includes("credentials")) {
         const raw = params.get("credentials");
         if (raw) {
-        // Remove the last two characters
-        let decoded = raw.slice(0, -2);
-        // Move first two characters to the end
-        decoded = decoded.slice(2) + decoded.slice(0, 2);
-        // Reverse and decode from Base64
-        decoded = atob(decoded.split("").reverse().join(""));
+        // Decode credentials
+        let decoded = raw.slice(0, -2); // Remove last two characters
+        decoded = decoded.slice(2) + decoded.slice(0, 2); // Move first 2 to end
+        decoded = atob(decoded.split("").reverse().join("")); // Reverse and base64-decode
 
-        // Extract credentials
-        const email = decoded.split("e-mail=")[1]?.split("&")[0] || "";
-        const pass = decoded.split("pass=")[1]?.split("&")[0] || "";
-        const rememberMe = decoded.split("rememberme=")[1]?.split("&")[0] || "false";
+        // Extract individual values
+        const getParam = (key) => decoded.split(`${key}=`)[1]?.split("&")[0] || "";
 
-        // Fill form fields
+        const email = getParam("e-mail");
+        const pass = getParam("pass");
+        const rememberMe = getParam("rememberme") === "true";
+
+        // Fill login form
         document.querySelector("input#loginName").value = email;
         document.querySelector("input#password").value = pass;
-        if (rememberMe === "true") {
+        if (rememberMe) {
             document.querySelector("input#remember-me").checked = true;
         }
 
-        // Trigger login button click
-        document.querySelector("form button.formbox__button").click();
+        // Handle login attempt throttling
+        const lastAttempt = Cookies.get("last-login-attempt");
+        const now = Math.floor(Date.now() / 1000);
+
+        if (!lastAttempt) {
+            Cookies.set("last-login-attempt", now, {
+            expires: new Date(Date.now() + 6000), // expire in 6 seconds
+            });
+            document.querySelector("form button.formbox__button").click();
+        } else {
+            const diff = now - parseInt(lastAttempt);
+            if (diff < 1) {
+            document.querySelector("form button.formbox__button").click();
+            }
+        }
         }
     }
 });
