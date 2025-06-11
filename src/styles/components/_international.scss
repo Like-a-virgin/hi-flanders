@@ -24,3 +24,13 @@
         height: auto;
     }
 }
+
+.international--icon {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+
+    .international__icon {
+        width: 8rem;
+    }
+}

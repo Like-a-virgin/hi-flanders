@@ -17,6 +17,7 @@ class SendActivationController extends Controller
         $users = User::find()
             ->group(['members', 'membersGroup'])
             ->customStatus(['old', 'oldRenew'])
+            ->status('pending')
             ->all();
 
         if (empty($users)) {
