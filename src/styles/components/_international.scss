@@ -2,21 +2,19 @@
 
 .international {
     display: flex;
-    flex-wrap: wrap;
     gap: 1rem;
     align-items: center;
-    justify-content: center;
+    justify-content: flex-start;
     width: 100%;
     max-width: $screen-xxl;
     // border: solid $clr-primary 0.1rem;
     border-radius: $br;
     padding: $sp-s;
     margin-bottom: -1rem;
-    text-align: center;
-
+    text-align: left;
+    
     @include screen($screen-s) {
-        text-align: left;
-        justify-content: flex-start;
+        flex-wrap: wrap;
     }
 
     &__icon {
