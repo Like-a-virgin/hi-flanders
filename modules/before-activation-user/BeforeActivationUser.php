@@ -58,7 +58,7 @@ class BeforeActivationUser extends BaseModule
     
                 $newYear = $currentYear + 1;
     
-                $newDate = DateTime::createFromFormat(
+                $newDate = DateTime::createFromFormat( 
                     'Y-m-d H:i:s',
                     sprintf('%d-%02d-%02d %02d:%02d:%02d',
                         $newYear,
@@ -72,11 +72,11 @@ class BeforeActivationUser extends BaseModule
                 );
 
                 $user->setFieldValue('customStatus', 'active');
+                $user->setFieldValue('statusChangeDate', $currentDate);
                 $user->setFieldValue('paymentDate', null);
                 $user->setFieldValue('paymentType', null);
                 $user->setFieldValue('totalPayedMembers', null);
                 $user->setFieldValue('renewedDate', $currentDate);
-                $user->setFieldValue('statusChangeDate', $currentDate);
                 
                 // Save the updated user to persist the changes
                 if (!Craft::$app->elements->saveElement($user)) {

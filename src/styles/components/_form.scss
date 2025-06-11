@@ -30,6 +30,10 @@
         }
     }
 
+    &__text {
+        margin-bottom: $sp-s;
+    }
+
     &__label {
         display: none;
 

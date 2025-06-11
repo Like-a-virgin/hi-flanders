@@ -8,6 +8,11 @@
             <h1>{{ entry.title }}</h1>
         </div>
         <div class="formbox__formie">
+            {% if entry.textSimple %}
+                <div class="formbox__text">
+                    {{ entry.textSimple }}
+                </div>
+            {% endif %}
             {{ craft.formie.renderForm(entry.formSelect.one())}}
         </div>
         {% if entry.addOptions %}

@@ -28,7 +28,7 @@ class DailyActivationCheck extends BaseJob
         $usersRenew = User::find()
             ->status('pending')
             ->customStatus('renew')
-            ->statusChangeDate($daysAgo) // Status changed 3 days ago
+            ->statusChangeDate($daysAgo)
             ->group(['members', 'membersGroup'])
             ->all();
 
