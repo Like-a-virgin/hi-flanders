@@ -14,7 +14,7 @@
 
         <div class="box box--member" x-data="{openMember: false}" :class="openMember ? 'box--member-open' : ''">
             <div @click="openMember = ! openMember" class="box__heading box__heading--center">
-                <h3>{{item.title}} - ID: {{item.id}}</h3>
+                <h3>{{item.title}} - ID: (008) {{item.id}}</h3>
                 {{ svg("assets/icons/chevron-down.svg")|attr({class: 'box__icon box__icon--chevron' }) }}
             </div>
             <div class="box__content" x-collapse x-show="openMember">
