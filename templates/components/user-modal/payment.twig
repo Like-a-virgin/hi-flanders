@@ -1,12 +1,12 @@
 <div x-show="!editPayment" class="box__wrapper">
     {% if user.inGroup('membersAdminSuper') %}                    
         <div class="box__column box__column--4 box__column--flex-between">
-            <h3>{{'Betaal status'|t}}</h3>
+            <h3>{{'Laatste betaling'|t}}</h3>
             <button class="box__function-btn" @click="editPayment = true">{{'Wijzigen'|t}} {{ svg("assets/icons/edit.svg")|attr({class: 'box__icon-option box__icon-edit' }) }}</button>
         </div>
     {% else %}
         <div class="box__column box__column--4 box__column--flex-between">
-            <h3>{{'Betaal status'|t}}</h3>
+            <h3>{{'Laatste betaling'|t}}</h3>
         </div>
     {% endif %}
     

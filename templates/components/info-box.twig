@@ -1,4 +1,5 @@
 {% set prim = prim ?? false %}
+{% set valid = valid ?? false %}
 {% set label = label ?? null %}
 {% set error = error ?? false %}
 {% set span = span ?? 1 %}
@@ -8,7 +9,7 @@
     {% if label %}
         <p>{{label}}</p>
     {% endif %}
-    <div class="box__info {{error ? 'box__info--error'}} {{prim ? 'box__info--prim'}}">
+    <div class="box__info {{error ? 'box__info--error'}} {{prim ? 'box__info--prim'}} {{valid ? 'box__info--valid'}}">
         <p>{{ info }}</p>
     </div>
 </div> 

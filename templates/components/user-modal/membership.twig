@@ -1,4 +1,5 @@
 <div class="box__wrapper" x-show="!editMembership">
+    {% set active = selectedMember.paymentDate and selectedMember.memberDueDate and ( selectedMember.paymentDate|date('d-m-Y') is same as selectedMember.memberDueDate|date_modify('-1 year')|date('d-m-Y')) and (now <= selectedMember.memberDueDate) %}
     {% if selectedMember.inGroup('members') and isAdmin %} 
         <div class="box__column box__column--4 box__column--flex-between">
             <h3>{{'Lidmaatschap'|t}}</h3>
@@ -30,6 +31,20 @@
         label: 'Vervaldatum'|t, 
         info: selectedMember.memberDueDate|date("d/m/Y")
     } %}
+    {% if active %}
+        {% include "components/info-box.twig" with {
+            span: 4, 
+            info: 'Lidmaatschap is geldig'|t,
+            valid: true
+        } %}
+    {% else %}
+        {% include "components/info-box.twig" with {
+            span: 4, 
+            info: 'Lidmaatschap is vervallen en nog niet vernieuwd'|t,
+            error: true
+        } %}
+    {% endif %}
+    
 </div>
 <form x-show="editMembership" class="edit" method="post" accept-charset="UTF-8" enctype="multipart/form-data">
     {{ csrfInput() }}

@@ -216,7 +216,7 @@
         }
     }
 
-    &__info--prim, &__info--sec, &__info--error {
+    &__info--prim, &__info--sec, &__info--error, &__info--valid {
         font-weight: $fw-bold;
     }
 
@@ -234,6 +234,12 @@
         background-color: $clr-error-bg;
         border: solid 0.1rem $clr-error-text;
         color: $clr-error-text;
+    }
+
+    &__info--valid {
+        background-color: $clr-succes-bg;
+        border: solid 0.1rem $clr-succes-text;
+        color: $clr-succes-text;
     }
 
     &__text p {

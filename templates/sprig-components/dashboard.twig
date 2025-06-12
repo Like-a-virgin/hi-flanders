@@ -261,6 +261,7 @@
 					<th class="table__large-only">{{'Gekoppeld'|t}}</th>
 					<th>{{'Betaald'|t}}</th>
 					<th>{{'Status'|t}}</th>
+					<th>{{'Lid'|t}}</th>
 					<th>{{'Meer'|t}}</th>
 				</tr>
 			</thead>
@@ -273,7 +274,7 @@
 					{% set memberAge = (currentDate|date('Y') - memberBday|date('Y')) - (currentDate|date('md') < memberBday|date('md') ? 1 : 0) %}
 					{% set memberType = memberTypes|filter(i => i.minAge <= memberAge and (i.maxAge is null or i.maxAge >= memberAge)) %}
 					{% set extraMembers = craft.entries.section('extraMembers').authorId(member.id).all() %}
-					{% set paymentStatus = member.paymentDate and member.memberDueDate and (now >= member.paymentDate) and (now <= member.memberDueDate) %}
+					{% set paymentStatus = member.paymentDate and member.memberDueDate and ( member.paymentDate|date('d-m-Y') is same as member.memberDueDate|date_modify('-1 year')|date('d-m-Y')) and (now <= member.memberDueDate) %}
 					<tr class="{{member.customStatus.value is same as 'deactivated' ? 'row--disabled' }}">
 						<td>
 							{% if member.getGroups()|first.handle is same as 'membersGroup' %}
@@ -306,6 +307,13 @@
 								<div class="table__status table__status--false">{{'oud actief lid'|t}}</div>
 							{% elseif member.customStatus.value is same as 'oldRenew' %}
 								<div class="table__status table__status--false">{{'oud niet actief lid'|t}}</div>
+							{% endif %}
+						</td>
+						<td>
+							{% if paymentStatus and member.customStatus.value is same as 'active' %}
+								<div class="table__status table__status--true">{{ svg("assets/icons/check.svg")|attr({class: 'table__status-icon table__status-icon--true' }) }}</div>
+							{% else %}
+								<div class="table__status table__status--false">{{ svg("assets/icons/x.svg")|attr({class: 'table__status-icon table__status-icon--false' }) }}</div>
 							{% endif %}
 						</td>
 						<td>

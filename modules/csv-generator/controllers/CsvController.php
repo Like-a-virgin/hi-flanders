@@ -30,40 +30,34 @@ class CsvController extends Controller
 
         // Prepare CSV data
         $csvHeaders = [
-            'Lidnummer',
-            'Geldig tot',
-            'Naam / organisatie',
-            'Familienaam / contactpersoon',
-            'Straat',
-            'StraatNr',
-            'Bus',
-            'Gemeente',
-            'Postcode',
-            'E-mail',
+            'id',
+            'name',
+            'street',
+            'city',
+            'memberId',
+            'birthday',
+            'expire',
+            'category',
         ];
 
-            $memberNumber = $fields['customMemberId'] ?? '';
-            $validityDate = $fields['memberDueDate'] ? $fields['memberDueDate']->format('d/m/Y') : '';
-            $firstName = $fields['altFirstName'] ? $fields['altFirstName'] : $fields['organisation'];
-            $lastName = $fields['altLastName'] ? $fields['altLastName']  : $fields['contactPerson'];
-            $street = $fields['street'] ?? '';
-            $streetNumber = $fields['streetNr'] ?? '';
-            $bus = $fields['bus'] ?? '';
-            $city = $fields['city'] ?? '';
-            $zipCity = $fields['postalCode'] ?? '';
-            $email = $user->email ?? '';
+        $userId = $user->id ?? '';
+        $name = $fields['altFirstName'] . ' ' . $fields['altLastName'] ?? '';
+        $street = $fields['street'] . $fields['streetNr'] . $fields['bus'];
+        $city = $fields['city'] ?? '';
+        $memberId = '008-' . $fields['customMemberId'];
+        $birthday = $fields['birthday'] ? $fields['birthday']->format('d/m/Y') : '';
+        $expire = $fields['memberDueDate'] ? $fields['memberDueDate']->format('d/m/Y') : '';
+        $category = $fields['memberType']->value ?? '';
 
         $csvData = [
-            $memberNumber,
-            $validityDate,
-            $firstName,
-            $lastName,
+            $userId,
+            $name,
             $street,
-            $streetNumber,
-            $bus,
             $city,
-            $zipCity,
-            $email,
+            $memberId,
+            $birthday,
+            $expire,
+            $category,
         ];
 
         // Create CSV string

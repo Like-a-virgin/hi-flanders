@@ -59,7 +59,7 @@
                 {% for item in extraMembers %}
                     <tr>
                         <td>{{ item.altFirstName }} {{ item.altLastName}}</td>
-                        <td>{{ item.id }}</td>
+                        <td>(008) {{ item.id }}</td>
                         <td>{{ item.birthday|date('d-m-Y') }}</td>
                         <td>{{ item.parentMember.all()|length }}</td>
                         <td>

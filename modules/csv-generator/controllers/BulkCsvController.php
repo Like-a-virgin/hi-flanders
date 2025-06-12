@@ -77,16 +77,14 @@ class BulkCsvController extends Controller
 
         // Create CSV
         $csvHeaders = [
-            'Lidnummer',
-            'Geldig tot',
-            'Naam / organisatie',
-            'Familienaam / contactpersoon',
-            'Straat',
-            'StraatNr',
-            'Bus',
-            'Gemeente',
-            'Postcode',
-            'E-mail',
+            'id',
+            'name',
+            'street',
+            'city',
+            'memberId',
+            'birthday',
+            'expire',
+            'category',
         ];
 
         $handle = fopen('php://temp', 'r+');
@@ -95,28 +93,24 @@ class BulkCsvController extends Controller
         foreach ($users as $user) {
             $fields = $user->getFieldValues();
 
-            $memberNumber = $fields['customMemberId'] ?? '';
-            $validityDate = $fields['memberDueDate'] ? $fields['memberDueDate']->format('d/m/Y') : '';
-            $firstName = $fields['altFirstName'] ? $fields['altFirstName'] : $fields['organisation'];
-            $lastName = $fields['altLastName'] ? $fields['altLastName']  : $fields['contactPerson'];
-            $street = $fields['street'] ?? '';
-            $streetNumber = $fields['streetNr'] ?? '';
-            $bus = $fields['bus'] ?? '';
+            $userId = $user->id ?? '';
+            $name = $fields['altFirstName'] . ' ' . $fields['altLastName'] ?? '';
+            $street = $fields['street'] . $fields['streetNr'] . $fields['bus'];
             $city = $fields['city'] ?? '';
-            $zipCity = $fields['postalCode'] ?? '';
-            $email = $user->email ?? '';
+            $memberId = '008-' . $fields['customMemberId'];
+            $birthday = $fields['birthday'] ? $fields['birthday']->format('d/m/Y') : '';
+            $expire = $fields['memberDueDate'] ? $fields['memberDueDate']->format('d/m/Y') : '';
+            $category = $fields['memberType']->value ?? '';
 
             $row = [
-                $memberNumber,
-                $validityDate,
-                $firstName,
-                $lastName,
+                $userId,
+                $name,
                 $street,
-                $streetNumber,
-                $bus,
                 $city,
-                $zipCity,
-                $email,
+                $memberId,
+                $birthday,
+                $expire,
+                $category,
             ];
 
             fputcsv($handle, $row);

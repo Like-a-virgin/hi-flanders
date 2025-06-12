@@ -19,7 +19,7 @@
                 <p class="box__membership">(008) {{selectedMember.customMemberId|slice(0, 3)}} {{selectedMember.customMemberId|slice(3, 3)}} {{selectedMember.customMemberId|slice(6, 3)}} {{selectedMember.customMemberId|slice(9, 3)}}</p>
             </div>
             <div class="box__content">
-                {% if selectedMember.customStatus.value is not same as 'active' %}                    
+                {% if selectedMember.customStatus.value is not same as 'active' and selectedMember.memberDueDate > now  %}                    
                     <div class="box__wrapper box__wrapper--labels">
                         {% include "components/info-box.twig" with {
                             span: 4, 

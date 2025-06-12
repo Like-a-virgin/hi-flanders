@@ -10,7 +10,7 @@
         {% for item in extraMembers %}
             <div class="box__column box__column--4 box__column--flex">
                 <div class="box__info box__info box__info--prim">
-                    <p>{{ item.altFirstName }} {{ item.altLastName }} - {{ item.id }}</p>
+                    <p>{{ item.altFirstName }} {{ item.altLastName }} - (008) {{ item.id }}</p>
                     {# <p>{{ item.memberRate.one().title }}</p> #}
                     <a class="box__link" href="/kids?kidId={{ item.id }}">{{'Bekijk info'|t}}</a>
                 </div>
