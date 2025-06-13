@@ -1,5 +1,5 @@
 <IfModule mod_headers.c>
-    SetEnvIf Origin "http(s)?://(www\.)?(app.hiflanders.be|localhost:4200)$" AccessControlAllowOrigin=$0$1
+    SetEnvIf Origin "http(s)?://(www\.)?(app.hiflanders.be|localhost:4200)$" AccessControlAllowOrigin=$0
     Header always add Access-Control-Allow-Origin %{AccessControlAllowOrigin}e env=AccessControlAllowOrigin
     # Header always set Access-Control-Allow-Origin "https://app.hiflanders.be"
     Header always set Access-Control-Allow-Access true
