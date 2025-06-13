@@ -60,9 +60,9 @@ class AccountApi extends BaseModule
                 ->set('Access-Control-Allow-Credentials', 'true');
         }
 
-        if ($request->getMethod() === 'OPTIONS') {
-            Craft::$app->end();
-        }
+        // if ($request->getMethod() === 'OPTIONS') {
+        //     Craft::$app->end();
+        // }
     }
 
     private function attachCorsHeaders(): void

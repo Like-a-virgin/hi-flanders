@@ -30,9 +30,9 @@ class UserController extends Controller
             $headers->set('Access-Control-Allow-Credentials', 'true');
         }
 
-        if ($request->getMethod() === 'OPTIONS') {
-            Craft::$app->end(); // Ends preflight request early
-        }
+        // if ($request->getMethod() === 'OPTIONS') {
+        //     Craft::$app->end(); // Ends preflight request early
+        // }
 
         return parent::beforeAction($action);
     }
