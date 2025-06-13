@@ -18,20 +18,20 @@ class UserController extends Controller
     public function beforeAction($action): bool
     {
         $request = Craft::$app->getRequest();
+        $response = Craft::$app->getResponse();
+        $origin = $request->getOrigin();
+        $allowedOrigins = ['http://localhost:4200', 'https://app.hiflanders.be'];
+
+        if (in_array($origin, $allowedOrigins, true)) {
+            $headers = $response->getHeaders();
+            $headers->set('Access-Control-Allow-Origin', $origin);
+            $headers->set('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
+            $headers->set('Access-Control-Allow-Headers', 'Authorization, Content-Type');
+            $headers->set('Access-Control-Allow-Credentials', 'true');
+        }
 
         if ($request->getMethod() === 'OPTIONS') {
-            $origin = $request->getOrigin();
-            $allowedOrigins = ['http://localhost:4200', 'https://app.hiflanders.be'];
-
-            if (in_array($origin, $allowedOrigins, true)) {
-                $headers = Craft::$app->getResponse()->getHeaders();
-                $headers->set('Access-Control-Allow-Origin', $origin);
-                $headers->set('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
-                $headers->set('Access-Control-Allow-Headers', 'Authorization, Content-Type');
-                $headers->set('Access-Control-Allow-Credentials', 'true');
-            }
-
-            Craft::$app->end(); // Ends preflight request cleanly
+            Craft::$app->end(); // Ends preflight request early
         }
 
         return parent::beforeAction($action);
