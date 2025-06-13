@@ -55,13 +55,12 @@ class AccountApi extends BaseModule
         if (in_array($origin, $allowedOrigins, true)) {
             $response->getHeaders()
                 ->set('Access-Control-Allow-Origin', $origin)
-                ->set('Access-Control-Allow-Methods', 'GET, POST, OPTIONS')
+                ->set('Access-Control-Allow-Methods', 'GET, POST')
                 ->set('Access-Control-Allow-Headers', 'Authorization, Content-Type')
                 ->set('Access-Control-Allow-Credentials', 'true');
         }
 
         if ($request->getMethod() === 'OPTIONS') {
-            // Short-circuit preflight requests
             Craft::$app->end();
         }
     }
@@ -84,7 +83,7 @@ class AccountApi extends BaseModule
                 if (in_array($origin, $allowedOrigins, true)) {
                     $response->getHeaders()
                         ->set('Access-Control-Allow-Origin', $origin)
-                        ->set('Access-Control-Allow-Methods', 'GET, POST, OPTIONS')
+                        ->set('Access-Control-Allow-Methods', 'GET, POST')
                         ->set('Access-Control-Allow-Headers', 'Authorization, Content-Type')
                         ->set('Access-Control-Allow-Credentials', 'true');
                 }
