@@ -34,8 +34,6 @@ class AccountApi extends BaseModule
             }
         );
 
-        // $this->attachCorsHeaders();
-
         Craft::$app->onInit(function() {
 
         });
@@ -63,31 +61,5 @@ class AccountApi extends BaseModule
         if ($request->getMethod() === 'OPTIONS') {
             Craft::$app->end();
         }
-    }
-
-    private function attachCorsHeaders(): void
-    {
-        Event::on(
-            Response::class,
-            Response::EVENT_BEFORE_SEND,
-            function (Event $event) {
-                $response = $event->sender;
-                $request = Craft::$app->getRequest();
-                $origin = $request->getOrigin();
-
-                $allowedOrigins = [
-                    'http://localhost:4200',
-                    'https://app.hiflanders.be',
-                ];
-
-                if (in_array($origin, $allowedOrigins, true)) {
-                    $response->getHeaders()
-                        ->set('Access-Control-Allow-Origin', $origin)
-                        ->set('Access-Control-Allow-Methods', 'GET, POST')
-                        ->set('Access-Control-Allow-Headers', 'Authorization, Content-Type')
-                        ->set('Access-Control-Allow-Credentials', 'true');
-                }
-            }
-        );
     }
 }

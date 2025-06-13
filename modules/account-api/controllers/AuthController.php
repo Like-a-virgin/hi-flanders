@@ -26,7 +26,7 @@ class AuthController extends Controller
 
         $user = Craft::$app->getUsers()->getUserByUsernameOrEmail($email);
 
-        if (!$user || !Craft::$app->getSecurity()->validatePassword($password, $user->password)) {
+        if (!$user || !$user->active || !Craft::$app->getSecurity()->validatePassword($password, $user->password)) {
             throw new UnauthorizedHttpException('Invalid email or password');
         }
 
