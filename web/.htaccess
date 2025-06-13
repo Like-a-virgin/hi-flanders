@@ -1,6 +1,6 @@
 <IfModule mod_headers.c>
-    Header set Access-Control-Allow-Origin "https://app.hiflanders.be"
-    Header set Access-Control-Allow-Access true
+    Header always set Access-Control-Allow-Origin "https://app.hiflanders.be"
+    Header always set Access-Control-Allow-Access true
     Header always set Access-Control-Allow-Methods "POST, GET, OPTIONS, DELETE, PUT"
     Header always set Access-Control-Allow-Headers "Content-Type, Authorization"
 
