@@ -1,15 +1,15 @@
-<IfModule mod_headers.c>
-    SetEnvIf Origin "http(s)?://(www\.)?(app.hiflanders.be|localhost:4200)$" AccessControlAllowOrigin=$0
-    Header always add Access-Control-Allow-Origin %{AccessControlAllowOrigin}e env=AccessControlAllowOrigin
-    # Header always set Access-Control-Allow-Origin "https://app.hiflanders.be"
-    Header always set Access-Control-Allow-Access true
-    Header always set Access-Control-Allow-Methods "POST, GET, OPTIONS, DELETE, PUT"
-    Header always set Access-Control-Allow-Headers "Content-Type, Authorization"
+# <IfModule mod_headers.c>
+#     SetEnvIf Origin "http(s)?://(www\.)?(app.hiflanders.be|localhost:4200)$" AccessControlAllowOrigin=$0
+#     Header always add Access-Control-Allow-Origin %{AccessControlAllowOrigin}e env=AccessControlAllowOrigin
+#     # Header always set Access-Control-Allow-Origin "https://app.hiflanders.be"
+#     Header always set Access-Control-Allow-Access true
+#     Header always set Access-Control-Allow-Methods "POST, GET, OPTIONS, DELETE, PUT"
+#     Header always set Access-Control-Allow-Headers "Content-Type, Authorization"
 
-    # Handle OPTIONS requests quickly
-    RewriteCond %{REQUEST_METHOD} OPTIONS
-    RewriteRule ^(.*)$ $1 [R=200,L]
-</IfModule>
+#     # Handle OPTIONS requests quickly
+#     RewriteCond %{REQUEST_METHOD} OPTIONS
+#     RewriteRule ^(.*)$ $1 [R=200,L]
+# </IfModule>
 
 <IfModule mod_rewrite.c>
     RewriteEngine On

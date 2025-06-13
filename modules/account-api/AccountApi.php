@@ -26,15 +26,15 @@ class AccountApi extends BaseModule
 
         parent::init();
 
-        // Event::on(
-        //     Application::class,
-        //     Application::EVENT_BEFORE_REQUEST,
-        //     function () {
-        //         $this->handleCorsPreflight();
-        //     }
-        // );
+        Event::on(
+            Application::class,
+            Application::EVENT_BEFORE_REQUEST,
+            function () {
+                $this->handleCorsPreflight();
+            }
+        );
 
-        // $this->attachCorsHeaders();
+        $this->attachCorsHeaders();
 
         Craft::$app->onInit(function() {
 
@@ -60,9 +60,9 @@ class AccountApi extends BaseModule
                 ->set('Access-Control-Allow-Credentials', 'true');
         }
 
-        // if ($request->getMethod() === 'OPTIONS') {
-        //     Craft::$app->end();
-        // }
+        if ($request->getMethod() === 'OPTIONS') {
+            Craft::$app->end();
+        }
     }
 
     private function attachCorsHeaders(): void
