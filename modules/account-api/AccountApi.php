@@ -34,7 +34,7 @@ class AccountApi extends BaseModule
             }
         );
 
-        $this->attachCorsHeaders();
+        // $this->attachCorsHeaders();
 
         Craft::$app->onInit(function() {
 
