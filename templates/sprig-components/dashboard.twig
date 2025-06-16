@@ -296,17 +296,17 @@
 						</td>
 						<td>
 							{% if member.customStatus.value is same as 'active' %}
-								<div class="table__status table__status--true">{{'actief'|t}}</div>
+								<div class="table__status table__status--{{member.status is same as 'active' ? 'true' : 'false'}}">{{'actief'|t}}</div>
 							{% elseif member.customStatus.value is same as 'new' %}
-								<div class="table__status table__status--false">{{'new'|t}}</div>
+								<div class="table__status table__status--{{member.status is same as 'active' ? 'true' : 'false'}}">{{'new'|t}}</div>
 							{% elseif member.customStatus.value is same as 'renew' %}
-								<div class="table__status table__status--false">{{'verniew'|t}}</div>
+								<div class="table__status table__status--{{member.status is same as 'active' ? 'true' : 'false'}}">{{'verniew'|t}}</div>
 							{% elseif member.customStatus.value is same as 'deactivated' %}
 								<div class="table__status table__status--disabled">{{'gedeactiveerd'|t}}</div>
 							{% elseif member.customStatus.value is same as 'old' %}
-								<div class="table__status table__status--false">{{'oud actief lid'|t}}</div>
+								<div class="table__status table__status--{{member.status is same as 'active' ? 'true' : 'false'}}">{{'oud actief lid'|t}}</div>
 							{% elseif member.customStatus.value is same as 'oldRenew' %}
-								<div class="table__status table__status--false">{{'oud niet actief lid'|t}}</div>
+								<div class="table__status table__status--{{member.status is same as 'active' ? 'true' : 'false'}}">{{'oud niet actief lid'|t}}</div>
 							{% endif %}
 						</td>
 						<td>
