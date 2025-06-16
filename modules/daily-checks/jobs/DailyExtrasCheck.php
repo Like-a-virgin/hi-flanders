@@ -21,22 +21,26 @@ class DailyExtrasCheck extends BaseJob
 
         foreach ($extraMembers as $extraMember) {
             $birthday = $extraMember->getFieldValue('birthday');
-            $memberDueDate = $extraMember->getFieldValue('memberDueDate');
 
-            // ✅ Ensure both values exist
-            if (!$birthday || !$memberDueDate) {
+            if (!$birthday) {
                 continue;
             }
 
-            // ✅ Convert birthday & due date to DateTime
-            $birthDate = $birthday instanceof DateTime ? $birthday : new DateTime($birthday);
-            $dueDate = $memberDueDate instanceof DateTime ? $memberDueDate : new DateTime($memberDueDate);
+            // Safely convert birthday to DateTime
+            try {
+                if (!($birthday instanceof \DateTime)) {
+                    $birthday = new \DateTime(is_array($birthday) ? $birthday['date'] : $birthday);
+                }
+            } catch (\Throwable $e) {
+                Craft::error("Invalid birthday for extra member ID {$extraMember->id}: " . $e->getMessage(), __METHOD__);
+                continue;
+            }
 
-            // ✅ Calculate age
-            $age = $birthDate->diff($currentDate)->y;
+            // Calculate 18th birthday
+            $eighteenthBirthday = (clone $birthday)->modify('+19 years');
 
-            // ✅ Check if the user is 18+ and their memberDueDate is today
-            if ($age >= 18 && $dueDate->format('Y-m-d') === $today) {
+            // If today is their 18th birthday, delete
+            if ($eighteenthBirthday->format('Y-m-d') === $today) {
                 $this->removeExtraMember($extraMember);
             }
         }

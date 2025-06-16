@@ -1,16 +1,16 @@
 <div class="box-container box-container--member">
     <h2>{{'Kinderen'|t}}</h2>
     {% for item in extraMembers %}
-        {% set activeExtraCheck = item.paymentDate and user.memberDueDate and (now >= item.paymentDate) and (now <= user.memberDueDate) %}
         {% set age = item.birthday.diff(now).y %}
+        {% set overAged = age >= 18 %}
 
-        {% if age >= 18 and item.memberDueDate > now %}
+        {% if overAged %}
             <div class="box-error">    
                 <div class="box-error__error">
                     <p>! {{'Let op: Een of meerdere kinderen zijn 18 jaar. Zodra je lidmaatschap verloopt, hebben zij een eigen lidmaatschap nodig om lid te blijven.'|t}}</p>
                 </div>
             </div>
-        {% endif %}
+        {% endif %} 
 
         <div class="box box--member" x-data="{openMember: false}" :class="openMember ? 'box--member-open' : ''">
             <div @click="openMember = ! openMember" class="box__heading box__heading--center">
@@ -39,10 +39,10 @@
                     </div>
                     <div class="box__column box__column--2 ">            
                         <p>{{'Lidmaatschap'|t}}</p>
-                        <div class="box__info {{ activeExtraCheck ? ' box__info--prim' : ' box__info--error'}}">
+                        <div class="box__info {{ not overAged ? ' box__info--prim' : ' box__info--error'}}">
                             <p>{{ item.memberRate|first.title }}</p>
-                            {% if not activeExtraCheck %}
-                                <p>{{ 'Nog niet betaalt'|t }}</p>
+                            {% if overAged %}
+                                <p>{{ 'Niet meer geldig'|t }}</p>
                             {% endif %}
                         </div>
                     </div>

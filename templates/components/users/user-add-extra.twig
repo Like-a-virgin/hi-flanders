@@ -16,7 +16,7 @@
 
             {{ input('hidden', 'sectionId', craft.entries.section('extraMembers').sectionId|first) }}
             {{ input('hidden', 'fields[parentMember][]', user.id) }}
-            {{ input('hidden', 'fields[memberDueDate]', user.memberDueDate|date('d-m-Y')) }}
+            {# {{ input('hidden', 'fields[memberDueDate]', now|date_modify('+1 year')|date('d-m-Y')) }} #}
 
             <div class="formbox__column formbox__column--full">    
                 <p>{{'Voeg kinderen onder de 18 jaar toe. Kinderen die 18 jaar zijn of ouder moeten een eigen account aanmaken.'|t}}</p>

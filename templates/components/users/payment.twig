@@ -20,7 +20,7 @@
                     {% set activeExtraMember = extra.paymentDate and user.memberDueDate and (now >= extra.paymentDate) and (now <= user.memberDueDate) %}
                     {% set rate = extra.memberRate.one() %}
                     <div class="box__column box__column--4">            
-                        <div class="box__info {{ activeExtraMember ? 'box__info--sec' }}">
+                        <div class="box__info {{ activeExtraMember or rate.price.amount is same as "0" ? 'box__info--sec' }}">
                             <p>{{ rate.title }}</p>
                             {% if rate.price.amount is same as "0" %}
                                 <p>{{'Gratis'|t}}</p>

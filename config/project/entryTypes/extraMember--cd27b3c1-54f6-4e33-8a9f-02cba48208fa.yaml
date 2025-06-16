@@ -7,6 +7,7 @@ fieldLayouts:
         elements:
           -
             dateAdded: '2024-12-18T08:18:13+00:00'
+            editCondition: null
             elementCondition: null
             fieldUid: aa21d2ca-e34c-4497-a6fa-49b5a7cc7f58 # Title
             handle: altFirstName
@@ -23,6 +24,7 @@ fieldLayouts:
             width: 100
           -
             dateAdded: '2024-12-18T08:18:13+00:00'
+            editCondition: null
             elementCondition: null
             fieldUid: aa21d2ca-e34c-4497-a6fa-49b5a7cc7f58 # Title
             handle: altLastName
@@ -39,6 +41,7 @@ fieldLayouts:
             width: 100
           -
             dateAdded: '2024-12-18T08:18:13+00:00'
+            editCondition: null
             elementCondition: null
             fieldUid: 3261931d-97c8-4b0e-a83a-6d9ac4dee153 # Birthday
             handle: null
@@ -61,6 +64,7 @@ fieldLayouts:
         elements:
           -
             dateAdded: '2024-12-18T08:18:13+00:00'
+            editCondition: null
             elementCondition: null
             fieldUid: 93edcc59-32ca-4780-9d52-1d1fc486519a # Lid ouder
             handle: null
@@ -77,6 +81,7 @@ fieldLayouts:
             width: 100
           -
             dateAdded: '2025-01-02T15:32:53+00:00'
+            editCondition: null
             elementCondition: null
             fieldUid: 44a841e6-e727-4500-9e81-386090b011f6 # memberRate
             handle: null
@@ -88,38 +93,6 @@ fieldLayouts:
             tip: null
             type: craft\fieldlayoutelements\CustomField
             uid: 56019125-1bb5-4b91-ae8d-b79e7aba6045
-            userCondition: null
-            warning: null
-            width: 100
-          -
-            dateAdded: '2025-01-07T12:56:15+00:00'
-            elementCondition: null
-            fieldUid: ab51ff2a-5865-41c8-897f-008e0b288a70 # Date
-            handle: paymentDate
-            includeInCards: false
-            instructions: null
-            label: Betalingsdatum
-            providesThumbs: false
-            required: false
-            tip: null
-            type: craft\fieldlayoutelements\CustomField
-            uid: d426d59d-5508-43a7-90a8-342fa1420189
-            userCondition: null
-            warning: null
-            width: 100
-          -
-            dateAdded: '2025-01-08T09:45:30+00:00'
-            elementCondition: null
-            fieldUid: ab51ff2a-5865-41c8-897f-008e0b288a70 # Date
-            handle: memberDueDate
-            includeInCards: false
-            instructions: null
-            label: 'Vervaldatum lidmaatschap'
-            providesThumbs: false
-            required: false
-            tip: null
-            type: craft\fieldlayoutelements\CustomField
-            uid: 8e04ecd2-f75e-4328-a33b-7805029438ac
             userCondition: null
             warning: null
             width: 100
