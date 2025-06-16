@@ -17,9 +17,11 @@ class DailyRenewalCheck extends BaseJob
 
         // Query users whose dueDate matches today
         $users = User::find()
+            ->status('active')
+            ->customStatus(['active'])
             ->group(['members', 'membersGroup'])
             ->memberType(['individual', 'group', 'groupYouth'])
-            ->memberDueDate($today) // Assumes `dueDate` is a custom date field
+            ->memberDueDate($today)
             ->all();
 
         $elementsService = Craft::$app->getElements();

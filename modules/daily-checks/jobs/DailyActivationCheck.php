@@ -20,15 +20,8 @@ class DailyActivationCheck extends BaseJob
 
         $usersNew = User::find()
             ->status('pending')
-            ->customStatus('new') // Assuming customStatus is a field handle
-            ->dateCreated(['and', ">= $daysAgoStart", "< $daysAgoEnd"]) // Created 3 days ago
-            ->group(['members', 'membersGroup'])
-            ->all();
-        
-        $usersRenew = User::find()
-            ->status('pending')
-            ->customStatus('renew')
-            ->statusChangeDate($daysAgo)
+            ->customStatus('new') 
+            ->statusChangeDate(['and', ">= $daysAgoStart", "< $daysAgoEnd"]) 
             ->group(['members', 'membersGroup'])
             ->all();
 
@@ -36,9 +29,6 @@ class DailyActivationCheck extends BaseJob
             $this->sendReminderEmail($user, 'new');
         }
 
-        foreach ($usersRenew as $user) {
-            $this->sendReminderEmail($user, 'renew');
-        }
     }
 
     private function sendReminderEmail(User $user, string $type): void
@@ -52,24 +42,6 @@ class DailyActivationCheck extends BaseJob
         try {
             $mailer = Craft::$app->mailer;
             Craft::$app->getView()->setTemplatesPath(Craft::getAlias('@root/templates'));
-
-            if ($type === 'renew') {
-                $activationUrl = Craft::$app->users->getEmailVerifyUrl($user);
-                $templatePath = $baseTemplateUrl . '/remind-renew';
-
-                $htmlBody = Craft::$app->getView()->renderTemplate($templatePath, [
-                    'name' => $user->getFieldValue('altFirstName'),
-                    'activationUrl' => $activationUrl,
-                ]);
-    
-                if ($lang === 'en') {
-                    $subject = 'Psst, forgot something? Renew your Hi Flanders membership';
-                } elseif ($lang === 'fr') {
-                    $subject = 'Psst, rien oublié ? Renouvelez votre adhésion à Hi Flanders';
-                } else {
-                    $subject = 'Psst, niets vergeten? Vernieuw je lidmaatschap bij Hi Flanders';
-                }
-            }
 
             if ($type === 'new' && $memberType === 'individual' && $registeredBy === 'admin') {
                 $activationUrl = Craft::$app->users->getActivationUrl($user);
@@ -137,7 +109,7 @@ class DailyActivationCheck extends BaseJob
                 if ($lang === 'en') {
                     $subject = 'Psst, forgot something? Activate your group membership at Hi Flanders';
                 } elseif ($lang === 'fr') {
-                    $subject = 'Welkom bij Hi Flanders! Registratie bijna in orde …';
+                    $subject = 'Psst, vous n\'oubliez rien ? Activez votre adhésion au groupe sur Hi Flanders';
                 } else {
                     $subject = 'Psst, niets vergeten? Activeer je groepslidmaatschap bij Hi Flanders';
                 }

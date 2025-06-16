@@ -274,7 +274,7 @@
 					{% set memberAge = (currentDate|date('Y') - memberBday|date('Y')) - (currentDate|date('md') < memberBday|date('md') ? 1 : 0) %}
 					{% set memberType = memberTypes|filter(i => i.minAge <= memberAge and (i.maxAge is null or i.maxAge >= memberAge)) %}
 					{% set extraMembers = craft.entries.section('extraMembers').authorId(member.id).all() %}
-					{% set paymentStatus = member.paymentDate and member.memberDueDate and ( member.paymentDate|date('d-m-Y') is same as member.memberDueDate|date_modify('-1 year')|date('d-m-Y')) and (now <= member.memberDueDate) %}
+					{% set paymentStatus = member.paymentDate and member.memberDueDate and (member.paymentDate >= member.memberDueDate|date_modify('-1 year')) and (now <= member.memberDueDate) %}
 					<tr class="{{member.customStatus.value is same as 'deactivated' ? 'row--disabled' }}">
 						<td>
 							{% if member.getGroups()|first.handle is same as 'membersGroup' %}

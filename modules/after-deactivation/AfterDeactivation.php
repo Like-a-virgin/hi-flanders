@@ -36,7 +36,7 @@ class AfterDeactivation extends BaseModule
             Craft::warning("Skipping duplicate email for user ID $userId", __METHOD__);
             return;
         }
-        Craft::$app->cache->set($cacheKey, true, 300); // 5 min lock
+        Craft::$app->cache->set($cacheKey, true, 300); 
  
         $lang = $user->getFieldValue('lang')->value ?? 'nl';
         $memberType = $user->getFieldValue('memberType')->value ?? 'individual';

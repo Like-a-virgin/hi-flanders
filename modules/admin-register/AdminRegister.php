@@ -98,7 +98,8 @@ class AdminRegister extends BaseModule
             'paymentDate' => null,
             'cardType' => null,
             'totalPayedPrint' => null,
-            'dateSendPrint' => null
+            'dateSendPrint' => null,
+            'statusChangeDate' => null
         ];
 
         foreach ($fields as $fieldHandle => $coreField) {
@@ -120,6 +121,10 @@ class AdminRegister extends BaseModule
                     $value = null; // Prevents invalid data
                 }
             } 
+
+            if ($fieldHandle === 'statusChangeDate') {
+                $value = new \DateTime('now', new \DateTimeZone('CET'));
+            }
     
             if ($value !== null) {
                 $user->setFieldValue($fieldHandle, $value);

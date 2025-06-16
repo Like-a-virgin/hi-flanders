@@ -35,7 +35,6 @@ class RateMember extends BaseModule
                 if ($element instanceof User) {
                     $customStatus = $element->getFieldValue('customStatus')->value;
                     $memberRate = $element->getFieldValue('memberRate')->one();
-                    $status = $element->status;
                     $currentUser = (Craft::$app->user->identity && Craft::$app->user->identity->isInGroup('membersAdminSuper'));
                     
                     if ($customStatus === 'new' || $customStatus === 'renew' || !$memberRate || $currentUser) {
@@ -52,7 +51,12 @@ class RateMember extends BaseModule
                 $element = $event->element;
                 if ($element instanceof User) {
                     $customStatus = $element->getFieldValue('customStatus')->value;
-                    if ($customStatus === 'renew') {
+                    $statusChangeDate = $element->getFieldValue('statusChangeDate');
+
+                    $currentDate = new DateTime('now', new DateTimeZone('CET'));
+                    $isSameDay = $statusChangeDate instanceof DateTime && $statusChangeDate->format('Y-m-d') === $currentDate->format('Y-m-d');
+
+                    if ($customStatus === 'renew' && $isSameDay) {
                         $this->handleRenewalNotification($element);
                     }
                 }
@@ -73,8 +77,7 @@ class RateMember extends BaseModule
             ? $user->getFieldValue('memberType')->value ?? null
             : ($request->getBodyParam('fields.memberType') ?? $user->getFieldValue('memberType')->value ?? null);
 
-        // 🛑 Skip if birthday is missing
-        if (empty($birthday)) {
+        if ($memberType === 'individual' and empty($birthday)) {
             Craft::info("Skipping rate assignment: no birthday set for user ID {$user->id}", __METHOD__);
             return;
         }
@@ -142,9 +145,9 @@ class RateMember extends BaseModule
     {
         $request = Craft::$app->getRequest();
         $user->setFieldValue('memberRate', [$rate->id]);
-
+        
         $ratePriceField = $rate->getFieldValue('price');
-
+        
         if ($ratePriceField instanceof \Money\Money) {
             // Convert Money object to float
             $ratePrice = (float) $ratePriceField->getAmount() / 100; // Adjust divisor if amounts are stored as cents
@@ -154,7 +157,7 @@ class RateMember extends BaseModule
         } else {
             $ratePrice = null; // Default fallback if price cannot be determined
         }
-
+        
         $currentDate = new DateTime();
         $paymentDate = $currentDate->format('Y-m-d');
         $expirationDate = $currentDate->modify('+1 year')->format('Y-m-d');
@@ -164,20 +167,17 @@ class RateMember extends BaseModule
         if ($paymentType and $user->getFieldValue('customStatus') != 'renew') {
             $user->setFieldValue('paymentDate', $paymentDate);
             $user->setFieldValue('paymentType', $paymentType);
-        } elseif ($paymentType and $user->getFieldValue('customStatus') == 'renew'){ 
-            $user->setFieldValue('paymentDate', null);
-            $user->setFieldValue('paymentType', null);
-            $user->setFieldValue('totalPayedMembers', 0);
         } elseif ($ratePrice === null || (float) $ratePrice <= 0) {
             $user->setFieldValue('paymentDate', $paymentDate);
             $user->setFieldValue('paymentType', 'free');
             $user->setFieldValue('totalPayedMembers', 0);
             $user->setFieldValue('renewedDate', $paymentDate);
             $user->setFieldValue('memberDueDate', $expirationDate);
-        } else {
-            $user->setFieldValue('paymentDate', null);
-            $user->setFieldValue('paymentType', null);
-            $user->setFieldValue('totalPayedMembers', 0);
+
+            $customStatus = $user->getFieldValue('customStatus')->value;
+            if ($customStatus === 'renew') {
+                $user->setFieldValue('customStatus', 'active');
+            }
         }
 
         $user->setDirtyFields(['paymentDate', 'paymentType']);

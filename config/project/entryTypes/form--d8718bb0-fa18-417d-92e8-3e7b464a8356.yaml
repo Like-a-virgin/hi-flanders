@@ -36,25 +36,7 @@ fieldLayouts:
             warning: null
             width: 100
           -
-            dateAdded: '2025-06-11T07:16:26+00:00'
-            editCondition: null
-            elementCondition: null
-            fieldUid: c1614bab-5fdd-4eae-8e0b-f4eb393c25dd # Tekst
-            handle: null
-            includeInCards: false
-            instructions: null
-            label: null
-            providesThumbs: false
-            required: false
-            tip: null
-            type: craft\fieldlayoutelements\CustomField
-            uid: 973e86ce-e968-4f02-9586-7f8141475bf9
-            userCondition: null
-            warning: null
-            width: 100
-          -
             dateAdded: '2025-01-13T09:48:25+00:00'
-            editCondition: null
             elementCondition: null
             fieldUid: be1c673f-0962-430c-8f77-56c215ba3ba8 # Form Select
             handle: null
@@ -71,7 +53,6 @@ fieldLayouts:
             width: 100
           -
             dateAdded: '2025-01-28T14:09:00+00:00'
-            editCondition: null
             elementCondition: null
             fieldUid: da3f503c-6206-4d5d-995a-375111712445 # Toevoegen als optie login
             handle: null
@@ -85,27 +66,9 @@ fieldLayouts:
             uid: ca8d441f-be81-401d-ae6d-7f51a6e52bdb
             userCondition: null
             warning: null
-            width: 50
-          -
-            dateAdded: '2025-06-11T07:16:26+00:00'
-            editCondition: null
-            elementCondition: null
-            fieldUid: 72e433d6-096f-4419-aec5-dbd79c444034 # Switch
-            handle: lostCard
-            includeInCards: false
-            instructions: null
-            label: 'Verloren kaart'
-            providesThumbs: false
-            required: false
-            tip: null
-            type: craft\fieldlayoutelements\CustomField
-            uid: ef085c33-322c-4bd8-98ed-b26e1eb4d042
-            userCondition: null
-            warning: null
-            width: 50
+            width: 100
           -
             dateAdded: '2025-02-10T12:17:28+00:00'
-            editCondition: null
             elementCondition: null
             fieldUid: da3f503c-6206-4d5d-995a-375111712445 # Toevoegen als optie login
             handle: addOptions
@@ -122,7 +85,6 @@ fieldLayouts:
             width: 100
           -
             dateAdded: '2025-01-28T14:18:58+00:00'
-            editCondition: null
             elementCondition: null
             fieldUid: aa21d2ca-e34c-4497-a6fa-49b5a7cc7f58 # Title
             handle: null

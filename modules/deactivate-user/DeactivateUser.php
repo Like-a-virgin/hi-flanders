@@ -62,13 +62,6 @@ class DeactivateUser extends BaseModule
                 return;
             }
         }
-
-        if ($customStatus === 'active') {
-            if (!Craft::$app->getUsers()->activateUser($user)) {
-                Craft::error("Failed to deactivate user ID {$user->id}.", __METHOD__);
-                return;
-            }
-        }
     }
 }
 

@@ -45,34 +45,6 @@ class AfterActivation extends BaseModule
             function (UserEvent $event) {
                 $user = $event->user;
 
-                $status = $user->getFieldValue('customStatus')?->value;
-                if (in_array($status, ['old', 'oldRenew'])) {
-                    $user->setFieldValue('customStatus', 'active');
-
-                    $today = new \DateTime('now', new \DateTimeZone('CET'));
-                    $user->setFieldValue('statusChangeDate', $today);
-
-                    $memberRate = $user->getFieldValue('memberRate')->one()->getFieldValue('price')->getAmount();
-                    $memberDueDate = $user->getFieldValue('memberDueDate');
-                    $dueDate = $memberDueDate instanceof DateTime ? $memberDueDate : new DateTime($memberDueDate);
-                    
-                    if ($memberRate == 0 and $dueDate < $today) {
-                        $user->setFieldValue('renewedDate', $today);
-                        $oneYearLater = clone $today;
-                        $oneYearLater->modify('+1 year');
-                        $user->setFieldValue('memberDueDate', $oneYearLater);
-                        $user->setFieldValue('totalPayedMembers', 0);
-                        $user->setFieldValue('paymentType', 'free');
-                        $user->setFieldValue('paymentDate', $today);
-                    }
-
-                    if (!Craft::$app->elements->saveElement($user)) {
-                        Craft::error("Failed to update user status to active for user {$user->email}", __METHOD__);
-                    } else {
-                        Craft::info("Updated user status to active for user {$user->email}", __METHOD__);
-                    }
-                }
-
                 if (Craft::$app->request->getIsPost() && Craft::$app->request->getPathInfo() === 'membership-payments/payment/webhook') {
                     Craft::info("Skipping activation email for user {$user->email} (triggered by payment webhook)", __METHOD__);
                     return;
@@ -84,7 +56,7 @@ class AfterActivation extends BaseModule
                 }    
 
                 if (!Craft::$app->getSession()->get("activation_mail_sent_{$user->id}")) {
-                    // $this->sendSuccesMail($user);
+                    $this->sendSuccesMail($user);
                     Craft::$app->getSession()->set("activation_mail_sent_{$user->id}", true);
                 }
             }

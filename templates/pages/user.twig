@@ -1,7 +1,7 @@
 {% set extraMembers = craft.entries.section('extraMembers').parentMember(user.id).all() %}
 {% set cardRate = craft.entries.section('rates').memberType('card').one() %}
 {% set currentDate = now %}
-{% set activeUserMember = user.paymentDate and user.memberDueDate and (now >= user.paymentDate) and (now <= user.memberDueDate) %}
+{% set activeUserMember = user.paymentDate and user.memberDueDate and (user.paymentDate >= user.memberDueDate|date_modify('-1 year')) and (now <= user.memberDueDate) %}
 {% set today = now|date('Y-m-d') %}
 
 {% set totalPrice = 0 %}
@@ -287,5 +287,5 @@
             {{ svg('assets/icons/HI_svg.svg')|attr({class:"international__icon"})}}
         </div>
     </div>
-</div>
+</div> 
 

@@ -88,7 +88,6 @@ tabs:
         width: 100
       -
         dateAdded: '2025-01-23T10:40:01+00:00'
-        editCondition: null
         elementCondition:
           class: craft\elements\conditions\users\UserCondition
           conditionRules:
@@ -116,7 +115,6 @@ tabs:
         width: 100
       -
         dateAdded: '2025-01-24T14:21:21+00:00'
-        editCondition: null
         elementCondition:
           class: craft\elements\conditions\users\UserCondition
           conditionRules:
@@ -144,7 +142,6 @@ tabs:
         width: 100
       -
         dateAdded: '2025-01-23T15:41:20+00:00'
-        editCondition: null
         elementCondition: null
         fieldUid: 996e7f91-0447-4498-addc-bf91c17465f9 # Taal
         handle: null
@@ -161,7 +158,6 @@ tabs:
         width: 100
       -
         dateAdded: '2025-01-29T07:41:25+00:00'
-        editCondition: null
         elementCondition:
           class: craft\elements\conditions\users\UserCondition
           conditionRules:
@@ -228,7 +224,6 @@ tabs:
         width: 100
       -
         dateAdded: '2024-12-17T11:13:13+00:00'
-        editCondition: null
         elementCondition:
           class: craft\elements\conditions\users\UserCondition
           conditionRules:
@@ -255,7 +250,6 @@ tabs:
         width: 100
       -
         dateAdded: '2024-12-17T11:13:55+00:00'
-        editCondition: null
         elementCondition:
           class: craft\elements\conditions\users\UserCondition
           conditionRules:
@@ -282,7 +276,6 @@ tabs:
         width: 100
       -
         dateAdded: '2024-12-18T14:41:34+00:00'
-        editCondition: null
         elementCondition:
           class: craft\elements\conditions\users\UserCondition
           conditionRules:
@@ -309,7 +302,6 @@ tabs:
         width: 100
       -
         dateAdded: '2025-01-08T12:37:45+00:00'
-        editCondition: null
         elementCondition:
           class: craft\elements\conditions\users\UserCondition
           conditionRules:
@@ -336,7 +328,6 @@ tabs:
         width: 100
       -
         dateAdded: '2024-12-19T15:50:07+00:00'
-        editCondition: null
         elementCondition:
           class: craft\elements\conditions\users\UserCondition
           conditionRules:
@@ -354,7 +345,7 @@ tabs:
         instructions: null
         label: Contactpersoon
         providesThumbs: false
-        required: false
+        required: true
         tip: null
         type: craft\fieldlayoutelements\CustomField
         uid: da184061-da82-42ee-a38c-41bd3934583f
@@ -369,7 +360,6 @@ tabs:
         userCondition: null
       -
         dateAdded: '2024-12-16T16:12:37+00:00'
-        editCondition: null
         elementCondition:
           class: craft\elements\conditions\users\UserCondition
           conditionRules:
@@ -402,7 +392,6 @@ tabs:
         userCondition: null
       -
         dateAdded: '2025-01-02T13:13:00+00:00'
-        editCondition: null
         elementCondition:
           class: craft\elements\conditions\users\UserCondition
           conditionRules:
@@ -429,7 +418,6 @@ tabs:
         width: 100
       -
         dateAdded: '2025-02-10T10:22:36+00:00'
-        editCondition: null
         elementCondition:
           class: craft\elements\conditions\users\UserCondition
           conditionRules:
@@ -457,7 +445,6 @@ tabs:
         width: 100
       -
         dateAdded: '2025-03-05T14:55:16+00:00'
-        editCondition: null
         elementCondition:
           class: craft\elements\conditions\users\UserCondition
           conditionRules:
@@ -502,7 +489,6 @@ tabs:
     elements:
       -
         dateAdded: '2024-12-17T11:11:20+00:00'
-        editCondition: null
         elementCondition: null
         fieldUid: aa21d2ca-e34c-4497-a6fa-49b5a7cc7f58 # Title
         handle: country
@@ -519,7 +505,6 @@ tabs:
         width: 100
       -
         dateAdded: '2024-12-17T11:11:20+00:00'
-        editCondition: null
         elementCondition: null
         fieldUid: aa21d2ca-e34c-4497-a6fa-49b5a7cc7f58 # Title
         handle: street
@@ -536,7 +521,6 @@ tabs:
         width: 100
       -
         dateAdded: '2024-12-17T11:58:15+00:00'
-        editCondition: null
         elementCondition: null
         fieldUid: aa21d2ca-e34c-4497-a6fa-49b5a7cc7f58 # Title
         handle: streetNr
@@ -553,7 +537,6 @@ tabs:
         width: 100
       -
         dateAdded: '2024-12-17T11:11:20+00:00'
-        editCondition: null
         elementCondition: null
         fieldUid: aa21d2ca-e34c-4497-a6fa-49b5a7cc7f58 # Title
         handle: bus
@@ -570,7 +553,6 @@ tabs:
         width: 100
       -
         dateAdded: '2024-12-17T11:11:20+00:00'
-        editCondition: null
         elementCondition: null
         fieldUid: aa21d2ca-e34c-4497-a6fa-49b5a7cc7f58 # Title
         handle: city
@@ -587,7 +569,6 @@ tabs:
         width: 100
       -
         dateAdded: '2024-12-17T11:58:15+00:00'
-        editCondition: null
         elementCondition: null
         fieldUid: aa21d2ca-e34c-4497-a6fa-49b5a7cc7f58 # Title
         handle: postalCode
@@ -621,7 +602,6 @@ tabs:
     elements:
       -
         dateAdded: '2025-01-15T10:44:00+00:00'
-        editCondition: null
         elementCondition: null
         fieldUid: 7ca5fc34-985a-44f3-bc43-3f333f9457f3 # CustomId
         handle: customMemberId
@@ -638,7 +618,6 @@ tabs:
         width: 100
       -
         dateAdded: '2025-01-16T15:45:43+00:00'
-        editCondition: null
         elementCondition:
           class: craft\elements\conditions\users\UserCondition
           conditionRules:
@@ -672,7 +651,6 @@ tabs:
         userCondition: null
       -
         dateAdded: '2025-01-02T15:01:33+00:00'
-        editCondition: null
         elementCondition:
           class: craft\elements\conditions\users\UserCondition
           conditionRules:
@@ -700,7 +678,6 @@ tabs:
         width: 100
       -
         dateAdded: '2025-01-15T08:23:14+00:00'
-        editCondition: null
         elementCondition:
           class: craft\elements\conditions\users\UserCondition
           conditionRules:
@@ -734,7 +711,6 @@ tabs:
         userCondition: null
       -
         dateAdded: '2025-01-21T09:48:43+00:00'
-        editCondition: null
         elementCondition:
           class: craft\elements\conditions\users\UserCondition
           conditionRules:
@@ -762,7 +738,6 @@ tabs:
         width: 100
       -
         dateAdded: '2025-01-08T09:45:09+00:00'
-        editCondition: null
         elementCondition:
           class: craft\elements\conditions\users\UserCondition
           conditionRules:
@@ -797,7 +772,6 @@ tabs:
         userCondition: null
       -
         dateAdded: '2025-01-16T11:17:38+00:00'
-        editCondition: null
         elementCondition:
           class: craft\elements\conditions\users\UserCondition
           conditionRules:
@@ -825,7 +799,6 @@ tabs:
         width: 100
       -
         dateAdded: '2025-01-14T08:24:36+00:00'
-        editCondition: null
         elementCondition:
           class: craft\elements\conditions\users\UserCondition
           conditionRules:
@@ -853,7 +826,6 @@ tabs:
         width: 100
       -
         dateAdded: '2025-01-31T11:13:02+00:00'
-        editCondition: null
         elementCondition:
           class: craft\elements\conditions\users\UserCondition
           conditionRules:
@@ -888,7 +860,6 @@ tabs:
         userCondition: null
       -
         dateAdded: '2025-01-21T08:55:39+00:00'
-        editCondition: null
         elementCondition:
           class: craft\elements\conditions\users\UserCondition
           conditionRules:
@@ -916,7 +887,6 @@ tabs:
         width: 100
       -
         dateAdded: '2025-01-15T08:23:14+00:00'
-        editCondition: null
         elementCondition:
           class: craft\elements\conditions\users\UserCondition
           conditionRules:
@@ -944,7 +914,6 @@ tabs:
         width: 100
       -
         dateAdded: '2025-01-31T11:13:02+00:00'
-        editCondition: null
         elementCondition:
           class: craft\elements\conditions\users\UserCondition
           conditionRules:
@@ -972,7 +941,6 @@ tabs:
         width: 100
       -
         dateAdded: '2025-03-10T11:49:57+00:00'
-        editCondition: null
         elementCondition:
           class: craft\elements\conditions\users\UserCondition
           conditionRules:
@@ -1000,7 +968,6 @@ tabs:
         width: 100
       -
         dateAdded: '2025-03-24T14:27:59+00:00'
-        editCondition: null
         elementCondition: null
         fieldUid: b0a94379-cf08-4479-b96d-403ba096ee06 # Print status
         handle: null
@@ -1017,7 +984,6 @@ tabs:
         width: 100
       -
         dateAdded: '2025-03-24T13:35:20+00:00'
-        editCondition: null
         elementCondition: null
         fieldUid: ab51ff2a-5865-41c8-897f-008e0b288a70 # Date
         handle: dateSendPrint

@@ -11,7 +11,7 @@
     {% endif %}
     
     {% include "components/info-box.twig" with {
-        span: 4, 
+        span: 4,  
         label: 'Betaalmethode'|t, 
         info: selectedMember.paymentType.label,
         error: selectedMember.paymentType.value is same as ''
@@ -20,7 +20,7 @@
         {% include "components/info-box.twig" with {
             span: 2, 
             label: 'Betaaldatum'|t, 
-            info: selectedMember.paymentType.value is same as 'free' ? selectedMember.paymentType.label : selectedMember.paymentDate ? selectedMember.paymentDate|date("d/m/Y")
+            info: selectedMember.paymentDate ? selectedMember.paymentDate|date("d/m/Y")
         } %}
         {% include "components/info-box.twig" with {
             span: 2, 

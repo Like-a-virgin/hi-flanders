@@ -14,7 +14,7 @@
                         <p>{{ activeUserMember ? 'Reeds betaald'|t : userRate.price|money }}</p>
                     {% endif %}
                 </div>
-            </div>
+            </div> 
             {% if extraMembers is defined and extraMembers %}            
                 {% for extra in extraMembers %}
                     {% set activeExtraMember = extra.paymentDate and user.memberDueDate and (now >= extra.paymentDate) and (now <= user.memberDueDate) %}
