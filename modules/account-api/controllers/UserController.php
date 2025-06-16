@@ -128,7 +128,7 @@ class UserController extends Controller
         return $this->asJson([
             'id' => $user->id,
             'email' => $user->email,
-            'firstName' => $user->getFieldValue('memberType'),
+            'memberType' => $user->getFieldValue('memberType')->value,
             'fullName' => $user->fullName,
             'firstName' => $user->getFieldValue('altFirstName'),
             'lastName' => $user->getFieldValue('altLastName'),
