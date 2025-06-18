@@ -77,11 +77,11 @@ class BulkCsvController extends Controller
 
         // Create CSV
         $csvHeaders = [
-            'id',
+            'nid',
             'name',
             'street',
             'city',
-            'memberId',
+            'id',
             'birthday',
             'expire',
             'category',

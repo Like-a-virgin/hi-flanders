@@ -30,11 +30,11 @@ class CsvController extends Controller
 
         // Prepare CSV data
         $csvHeaders = [
-            'id',
+            'nid',
             'name',
             'street',
             'city',
-            'memberId',
+            'id',
             'birthday',
             'expire',
             'category',
