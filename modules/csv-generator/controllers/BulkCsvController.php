@@ -97,7 +97,7 @@ class BulkCsvController extends Controller
             $name = $fields['altFirstName'] . ' ' . $fields['altLastName'] ?? '';
             $street = $fields['street'] . $fields['streetNr'] . $fields['bus'];
             $city = $fields['city'] ?? '';
-            $memberId = '008-' . $fields['customMemberId'];
+            $memberId = '008' . $fields['customMemberId'];
             $birthday = $fields['birthday'] ? $fields['birthday']->format('d/m/Y') : '';
             $expire = $fields['memberDueDate'] ? $fields['memberDueDate']->format('d/m/Y') : '';
             $category = $fields['memberType']->value ?? '';
