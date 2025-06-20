@@ -42,8 +42,8 @@ class CsvController extends Controller
 
         $userId = $user->id ?? '';
         $name = $fields['altFirstName'] . ' ' . $fields['altLastName'] ?? '';
-        $street = $fields['street'] . $fields['streetNr'] . $fields['bus'];
-        $city = $fields['city'] ?? '';
+        $street = $fields['street'] . ' ' . $fields['streetNr'] . ' ' . $fields['bus'];
+        $city = $fields['postalCode'] . ' ' . $fields['city'] ?? '';
         $memberId = '008' . $fields['customMemberId'];
         $birthday = $fields['birthday'] ? $fields['birthday']->format('d/m/Y') : '';
         $expire = $fields['memberDueDate'] ? $fields['memberDueDate']->format('d/m/Y') : '';
