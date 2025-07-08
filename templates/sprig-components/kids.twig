@@ -4,7 +4,7 @@
 {% set kidId = kidId ?? null %}
 {% set search = search ?? null %}
 {% set page = page ?? 1 %}
-{% set limit = limit ?? limits[0].value %}
+{% set limit = limit ?? limits[limits|length - 1].value %}
 
 {% set birthdayMin = birthdayMin ?? null %}
 {% set birthdayMax = birthdayMax ?? null %}

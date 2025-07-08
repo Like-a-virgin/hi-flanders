@@ -20,6 +20,7 @@ return [
     'resend-activation' => 'admin-register/resend-activation/send-activation-email',
     'generate-eti' => 'eti-generator/eti/generate',
     'generate-csv' => 'csv-generator/csv/generate',
+    'generate-csv-extra' => 'csv-generator/csv-extra/generate',
     'bulk-generate-eti' => 'eti-generator/bulk-eti/generate-all',
     'bulk-generate-csv' => 'csv-generator/bulk-csv/generate-all',
     'api' => 'graphql/api',
