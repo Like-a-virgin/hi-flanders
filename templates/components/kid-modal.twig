@@ -1,7 +1,7 @@
 {% set selectedKid = craft.entries().id(kidId).one() %}
 {% set parents = selectedKid.parentMember.all() %}
 
-<button sprig class="btn" s-val:kid-id="{{ null }}" class="modal-close">
+<button sprig class="btn" s-val:kid-id="{{ null }}" s-val:page="{{ page }}" class="modal-close">
     {{ svg('assets/icons/x.svg')|attr({class:"modal-close__icon"})}} 
 </button>
 <div class="modal" x-data="{ editChild: false }">

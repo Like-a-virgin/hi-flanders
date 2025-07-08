@@ -4,7 +4,7 @@
 {% set priceCard = craft.entries.section('rates').slug('lidkaart').one() %}
 {% set printStatuses = [{value: 'send', label: 'Verstuurd'|t}, {value: 'requested' , label: 'Aangevraagd'|t}] %}
 
-<button sprig class="btn" s-method="post" s-val:member-id="{{ null }}" class="modal-close">
+<button sprig class="btn" s-method="post" s-val:member-id="{{ null }}" s-val:page="{{ page }}" class="modal-close">
     {{ svg('assets/icons/x.svg')|attr({class:"modal-close__icon"})}}
 </button>
 <div class="modal" x-data="{editAddress: false, editPayment: false, editPrint: false, editBday: false, editMembership: false}" :class="extraMember ? 'model--no-overflow' : ''" >
