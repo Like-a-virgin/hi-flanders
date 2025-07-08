@@ -248,7 +248,7 @@
                                 <button class="box__function-btn box__function-btn--save">{{'Aanvraag fysieke lidkaart'|t}}</button>
                             </form>
                         {% elseif user.requestPrintSend %}
-                            <a href="{{ craft.entries().section('forms').lostCard(true).one().url }}" class="box__function-btn box__function-btn--save">{{'Verloren lidkaart melden'|t}}</a>
+                            <a href="{{ craft.entries().section('forms').lostCard(true).one() ? craft.entries().section('forms').lostCard(true).one().url }}" class="box__function-btn box__function-btn--save">{{'Verloren lidkaart melden'|t}}</a>
                         {% endif %}
                     </div>  
                     <div class="box__column box__column--4">                    

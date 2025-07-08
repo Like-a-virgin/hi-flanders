@@ -58,32 +58,32 @@ class PaymentController extends Controller
             }
         }
 
-        $extraMemberIds = [];
-        $extraMembers = Entry::find()
-            ->section('extraMembers')
-            ->relatedTo($user)
-            ->all();
+        // $extraMemberIds = [];
+        // $extraMembers = Entry::find()
+        //     ->section('extraMembers')
+        //     ->relatedTo($user)
+        //     ->all();
 
-        foreach ($extraMembers as $extraMember) {
-            $relatedEntry = $extraMember->getFieldValue('memberRate')[0] ?? null;
+        // foreach ($extraMembers as $extraMember) {
+        //     $relatedEntry = $extraMember->getFieldValue('memberRate')[0] ?? null;
     
-            if ($relatedEntry) {
-                $priceRelatedEntry = $relatedEntry->getFieldValue('price');
+        //     if ($relatedEntry) {
+        //         $priceRelatedEntry = $relatedEntry->getFieldValue('price');
     
 
-                if ($priceRelatedEntry) {
-                    $price = $relatedEntry->getFieldValue('price');
-                } else {
-                    $price = new Money(0, new Currency('EUR')); 
-                }
+        //         if ($priceRelatedEntry) {
+        //             $price = $relatedEntry->getFieldValue('price');
+        //         } else {
+        //             $price = new Money(0, new Currency('EUR')); 
+        //         }
     
-                // Check if extra member is within payment period
-                if (!$this->isWithinPaymentPeriod($extraMember)) {
-                    $totalMembershipRate = $totalMembershipRate->add($price);
-                    $extraMemberIds[] = $extraMember->id;
-                }
-            }
-        }
+        //         // Check if extra member is within payment period
+        //         if (!$this->isWithinPaymentPeriod($extraMember)) {
+        //             $totalMembershipRate = $totalMembershipRate->add($price);
+        //             $extraMemberIds[] = $extraMember->id;
+        //         }
+        //     }
+        // }
 
         $printRequest = $user->getFieldValue('requestPrint');
         $printPaydate = $user->getFieldValue('payedPrintDate');
@@ -131,7 +131,7 @@ class PaymentController extends Controller
             "metadata" => [
                 "userId" => $user->id,
                 "membershipId" => $user->getFieldValue('customMemberId'),
-                "extraMemberIds" => $extraMemberIds,
+                // "extraMemberIds" => $extraMemberIds,
                 "print" => $printPayment,
                 "memberships" => $membershipPayments,
                 "total" => number_format($totalFormatted, 2, '.', ''),
@@ -173,7 +173,7 @@ class PaymentController extends Controller
             $metadata = $payment->metadata;
 
             $userId = $metadata->userId ?? null;
-            $extraMemberIds = $metadata->extraMemberIds ?? [];
+            // $extraMemberIds = $metadata->extraMemberIds ?? [];
             $totalAmount = $metadata->total;
             $print = $metadata->print ?? false;
             $memberships = $metadata->memberships ?? false;
