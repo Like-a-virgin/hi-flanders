@@ -63,7 +63,7 @@
                         <td>{{ item.birthday|date('d-m-Y') }}</td>
                         <td>{{ item.parentMember.all()|length }}</td>
                         <td>
-							<button sprig class="table__more" s-val:kid-id="{{ item.id }}">{{'Bekijk info'}}</button>
+							<button sprig class="table__more" s-val:kid-id="{{ item.id }}" s-val:page="{{page}}">{{'Bekijk info'}}</button>
 						</td>
                     </tr>
                 {% endfor %}
