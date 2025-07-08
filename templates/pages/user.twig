@@ -1,7 +1,7 @@
 {% set extraMembers = craft.entries.section('extraMembers').parentMember(user.id).all() %}
 {% set cardRate = craft.entries.section('rates').memberType('card').one() %}
 {% set currentDate = now %}
-{% set activeUserMember = user.paymentDate and user.memberDueDate and (user.paymentDate >= user.memberDueDate|date_modify('-1 year')) and (now <= user.memberDueDate) %}
+{% set activeUserMember = user.paymentDate and user.memberDueDate and (now <= user.memberDueDate) %}
 {% set today = now|date('Y-m-d') %}
 
 {% set totalPrice = 0 %}
@@ -216,7 +216,14 @@
                         <p class="box__text-bold">{{'Lidmaatschap'|t}}</p>
                             {% if not user.paymentType.value %}
                                 <p>{{'Je hebt nog geen actieve lidmaatschap.'|t}}</p>
-                            {% else %}
+                            {% elseif not activeUserMember %}
+                                <div class="box__info box__info--error">
+                                    <p>{{ user.memberRate.one().title }}</p>
+                                    {% if user.memberDueDate %}
+                                        <p>{{'Vervallen op'|t}} {{user.memberDueDate|date('d-m-Y')}}</p>
+                                    {% endif %}
+                                </div>
+                            {% elseif activeUserMember %}
                                 <div class="box__info box__info--prim">
                                     <p>{{ user.memberRate.one().title }}</p>
                                     {% if user.memberDueDate %}
