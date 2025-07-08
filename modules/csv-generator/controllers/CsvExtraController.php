@@ -32,6 +32,8 @@ class CsvExtraController extends Controller
         $csvHeaders = [
             'nid',
             'name',
+            'street',
+            'city',
             'id',
             'birthday',
             'expire',
@@ -39,15 +41,19 @@ class CsvExtraController extends Controller
         ];
 
         $kidsId = $kid->id ?? '';
+        $street = '';
+        $city = '';
         $name = $fields['altFirstName'] . ' ' . $fields['altLastName'] ?? '';
         $memberId = '008' . $kidsId;
         $birthday = $fields['birthday'] ? $fields['birthday']->format('d/m/Y') : '';
         $expire = $fields['birthday'] ? (clone $fields['birthday'])->modify('+18 years')->format('d/m/Y') : '';
-        $category = $fields['memberType']->value ?? '';
+        $category = 'Kid';
 
         $csvData = [
             $kidsId,
             $name,
+            $street,
+            $city,
             $memberId,
             $birthday,
             $expire,
