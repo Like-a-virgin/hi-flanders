@@ -169,6 +169,15 @@
                     step: '0.01'
                 }) }}
             </div>
+            <div class="formbox__column--full" x-show="payed">                
+                <label class="formbox__label" for="memberDueDate">{{'Vervaldatum'|t}}</label>
+                {{ input('text', 'fields[memberDueDate]', craft.app.request.getBodyParam('fields[memberDueDate]') ?? null, {
+                    id: 'memberDueDate',
+                    placeholder: 'Vervaldatum'|t,
+                    onFocus: "(this.type = 'date', this.placeholder = '')",
+                    required: true,
+                }) }}
+            </div>   
             <div class="formbox__column--full">
                 <label class="formbox__label" for="lang">{{'Berichttaal'|t}}</label>
                 <select name="fields[lang]" id="lang">
