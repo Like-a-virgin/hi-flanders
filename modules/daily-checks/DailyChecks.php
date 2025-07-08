@@ -37,12 +37,12 @@ class DailyChecks extends BaseModule
     {
         $queue = Craft::$app->queue;
 
-        $queue->push(new DailyResaveUsers());
-        $queue->push(new DailyActivationCheck());
-        $queue->push(new DailyRenewalCheck()); 
-        $queue->push(new DailyPaymentCheck());   
-        $queue->push(new DailyDeactivationCheck()); 
-        $queue->push(new DailyExtrasCheck()); 
+        $queue->push(new DailyResaveUsers(['delay' => 0]));             
+        $queue->push(new DailyActivationCheck(['delay' => 130]));       
+        $queue->push(new DailyRenewalCheck(['delay' => 260]));           
+        $queue->push(new DailyPaymentCheck(['delay' => 390]));           
+        $queue->push(new DailyDeactivationCheck(['delay' => 520]));
+        $queue->push(new DailyExtrasCheck(['delay' => 650]));
 
         Craft::info('All payment reminder jobs have been added to the queue.', __METHOD__);
     }
