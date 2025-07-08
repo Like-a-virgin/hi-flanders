@@ -1,5 +1,5 @@
 <div class="box__wrapper" x-show="!editMembership">
-    {% set active = selectedMember.paymentDate and selectedMember.memberDueDate and ( selectedMember.paymentDate|date('d-m-Y') is same as selectedMember.memberDueDate|date_modify('-1 year')|date('d-m-Y')) and (now <= selectedMember.memberDueDate) %}
+    {% set active = selectedMember.paymentDate and selectedMember.memberDueDate and (now <= selectedMember.memberDueDate) %}
     {% if selectedMember.inGroup('members') and isAdmin %} 
         <div class="box__column box__column--4 box__column--flex-between">
             <h3>{{'Lidmaatschap'|t}}</h3>
