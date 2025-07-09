@@ -18,12 +18,12 @@
 {% endif %}
 
 {% for extra in extraMembers %}
-    {% set activeExtraMember = extra.paymentDate and user.memberDueDate and (now >= extra.paymentDate) and (now <= user.memberDueDate) %}
+    {# {% set activeExtraMember = extra.paymentDate and user.memberDueDate and (now >= extra.paymentDate) and (now <= user.memberDueDate) %} #}
     {% set rate = extra.memberRate.one() %}
-    {% if not activeExtraMember %}
+    {# {% if not activeExtraMember %}
         {% set totalPrice = totalPrice ? totalPrice.add(rate.price) : rate.price %}
         {% set totalNonActive = totalNonActive + 1 %}
-    {% endif %}
+    {% endif %} #}
 {% endfor %}
 
 {% requireLogin %}

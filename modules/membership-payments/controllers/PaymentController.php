@@ -11,6 +11,7 @@ use Money\Money;
 use Money\Currency;
 use DateTime;
 use DateInterval;
+use DateTimeZone;
 use yii\web\Response;
 use craft\helpers\UrlHelper;
 use Exception;
@@ -51,11 +52,7 @@ class PaymentController extends Controller
         $today = new DateTime();
 
         if ($memberDueDate <= $today) {
-            if (!$paymentDate || $paymentDate < $memberDueDate) {
-                if (!$this->isWithinPaymentPeriod($user)) {
-                    $totalMembershipRate = $totalMembershipRate->add($userRate);
-                }
-            }
+            $totalMembershipRate = $totalMembershipRate->add($userRate);
         }
 
         // $extraMemberIds = [];
