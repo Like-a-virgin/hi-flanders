@@ -20,6 +20,7 @@
     {{ csrfInput() }}
     {{ actionInput('users/save-user') }}
     {{ hiddenInput('userId', selectedMember.id) }}
+    {{ hiddenInput('fields[statusChangeDate]', now|date("d-m-Y")) }}
     {{ redirectInput(currentSite.baseUrl ~ '?' ~ urlFilters) }}
 
     {% include "components/subtitle-box.twig" with {
