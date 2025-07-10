@@ -58,7 +58,7 @@
 {% elseif payMin %}
     {% set dateFilterPay = ">= #{payMin}" %}
 {% elseif payMax %}
-    {% set dateFilterPay = "<= #{payMax}" %}
+    {% set dateFilterPay = "<= #{payMax}" %} 
 {% endif %}
 
 {% set membersQuery = craft.users({
@@ -310,7 +310,7 @@
 							{% endif %}
 						</td>
 						<td>
-							{% if paymentStatus and member.customStatus.value is same as 'active' %}
+							{% if paymentStatus and (member.customStatus.value is same as 'active' or member.customStatus.value is same as 'old' or member.customStatus.value is same as 'renew') %}
 								<div class="table__status table__status--true">{{ svg("assets/icons/check.svg")|attr({class: 'table__status-icon table__status-icon--true' }) }}</div>
 							{% else %}
 								<div class="table__status table__status--false">{{ svg("assets/icons/x.svg")|attr({class: 'table__status-icon table__status-icon--false' }) }}</div>
