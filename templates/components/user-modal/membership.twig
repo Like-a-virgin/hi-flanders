@@ -1,6 +1,6 @@
 <div class="box__wrapper" x-show="!editMembership">
     {% set active = selectedMember.paymentDate and selectedMember.memberDueDate and (now <= selectedMember.memberDueDate) %}
-    {% if selectedMember.inGroup('members') and isAdmin %} 
+    {% if (selectedMember.inGroup('members') or selectedMember.inGroup('membersGroup')) and isAdmin %} 
         <div class="box__column box__column--4 box__column--flex-between">
             <h3>{{'Lidmaatschap'|t}}</h3>
             <button class="box__function-btn" @click="editMembership = true">{{'Wijzigen'|t}} {{ svg("assets/icons/edit.svg")|attr({class: 'box__icon-option box__icon-edit' }) }}</button>
@@ -44,7 +44,6 @@
             error: true
         } %}
     {% endif %}
-    
 </div>
 <form x-show="editMembership" class="edit" method="post" accept-charset="UTF-8" enctype="multipart/form-data">
     {{ csrfInput() }}

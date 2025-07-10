@@ -7,7 +7,7 @@
 <button sprig class="btn" s-method="post" s-val:member-id="{{ null }}" s-val:page="{{ page }}" class="modal-close">
     {{ svg('assets/icons/x.svg')|attr({class:"modal-close__icon"})}}
 </button>
-<div class="modal" x-data="{editAddress: false, editPayment: false, editPrint: false, editBday: false, editMembership: false}" :class="extraMember ? 'model--no-overflow' : ''" >
+<div class="modal" x-data="{editAddress: false, editPayment: false, editPrint: false, editBday: false, editMembership: false, editStatus: false}" :class="extraMember ? 'model--no-overflow' : ''" >
     <div class="modal__content" :class="statusOption ? 'modal--overflow' : ''">    
         <div class="box">
             <div class="box__heading box__heading--center">
@@ -31,6 +31,7 @@
                 {% include "components/user-modal/personal-data" %}
                 {% include "components/user-modal/address" %}
                 {% include "components/user-modal/membership" %}
+                {% include "components/user-modal/status" %}
                 {% if selectedMember.inGroup('members') %}  
                     {% include "components/user-modal/extra-members" %}
                 {% endif %}

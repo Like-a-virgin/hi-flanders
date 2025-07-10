@@ -1,0 +1,42 @@
+{% set fieldStatus = craft.app.fields.getFieldByHandle('customStatus') %}
+{% set optionsStatus = fieldStatus.options ?? [] %}
+{% set optionsStatus = optionsStatus|filter(i => i.value is not same as 'deactivated') %}
+{% set statusTranslations = [{value: 'new', label: 'new'|t}, {value: 'active', label: 'actief'|t}, {value: 'renew', label: 'verniew'|t}, {value: 'deactivated', label: 'gedeactiveerd'|t}, {value: 'old', label: 'oud actief lid'|t}, {value: 'oldRenew', label: 'oud niet actief lid'|t}] %}
+{% set currentStatusLabel = statusTranslations|find(i => i.value is same as selectedMember.customStatus.value).label %}
+
+<div class="box__wrapper" x-show="!editStatus">
+    <div class="box__column box__column--4 box__column--flex-between">
+        <h3>{{'Status account'|t}}</h3>
+        {% if isAdmin %} 
+            <button class="box__function-btn" @click="editStatus = true">{{'Wijzigen'|t}} {{ svg("assets/icons/edit.svg")|attr({class: 'box__icon-option box__icon-edit' }) }}</button>
+        {% endif %}
+    </div>
+    {% include "components/info-box.twig" with {
+        span: 4, 
+        info: currentStatusLabel|capitalize ,
+    } %}
+</div>
+<form x-show="editStatus" class="edit" method="post" accept-charset="UTF-8" enctype="multipart/form-data">
+    {{ csrfInput() }}
+    {{ actionInput('users/save-user') }}
+    {{ hiddenInput('userId', selectedMember.id) }}
+    {{ redirectInput(currentSite.baseUrl ~ '?' ~ urlFilters) }}
+
+    {% include "components/subtitle-box.twig" with {
+        subtitle: 'Status'|t
+    } %}
+
+    <div class="edit__column--4">
+        <select name="fields[customStatus]" id="">
+            {% for item in optionsStatus %}
+                {% set statusLabel = statusTranslations|find(i => i.value is same as item.value).label %}
+                <option value="{{ item.value }}" {{ selectedMember.customStatus.value is same as item.value ? 'selected' }}>{{ statusLabel|capitalize }}</option>
+            {% endfor %}
+        </select>
+    </div>
+
+    <div class="box__column--flex">
+        <button type="submit" class="box__function-btn box__function-btn--save">{{'Opslaan'|t}}</button>
+        <button @click="editStatus = false" type="reset" class="box__function-btn box__function-btn--cancel">{{'Annuleer'|t}}</button>
+    </div>
+</form>
