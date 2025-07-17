@@ -1,5 +1,5 @@
 <div class="box__wrapper box__wrapper--labels" x-show="!editBday">
-    {% if selectedMember.inGroup('members') and isAdmin %} 
+    {% if selectedMember.inGroup('members') or selectedMember.inGroup('membersGroup') and isAdmin %} 
         <div class="box__column box__column--4 box__column--flex-between">
             <h3>{{'Persoonsgegevens'|t}}</h3>
             <button class="box__function-btn" @click="editBday = true">{{'Wijzigen'|t}} {{ svg("assets/icons/edit.svg")|attr({class: 'box__icon-option box__icon-edit' }) }}</button>
@@ -90,6 +90,50 @@
             {{ input('date', 'fields[birthday]', selectedMember.birthday ? selectedMember.birthday|date('Y-m-d') : '', {
                 id: 'birthday',
                 required: true,
+            }) }}
+        </div>
+        <div class="box__column--flex">
+            <button type="submit" class="box__function-btn box__function-btn--save">{{'Opslaan'|t}}</button>
+            <button @click="editBday = false" type="reset" class="box__function-btn box__function-btn--cancel">{{'Annuleer'}}</button>
+        </div>
+    </form>
+{% endif %}
+{% if selectedMember.inGroup('membersGroup') and isAdmin  %}
+    <form x-show="editBday" class="edit" method="post" accept-charset="UTF-8" enctype="multipart/form-data">
+        {{ csrfInput() }}
+        {{ actionInput('users/save-user') }}
+        {{ hiddenInput('userId', selectedMember.id) }}
+        {{ redirectInput(currentSite.baseUrl ~ '?' ~ urlFilters) }}
+        {{ input('hidden', 'username', selectedMember.email ? selectedMember.email : '') }}
+        
+        {% include "components/subtitle-box.twig" with {
+            subtitle: 'Persoonsgegevens'|t
+        } %}               
+
+        <div class="edit__column--2">
+            <label class="edit__label" for="organisation">{{'Organisatie'|t}}</label>
+            {{ input('text', 'fields[organisation]', selectedMember.organisation ? selectedMember.organisation : null, {
+                id: 'organisation',
+                required: true,
+            }) }}
+        </div>
+        <div class="edit__column--2">
+            <label class="edit__label" for="contact-person">{{'Contactpersoon'|t}}</label>
+            {{ input('text', 'fields[contactPerson]', selectedMember.contactPerson ? selectedMember.contactPerson : null, {
+                id: 'contact-person',
+            }) }}
+        </div>
+        <div class="edit__column--2">
+            <label class="edit__label" for="email">{{'E-mail'|t}}</label>
+            {{ input('text', 'email', selectedMember.email ? selectedMember.email : '', {
+                id: 'email',
+                required: true,
+            }) }}
+        </div>
+        <div class="edit__column--2">
+            <label class="edit__label" for="tel">{{'Tel.'|t}}</label>
+            {{ input('text', 'fields[tel]', selectedMember.tel ? selectedMember.tel : '', {
+                id: 'tel',
             }) }}
         </div>
         <div class="box__column--flex">
