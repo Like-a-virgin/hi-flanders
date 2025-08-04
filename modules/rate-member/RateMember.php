@@ -145,6 +145,12 @@ class RateMember extends BaseModule
     {
         $request = Craft::$app->getRequest();
         $user->setFieldValue('memberRate', [$rate->id]);
+        $currentUser = Craft::$app->user->identity;
+
+        $isEditedByAdmin = $currentUser && (
+            $currentUser->isInGroup('membersAdmin') || 
+            $currentUser->isInGroup('membersAdminSuper')
+        );
         
         $ratePriceField = $rate->getFieldValue('price');
         
@@ -159,7 +165,16 @@ class RateMember extends BaseModule
         }
         
         $currentDate = new DateTime();
-        $paymentDate = $currentDate->format('Y-m-d');
+        $bodyPaymentDate = $request->getBodyParam('fields.paymentDate');
+        $expirationDate = $request->getBodyParam('fields.memberDueDate');
+
+
+        if ($isEditedByAdmin && !empty($bodyPaymentDate)) {
+            $paymentDate = $bodyPaymentDate;
+        } else {
+            $paymentDate = (new DateTime())->format('Y-m-d');
+        }
+
         $expirationDate = $currentDate->modify('+1 year')->format('Y-m-d');
 
         $paymentType = $user->getFieldValue('paymentType')->value ?? $request->getBodyParam('fields.paymentType');

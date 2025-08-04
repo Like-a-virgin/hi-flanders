@@ -1,4 +1,4 @@
-dateModified: 1754296337
+dateModified: 1754300812
 elementSources:
   craft\elements\Entry:
     -
@@ -214,6 +214,7 @@ meta:
     637277da-4bad-4da9-9b1a-059b6438cce0: 'Extra group' # Extra group
     3261931d-97c8-4b0e-a83a-6d9ac4dee153: Birthday # Birthday
     5978149a-5b05-4ba3-95ff-72c6250597fe: Tariefformules # Tariefformules
+    26890266-0718-4e39-88af-5017ba51e3c7: Tekst # Tekst
     a21d7477-05ca-43ea-ae84-fc44c3e16a70: 'Leden groep' # Leden groep
     aa21d2ca-e34c-4497-a6fa-49b5a7cc7f58: Title # Title
     ab51ff2a-5865-41c8-897f-008e0b288a70: Date # Date
@@ -238,7 +239,6 @@ meta:
     db8cca95-36d6-43cd-977d-2c8d4ef17863: 'Contact Form' # Contact Form
     e6b46871-c4a9-4c54-825a-0e4ff94ad028: Branding # Branding
     e633efea-afa2-411f-9fc3-06d84f219d9b: 'Bedankt betaling' # Bedankt betaling
-    f73df056-6028-400f-bbe7-d37ec38ef278: Tekst # Tekst
     f374ab43-38fa-4b2e-870f-70e2cccc4272: Branding # Branding
 plugins:
   ckeditor:

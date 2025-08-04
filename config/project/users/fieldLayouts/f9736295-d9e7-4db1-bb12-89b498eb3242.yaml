@@ -484,17 +484,17 @@ tabs:
         warning: null
         width: 100
       -
-        dateAdded: '2025-08-04T08:31:42+00:00'
+        dateAdded: '2025-08-04T09:46:52+00:00'
         elementCondition: null
-        heading: Opmerking
+        heading: Commentaar
         type: craft\fieldlayoutelements\Heading
-        uid: 3b450536-061f-427a-8dd9-dfe73a1333e9
+        uid: be2fc237-4e03-404e-acee-8077dcd36ecb
         userCondition: null
       -
-        dateAdded: '2025-08-04T08:32:17+00:00'
+        dateAdded: '2025-08-04T09:46:52+00:00'
         editCondition: null
         elementCondition: null
-        fieldUid: f73df056-6028-400f-bbe7-d37ec38ef278 # Tekst
+        fieldUid: 26890266-0718-4e39-88af-5017ba51e3c7 # Tekst
         handle: null
         includeInCards: false
         instructions: null
@@ -503,7 +503,7 @@ tabs:
         required: false
         tip: null
         type: craft\fieldlayoutelements\CustomField
-        uid: d0b55214-6e4d-4af8-9cee-ec437fd54345
+        uid: 016451f1-cf87-411d-b1fb-58849dff177c
         userCondition: null
         warning: null
         width: 100

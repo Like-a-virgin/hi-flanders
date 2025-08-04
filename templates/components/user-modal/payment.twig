@@ -57,7 +57,7 @@
         </div>
         <div class="edit__column--2">
             <label class="edit__label" for="pay-amount">{{'Betaald bedrag'|t}} {{'(altijd 2 decimalen, bijv. 10,00)'|t}}</label>
-            {{ input('text', 'fields[totalPayedMembers]', selectedMember.totalPayedMembers ? selectedMember.totalPayedMembers|money : '', {
+            {{ input('text', 'fields[totalPayedMembers][value]', selectedMember.totalPayedMembers ? selectedMember.totalPayedMembers|money|replace({'€': '', ' ': '', ' ': ''}) : '', {
                 id: 'pay-amount',
             }) }}
         </div>
