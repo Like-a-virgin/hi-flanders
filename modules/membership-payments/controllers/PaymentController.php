@@ -355,6 +355,7 @@ class PaymentController extends Controller
             Craft::$app->getView()->setTemplatesPath(Craft::getAlias('@root/templates'));
 
             $htmlBody = Craft::$app->getView()->renderTemplate('email/request/nl/request-print', [
+                'name' => $user->getFieldValue('fullName'),
                 'id' => $user->getFieldValue('customMemberId'),
                 'street' => $user->getFieldValue('street'),
                 'number' => $user->getFieldValue('streetNr'),

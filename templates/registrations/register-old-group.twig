@@ -98,7 +98,6 @@
                     id: 'due-date',
                     placeholder: 'Vervaldatum'|t,
                     onFocus: "(this.type = 'date', this.placeholder = '')",
-                    max: maxDate
                 }) }}
             </div>  
 
@@ -167,18 +166,18 @@
                 }) }}
             </div>
             <div class="formbox__column">
-                <label class="formbox__label" for="city">{{'Stad'|t}}</label>
-                {{ input('text', 'fields[city]', user.city ?? null, {
-                    id: 'city',
-                    placeholder: 'Stad'|t,
-                    required: true
-                }) }}
-            </div>
-            <div class="formbox__column">
                 <label class="formbox__label" for="postal-code">{{'Postcode'|t}}</label>
                 {{ input('text', 'fields[postalCode]', user.postalCode ?? null, {
                     id: 'postal-code',
                     placeholder: 'Postcode'|t,
+                    required: true
+                }) }}
+            </div>
+            <div class="formbox__column">
+                <label class="formbox__label" for="city">{{'Stad'|t}}</label>
+                {{ input('text', 'fields[city]', user.city ?? null, {
+                    id: 'city',
+                    placeholder: 'Stad'|t,
                     required: true
                 }) }}
             </div>

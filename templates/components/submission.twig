@@ -176,7 +176,12 @@
                 </div>
                 <div class="box__options">
                     <div></div>
-                    <button sprig class="btn" s-val:submission-id="{{ null }}">{{'Terug naar overzicht'|t}}</button>
+                    <div>
+                        {% if "groupMembership" in selectedSubmission.form.handle %}
+                            <a class="btn" href=""></a>
+                        {% endif %}
+                        <button sprig class="btn" s-val:submission-id="{{ null }}">{{'Terug naar overzicht'|t}}</button>
+                    </div>
                 </div>
             </div>
         </div>
