@@ -1,6 +1,9 @@
 {% set selectedSubmission = submissionsQuery|filter(i => i.id == submissionId)|first %}
 
-<div class="modal">
+<button sprig class="btn" s-method="post" s-val:submission-id="{{ null }}" s-val:page="{{ page }}" class="modal-close">
+    {{ svg('assets/icons/x.svg')|attr({class:"modal-close__icon"})}}
+</button>
+<div class="modal"> 
     <div class="modal__content">
         <div class="box" x-data="{ editStatus: false }">        
             <div class="box__heading box__heading--center">
@@ -63,6 +66,11 @@
                             span: 2, 
                             info: selectedSubmission.email,
                             label: 'Email'|t
+                        } %}
+                        {% include "components/info-box.twig" with {
+                            span: 2, 
+                            info: selectedSubmission.selectLang,
+                            label: 'Berichttaal'|t
                         } %}
                     {% elseif "oldMember" in selectedSubmission.form.handle %}
                         {% include "components/info-box.twig" with {

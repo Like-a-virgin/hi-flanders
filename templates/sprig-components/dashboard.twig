@@ -24,7 +24,7 @@
 {% set printStatus = printStatus ?? null %}
 {% set memberType = memberType ?? null %} 
 
-{% set limit = limit ?? limits[limits|length - 1].value %}
+{% set limit = limit ?? limits[limits|length - 2].value %}
 {% set page = page ?? 1 %}
 
 {% set filters = {

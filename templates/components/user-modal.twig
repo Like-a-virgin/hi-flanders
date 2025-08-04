@@ -1,5 +1,5 @@
 {% set selectedMember = craft.users.id(memberId).one() %} 
-{% set extraMembers = craft.entries.section('extraMembers').parentMember(memberId).all() %}
+{% set extraMembers = craft.entries.section('extraMembers').parentMember(memberId).all() %} 
 {% set minDate = now|date_modify('-17 years')|date("Y-m-d") %} 
 {% set priceCard = craft.entries.section('rates').slug('lidkaart').one() %}
 {% set printStatuses = [{value: 'send', label: 'Verstuurd'|t}, {value: 'requested' , label: 'Aangevraagd'|t}] %}

@@ -3,7 +3,7 @@
 {% set formTypes = [{value: '', label: ''}] %}
 {% set submissionId = submissionId ?? null %}
 {% set page = page ?? 1 %}
-{% set limit = limit ?? limits[0].value %}
+{% set limit = limit ?? limits[limits|length - 2].value %}
 {% set status = status ?? '' %}
 
 {% set filters = {

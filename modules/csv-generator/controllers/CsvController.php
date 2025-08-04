@@ -41,12 +41,10 @@ class CsvController extends Controller
         ];
 
         $userId = $user->id ?? '';
-        if (!empty($fields['altFirstName']) && !empty($fields['altLastName'])) {
-            $name = $fields['altFirstName'] . ' ' . $fields['altLastName'];
-        } elseif (!empty($fields['organisation'])) {
-            $name = $fields['organisation'];
+        if ($user && $user->isInGroup('membersGroup')) {
+            $name = $fields['organisation'] ?? '';
         } else {
-            $name = '';
+            $name = $fields['altFirstName'] . ' ' . $fields['altLastName'] ?? '';
         }
         $street = $fields['street'] . ' ' . $fields['streetNr'] . ' ' . $fields['bus'];
         $city = $fields['postalCode'] . ' ' . $fields['city'] ?? '';
