@@ -1,0 +1,29 @@
+<div class="box__wrapper" x-show="!editComment">
+    <div class="box__column box__column--4 box__column--flex-between">
+        <h3>{{'Opmerking'|t}}</h3>
+        <button class="box__function-btn" @click="editComment = true">{{'Wijzigen'|t}} {{ svg("assets/icons/edit.svg")|attr({class: 'box__icon-option box__icon-edit' }) }}</button>
+    </div>
+    {% include "components/info-box.twig" with {
+        span: 4,  
+        info: selectedMember.textMulti,
+        error: selectedMember.textMulti is same as ''
+    } %}
+</div>
+<form x-show="editComment" class="edit" method="post" accept-charset="UTF-8" enctype="multipart/form-data">
+    {{ csrfInput() }}
+    {{ actionInput('users/save-user') }}
+    {{ hiddenInput('userId', selectedMember.id) }}
+    {{ redirectInput(currentSite.baseUrl ~ '?' ~ urlFilters) }}
+
+    <div class="box__column box__column--4">
+        <h3>{{'Opmerking'|t}}</h3>
+    </div>
+    <div class="edit__column--4">
+        <label class="edit__label" for="comment">{{'Opmerking'|t}}</label>
+        <textarea name="fields[textMulti]" id="comment" class="textarea" rows="5">{{ selectedMember.textMulti ?? '' }}</textarea>
+    </div>
+    <div class="box__column--flex">
+        <button type="submit" class="box__function-btn box__function-btn--save">{{'Opslaan'|t}}</button>
+        <button @click="editPayment = false" type="reset" class="box__function-btn box__function-btn--cancel">{{'Annuleer'}}</button>
+    </div>
+</form>

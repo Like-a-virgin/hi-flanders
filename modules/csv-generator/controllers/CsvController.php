@@ -41,7 +41,13 @@ class CsvController extends Controller
         ];
 
         $userId = $user->id ?? '';
-        $name = $fields['altFirstName'] . ' ' . $fields['altLastName'] ?? '';
+        if (!empty($fields['altFirstName']) && !empty($fields['altLastName'])) {
+            $name = $fields['altFirstName'] . ' ' . $fields['altLastName'];
+        } elseif (!empty($fields['organisation'])) {
+            $name = $fields['organisation'];
+        } else {
+            $name = '';
+        }
         $street = $fields['street'] . ' ' . $fields['streetNr'] . ' ' . $fields['bus'];
         $city = $fields['postalCode'] . ' ' . $fields['city'] ?? '';
         $memberId = '008' . $fields['customMemberId'];
