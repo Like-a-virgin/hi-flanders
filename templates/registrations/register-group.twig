@@ -72,7 +72,7 @@
                 <label class="formbox__label" for="groupType">{{ 'Soort organisatie'|t }}</label>
                 <select id="groupType" name="fields[memberType]" required>
                     <option value="group" {{ user and user.memberType == 'group' ? 'selected' }}>Standaard</option>
-                    <option value="groupYouth" {{ (user and user.memberType == 'group') or (selectedSubmission and selectedSubmission.jeugdgroep) ? 'selected' : '' }}>Jeugd</option>
+                    <option value="groupYouth" {{ (user and user.memberType == 'groupYouth') or (selectedSubmission and selectedSubmission.jeugdgroep) ? 'selected' : '' }}>Jeugd</option>
                 </select>
             </div>
             <div class="formbox__column--full {{ user and user.getErrors('organisation') ? 'formbox__column--error' }}"> 
@@ -169,7 +169,7 @@
                 <select name="fields[lang]" id="payment-type">
                     <option value="nl">{{'Berichttaal'|t}}</option>
                     {% for item in langs %}
-                        <option value="{{item.value}}" {{ (user and users.lang.value is same as item.value) or (selectedSubmission and selectedSubmission.selectLang.value  is same as item.value) ? 'selected'}}>{{item.label}}</option>
+                        <option value="{{item.value}}" {{ (user and user.lang.value is same as item.value) or (selectedSubmission and selectedSubmission.selectLang.value  is same as item.value) ? 'selected'}}>{{item.label}}</option>
                     {% endfor %}
                 </select>
             </div>
@@ -177,7 +177,11 @@
                 <label for="newsletter" class="formbox__check-label">
                 {{ input('checkbox', 'fields[newsletter]', 'enroll' , {
                     id: 'newsletter',
-                    checked: user and  selectedSubmission.nieuwsbrief
+                    checked: (
+                        (user.newsletter.storage is defined and 'enrollSchool' in user.newsletter.storage) 
+                        or (craft.app.request.getBodyParam('fields[newsletter]') == 'enroll') 
+                        or (selectedSubmission and selectedSubmission.nieuwsbrief)
+                    )
                 }) }} 
                 <span class="checkmark"></span>
                 <p>{{'Inschrijven voor nieuwsbrieven.'|t}}</p>
@@ -186,7 +190,11 @@
                 <label for="newsletterSchool" class="formbox__check-label">
                 {{ input('checkbox', 'fields[newsletterSchool]', 'enrollSchool' , {
                     id: 'newsletterSchool',
-                    checked: selectedSubmission.schoolNieuwsbrief
+                    checked: (
+                        (user.newsletterSchool.storage is defined and 'enrollSchool' in user.newsletterSchool.storage) 
+                        or (craft.app.request.getBodyParam('fields[newsletterSchool]') == 'enrollSchool') 
+                        or (selectedSubmission and selectedSubmission.schoolNieuwsbrief)
+                    )
                 }) }} 
                 <span class="checkmark"></span>
                 <p>{{'Inschrijven voor schoolnieuwsbrieven.'|t}}</p>
