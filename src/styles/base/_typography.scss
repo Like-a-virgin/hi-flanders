@@ -9,6 +9,15 @@ h1, h2 {
     }
 }
 
+.h2--smaller {
+    font-size: $fs-h3--mobile;
+    font-weight: $fw-bold;
+
+    @include screen($screen-m) {
+        font-size: $fs-h3;
+    }
+}
+
 p {
     font-size: $fs-p;
 }

@@ -93,12 +93,13 @@
         {{ input('date', 'fields[payedPrintDate]', selectedMember.payedPrintDate ? selectedMember.payedPrintDate|date('Y-m-d') : '', {
             id: 'pay-date',
         }) }}
+    </div> 
+    <div class="edit__column--2">
+        <label class="edit__label" for="pay-amount">{{'Betaald bedrag'|t}} {{'(altijd 2 decimalen, bijv. 10,00)'|t}}</label>
+        {{ input('text', 'fields[totalPayedPrint][value]', selectedMember.totalPayedPrint ? selectedMember.totalPayedPrint|money|replace({'€': '', ' ': '', ' ': ''}) : '', {
+            id: 'pay-amount',
+        }) }}
     </div>
-    {% include "components/info-box.twig" with {
-        span: 2, 
-        label: 'Betaald bedrag'|t, 
-        info: priceCard.price|money,
-    } %}
     <div class="box__column--flex">
         <button type="submit" class="box__function-btn box__function-btn--save">{{'Opslaan'|t}}</button>
         <button @click="editPrint = false" type="reset" class="box__function-btn box__function-btn--cancel">{{'Annuleer'}}</button>

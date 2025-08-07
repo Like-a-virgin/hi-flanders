@@ -99,6 +99,114 @@ fieldLayouts:
         name: Lidmaatschap
         uid: 95b0fa11-e5aa-4784-bf45-98e943c08d33
         userCondition: null
+      -
+        elementCondition: null
+        elements:
+          -
+            dateAdded: '2025-08-07T14:49:24+00:00'
+            editCondition: null
+            elementCondition: null
+            fieldUid: aa21d2ca-e34c-4497-a6fa-49b5a7cc7f58 # Title
+            handle: country
+            includeInCards: false
+            instructions: null
+            label: Land
+            providesThumbs: false
+            required: false
+            tip: null
+            type: craft\fieldlayoutelements\CustomField
+            uid: b12b5bc2-e16d-4e11-a12f-f8d76f279aee
+            userCondition: null
+            warning: null
+            width: 100
+          -
+            dateAdded: '2025-08-07T14:49:24+00:00'
+            editCondition: null
+            elementCondition: null
+            fieldUid: aa21d2ca-e34c-4497-a6fa-49b5a7cc7f58 # Title
+            handle: street
+            includeInCards: false
+            instructions: null
+            label: Straat
+            providesThumbs: false
+            required: false
+            tip: null
+            type: craft\fieldlayoutelements\CustomField
+            uid: 642ce15a-dbbc-4a46-9ad1-35b89933d176
+            userCondition: null
+            warning: null
+            width: 100
+          -
+            dateAdded: '2025-08-07T14:49:24+00:00'
+            editCondition: null
+            elementCondition: null
+            fieldUid: aa21d2ca-e34c-4497-a6fa-49b5a7cc7f58 # Title
+            handle: streetNr
+            includeInCards: false
+            instructions: null
+            label: Nummer
+            providesThumbs: false
+            required: false
+            tip: null
+            type: craft\fieldlayoutelements\CustomField
+            uid: 5b905659-1214-411f-bd20-5e46fac55814
+            userCondition: null
+            warning: null
+            width: 100
+          -
+            dateAdded: '2025-08-07T14:49:24+00:00'
+            editCondition: null
+            elementCondition: null
+            fieldUid: aa21d2ca-e34c-4497-a6fa-49b5a7cc7f58 # Title
+            handle: bus
+            includeInCards: false
+            instructions: null
+            label: Bus
+            providesThumbs: false
+            required: false
+            tip: null
+            type: craft\fieldlayoutelements\CustomField
+            uid: ee3a069d-885d-415b-8fc2-49a3f33afc3f
+            userCondition: null
+            warning: null
+            width: 100
+          -
+            dateAdded: '2025-08-07T14:49:24+00:00'
+            editCondition: null
+            elementCondition: null
+            fieldUid: aa21d2ca-e34c-4497-a6fa-49b5a7cc7f58 # Title
+            handle: city
+            includeInCards: false
+            instructions: null
+            label: Stad
+            providesThumbs: false
+            required: false
+            tip: null
+            type: craft\fieldlayoutelements\CustomField
+            uid: 601d9747-7e74-41f8-9a64-ea83b646aca2
+            userCondition: null
+            warning: null
+            width: 100
+          -
+            dateAdded: '2025-08-07T14:49:24+00:00'
+            editCondition: null
+            elementCondition: null
+            fieldUid: aa21d2ca-e34c-4497-a6fa-49b5a7cc7f58 # Title
+            handle: postalCode
+            includeInCards: false
+            instructions: null
+            label: Postcode
+            providesThumbs: false
+            required: false
+            tip: null
+            type: craft\fieldlayoutelements\CustomField
+            uid: 5b9629ef-f663-4db2-aa87-7544ea6248e1
+            userCondition: null
+            warning: null
+            width: 100
+        name: Adres
+        uid: e8db1603-f465-48dc-848f-6baab2c5448d
+        userCondition: null
 handle: extraMember
 hasTitleField: false
 icon: user

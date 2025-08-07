@@ -75,7 +75,7 @@
                     <option value="groupYouth" {{ (user and user.memberType == 'groupYouth') or (selectedSubmission and selectedSubmission.jeugdgroep) ? 'selected' : '' }}>Jeugd</option>
                 </select>
             </div>
-            <div class="formbox__column--full {{ user and user.getErrors('organisation') ? 'formbox__column--error' }}"> 
+            <div class="formbox__column {{ user and user.getErrors('organisation') ? 'formbox__column--error' }}"> 
                 <label class="formbox__label" for="organisation">{{'Organisatie'|t}}</label>
                 {{ input('text', 'fields[organisation]', user and user.organisation ? user.organisation : selectedSubmission ? selectedSubmission.organisation : null, {
                     id: 'organisation',
@@ -83,7 +83,7 @@
                     required: true
                 }) }}
             </div>
-            <div class="formbox__column--full {{ user and user.getErrors('contactPerson') ? 'formbox__column--error' }}">                
+            <div class="formbox__column {{ user and user.getErrors('contactPerson') ? 'formbox__column--error' }}">                
                 <label class="formbox__label" for="name-contact">{{'Naam Contactpersoon'|t}}</label>
                 {{ input('text', 'fields[contactPerson]', user and user.contactPerson ? user.contactPerson : selectedSubmission ? selectedSubmission.contactPerson : null, {
                     id: 'name-contact',

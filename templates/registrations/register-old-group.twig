@@ -10,11 +10,17 @@
     {% set langs = [{label: 'Nederlands'|t, value: 'nl' }, {label: 'Engels'|t, value: 'en' }, {label: 'Frans'|t, value: 'fr' }] %}
     {% set memberTypes = [{label: 'Standaard'|t, value: 'group' }, {label: 'Jeugdgroep'|t, value: 'groupYouth' }] %}
     {% set paymentMethods = [{value: 'hostel', label: 'Hostel'|t}, {value: 'transfer', label: 'Overschrijving'|t}, {value: 'free', label: 'Gratis'|t}] %}
+    {% set printStatuses = [{label: 'Fysieke lidkaart aanvragen'|t, value: 'requested' }, {label: 'Fysieke lidkaart reeds verstuurd'|t, value: 'send' }] %}
 
     {% set maxDate = now|date_modify('-3 years')|date("Y-m-d") %}
     {% set pp = craft.entries.section(privacyPolicy).one().linkExtern %}
     {% set user = user ?? null %}
     {% set succesUrl = craft.entries.section('succesRegister').one().url %}
+
+    {% set previousUrl = craft.app.request.getReferrer() %}
+    {% set segments = previousUrl|split('/') %}
+    {% set lastSegment = segments[segments|length - 1] %}
+
 
     {% macro errorList(errors) %}
     {% if errors %}
@@ -26,7 +32,7 @@
         <div class="formbox__heading">
             <h1>{{'Registreer een oud lid'|t}} {{'(groep)'|t}}</h1>
         </div>
-        <form class="formbox__form" method="post" accept-charset="UTF-8" x-data="{payed: $persist(false)}">
+        <form class="formbox__form" method="post" accept-charset="UTF-8" x-data="{ payed: $persist(false), payedMemberCard: $persist(false) }" x-init="{{ lastSegment is not same as 'register-individual' ? 'payed = false; payedMemberCard = false;' : ''}}">
             {{ csrfInput() }}
             {{ actionInput('users/save-user') }}
             {{ redirectInput(succesUrl) }}
@@ -58,7 +64,7 @@
             {% endif %}
 
             <div class="formbox__column--full">
-                <label class="formbox__label" for="member-type">{{'Type lid'|t}}</label>
+                <label class="formbox__label" for="member-type">{{'Type lid'|t}}</label> 
                 <select name="fields[memberType]" id="member-type" required>
                     <option value="">{{ 'Selecteer een groeptype'|t }}</option>
                     {% for item in memberTypes %}                        
@@ -66,40 +72,6 @@
                     {% endfor %}
                 </select>
             </div>
-            <div class="formbox__column--full"> 
-                <label class="formbox__label" for="member-id">{{'Lidkaartnummer'|t}}</label>
-                {{ input('text', 'fields[customMemberId]', user.customMemberId ?? null, {
-                    id: 'member-id',
-                    placeholder: 'Lidkaartnummer'|t,
-                    required: true
-                }) }}
-            </div>
-            <div class="formbox__column--full">
-                <label class="formbox__label" for="payment-type">{{'Betaalmethode'|t}}</label>
-                <select name="fields[paymentType]" id="payment-type" @change="payed = $event.target.value || null">
-                    <option value="">{{ 'Nog niet betaald'|t }}</option>
-                    {% for item in paymentMethods %}                        
-                        <option value="{{item.value}}" {{craft.app.request.getBodyParam('fields[paymentType]') is same as item.value ? 'selected'}}>{{ item.label }}</option>
-                    {% endfor %}
-                </select>
-            </div>
-            <div class="formbox__column--full" x-show="payed && payed !== 'free'">
-                <label class="formbox__label" for="totalPayed">{{'Betaald bedrag'|t}}</label>
-                {{ input('number', 'fields[totalPayedMembers]', craft.app.request.getBodyParam('fields[totalPayedMembers]') ?? null, {
-                    id: 'totalPayed',
-                    placeholder: 'Betaald bedrag'|t,
-                    min: 0,
-                    step: '0.01'
-                }) }}
-            </div>
-            <div class="formbox__column--full" x-show="payed">                
-                <label class="formbox__label" for="due-date">{{'Vervaldatum'|t}}</label>
-                {{ input('text', 'fields[memberDueDate]', craft.app.request.getBodyParam('fields[memberDueDate]') ?? null, {
-                    id: 'due-date',
-                    placeholder: 'Vervaldatum'|t,
-                    onFocus: "(this.type = 'date', this.placeholder = '')",
-                }) }}
-            </div>  
 
             <div class="formbox__column"> 
                 <label class="formbox__label" for="organisation">{{'Organisatie'|t}}</label>
@@ -182,6 +154,58 @@
                 }) }}
             </div>
 
+            <div class="formbox__column--full"> 
+                <label class="formbox__label" for="member-id">{{'Lidkaartnummer'|t}}</label>
+                {{ input('text', 'fields[customMemberId]', user.customMemberId ?? null, {
+                    id: 'member-id',
+                    placeholder: 'Lidkaartnummer'|t,
+                    required: true
+                }) }}
+            </div>
+            <div class="formbox__column--full">
+                <label class="formbox__label" for="payment-type">{{'Betaalmethode'|t}}</label>
+                <select name="fields[paymentType]" id="payment-type" @change="payed = $event.target.value || null">
+                    <option value="">{{ 'Nog niet betaald'|t }}</option>
+                    {% for item in paymentMethods %}                        
+                        <option value="{{item.value}}" {{craft.app.request.getBodyParam('fields[paymentType]') is same as item.value ? 'selected'}}>{{ item.label }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="formbox__column--full" x-show="payed && payed !== 'free'">
+                <label class="formbox__label" for="totalPayed">{{'Betaald bedrag'|t}}</label>
+                {{ input('number', 'fields[totalPayedMembers]', craft.app.request.getBodyParam('fields[totalPayedMembers]') ?? null, {
+                    id: 'totalPayed',
+                    placeholder: 'Betaald bedrag'|t,
+                    min: 0,
+                    step: '0.01'
+                }) }}
+            </div>
+            <div class="formbox__column--full" x-show="payed">                
+                <label class="formbox__label" for="due-date">{{'Vervaldatum'|t}}</label>
+                {{ input('text', 'fields[memberDueDate]', craft.app.request.getBodyParam('fields[memberDueDate]') ?? null, {
+                    id: 'due-date',
+                    placeholder: 'Vervaldatum'|t,
+                    onFocus: "(this.type = 'date', this.placeholder = '')",
+                }) }}
+            </div>  
+            <div class="formbox__column--full">
+                <label class="formbox__label" for="payment-type">{{'Print status'|t}}</label>
+                <select name="fields[printStatus]" id="payment-type" @change="payedMemberCard = $event.target.value !== '' && $event.target.value !== 'free'">
+                    <option value="">{{'Geen fysieke lidkaart'|t}}</option>
+                        {% for item in printStatuses %}
+                            <option value="{{item.value}}" {{ craft.app.request.getBodyParam('fields[printStatus]')  is same as item.value ? 'selected'}}>{{item.label}}</option>
+                        {% endfor %}
+                </select>
+            </div>
+            <div class="formbox__column--full" x-show="payedMemberCard">
+                <label class="formbox__label" for="totalPayed">{{'Totaal betaald fysieke lidkaart'|t}}</label>
+                {{ input('number', 'fields[totalPayedPrint]', craft.app.request.getBodyParam('fields[totalPayedPrint]') ?? null, {
+                    id: 'totalPayed',
+                    placeholder: 'Betaald bedrag fysieke lidkaart'|t,
+                    min: 0,
+                    step: '0.01'
+                }) }}
+            </div> 
             <div class="formbox__column--full">
                 <label class="formbox__label" for="lang">{{'Berichttaal'|t}}</label>
                 <select name="fields[lang]" id="lang">

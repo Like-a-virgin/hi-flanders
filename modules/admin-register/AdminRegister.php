@@ -7,6 +7,8 @@ use craft\elements\User;
 use craft\events\ElementEvent;
 use craft\services\Elements;
 use yii\base\Event;
+use DateTime;
+use DateTimeZone;
 use yii\base\Module as BaseModule;
 
 /**
@@ -46,7 +48,7 @@ class AdminRegister extends BaseModule
 
                 if ($element instanceof User) {
                     // Keep username in sync with email
-                    $element->username = $element->email;
+                    $element->username = $element->email; 
                 }
             },
         );
@@ -61,6 +63,14 @@ class AdminRegister extends BaseModule
                 if ($element instanceof User && $event->isNew) {
                     $this->assignUserGroup($element);
                     $this->sendActivationCode($element); 
+
+                    $totalPayedPrint = $element->getFieldValue('totalPayedPrint');
+                    $requestPrintSend = $element->getFieldValue('requestPrintSend');
+                    $printStatus = $element->getFieldValue('printStatus');
+
+                    if (!empty($totalPayedPrint) && empty($requestPrintSend) && $printStatus == 'requested') {
+                        $this->sendPrintDetailsOwner($element);
+                    }
                 }
             },
         );
@@ -99,7 +109,9 @@ class AdminRegister extends BaseModule
             'cardType' => null,
             'totalPayedPrint' => null,
             'dateSendPrint' => null,
-            'statusChangeDate' => null
+            'statusChangeDate' => null,
+            'requestPrintSend' => null,
+            'printStatus' => null,
         ];
 
         foreach ($fields as $fieldHandle => $coreField) {
@@ -120,7 +132,7 @@ class AdminRegister extends BaseModule
                 } else {
                     $value = null; // Prevents invalid data
                 }
-            } 
+            }
 
             if ($fieldHandle === 'statusChangeDate') {
                 $value = new \DateTime('now', new \DateTimeZone('CET'));
@@ -134,6 +146,11 @@ class AdminRegister extends BaseModule
                     $user->{$coreField} = $value;
                 }
             } 
+        }
+
+        $printStatus = $user->getFieldValue('printStatus')->value;
+        if (empty($printStatus)) {
+            $user->setFieldValue('totalPayedPrint', null);
         }
     }
 
@@ -291,5 +308,50 @@ class AdminRegister extends BaseModule
             }
         }
         return false;
+    }
+
+    private function sendPrintDetailsOwner(User $user)
+    {
+        try {
+            if ($user->getFieldValue('requestPrintSend')) {
+                Craft::info("Skipping duplicate print request email for user: {$user->email}", __METHOD__);
+                return;
+            }
+
+            $mailer = Craft::$app->mailer;
+            Craft::$app->getView()->setTemplatesPath(Craft::getAlias('@root/templates'));
+
+            $htmlBody = Craft::$app->getView()->renderTemplate('email/request/nl/request-print', [
+                'name' => $user->getFieldValue('altFirstName') . ' ' . $user->getFieldValue('altLastName'),
+                'id' => $user->getFieldValue('customMemberId'),
+                'street' => $user->getFieldValue('street'),
+                'number' => $user->getFieldValue('streetNr'),
+                'postalcode' => $user->getFieldValue('postalCode'),
+                'city' => $user->getFieldValue('city'),
+                'country' => $user->getFieldValue('country'), 
+                'memberType' => $user->getFieldValue('memberType')->label
+            ]);
+
+            $subject = 'Nieuwe print aanvraag.';
+
+            // Prepare and send the email
+            $message = $mailer->compose()
+                ->setTo('lara@likeavirgin.be')
+                ->setSubject($subject)
+                ->setHtmlBody($htmlBody);
+
+                
+            if (!$message->send()) {
+                Craft::error('Failed to send payment confirmation email to: ' . $user->email, __METHOD__);
+            } else {
+                Craft::info('Payment confirmation email sent to: ' . $user->email, __METHOD__);
+
+                $user->setFieldValue('requestPrint', new DateTime('now', new DateTimeZone('Europe/Brussels')));
+                $user->setFieldValue('requestPrintSend', true);
+                Craft::$app->elements->saveElement($user, false);
+            }
+        } catch (\Throwable $e) {
+            Craft::error("Error sending payment confirmation email: " . $e->getMessage(), __METHOD__);
+        } 
     }
 }

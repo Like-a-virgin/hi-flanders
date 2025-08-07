@@ -7,12 +7,11 @@
 }
 .table {
     display: none;
+    min-height: 50vh;
 
     @include screen($screen-s) {
         display: flex;
     }
-
-    min-height: 50vh;
 
     &__heading {
         display: flex;

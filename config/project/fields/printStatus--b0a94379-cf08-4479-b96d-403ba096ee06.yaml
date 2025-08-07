@@ -15,6 +15,12 @@ settings:
           - value
           - ''
         -
+          - icon
+          - ''
+        -
+          - color
+          - ''
+        -
           - default
           - '1'
     -
@@ -26,6 +32,12 @@ settings:
           - value
           - requested
         -
+          - icon
+          - ''
+        -
+          - color
+          - ''
+        -
           - default
           - ''
     -
@@ -36,6 +48,12 @@ settings:
         -
           - value
           - send
+        -
+          - icon
+          - ''
+        -
+          - color
+          - ''
         -
           - default
           - ''
