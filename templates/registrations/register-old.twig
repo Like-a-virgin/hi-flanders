@@ -76,14 +76,14 @@
             </div>
             <div class="formbox__column--full">
                 <label class="formbox__label" for="payment-type">{{'Betaalmethode'|t}}</label>
-                <select name="fields[paymentType]" id="payment-type" @change="payed = $event.target.value !== '' && $event.target.value !== 'free'">
+                <select name="fields[paymentType]" id="payment-type" @change="payed = $event.target.value || null">
                     <option value="">{{ 'Nog niet betaald'|t }}</option>
                     {% for item in paymentMethods %}                        
                         <option value="{{item.value}}" {{craft.app.request.getBodyParam('fields[paymentType]') is same as item.value ? 'selected'}}>{{ item.label }}</option>
                     {% endfor %}
                 </select>
             </div>
-            <div class="formbox__column--full" x-show="payed">
+            <div class="formbox__column--full" x-show="payed && payed !== 'free'">
                 <label class="formbox__label" for="totalPayed">{{'Totaal betaald'|t}}</label>
                 {{ input('number', 'fields[totalPayedMembers]', craft.app.request.getBodyParam('fields[totalPayedMembers]') ?? null, {
                     id: 'totalPayed',

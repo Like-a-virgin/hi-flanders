@@ -25,13 +25,13 @@
     } %}
     {% include "components/info-box.twig" with {
         span: 1, 
-        label: 'Stad'|t, 
-        info: selectedMember.city|capitalize
+        label: 'Postcode'|t, 
+        info: selectedMember.postalCode
     } %}
     {% include "components/info-box.twig" with {
         span: 1, 
-        label: 'Postcode'|t, 
-        info: selectedMember.postalCode
+        label: 'Stad'|t, 
+        info: selectedMember.city|capitalize
     } %}
 </div>
 <form x-show="editAddress" class="edit" method="post" accept-charset="UTF-8" enctype="multipart/form-data">
