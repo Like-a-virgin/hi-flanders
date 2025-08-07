@@ -44,7 +44,7 @@ class CsvExtraController extends Controller
         $street = '';
         $city = '';
         $name = $fields['altFirstName'] . ' ' . $fields['altLastName'] ?? '';
-        $memberId = '008' . $kidsId;
+        $memberId = '008-' . trim(chunk_split($kidsId, 3, ' '));
         $birthday = $fields['birthday'] ? $fields['birthday']->format('d/m/Y') : '';
         $expire = $fields['birthday'] ? (clone $fields['birthday'])->modify('+18 years')->format('d/m/Y') : '';
         $category = 'Kid';

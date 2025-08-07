@@ -28,6 +28,11 @@ class CsvController extends Controller
 
         $fields = $user->getFieldValues();
 
+        $rawId = preg_replace('/\D/', '', $fields['customMemberId']); // Remove non-digits
+        $formattedId = trim(chunk_split($rawId, 3, ' ')); // Group in 3's
+
+        $bus = !empty($fields['bus']) ? 'bus ' . $fields['bus'] : '';
+
         // Prepare CSV data
         $csvHeaders = [
             'nid',
@@ -46,9 +51,9 @@ class CsvController extends Controller
         } else {
             $name = $fields['altFirstName'] . ' ' . $fields['altLastName'] ?? '';
         }
-        $street = $fields['street'] . ' ' . $fields['streetNr'] . ' ' . $fields['bus'];
+        $street = $fields['street'] . ' ' . $fields['streetNr'] . ' ' . $bus;
         $city = $fields['postalCode'] . ' ' . $fields['city'] ?? '';
-        $memberId = '008' . $fields['customMemberId'];
+        $memberId = '008-' . $formattedId;
         $birthday = $fields['birthday'] ? $fields['birthday']->format('d/m/Y') : '';
         $expire = $fields['memberDueDate'] ? $fields['memberDueDate']->format('d/m/Y') : '';
         $category = $fields['memberType']->value ?? '';
