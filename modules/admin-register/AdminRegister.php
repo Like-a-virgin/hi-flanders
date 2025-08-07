@@ -336,7 +336,7 @@ class AdminRegister extends BaseModule
 
             // Prepare and send the email
             $message = $mailer->compose()
-                ->setTo('lara@likeavirgin.be')
+                ->setTo('premium@hiflanders.be')
                 ->setSubject($subject)
                 ->setHtmlBody($htmlBody);
 
