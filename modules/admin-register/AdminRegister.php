@@ -149,13 +149,13 @@ class AdminRegister extends BaseModule
         }
 
         $printStatus = $user->getFieldValue('printStatus')->value;
-        $printTotalPayed = $user->getFieldValue('totalPayedPrint')->value;
+        $totalPayedPrint = $user->getFieldValue('totalPayedPrint');
 
         if (empty($printStatus)) {
             $user->setFieldValue('totalPayedPrint', null);
         }
 
-        if (!empty($printStatus) && !empty($printTotalPayed)) {
+        if (!empty($printStatus) && !empty($totalPayedPrint)) {
             $user->setFieldValue('payedPrintDate', new DateTime('now', new DateTimeZone('Europe/Brussels')));
         }
     }
