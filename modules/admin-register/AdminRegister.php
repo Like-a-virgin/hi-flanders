@@ -149,8 +149,14 @@ class AdminRegister extends BaseModule
         }
 
         $printStatus = $user->getFieldValue('printStatus')->value;
+        $printTotalPayed = $user->getFieldValue('totalPayedPrint')->value;
+
         if (empty($printStatus)) {
             $user->setFieldValue('totalPayedPrint', null);
+        }
+
+        if (!empty($printStatus) && !empty($printTotalPayed)) {
+            $user->setFieldValue('payedPrintDate', new DateTime('now', new DateTimeZone('Europe/Brussels')));
         }
     }
 
@@ -336,7 +342,7 @@ class AdminRegister extends BaseModule
 
             // Prepare and send the email
             $message = $mailer->compose()
-                ->setTo('premium@hiflanders.be')
+                ->setTo('claudine@likeavirgin.be')
                 ->setSubject($subject)
                 ->setHtmlBody($htmlBody);
 
