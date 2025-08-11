@@ -1,3 +1,4 @@
+{% set user = user ?? currentUser %}
 {% set extraMembers = craft.entries.section('extraMembers').parentMember(user.id).all() %}
 {% set cardRate = craft.entries.section('rates').memberType('card').one() %}
 {% set currentDate = now %}
