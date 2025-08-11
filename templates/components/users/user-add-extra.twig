@@ -38,7 +38,7 @@
                     required: true
                 }) }}
             </div>
-            <div class="formbox__column">                
+            <div class="formbox__column--full">                
                 <label class="formbox__label" for="birthday">{{'Geboortedatum'|t}}</label>
                 {{ input('text', 'fields[birthday]', null, {
                     id: 'birthday',
@@ -48,7 +48,56 @@
                     min: minDate
                 }) }}
             </div>   
-            <button class="formbox__button formbox__button--sec formbox__column">{{'Voeg toe'|t}}</button>
+            <div class="formbox__column--full">                
+                <label class="formbox__label" for="country">{{'Land'|t}}</label>
+                {{ input('text', 'fields[country]', 'België'|t, {
+                    id: 'country',
+                    placeholder: 'Land'|t,
+                    required: true,
+                    readonly: true
+                }) }}
+            </div>   
+            <div class="formbox__column">                
+                <label class="formbox__label" for="street">{{'Straat'|t}}</label>
+                {{ input('text', 'fields[street]', null, {
+                    id: 'street',
+                    placeholder: 'Straat'|t,
+                    required: true,
+                }) }}
+            </div>   
+            <div class="formbox__column--1-4">                
+                <label class="formbox__label" for="streetNr">{{'Nr'|t}}</label>
+                {{ input('text', 'fields[streetNr]', null, {
+                    id: 'streetNr',
+                    placeholder: 'Nr'|t,
+                    required: true,
+                }) }}
+            </div>   
+            <div class="formbox__column--1-4">                
+                <label class="formbox__label" for="bus">{{'Bus'|t}}</label>
+                {{ input('text', 'fields[bus]', null, {
+                    id: 'bus',
+                    placeholder: 'Bus'|t,
+                    required: true,
+                }) }}
+            </div>   
+            <div class="formbox__column">                
+                <label class="formbox__label" for="postalCode">{{'Postcode'|t}}</label>
+                {{ input('text', 'fields[postalCode]', null, {
+                    id: 'postalCode',
+                    placeholder: 'Postcode'|t,
+                    required: true,
+                }) }}
+            </div>   
+            <div class="formbox__column">                
+                <label class="formbox__label" for="city">{{'Stad'|t}}</label>
+                {{ input('text', 'fields[city]', null, {
+                    id: 'city',
+                    placeholder: 'Stad'|t,
+                    required: true,
+                }) }}
+            </div>   
+            <button class="formbox__button formbox__button--sec formbox__column--full">{{'Voeg toe'|t}}</button>
         </form>
     </div>
 </div>

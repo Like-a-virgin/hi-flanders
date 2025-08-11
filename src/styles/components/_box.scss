@@ -458,7 +458,7 @@
     max-width: 50rem;
 }
 
-.box--member, .box--total {
+.box--member, .box--total { 
     .box__heading {
         border-radius: $br;
         transition: 0.1s ease border-radius;
@@ -467,6 +467,7 @@
             cursor: pointer;
         }
     }
+    
     .box__content {
         padding-block: 0;
         display: block;

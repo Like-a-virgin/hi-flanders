@@ -12,31 +12,29 @@
             </div>
         {% endif %} 
 
-        <div class="box box--member" x-data="{openMember: false}" :class="openMember ? 'box--member-open' : ''">
+        <div class="box" x-data="{openMember: false}" :class="openMember ? 'box--member-open' : ''">
             <div @click="openMember = ! openMember" class="box__heading box__heading--center">
                 <h3>{{item.title}} - ID: (008) {{item.id}}</h3>
                 {{ svg("assets/icons/chevron-down.svg")|attr({class: 'box__icon box__icon--chevron' }) }}
             </div>
-            <div class="box__content" x-collapse x-show="openMember">
+            <div class="box__content" x-collapse x-show="openMember" x-data="{ editChild: false}">
                 <div class="box__wrapper">
-                    <div class="box__column box__column--2">            
-                        <p>{{'Voornaam'|t}}</p>
-                        <div class="box__info">
-                            <p>{{ item.altFirstName|capitalize }}</p>
-                        </div>
-                    </div>
-                    <div class="box__column box__column--2">            
-                        <p>{{'Familienaam'|t}}</p>
-                        <div class="box__info">
-                            <p>{{ item.altLastName }}</p>
-                        </div>
-                    </div>
-                    <div class="box__column box__column--2">            
-                        <p>{{'Geboortedatum'|t}}</p>
-                        <div class="box__info">
-                            <p>{{ item.birthday|date("d/m/Y") }}</p>
-                        </div>
-                    </div>
+                    <h3 class="box__column--4">{{'Gegevens'|t}}</h3>
+                    {% include "components/info-box.twig" with {
+                        span: 2,
+                        label: 'Voornaam'|t, 
+                        info: item.altFirstName|capitalize
+                    } %} 
+                    {% include "components/info-box.twig" with {
+                        span: 2,
+                        label: 'Familienaam'|t, 
+                        info: item.altLastName
+                    } %} 
+                    {% include "components/info-box.twig" with {
+                        span: 2,
+                        label: 'Geboortedatum'|t, 
+                        info: item.birthday|date("d/m/Y")
+                    } %} 
                     <div class="box__column box__column--2 ">            
                         <p>{{'Lidmaatschap'|t}}</p>
                         <div class="box__info {{ not overAged ? ' box__info--prim' : ' box__info--error'}}">
@@ -47,6 +45,102 @@
                         </div>
                     </div>
                 </div>
+                <div class="box__wrapper" x-show="!editChild">
+                    <div class="box__column box__column--4 box__column--flex-between">
+                        <h3>{{'Adres'|t}}</h3>
+                        {% if user.id is same as item.author.id %}
+                            <button @click="editChild = true" class="box__function-btn">{{'Wijzigen'|t}} {{ svg("assets/icons/edit.svg")|attr({class: 'box__icon-option box__icon-edit' }) }}</button>
+                        {% endif %}
+                    </div>   
+                    {% include "components/info-box.twig" with {
+                        span: 2,
+                        label: 'Land'|t, 
+                        info: item.country ?? '/'
+                    } %} 
+                    {% include "components/info-box.twig" with {
+                        span: 1,
+                        label: 'Postcode'|t, 
+                        info: item.postalCode ?? '/'
+                    } %}
+                    {% include "components/info-box.twig" with {
+                        span: 1,
+                        label: 'Stad'|t, 
+                        info: item.city ?? '/'
+                    } %}
+                    {% include "components/info-box.twig" with {
+                        span: 2,
+                        label: 'Straat'|t, 
+                        info: item.street ?? '/'
+                    } %}
+                    {% include "components/info-box.twig" with {
+                        span: 1,
+                        label: 'Nr'|t, 
+                        info: item.streetNr ?? '/'
+                    } %}
+                    {% include "components/info-box.twig" with {
+                        span: 1,
+                        label: 'Bus'|t, 
+                        info: item.bus ?? '/'
+                    } %}
+                </div>
+                <form x-show="editChild" class="edit" method="post" accept-charset="UTF-8" enctype="multipart/form-data">
+                    {{ csrfInput() }}
+                    {{ actionInput('entries/save-entry') }}
+                    {{ hiddenInput('entryId', item.id) }}
+
+                    <div class="box__column box__column--4 box__column--flex-between">
+                        <h3>{{'Adres'|t}}</h3>
+                    </div>  
+                    <div class="edit__column--2">
+                        <label class="edit__label" for="country">{{'Land'|t}}</label>
+                        {{ input('text', 'fields[country]', user.country ?? null, {
+                            id: 'country',
+                            placeholder: 'Land',
+                            required: true,
+                            readonly: true
+                        }) }}
+                    </div>
+                    <div class="edit__column">
+                        <label class="edit__label" for="postal-code">{{'Postcode'|t}}</label>
+                        {{ input('text', 'fields[postalCode]', user.postalCode ?? null, {
+                            id: 'postal-code',
+                            placeholder: 'Postcode',
+                            required: true
+                        }) }}
+                    </div>
+                    <div class="edit__column">
+                        <label class="edit__label" for="city">{{'Stad'|t}}</label>
+                        {{ input('text', 'fields[city]', user.city ?? null, {
+                            id: 'city',
+                            placeholder: 'Stad',
+                            required: true
+                        }) }}
+                    </div>
+                    <div class="edit__column--2">
+                        <label class="edit__label" for="street">{{ 'Straat'|t }}</label>
+                        {{ input('text', 'fields[street]', user.street ?? null, {
+                            id: 'street',
+                            placeholder: 'Straat',
+                            required: true
+                        }) }}
+                    </div>
+                    <div class="edit__column--1-4">
+                        <label class="edit__label" for="number">{{'Nr'|t}}</label>
+                        {{ input('text', 'fields[streetNr]', user.streetNr ?? null, {
+                            id: 'number',
+                            placeholder: 'Nr',
+                            required: true
+                        }) }}
+                    </div>
+                    <div class="edit__column--1-4">
+                        <label class="edit__label" for="email">{{ 'Bus'|t }}</label>
+                        {{ input('text', 'fields[bus]', user.bus ?? null, {
+                            id: 'bus',
+                            placeholder: 'bus'
+                        }) }}
+                    </div>
+                    <button type="submit" @click="edit = false" class="box__function-btn box__function-btn--save">{{'Opslaan'|t}}</button>
+                </form>
                 {% if user.organisation %}                
                     <form class="box__delete" method="post">
                         {{ csrfInput() }}
