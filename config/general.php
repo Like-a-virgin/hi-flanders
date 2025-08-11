@@ -29,4 +29,5 @@ return GeneralConfig::create()
     ->defaultCpLocale('nl-BE')
     // ->disabledUtilities(['system-messages']);
     ->purgePendingUsersDuration(0)
+    ->elevatedSessionDuration(0)
 ;

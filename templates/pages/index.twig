@@ -6,12 +6,9 @@
     {# {% if craft.app.user.identity and craft.app.user.identity.admin %}
         {% redirect url('admin') %}
     {% else %} #}
-    
-        {% set user = user ?? currentUser %}
-
-        {% if user.inGroup('members') or user.inGroup('membersGroup') %}    
+        {% if currentUser.inGroup('members') or currentUser.inGroup('membersGroup') %}    
             {% include "pages/user.twig" %} 
-        {% elseif user.inGroup('membersAdmin') or user.inGroup('membersAdminSuper') or (craft.app.user.identity and craft.app.user.identity.admin) %}
+        {% elseif currentUser.inGroup('membersAdmin') or currentUser.inGroup('membersAdminSuper') or (craft.app.user.identity and craft.app.user.identity.admin) %}
             {{ sprig('sprig-components/dashboard.twig')}}
         {% endif %}
 

@@ -1,3 +1,23 @@
+{% macro errorList(errors) %}
+    {% if errors %}
+        {{ ul(errors, {class: 'errors'}) }}
+    {% endif %}
+{% endmacro %}
+
+{% set user = craft.app.session.getFlash('user') ?? craft.app.urlManager.getRouteParams().user ?? selectedMember %}
+
+{% set errors = user.getErrors() %}
+
+{% if user and errors %}
+    <div>
+        {% for item in errors %}
+            <div class="formbox__error formbox__column--full">
+                <p>{{ item|first }}</p>
+            </div>
+        {% endfor %}
+    </div>
+{% endif %}
+
 <div class="box__wrapper box__wrapper--labels" x-show="!editBday">
     {% if selectedMember.inGroup('members') or selectedMember.inGroup('membersGroup') and isAdmin %} 
         <div class="box__column box__column--4 box__column--flex-between">
@@ -58,7 +78,7 @@
         {{ actionInput('users/save-user') }}
         {{ hiddenInput('userId', selectedMember.id) }}
         {{ redirectInput(currentSite.baseUrl ~ '?' ~ urlFilters) }}
-        {{ input('hidden', 'username', selectedMember.email ? selectedMember.email : '') }}
+        {{ input('hidden', 'username', selectedMember.email ? selectedMember.email : '') }} 
         
         {% include "components/subtitle-box.twig" with {
             subtitle: 'Persoonsgegevens'|t
