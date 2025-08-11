@@ -81,32 +81,32 @@
                     {% include "components/info-box.twig" with {
                         span: 2, 
                         label: 'Straat'|t, 
-                        info: selectedKid.street|capitalize 
+                        info: selectedKid.street ? selectedKid.street|capitalize : '/'
                     } %}
                     {% include "components/info-box.twig" with {
                         span: 1, 
                         label: 'Nr'|t, 
-                        info: selectedKid.streetNr
+                        info: selectedKid.streetNr ?? '/'
                     } %}
                     {% include "components/info-box.twig" with {
                         span: 1, 
                         label: 'Bus'|t, 
-                        info: selectedKid.bus|capitalize
+                        info: selectedKid.bus ? selectedKid.bus|capitalize : '/'
                     } %}
                     {% include "components/info-box.twig" with {
                         span: 2, 
                         label: 'Land'|t, 
-                        info: selectedKid.country|capitalize
+                        info: selectedKid.country ? selectedKid.country|capitalize : '/'
                     } %}
                     {% include "components/info-box.twig" with {
                         span: 1, 
                         label: 'Postcode'|t, 
-                        info: selectedKid.postalCode
+                        info: selectedKid.postalCode ?? '/'
                     } %}
                     {% include "components/info-box.twig" with {
                         span: 1, 
                         label: 'Stad'|t, 
-                        info: selectedKid.city|capitalize
+                        info: selectedKid.city ? selectedKid.city|capitalize : '/'
                     } %}
                 </div>
                 <form x-show="editAddress" class="edit" method="post" accept-charset="UTF-8" enctype="multipart/form-data">
@@ -179,7 +179,10 @@
                                 <div class="box__info box__info--prim">
                                     <p>{{ item.altFirstName }} {{ item.altLastName }} - (008) {{item.customMemberId|slice(0, 3)}} {{item.customMemberId|slice(3, 3)}} {{item.customMemberId|slice(6, 3)}} {{item.customMemberId|slice(9, 3)}}</p>
                                     <a class="box__link" href="/?memberId={{ item.id }}">{{ 'Bekijk info'|t }}</a>
-                                </div>                   
+                                </div> 
+                                {% if selectedKid.author.id is same as item.id  %}
+                                    <p>{{ item.fullName }} {{ 'heeft het kind aangemaakt'|t }}</p>                
+                                {% endif %}
                             </div>
                         {% endfor %}
                     {% else %}

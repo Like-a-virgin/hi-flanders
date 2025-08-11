@@ -27,6 +27,8 @@ class CsvExtraController extends Controller
         }
 
         $fields = $kid->getFieldValues();
+        $bus = !empty($fields['bus']) ? 'bus ' . $fields['bus'] : '';
+
 
         // Prepare CSV data
         $csvHeaders = [
@@ -41,8 +43,8 @@ class CsvExtraController extends Controller
         ];
 
         $kidsId = $kid->id ?? '';
-        $street = '';
-        $city = '';
+        $street = $fields['street'] . ' ' . $fields['streetNr'] . ' ' . $bus;
+        $city = $fields['postalCode'] . ' ' . $fields['city'] ?? '';
         $name = $fields['altFirstName'] . ' ' . $fields['altLastName'] ?? '';
         $memberId = '008-' . trim(chunk_split($kidsId, 3, ' '));
         $birthday = $fields['birthday'] ? $fields['birthday']->format('d/m/Y') : '';
