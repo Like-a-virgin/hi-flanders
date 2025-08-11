@@ -228,9 +228,11 @@
 		<div class="filter">
 			<button @click="openOption === 3 ? openOption = 0 : openOption = 3" title="{{'Exporteren als'|t}}" class="filter__option-btn" :class="openOption === 3 ? 'filter__option-btn--open' : ''">{{svg('assets/icons/download.svg')|attr({class: "filter__option-icon"})}}</button>
 			<div class="filter__box filter__box--new" x-show="openOption === 3" @click.outside="openOption = 0">
-				<a href="/export-users?{{ filters|url_encode }}" title="{{'Download excel'|t}}" class="filter__btn">Excel</a>
-				<a href="/bulk-generate-eti?{{ filters|url_encode }}" title="{{'Download .eti'|t}}" class="filter__btn">.ETI</a>
 				<a href="/bulk-generate-csv?{{ filters|url_encode }}" title="{{'Download csv'|t}}" class="filter__btn">csv</a>
+				{% if membersQuery|length < 501 %}
+					<a href="/export-users?{{ filters|url_encode }}" title="{{'Download excel'|t}}" class="filter__btn">Excel</a>
+				{% endif %}
+				<a href="/bulk-generate-eti?{{ filters|url_encode }}" title="{{'Download .eti'|t}}" class="filter__btn">.ETI</a>
 			</div>
 		</div>
 		{# {% if oldMembers and isAdmin %}		
