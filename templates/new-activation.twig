@@ -1,10 +1,10 @@
 {% extends "layouts/base.twig" %}
 
 {% block content %}
-    {% set redirect = craft.entries().id(199).one() %}
+    {% set redirect = craft.entries().id(9582).one() %}
     <div class="formbox">
         <div class="formbox__heading">
-            <h2>{{'Nieuw activatiemail versturen'|t}}</h2>
+            <h2>{{'Nieuwe activatielink aanvragen'|t}}</h2>
         </div>
         <form method="post" accept-charset="UTF-8" class="formbox__form formbox__form--padding-bottom">
             {{ csrfInput() }}

@@ -27,9 +27,6 @@ class ResendController extends Controller
             if ($user->status === UserElement::STATUS_PENDING) {
                 // Option A: call the service method directly
                 $users->sendActivationEmail($user);
-            } else {
-                // Otherwise, fall back to password reset
-                $users->sendPasswordResetEmail($user);
             }
         }
 

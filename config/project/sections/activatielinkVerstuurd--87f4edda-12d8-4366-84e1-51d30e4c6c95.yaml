@@ -1,0 +1,38 @@
+defaultPlacement: end
+enableVersioning: true
+entryTypes:
+  -
+    uid: 3fab0971-effa-4787-a88b-2778ab3228d6 # Notify
+handle: activatielinkVerstuurd
+maxAuthors: 1
+name: 'Activatielink verstuurd'
+previewTargets:
+  -
+    __assoc__:
+      -
+        - label
+        - 'Primary entry page'
+      -
+        - urlFormat
+        - '{url}'
+      -
+        - refresh
+        - '1'
+propagationMethod: all
+siteSettings:
+  359a39c5-8655-460f-a1b4-0c097ea0edb2: # Ledensysteem
+    enabledByDefault: true
+    hasUrls: true
+    template: pages/notify.twig
+    uriFormat: activatielink-verstuurd
+  d74da9d4-3821-46f5-8cf4-f7c4d12c04df: # Ledensysteem fr
+    enabledByDefault: true
+    hasUrls: true
+    template: pages/notify.twig
+    uriFormat: activatielink-verstuurd
+  dad48958-bcb3-4253-9f7e-868f67fa27b0: # Ledensysteem en
+    enabledByDefault: true
+    hasUrls: true
+    template: pages/notify.twig
+    uriFormat: activatielink-verstuurd
+type: single

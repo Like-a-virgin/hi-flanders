@@ -1,4 +1,4 @@
-dateModified: 1754916901
+dateModified: 1754918473
 elementSources:
   craft\elements\Entry:
     -
@@ -65,6 +65,7 @@ elementSources:
               - e633efea-afa2-411f-9fc3-06d84f219d9b # Bedankt betaling
               - b79564a0-5366-488d-b437-7257e8b76275 # Succes e-mail wijziging
               - af17efa6-765d-4c48-99b6-d836a037abd9 # Succes registratie
+              - 87f4edda-12d8-4366-84e1-51d30e4c6c95 # Activatielink verstuurd
         elementType: craft\elements\Entry
         fieldContext: global
       defaultSort:
@@ -199,6 +200,7 @@ meta:
     52ac72a5-0a6a-42ba-9e72-995b76380054: Logo # Logo
     72e433d6-096f-4419-aec5-dbd79c444034: Switch # Switch
     77d8ae37-4c00-4972-aab9-94dd08c7f29c: SimpleText # SimpleText
+    87f4edda-12d8-4366-84e1-51d30e4c6c95: 'Activatielink verstuurd' # Activatielink verstuurd
     88eaa50e-c3b0-4b36-a2b9-11ef935830aa: 'min Leeftijd' # min Leeftijd
     91c6a56d-e6ba-4757-a97d-293bf13c9115: Error # Error
     93edcc59-32ca-4780-9d52-1d1fc486519a: 'Lid ouder' # Lid ouder
