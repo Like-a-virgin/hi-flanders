@@ -1,0 +1,33 @@
+{% extends "layouts/base.twig" %}
+
+{% block content %}
+    {% set redirect = craft.entries().id(199).one() %}
+    <div class="formbox">
+        <div class="formbox__heading">
+            <h2>{{'Nieuw activatiemail versturen'|t}}</h2>
+        </div>
+        <form method="post" accept-charset="UTF-8" class="formbox__form formbox__form--padding-bottom">
+            {{ csrfInput() }}
+            {{ actionInput('resend-activation/resend/send') }}
+            {{ redirectInput(redirect.url) }}
+
+            <div class="formbox__column--full ">
+                <label for="loginName">E‑mail</label>
+                {{ input('text', 'loginName', '', {
+                    id: 'loginName',
+                    required: true,
+                    autocomplete: 'email'
+                }) }}
+            </div>
+
+            <button class="formbox__button formbox__column--full"  type="submit">{{ 'Nieuw link versturen'|t }}</button>
+        </form>
+    </div>
+
+    {% if craft.app.session.hasFlash('notice') %}
+    <p class="notice">{{ craft.app.session.getFlash('notice') }}</p>
+    {% endif %}
+    {% if craft.app.session.hasFlash('success') %}
+    <p class="success">{{ craft.app.session.getFlash('success') }}</p>
+    {% endif %}
+{% endblock %}

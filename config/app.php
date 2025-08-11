@@ -39,6 +39,7 @@ use modules\membershippayments\MembershipPayments;
 use modules\oldmembers\OldMembers;
 use modules\rateextramember\RateExtraMember;
 use modules\ratemember\RateMember;
+use modules\resendactivation\ResendActivation;
 use modules\submissions\Submissions;
 use modules\userfullname\UserFullName;
 
@@ -64,6 +65,7 @@ return [
         'submissions' => Submissions::class,
         'account-api' => AccountApi::class,
         'csv-generator' => CsvGenerator::class,
+        'resend-activation' => ResendActivation::class,
     ], 
     'bootstrap' => [
         'admin-register',
@@ -85,5 +87,6 @@ return [
         'submissions',
         'account-api',
         'csv-generator',
+        'resend-activation',
     ],
 ];
