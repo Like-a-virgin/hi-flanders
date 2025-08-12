@@ -33,9 +33,9 @@
             {% endif %}
             {% if user.requestPrint %}
                 <div class="box__column box__column--4">     
-                    <div class="box__info {{ user.payedPrintDate|date('Y-m-d', 'Europe/Brussels')|date('U', 'Europe/Brussels') < dueDate|date('Y-m-d', 'Europe/Brussels')|date('U', 'Europe/Brussels') and not renew and not requestPrintIsToday ? 'box__info--sec' }}">
+                    <div class="box__info {{ not noPrintStatus ? 'box__info--sec' }}">
                         <p>{{ cardRate.title }}</p>
-                        <p>{{ user.payedPrintDate|date('Y-m-d', 'Europe/Brussels')|date('U', 'Europe/Brussels') < dueDate|date('Y-m-d', 'Europe/Brussels')|date('U', 'Europe/Brussels') and not renew and not requestPrintIsToday ? 'Reeds betaald'|t : cardRate.price|money }}</p>
+                        <p>{{ not noPrintStatus ? 'Reeds betaald'|t : cardRate.price|money }}</p>
                     </div>
                 </div>
             {% endif %}

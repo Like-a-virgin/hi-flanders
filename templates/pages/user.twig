@@ -18,7 +18,7 @@
 
 {% set userRate = user.memberRate.one() %}
 
-{% if requestPrintIsToday and not user.requestPrintSend %}
+{% if requestPrintIsToday and noPrintStatus %}
     {% set totalPrice = totalPrice ? totalPrice.add(cardRate.price) : cardRate.price %}
 {% endif %}
 
@@ -257,8 +257,8 @@
 
                                 <button class="box__function-btn box__function-btn--save">{{'Aanvraag fysieke lidkaart'|t}}</button>
                             </form>
-                        {% elseif user.requestPrintSend and not requestPrintIsToday %}
-                            {# <a href="{{ craft.entries().section('forms').lostCard(true).one() ? craft.entries().section('forms').lostCard(true).one().url }}" class="box__function-btn box__function-btn--save">{{'Verloren lidkaart melden'|t}}</a> #}
+                        {% elseif not noPrintStatus  %}
+                            <a href="{{ craft.entries().section('forms').lostCard(true).one() ? craft.entries().section('forms').lostCard(true).one().url }}" class="box__function-btn box__function-btn--save">{{'Verloren lidkaart melden'|t}}</a>
                         {% endif %}
                     </div>  
                     <div class="box__column box__column--4">                    
@@ -268,7 +268,7 @@
                                 info: 'Online'|t
                             } %}
                             <p>{{'Je hebt een fysieke lidkaart aangevraagd op'|t}} {{user.requestPrint|date('d-m-Y')}}. {{'je aanvraag wordt verstuurd wanneer je hebt betaald.'|t}}</p>
-                        {% elseif user.requestPrint and user.payedPrintDate and not renew and not user.printStatus.value %}       
+                        {% elseif not noPrintStatus  %}       
                             {% include "components/info-box.twig" with {
                                 span: 4,
                                 info: 'Fysieke lidkaart & Online'|t
