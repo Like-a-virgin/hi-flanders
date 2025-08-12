@@ -47,13 +47,28 @@ class PaymentController extends Controller
         }
 
         $paymentType = $user->getFieldValue('paymentType');
+
         $memberDueDate = $user->getFieldValue('memberDueDate');
-        $monthBeforeDueDate = $memberDueDate ? (clone $memberDueDate)->modify('-30 days') : null;
+        $memberDueDateU = null;
+        $monthBeforeDueDateU = null;
 
-        $today = new DateTime();
+        if ($memberDueDate instanceof \DateTimeInterface) {
+            // Normalize to midnight Brussels
+            $memberDueDate = new \DateTime($memberDueDate->format('Y-m-d'), new \DateTimeZone('Europe/Brussels'));
+            $memberDueDateU = (int) $memberDueDate->format('U');
 
-        if (($today >= $monthBeforeDueDate && $today <= $memberDueDate) || $today > $memberDueDate || !$paymentType) {
+            // 30 days before, also midnight Brussels
+            $monthBeforeDueDate = (clone $memberDueDate)->modify('-1 month');
+            $monthBeforeDueDateU = (int) $monthBeforeDueDate->format('U');
+        }
+
+        // Today at midnight Brussels
+        $today = new \DateTime('today', new \DateTimeZone('Europe/Brussels'));
+        $todayU = (int) $today->format('U');
+
+        if (($todayU >= $monthBeforeDueDateU && $todayU <= $memberDueDateU) || $todayU > $memberDueDateU || !$paymentType) {
             $totalMembershipRate = $totalMembershipRate->add($userRate);
+        } else {
         }
 
         $printRequest = $user->getFieldValue('requestPrint');

@@ -236,7 +236,7 @@
                 <div class="box__wrapper">
                     <div class="box__column box__column--4 box__column--flex-between">
                         <h3>{{'Lidkaarttype'|t}}</h3>
-                        {% if user.requestPrint and (renew or noPrintStatus) %}
+                        {% if user.requestPrint and ((renew and requestPrintIsToday) or noPrintStatus) %}
                             <form method="post" accept-charset="UTF-8" enctype="multipart/form-data">
                                 {{ csrfInput() }}
                                 {{ actionInput('users/save-user') }}
@@ -245,7 +245,7 @@
 
                                 <button class="box__function-btn box__function-btn--delete">{{'Fysieke lidkaart annuleren'|t}}</button>
                             </form>
-                        {% elseif (not user.requestPrint and (renew or noPrintStatus)) %}
+                        {% elseif (not user.requestPrint or (renew and not requestPrintIsToday) or noPrintStatus) %}
                             <form method="post" accept-charset="UTF-8" enctype="multipart/form-data">
                                 {{ csrfInput() }}
                                 {{ actionInput('users/save-user') }}
