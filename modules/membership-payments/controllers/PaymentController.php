@@ -48,39 +48,13 @@ class PaymentController extends Controller
 
         $paymentDate = $user->getFieldValue('paymentDate');
         $memberDueDate = $user->getFieldValue('memberDueDate');
+        $monthBeforeDueDate = (clone $memberDueDate)->modify('-30 days');
 
         $today = new DateTime();
 
-        if ($memberDueDate <= $today) {
+        if (($today >= $monthBeforeDueDate && $today <= $memberDueDate) || $today > $memberDueDate) {
             $totalMembershipRate = $totalMembershipRate->add($userRate);
         }
-
-        // $extraMemberIds = [];
-        // $extraMembers = Entry::find()
-        //     ->section('extraMembers')
-        //     ->relatedTo($user)
-        //     ->all();
-
-        // foreach ($extraMembers as $extraMember) {
-        //     $relatedEntry = $extraMember->getFieldValue('memberRate')[0] ?? null;
-    
-        //     if ($relatedEntry) {
-        //         $priceRelatedEntry = $relatedEntry->getFieldValue('price');
-    
-
-        //         if ($priceRelatedEntry) {
-        //             $price = $relatedEntry->getFieldValue('price');
-        //         } else {
-        //             $price = new Money(0, new Currency('EUR')); 
-        //         }
-    
-        //         // Check if extra member is within payment period
-        //         if (!$this->isWithinPaymentPeriod($extraMember)) {
-        //             $totalMembershipRate = $totalMembershipRate->add($price);
-        //             $extraMemberIds[] = $extraMember->id;
-        //         }
-        //     }
-        // }
 
         $printRequest = $user->getFieldValue('requestPrint');
         $printPaydate = $user->getFieldValue('payedPrintDate');
