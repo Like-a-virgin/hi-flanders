@@ -1,31 +1,32 @@
 {% set user = user ?? currentUser %}
+
 {% set extraMembers = craft.entries.section('extraMembers').parentMember(user.id).all() %}
 {% set cardRate = craft.entries.section('rates').memberType('card').one() %}
-{% set currentDate = now %}
 {% set activeUserMember = user.paymentDate and user.memberDueDate and (now <= user.memberDueDate) %}
-{% set today = now|date('Y-m-d') %}
+
+{% set dueDate = user.memberDueDate ? user.memberDueDate|date('U') : null %}
+{% set monthBeforeDueDate = user.memberDueDate|date_modify('-1 month')|date('U') %}
+{% set today = now|date('U') %}
+{% set paymentInWindow = user.paymentDate and (user.paymentDate|date('U') >= monthBeforeDueDate and user.paymentDate|date('U') <= dueDate) %}
+{% set paymentInWindowCard = user.payedPrintDate and (user.payedPrintDate|date('U') >= monthBeforeDueDate and user.payedPrintDate|date('U') <= dueDate) %}
+{% set renew = (today <= dueDate and today >= monthBeforeDueDate and not paymentInWindow) or today > dueDate %}
+
+<pre>
+    {{ dump(paymentInWindow) }}
+</pre>
 
 {% set totalPrice = 0 %}
 {% set totalNonActive = 0 %}
- 
+
 {% set userRate = user.memberRate.one() %}
 
-{% if user.requestPrint and not user.payedPrintDate %}
+{% if (user.requestPrint|date('d-m-Y') is same as today and not user.payedPrintDate) or (renew and not paymentInWindowCard) %}
     {% set totalPrice = totalPrice ? totalPrice.add(cardRate.price) : cardRate.price %}
 {% endif %}
 
-{% if not activeUserMember and userRate.price|money > 0 %}
+{% if renew and userRate.price|money > 0 %}
     {% set totalPrice = totalPrice ? totalPrice.add(userRate.price) : userRate.price %}
 {% endif %}
-
-{% for extra in extraMembers %}
-    {# {% set activeExtraMember = extra.paymentDate and user.memberDueDate and (now >= extra.paymentDate) and (now <= user.memberDueDate) %} #}
-    {% set rate = extra.memberRate.one() %}
-    {# {% if not activeExtraMember %}
-        {% set totalPrice = totalPrice ? totalPrice.add(rate.price) : rate.price %}
-        {% set totalNonActive = totalNonActive + 1 %}
-    {% endif %} #}
-{% endfor %}
 
 {% requireLogin %}
 
@@ -236,8 +237,12 @@
                 </div>
                 <div class="box__wrapper">
                     <div class="box__column box__column--4 box__column--flex-between">
+                        {% set requestPrintIsToday =  user.requestPrint and user.requestPrint|date('d-m-Y') is same as today  %}
                         <h3>{{'Lidkaarttype'|t}}</h3>
-                        {% if user.requestPrint and not user.payedPrintDate %}
+                        <pre>
+                            {{ dump(renew) }}
+                        </pre>
+                        {% if requestPrintIsToday and renew and not paymentInWindowCard %}
                             <form method="post" accept-charset="UTF-8" enctype="multipart/form-data">
                                 {{ csrfInput() }}
                                 {{ actionInput('users/save-user') }}
@@ -246,17 +251,18 @@
 
                                 <button class="box__function-btn box__function-btn--delete">{{'Fysieke lidkaart annuleren'|t}}</button>
                             </form>
-                        {% elseif not user.requestPrint and not user.payedPrintDate %}
+                        {% elseif (not requestPrintIsToday and renew and not paymentInWindowCard) %}
                             <form method="post" accept-charset="UTF-8" enctype="multipart/form-data">
                                 {{ csrfInput() }}
                                 {{ actionInput('users/save-user') }}
                                 {{ hiddenInput('userId', user.id) }}
                                 {{ hiddenInput('fields[requestPrint]', today) }}
+                                {{ hiddenInput('fields[printStatus]', false) }}
 
                                 <button class="box__function-btn box__function-btn--save">{{'Aanvraag fysieke lidkaart'|t}}</button>
                             </form>
-                        {% elseif user.requestPrintSend %}
-                            <a href="{{ craft.entries().section('forms').lostCard(true).one() ? craft.entries().section('forms').lostCard(true).one().url }}" class="box__function-btn box__function-btn--save">{{'Verloren lidkaart melden'|t}}</a>
+                        {% elseif user.requestPrintSend and not requestPrintIsToday %}
+                            {# <a href="{{ craft.entries().section('forms').lostCard(true).one() ? craft.entries().section('forms').lostCard(true).one().url }}" class="box__function-btn box__function-btn--save">{{'Verloren lidkaart melden'|t}}</a> #}
                         {% endif %}
                     </div>  
                     <div class="box__column box__column--4">                    

@@ -166,67 +166,76 @@ class PaymentController extends Controller
 
         $payment = $mollie->payments->get($paymentId);
 
-        if ($payment->isPaid()) {
-            $metadata = $payment->metadata;
+        $metadata = $payment->metadata;
+        $userId = $metadata->userId ?? null;
+        $print = $metadata->print ?? false;
+        $memberships = $metadata->memberships ?? false;
+        $totalAmount = $metadata->total;
+        
+        $paymentDate = new DateTime();
+        $user = null;
+        $newDueDate = null; 
 
-            $userId = $metadata->userId ?? null;
-            // $extraMemberIds = $metadata->extraMemberIds ?? [];
-            $totalAmount = $metadata->total;
-            $print = $metadata->print ?? false;
-            $memberships = $metadata->memberships ?? false;
+        if ($userId) {
+            $user = Craft::$app->users->getUserById($userId);
 
-            $paymentDate = new DateTime();
-            $dueDate = new DateTime();
-            $nextYearDate = $dueDate->add(new DateInterval('P1Y'));
+            if ($user) {
+                $dueDate = $user->getFieldValue('memberDueDate');
 
-            if ($userId) {
-                $user = Craft::$app->users->getUserById($userId);
-                if ($user) {
-                    
-                    if ($memberships) {
-                        $user->setFieldValue('renewedDate', $paymentDate);
-                        $user->setFieldValue('memberDueDate', $nextYearDate);
-                        $user->setFieldValue('paymentDate', $paymentDate);
-                        $user->setFieldValue('paymentType', 'online');
-                        $user->setFieldValue('customStatus', 'active');
-                        $user->setFieldValue('totalPayedMembers', $metadata->membershipTotal);                       
-                    }
-                    
-                    if ($print) {
-                        $user->setFieldValue('totalPayedPrint', $metadata->printTotal);
-                        $user->setFieldValue('payedPrintDate', $paymentDate);
-                        $user->setFieldValue('printStatus', 'requested');
-                    }
-                        
-                    if (Craft::$app->elements->saveElement($user, false)) {
-                        Craft::info("User payment updated successfully: {$userId}", __METHOD__);
-    
-                        if ($memberships) {
-                            $this->sendAccountConfirmationEmail($user);
-                        }
-    
-                        if ($print) {
-                            $this->sendPrintDetailsOwner($user);
-                        }
-    
-                        $this->sendPaymentConfirmationEmail($user, $totalAmount);
+                if (!$dueDate instanceof \DateTimeInterface) {
+                    $dueDate = new DateTime('today');
+                }
 
-                        return $this->asJson(['success' => true]);
-                    } else {
-                        Craft::error("Failed to update user payment for user ID: {$userId}", __METHOD__);
-                    }
+                $oneYear = new DateInterval('P1Y');
+                $monthBeforeDueDate = (clone $dueDate)->modify('-1 month');
+                $today = new DateTime('today');
+
+                // Rule A: payment BETWEEN monthBeforeDueDate and dueDate (inclusive of start, exclusive of end) → extend current due date by 1 year
+                if ($paymentDate >= $monthBeforeDueDate && $paymentDate < $dueDate) {
+                    $newDueDate = (clone $dueDate)->add($oneYear);
+
+                // Rule B: payment AFTER due date → today + 1 year
+                } else {
+                    $newDueDate = (clone $today)->add($oneYear);
                 }
             }
+        }
 
-            // foreach ($extraMemberIds as $extraMemberId) {
-            //     $extraMember = Entry::find()->id($extraMemberId)->one();
-            //     if ($extraMember) {
-            //         $extraMember->setFieldValue('paymentDate', $paymentDate);
-            //         if (!Craft::$app->elements->saveElement($extraMember, false)) {
-            //             Craft::error('Failed to update extra member payment date for entry ID ' . $extraMemberId, __METHOD__);
-            //         }
-            //     }
-            // }
+        if ($payment->isPaid()) {
+            if ($userId) {
+                if ($memberships) {
+                    $user->setFieldValue('renewedDate', $paymentDate);
+                    $user->setFieldValue('memberDueDate', $newDueDate);
+                    $user->setFieldValue('paymentDate', $paymentDate);
+                    $user->setFieldValue('paymentType', 'online');
+                    $user->setFieldValue('customStatus', 'active');
+                    $user->setFieldValue('totalPayedMembers', $metadata->membershipTotal);                       
+                }
+                
+                if ($print) {
+                    $user->setFieldValue('totalPayedPrint', $metadata->printTotal);
+                    $user->setFieldValue('payedPrintDate', $paymentDate);
+                    $user->setFieldValue('printStatus', 'requested');
+                }
+                    
+                if (Craft::$app->elements->saveElement($user, false)) {
+                    Craft::info("User payment updated successfully: {$userId}", __METHOD__);
+    
+                    if ($memberships) {
+                        $this->sendAccountConfirmationEmail($user);
+                    }
+    
+                    if ($print) {
+                        $this->sendPrintDetailsOwner($user);
+                    }
+    
+                    $this->sendPaymentConfirmationEmail($user, $totalAmount);
+
+                    return $this->asJson(['success' => true]);
+                } else {
+                    Craft::error("Failed to update user payment for user ID: {$userId}", __METHOD__);
+                }
+            }
         }
 
         return $this->asJson(['success' => true]);
