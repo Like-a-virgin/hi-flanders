@@ -46,18 +46,18 @@ class PaymentController extends Controller
             $userRate = new Money(0, new Currency('EUR')); 
         }
 
-        $paymentDate = $user->getFieldValue('paymentDate');
+        $paymentType = $user->getFieldValue('paymentType');
         $memberDueDate = $user->getFieldValue('memberDueDate');
-        $monthBeforeDueDate = (clone $memberDueDate)->modify('-30 days');
+        $monthBeforeDueDate = $memberDueDate ? (clone $memberDueDate)->modify('-30 days') : null;
 
         $today = new DateTime();
 
-        if (($today >= $monthBeforeDueDate && $today <= $memberDueDate) || $today > $memberDueDate) {
+        if (($today >= $monthBeforeDueDate && $today <= $memberDueDate) || $today > $memberDueDate || !$paymentType) {
             $totalMembershipRate = $totalMembershipRate->add($userRate);
         }
 
         $printRequest = $user->getFieldValue('requestPrint');
-        $printPaydate = $user->getFieldValue('payedPrintDate');
+        $printStatus = $user->getFieldValue('printStatus')->value;
 
         $printRateEntry = Entry::find()
         ->section('rates')
@@ -67,7 +67,7 @@ class PaymentController extends Controller
         $printRate = $printRateEntry->getFieldValue('price');
         $print = false;
 
-        if ($printRequest and !$printPaydate) {
+        if ($printRequest && !$printStatus) {
             $totalPrintRate = $totalPrintRate->add($printRate);
         }
 
