@@ -10,6 +10,7 @@
 {% set payedPrint = user.payedPrintDate ? user.payedPrintDate|date('Y-m-d', 'Europe/Brussels')|date('U', 'Europe/Brussels') : null %}
 {% set renew = dueDate and monthBeforeDueDate and ((today >= monthBeforeDueDate and today <= dueDate) or today > dueDate) %}
 {% set noPayment = not user.paymentType.value %}
+{% set noPrintStatus = not user.printStatus.value %}
 {% set requestPrintIsToday = user.requestPrint ? user.requestPrint|date('Y-m-d', 'Europe/Brussels')|date('U', 'Europe/Brussels') == today : false %}
 
 {% set totalPrice = 0 %}
@@ -235,7 +236,7 @@
                 <div class="box__wrapper">
                     <div class="box__column box__column--4 box__column--flex-between">
                         <h3>{{'Lidkaarttype'|t}}</h3>
-                        {% if user.requestPrint and (renew or noPayment) and not user.printStatus.value %}
+                        {% if user.requestPrint and (renew or not user.printStatus.value) %}
                             <form method="post" accept-charset="UTF-8" enctype="multipart/form-data">
                                 {{ csrfInput() }}
                                 {{ actionInput('users/save-user') }}
@@ -244,7 +245,7 @@
 
                                 <button class="box__function-btn box__function-btn--delete">{{'Fysieke lidkaart annuleren'|t}}</button>
                             </form>
-                        {% elseif (not user.requestPrint and (renew or noPayment) and not user.printStatus.value) %}
+                        {% elseif (not user.requestPrint and (renew or not user.printStatus.value)) %}
                             <form method="post" accept-charset="UTF-8" enctype="multipart/form-data">
                                 {{ csrfInput() }}
                                 {{ actionInput('users/save-user') }}
