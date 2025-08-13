@@ -29,7 +29,7 @@ class DailyRenewalCheck extends BaseJob
         foreach ($users as $user) {
             $user->setFieldValue('customStatus', 'renew');
             $user->setFieldValue('statusChangeDate', $currentDate);
-            
+
             $user->setFieldValue('requestPrint', null);
             $user->setFieldValue('printStatus', null);
             $user->setFieldValue('requestPrintSend', null);

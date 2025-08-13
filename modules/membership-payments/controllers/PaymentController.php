@@ -208,6 +208,7 @@ class PaymentController extends Controller
                 } else {
                     $user->setFieldValue('printStatus', '');
                     $user->setFieldValue('requestPrint', null);
+                    $user->setFieldValue('requestPrintSend', false);
                 }
                     
                 if (Craft::$app->elements->saveElement($user, false)) {

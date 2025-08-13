@@ -19,9 +19,7 @@
 {% set totalNonActive = 0 %}
 
 {% set userRate = user.memberRate.one() %}
-<pre>
-    {{ dump(requestPrintInWindow) }}
-</pre>
+
 {% if user.requestPrint and requestPrintInWindow and noPrintStatus %}
     {% set totalPrice = totalPrice ? totalPrice.add(cardRate.price) : cardRate.price %}
 {% endif %}
