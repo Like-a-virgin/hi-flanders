@@ -13,13 +13,15 @@
 {% set noPayment = not user.paymentType.value %}
 {% set noPrintStatus = not user.printStatus.value %}
 {% set requestPrintDate = user.requestPrint|date('Y-m-d', 'Europe/Brussels')|date('U', 'Europe/Brussels') %}
-{% set requestPrintInWindow = requestPrintDate and ((requestPrintDate >= monthBeforeDueDate and requestPrintDate <= dueDate) or requestPrintDate > dueDate) %}
+{% set requestPrintInWindow = (renew and requestPrintDate and dueDate and monthBeforeDueDate and ((requestPrintDate >= monthBeforeDueDate and requestPrintDate <= dueDate) or requestPrintDate > dueDate)) or (not renew and (not user.printStatus.value)) %}
 
 {% set totalPrice = 0 %}
 {% set totalNonActive = 0 %}
 
 {% set userRate = user.memberRate.one() %}
-
+<pre>
+    {{ dump(requestPrintInWindow) }}
+</pre>
 {% if user.requestPrint and requestPrintInWindow and noPrintStatus %}
     {% set totalPrice = totalPrice ? totalPrice.add(cardRate.price) : cardRate.price %}
 {% endif %}
