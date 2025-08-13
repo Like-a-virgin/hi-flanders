@@ -31,11 +31,11 @@
                     </div>
                 {% endfor %}
             {% endif %}
-            {% if user.requestPrint %}
+            {% if (not noPrintStatus and not renew) or (user.requestPrint and requestPrintInWindow and noPrintStatus) %}
                 <div class="box__column box__column--4">     
-                    <div class="box__info {{ not noPrintStatus ? 'box__info--sec' }}">
+                    <div class="box__info {{ not noPrintStatus and not renew ? 'box__info--sec' }}">
                         <p>{{ cardRate.title }}</p>
-                        <p>{{ not noPrintStatus ? 'Reeds betaald'|t : cardRate.price|money }}</p>
+                        <p>{{ not noPrintStatus and not renew ? 'Reeds betaald'|t : cardRate.price|money }}</p>
                     </div>
                 </div>
             {% endif %}

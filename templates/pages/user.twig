@@ -5,20 +5,22 @@
 {% set activeUserMember = user.paymentDate and user.memberDueDate and (now <= user.memberDueDate) %}
 
 {% set dueDate = user.memberDueDate ? user.memberDueDate|date('Y-m-d', 'Europe/Brussels')|date('U', 'Europe/Brussels') : null %}
+{% set dueDatePrint = user.memberDueDate ? user.memberDueDate|date('Y-m-d', 'Europe/Brussels')|date('U', 'Europe/Brussels') : null %}
 {% set monthBeforeDueDate = user.memberDueDate ? user.memberDueDate|date_modify('-1 month')|date('Y-m-d', 'Europe/Brussels')|date('U', 'Europe/Brussels') : null %}
 {% set today = 'now'|date('Y-m-d', 'Europe/Brussels')|date('U', 'Europe/Brussels') %}
 {% set payedPrint = user.payedPrintDate ? user.payedPrintDate|date('Y-m-d', 'Europe/Brussels')|date('U', 'Europe/Brussels') : null %}
 {% set renew = dueDate and monthBeforeDueDate and ((today >= monthBeforeDueDate and today <= dueDate) or today > dueDate) %}
 {% set noPayment = not user.paymentType.value %}
 {% set noPrintStatus = not user.printStatus.value %}
-{% set requestPrintIsToday = user.requestPrint ? user.requestPrint|date('Y-m-d', 'Europe/Brussels')|date('U', 'Europe/Brussels') == today : false %}
+{% set requestPrintDate = user.requestPrint|date('Y-m-d', 'Europe/Brussels')|date('U', 'Europe/Brussels') %}
+{% set requestPrintInWindow = requestPrintDate and ((requestPrintDate >= monthBeforeDueDate and requestPrintDate <= dueDate) or requestPrintDate > dueDate) %}
 
 {% set totalPrice = 0 %}
 {% set totalNonActive = 0 %}
 
 {% set userRate = user.memberRate.one() %}
 
-{% if requestPrintIsToday and noPrintStatus %}
+{% if user.requestPrint and requestPrintInWindow and noPrintStatus %}
     {% set totalPrice = totalPrice ? totalPrice.add(cardRate.price) : cardRate.price %}
 {% endif %}
 
@@ -46,6 +48,9 @@
     <div class="box-valid">    
         <div class="box-valid__valid">
             <p>{{'Vervalt op '|t}} {{user.memberDueDate|date('d-m-Y')}}</p>
+            {% if renew %}
+                <p>{{'Verlengen kan eenvoudig door opnieuw te betalen.'|t}}</p>
+            {% endif %}
         </div>
     </div>
 {% endif %}
@@ -236,7 +241,7 @@
                 <div class="box__wrapper">
                     <div class="box__column box__column--4 box__column--flex-between">
                         <h3>{{'Lidkaarttype'|t}}</h3>
-                        {% if user.requestPrint and ((renew and requestPrintIsToday) or noPrintStatus) %}
+                        {% if user.requestPrint and ((renew and requestPrintInWindow) or noPrintStatus) %}
                             <form method="post" accept-charset="UTF-8" enctype="multipart/form-data">
                                 {{ csrfInput() }}
                                 {{ actionInput('users/save-user') }}
@@ -245,7 +250,7 @@
 
                                 <button class="box__function-btn box__function-btn--delete">{{'Fysieke lidkaart annuleren'|t}}</button>
                             </form>
-                        {% elseif (not user.requestPrint or (renew and not requestPrintIsToday) or noPrintStatus) %}
+                        {% elseif (not user.requestPrint or (renew and not requestPrintInWindow) or noPrintStatus) %}
                             <form method="post" accept-charset="UTF-8" enctype="multipart/form-data">
                                 {{ csrfInput() }}
                                 {{ actionInput('users/save-user') }}
