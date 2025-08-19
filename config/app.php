@@ -33,7 +33,7 @@ use modules\dailychecks\DailyChecks;
 use modules\deactivateuser\DeactivateUser;
 use modules\etigenerator\EtiGenerator;
 use modules\excelusers\ExcelUsers;
-// use modules\flexmail\Flexmail;
+use modules\flexmail\Flexmail;
 use modules\membershippayments\MembershipPayments;
 use modules\oldmembers\OldMembers;
 use modules\rateextramember\RateExtraMember;
@@ -60,7 +60,7 @@ return [
         'daily-checks' => DailyChecks::class,
         'old-members' => OldMembers::class,
         'eti-generator' => EtiGenerator::class,
-        // 'flexmail' => Flexmail::class,
+        'flexmail' => Flexmail::class,
         'submissions' => Submissions::class,
         'account-api' => AccountApi::class,
         'csv-generator' => CsvGenerator::class,
@@ -82,7 +82,7 @@ return [
         'daily-checks',
         'old-members',
         'eti-generator',
-        // 'flexmail',
+        'flexmail',
         'submissions',
         'account-api',
         'csv-generator',
