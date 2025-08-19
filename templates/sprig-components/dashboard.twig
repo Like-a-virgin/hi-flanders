@@ -104,81 +104,81 @@
 		</div>
 		<div class="filter">
 			<button @click="openOption === 1 ? openOption = 0 : openOption = 1" title="Filter" aria-label="{{ 'Filter' }}" class="filter__option-btn" :class="openOption === 1 ? 'filter__option-btn--open' : ''">{{svg('assets/icons/filter.svg')|attr({class: 'filter__option-icon' })}}</button>
-			<div class="filter__box filter__box--filters" x-show="openOption === 1" @click.outside="openOption = 0">
+			<form class="filter__box filter__box--filters" x-show="openOption === 1" @click.outside="openOption = 0">
 				<div class="filter__select-box">
 					<p class="filter__title">{{'Lid type'|t}}</p>
 					<div class="filter__select-row">					
-						<select sprig  class="filter__select" name="memberType" id="">
+						<select  class="filter__select" name="memberType" id="">
 							<option value="" {{ not memberType ? 'selected'}}>{{ 'Selecteer een type'|t }}</option>
 							{% for item in memberTypes %}
 								<option class="filter__option" value="{{item.value}}" {{ memberType == item.value ? 'selected'}}>{{item.label}}</option>
 							{% endfor %}
 						</select>
 						{% if memberType %}
-							<button class="filter__remove" sprig s-val:member-type="{{null}}">{{svg('assets/icons/x.svg')|attr({class:"filter__remove-icon"})}}</button>
+							<button type="button" sprig class="filter__remove" s-val:member-type="{{null}}">{{svg('assets/icons/x.svg')|attr({class:"filter__remove-icon"})}}</button>
 						{% endif %}
 					</div>
 				</div>
 				<div class="filter__select-box">
 					<p class="filter__title">{{'Lidkaart type'|t}}</p>
 					<div class="filter__select-row">					
-						<select sprig  class="filter__select" name="cardType" id="">
+						<select  class="filter__select" name="cardType" id="">
 							<option value="" {{ not cardType ? 'selected'}}>{{ 'Selecteer een lidkaart type'|t }}</option>
 							{% for item in cardTypes %}
 								<option class="filter__option" value="{{item.value}}" {{ cardType == item.value ? 'selected'}}>{{item.label}}</option>
 							{% endfor %}
 						</select>
 						{% if cardType %}
-							<button class="filter__remove" sprig s-val:card-type="{{null}}">{{svg('assets/icons/x.svg')|attr({class:"filter__remove-icon"})}}</button>
+							<button type="button" sprig class="filter__remove" s-val:card-type="{{null}}">{{svg('assets/icons/x.svg')|attr({class:"filter__remove-icon"})}}</button>
 						{% endif %}
 					</div>
 				</div>
 				<div class="filter__select-box">
 					<p class="filter__title">{{'Status'|t}}</p>
 					<div class="filter__select-row">					
-						<select sprig  class="filter__select" name="status" id="">
+						<select  class="filter__select" name="status" id="">
 							<option value="" {{ not status ? 'selected'}}>{{ 'Selecteer een status'|t }}</option>
 							{% for item in statusValues %}
 								<option class="filter__option" value="{{item.value}}" {{ status == item.value ? 'selected'}}>{{item.label}}</option>
 							{% endfor %}
 						</select>
 						{% if status %}
-							<button class="filter__remove" sprig s-val:status="{{null}}">{{svg('assets/icons/x.svg')|attr({class:"filter__remove-icon"})}}</button>
+							<button type="button" sprig class="filter__remove" s-val:status="{{null}}">{{svg('assets/icons/x.svg')|attr({class:"filter__remove-icon"})}}</button>
 						{% endif %}
 					</div>
 				</div>
 				<div class="filter__select-box">
 					<p class="filter__title">{{'Status Fysieke lidkaart'|t}}</p>
 					<div class="filter__select-row">					
-						<select sprig  class="filter__select" name="printStatus" id="">
+						<select  class="filter__select" name="printStatus" id="">
 							<option value="" {{ not printStatus ? 'selected'}}>{{ 'Selecteer een type'|t }}</option>
 							{% for item in printStatuses %}
 								<option class="filter__option" value="{{item.value}}" {{ printStatus == item.value ? 'selected'}}>{{item.label}}</option>
 							{% endfor %}
 						</select>
 						{% if printStatus %}
-							<button class="filter__remove" sprig s-val:print-status="{{null}}">{{svg('assets/icons/x.svg')|attr({class:"filter__remove-icon"})}}</button>
+							<button type="button" sprig class="filter__remove" s-val:print-status="{{null}}">{{svg('assets/icons/x.svg')|attr({class:"filter__remove-icon"})}}</button>
 						{% endif %}
 					</div>
 				</div>
 				<div class="filter__select-box">
 					<p class="filter__title">{{'Betaalmethode'|t}}</p>
 					<div class="filter__select-row">					
-						<select sprig  class="filter__select" name="payMethod">
+						<select  class="filter__select" name="payMethod">
 							<option value="" {{ not payMethod ? 'selected'}}>{{'Selecteer een betaalmethode'|t}}</option>
 							{% for item in paymentMethods %}
 								<option class="filter__option" value="{{item.value}}" {{ payMethod == item.value ? 'selected'}}>{{item.label}}</option>
 							{% endfor %}
 						</select>
 						{% if payMethod %}
-							<button class="filter__remove" sprig s-val:pay-method="{{null}}">{{svg('assets/icons/x.svg')|attr({class:"filter__remove-icon"})}}</button>
+							<button type="button" sprig class="filter__remove" s-val:pay-method="{{null}}">{{svg('assets/icons/x.svg')|attr({class:"filter__remove-icon"})}}</button>
 						{% endif %}
 					</div>
 				</div>
 				<div class="filter__select-box">
 					<p class="filter__title">{{'Leeftijdsgroep'|t}}</p>
 					<div class="filter__select-row">					
-						<select sprig  class="filter__select" name="ageGroup" id="">
+						<select  class="filter__select" name="ageGroup" id="">
 							<option value="{{null}}" {{ not ageGroup ? 'selected'}}>{{'Selecteer een leeftijdsgroep'|t}}</option>
 							{% for item in ageGroups %}
 								<option class="filter__option" value="{{item.id}}" {{ ageGroup == item.id ? 'selected'}}>{{item.minAge}}
@@ -186,7 +186,7 @@
 							{% endfor %}
 						</select>
 						{% if ageGroup %}
-							<button class="filter__remove" sprig s-val:age-group="{{null}}">{{svg('assets/icons/x.svg')|attr({class:"filter__remove-icon"})}}</button>
+							<button type="button" sprig class="filter__remove" s-val:age-group="{{null}}">{{svg('assets/icons/x.svg')|attr({class:"filter__remove-icon"})}}</button>
 						{% endif %}
 					</div>
 				</div>
@@ -196,9 +196,9 @@
 						<label class="filter__date-text" for="pay-min-date">{{'Van:'|t}}</label>
 						<label class="filter__date-text" for="pay-max-date">{{'Tot:'|t}}</label>
 						<div>
-							<input sprig class="filter__date" type="date" id="pay-min-date" name="payMin" s-trigger="change" value="{{payMin}}">
+							<input class="filter__date" type="date" id="pay-min-date" name="payMin" s-trigger="change" value="{{payMin}}">
 						</div>
-						<input sprig class="filter__date" type="date" id="pay-max-date" name="payMax" s-trigger="change" value="{{payMax}}">
+						<input class="filter__date" type="date" id="pay-max-date" name="payMax" s-trigger="change" value="{{payMax}}">
 					</div>
 				</div>
 				<div>
@@ -206,12 +206,18 @@
 					<div class="filter__date-option">
 						<label class="filter__date-text" for="reg-min-date">{{'Van:'|t}}</label>
 						<label class="filter__date-text" for="reg-max-date">Tot:</label>
-						<input sprig class="filter__date" type="date" id="reg-min-date" name="regMin" s-trigger="change" value="{{regMin}}" >
-						<input sprig class="filter__date" type="date" id="reg-max-date" name="regMax" s-trigger="change" value="{{regMax}}" >
+						<input class="filter__date" type="date" id="reg-min-date" name="regMin" s-trigger="change" value="{{regMin}}" >
+						<input class="filter__date" type="date" id="reg-max-date" name="regMax" s-trigger="change" value="{{regMax}}" >
 					</div>
 				</div>
-				<button class="filter__remove-all btn" sprig s-val:pay-method="{{null}}" s-val:card-type="{{null}}" s-val:age-group="{{null}}" s-val:reg-min="{{null}}" s-val:reg-max="{{null}}" s-val:pay-min="{{null}}" s-val:pay-max="{{null}}" s-val:search="{{null}}" s-val:status="{{null}}" s-val:member-type="{{null}}"  s-val:print-status="{{null}}">{{'Verwijder alle filters'}}</button>
-			</div>
+				<div class="filter__btns">
+					{% if cardType or ageGroup or regMin or regMax or payMax or payMin or memberId or status or memberType or printStatus %}
+						<button class="btn" type="button" sprig s-val:pay-method="{{null}}" s-val:card-type="{{null}}" s-val:age-group="{{null}}" s-val:reg-min="{{null}}" s-val:reg-max="{{null}}" s-val:pay-min="{{null}}" s-val:pay-max="{{null}}" s-val:search="{{null}}" s-val:status="{{null}}" s-val:member-type="{{null}}"  s-val:print-status="{{null}}">{{'Verwijder alle filters'}}</button>
+					{% endif %}
+					
+					<button class="btn--prim btn" type="submit">{{ 'Toon resultaten'|t }}</button>
+				</div>
+			</form>
 		</div>
 		<div class="filter">
 				<button @click="openOption === 2 ? openOption = 0 : openOption = 2" title="{{'Nieuwe lid'|t}}" aria-label="{{'Nieuwe lid'|t}}" class="filter__option-btn" :class="openOption === 2 ? 'filter__option-btn--open' : ''">{{svg('assets/icons/user-plus.svg')|attr({class: 'filter__option-icon' })}}</button>
