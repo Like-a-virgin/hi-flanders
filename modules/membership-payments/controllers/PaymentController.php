@@ -46,44 +46,33 @@ class PaymentController extends Controller
             $userRate = new Money(0, new Currency('EUR')); 
         }
 
-        $paymentDate = $user->getFieldValue('paymentDate');
+        $paymentType = $user->getFieldValue('paymentType');
+
         $memberDueDate = $user->getFieldValue('memberDueDate');
+        $memberDueDateU = null;
+        $monthBeforeDueDateU = null;
 
-        $today = new DateTime();
+        if ($memberDueDate instanceof \DateTimeInterface) {
+            // Normalize to midnight Brussels
+            $memberDueDate = new \DateTime($memberDueDate->format('Y-m-d'), new \DateTimeZone('Europe/Brussels'));
+            $memberDueDateU = (int) $memberDueDate->format('U');
 
-        if ($memberDueDate <= $today) {
-            $totalMembershipRate = $totalMembershipRate->add($userRate);
+            // 30 days before, also midnight Brussels
+            $monthBeforeDueDate = (clone $memberDueDate)->modify('-1 month');
+            $monthBeforeDueDateU = (int) $monthBeforeDueDate->format('U');
         }
 
-        // $extraMemberIds = [];
-        // $extraMembers = Entry::find()
-        //     ->section('extraMembers')
-        //     ->relatedTo($user)
-        //     ->all();
+        // Today at midnight Brussels
+        $today = new \DateTime('today', new \DateTimeZone('Europe/Brussels'));
+        $todayU = (int) $today->format('U');
 
-        // foreach ($extraMembers as $extraMember) {
-        //     $relatedEntry = $extraMember->getFieldValue('memberRate')[0] ?? null;
-    
-        //     if ($relatedEntry) {
-        //         $priceRelatedEntry = $relatedEntry->getFieldValue('price');
-    
-
-        //         if ($priceRelatedEntry) {
-        //             $price = $relatedEntry->getFieldValue('price');
-        //         } else {
-        //             $price = new Money(0, new Currency('EUR')); 
-        //         }
-    
-        //         // Check if extra member is within payment period
-        //         if (!$this->isWithinPaymentPeriod($extraMember)) {
-        //             $totalMembershipRate = $totalMembershipRate->add($price);
-        //             $extraMemberIds[] = $extraMember->id;
-        //         }
-        //     }
-        // }
+        if (($todayU >= $monthBeforeDueDateU && $todayU <= $memberDueDateU) || $todayU > $memberDueDateU || !$paymentType) {
+            $totalMembershipRate = $totalMembershipRate->add($userRate);
+        } else {
+        }
 
         $printRequest = $user->getFieldValue('requestPrint');
-        $printPaydate = $user->getFieldValue('payedPrintDate');
+        $printStatus = $user->getFieldValue('printStatus')->value;
 
         $printRateEntry = Entry::find()
         ->section('rates')
@@ -93,7 +82,7 @@ class PaymentController extends Controller
         $printRate = $printRateEntry->getFieldValue('price');
         $print = false;
 
-        if ($printRequest and !$printPaydate) {
+        if ($printRequest && !$printStatus) {
             $totalPrintRate = $totalPrintRate->add($printRate);
         }
 
@@ -166,67 +155,80 @@ class PaymentController extends Controller
 
         $payment = $mollie->payments->get($paymentId);
 
-        if ($payment->isPaid()) {
-            $metadata = $payment->metadata;
+        $metadata = $payment->metadata;
+        $userId = $metadata->userId ?? null;
+        $print = $metadata->print ?? false;
+        $memberships = $metadata->memberships ?? false;
+        $totalAmount = $metadata->total;
+        
+        $paymentDate = new DateTime();
+        $user = null;
+        $newDueDate = null; 
 
-            $userId = $metadata->userId ?? null;
-            // $extraMemberIds = $metadata->extraMemberIds ?? [];
-            $totalAmount = $metadata->total;
-            $print = $metadata->print ?? false;
-            $memberships = $metadata->memberships ?? false;
+        if ($userId) {
+            $user = Craft::$app->users->getUserById($userId);
 
-            $paymentDate = new DateTime();
-            $dueDate = new DateTime();
-            $nextYearDate = $dueDate->add(new DateInterval('P1Y'));
+            if ($user) {
+                $dueDate = $user->getFieldValue('memberDueDate');
 
-            if ($userId) {
-                $user = Craft::$app->users->getUserById($userId);
-                if ($user) {
-                    
-                    if ($memberships) {
-                        $user->setFieldValue('renewedDate', $paymentDate);
-                        $user->setFieldValue('memberDueDate', $nextYearDate);
-                        $user->setFieldValue('paymentDate', $paymentDate);
-                        $user->setFieldValue('paymentType', 'online');
-                        $user->setFieldValue('customStatus', 'active');
-                        $user->setFieldValue('totalPayedMembers', $metadata->membershipTotal);                       
-                    }
-                    
-                    if ($print) {
-                        $user->setFieldValue('totalPayedPrint', $metadata->printTotal);
-                        $user->setFieldValue('payedPrintDate', $paymentDate);
-                        $user->setFieldValue('printStatus', 'requested');
-                    }
-                        
-                    if (Craft::$app->elements->saveElement($user, false)) {
-                        Craft::info("User payment updated successfully: {$userId}", __METHOD__);
-    
-                        if ($memberships) {
-                            $this->sendAccountConfirmationEmail($user);
-                        }
-    
-                        if ($print) {
-                            $this->sendPrintDetailsOwner($user);
-                        }
-    
-                        $this->sendPaymentConfirmationEmail($user, $totalAmount);
+                if (!$dueDate instanceof \DateTimeInterface) {
+                    $dueDate = new DateTime('today');
+                }
 
-                        return $this->asJson(['success' => true]);
-                    } else {
-                        Craft::error("Failed to update user payment for user ID: {$userId}", __METHOD__);
-                    }
+                $oneYear = new DateInterval('P1Y');
+                $monthBeforeDueDate = (clone $dueDate)->modify('-1 month');
+                $today = new DateTime('today');
+
+                // Rule A: payment BETWEEN monthBeforeDueDate and dueDate (inclusive of start, exclusive of end) → extend current due date by 1 year
+                if ($paymentDate >= $monthBeforeDueDate && $paymentDate < $dueDate) {
+                    $newDueDate = (clone $dueDate)->add($oneYear);
+
+                // Rule B: payment AFTER due date → today + 1 year
+                } else {
+                    $newDueDate = (clone $today)->add($oneYear);
                 }
             }
+        }
 
-            // foreach ($extraMemberIds as $extraMemberId) {
-            //     $extraMember = Entry::find()->id($extraMemberId)->one();
-            //     if ($extraMember) {
-            //         $extraMember->setFieldValue('paymentDate', $paymentDate);
-            //         if (!Craft::$app->elements->saveElement($extraMember, false)) {
-            //             Craft::error('Failed to update extra member payment date for entry ID ' . $extraMemberId, __METHOD__);
-            //         }
-            //     }
-            // }
+        if ($payment->isPaid()) {
+            if ($userId) {
+                if ($memberships) {
+                    $user->setFieldValue('renewedDate', $paymentDate);
+                    $user->setFieldValue('memberDueDate', $newDueDate);
+                    $user->setFieldValue('paymentDate', $paymentDate);
+                    $user->setFieldValue('paymentType', 'online');
+                    $user->setFieldValue('customStatus', 'active');
+                    $user->setFieldValue('totalPayedMembers', $metadata->membershipTotal);                       
+                }
+                
+                if ($print) {
+                    $user->setFieldValue('totalPayedPrint', $metadata->printTotal);
+                    $user->setFieldValue('payedPrintDate', $paymentDate);
+                    $user->setFieldValue('printStatus', 'requested');
+                } else {
+                    $user->setFieldValue('printStatus', '');
+                    $user->setFieldValue('requestPrint', null);
+                    $user->setFieldValue('requestPrintSend', false);
+                }
+                    
+                if (Craft::$app->elements->saveElement($user, false)) {
+                    Craft::info("User payment updated successfully: {$userId}", __METHOD__);
+    
+                    if ($memberships) {
+                        $this->sendAccountConfirmationEmail($user);
+                    }
+    
+                    if ($print) {
+                        $this->sendPrintDetailsOwner($user);
+                    }
+    
+                    $this->sendPaymentConfirmationEmail($user, $totalAmount);
+
+                    return $this->asJson(['success' => true]);
+                } else {
+                    Craft::error("Failed to update user payment for user ID: {$userId}", __METHOD__);
+                }
+            }
         }
 
         return $this->asJson(['success' => true]);
@@ -314,7 +316,7 @@ class PaymentController extends Controller
 
             if ($memberType === 'individual' && $paymentType === 'online') {
                 $templatePath = $baseTemplateUrl . '/verification-ind-payed';
-                $htmlBody = Craft::$app->getView()->renderTemplate($templatePath, [
+                $htmlBody = Craft::$app->getView()->renderTemplate($templatePath, [ 
                     'name' => $user->getFieldValue('altFirstName'),
                 ]);
     
@@ -355,7 +357,7 @@ class PaymentController extends Controller
             Craft::$app->getView()->setTemplatesPath(Craft::getAlias('@root/templates'));
 
             $htmlBody = Craft::$app->getView()->renderTemplate('email/request/nl/request-print', [
-                'name' => $user->getFieldValue('fullName'),
+                'name' => $user->fullName,
                 'id' => $user->getFieldValue('customMemberId'),
                 'street' => $user->getFieldValue('street'),
                 'number' => $user->getFieldValue('streetNr'),
@@ -377,7 +379,6 @@ class PaymentController extends Controller
                 Craft::error('Failed to send payment confirmation email to: ' . $user->email, __METHOD__);
             } else {
                 Craft::info('Payment confirmation email sent to: ' . $user->email, __METHOD__);
-
                 $user->setFieldValue('requestPrintSend', true);
                 Craft::$app->elements->saveElement($user, false);
             }

@@ -30,6 +30,10 @@ class DailyRenewalCheck extends BaseJob
             $user->setFieldValue('customStatus', 'renew');
             $user->setFieldValue('statusChangeDate', $currentDate);
 
+            $user->setFieldValue('requestPrint', null);
+            $user->setFieldValue('printStatus', null);
+            $user->setFieldValue('requestPrintSend', null);
+
             if (!$elementsService->saveElement($user)) {
                 Craft::error('Failed to update customStatus to renew for user: ' . $user->id, __METHOD__);
                 continue;

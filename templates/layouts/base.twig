@@ -12,7 +12,7 @@
         <link rel="apple-touch-icon" sizes="180x180" href="{{ baseUrl }}assets/favicons/apple-touch-icon.png" />
         <link rel="manifest" href="{{ baseUrl }}assets/favicons/site.webmanifest" />
 
-        <link rel="stylesheet" href="{{ baseUrl }}dist/assets/app-CS8WvxnT.css">
+        <link rel="stylesheet" href="{{ baseUrl }}dist/assets/app-DJufEwtz.css">
         
         {% if craft.app.request.getFullPath() is same as 'register' %}
             <script src="https://www.google.com/recaptcha/api.js?render={{ getenv('RECAPTCHA_SITE_KEY') }}"></script>
@@ -35,8 +35,8 @@
         <main class="center">
             {% block content %}{% endblock %}
         </main>
-        {{ craft.vite.script("src/scripts/main.js") }} 
-        <script src="{{ baseUrl }}dist/assets/app-5Pup3lxm.js"></script>
+        {# {{ craft.vite.script("src/scripts/main.js") }}  #}
+        <script src="{{ baseUrl }}dist/assets/app-BdBUQ_m3.js"></script>
         {% if craft.app.request.getFullPath() is same as 'register' %}
             <script>
                 function onSubmit(token) {

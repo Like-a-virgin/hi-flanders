@@ -1,31 +1,32 @@
 {% set user = user ?? currentUser %}
+
 {% set extraMembers = craft.entries.section('extraMembers').parentMember(user.id).all() %}
 {% set cardRate = craft.entries.section('rates').memberType('card').one() %}
-{% set currentDate = now %}
 {% set activeUserMember = user.paymentDate and user.memberDueDate and (now <= user.memberDueDate) %}
-{% set today = now|date('Y-m-d') %}
+
+{% set dueDate = user.memberDueDate ? user.memberDueDate|date('Y-m-d', 'Europe/Brussels')|date('U', 'Europe/Brussels') : null %}
+{% set dueDatePrint = user.memberDueDate ? user.memberDueDate|date('Y-m-d', 'Europe/Brussels')|date('U', 'Europe/Brussels') : null %}
+{% set monthBeforeDueDate = user.memberDueDate ? user.memberDueDate|date_modify('-1 month')|date('Y-m-d', 'Europe/Brussels')|date('U', 'Europe/Brussels') : null %}
+{% set today = 'now'|date('Y-m-d', 'Europe/Brussels')|date('U', 'Europe/Brussels') %}
+{% set payedPrint = user.payedPrintDate ? user.payedPrintDate|date('Y-m-d', 'Europe/Brussels')|date('U', 'Europe/Brussels') : null %}
+{% set renew = dueDate and monthBeforeDueDate and ((today >= monthBeforeDueDate and today <= dueDate) or today > dueDate) %}
+{% set noPayment = not user.paymentType.value %}
+{% set noPrintStatus = not user.printStatus.value %}
+{% set requestPrintDate = user.requestPrint|date('Y-m-d', 'Europe/Brussels')|date('U', 'Europe/Brussels') %}
+{% set requestPrintInWindow = (renew and requestPrintDate and dueDate and monthBeforeDueDate and ((requestPrintDate >= monthBeforeDueDate and requestPrintDate <= dueDate) or requestPrintDate > dueDate)) or (not renew and (not user.printStatus.value)) %}
 
 {% set totalPrice = 0 %}
 {% set totalNonActive = 0 %}
- 
+
 {% set userRate = user.memberRate.one() %}
 
-{% if user.requestPrint and not user.payedPrintDate %}
+{% if user.requestPrint and requestPrintInWindow and noPrintStatus %}
     {% set totalPrice = totalPrice ? totalPrice.add(cardRate.price) : cardRate.price %}
 {% endif %}
 
-{% if not activeUserMember and userRate.price|money > 0 %}
+{% if (renew or noPayment) and userRate.price|money > 0 %}
     {% set totalPrice = totalPrice ? totalPrice.add(userRate.price) : userRate.price %}
 {% endif %}
-
-{% for extra in extraMembers %}
-    {# {% set activeExtraMember = extra.paymentDate and user.memberDueDate and (now >= extra.paymentDate) and (now <= user.memberDueDate) %} #}
-    {% set rate = extra.memberRate.one() %}
-    {# {% if not activeExtraMember %}
-        {% set totalPrice = totalPrice ? totalPrice.add(rate.price) : rate.price %}
-        {% set totalNonActive = totalNonActive + 1 %}
-    {% endif %} #}
-{% endfor %}
 
 {% requireLogin %}
 
@@ -47,6 +48,9 @@
     <div class="box-valid">    
         <div class="box-valid__valid">
             <p>{{'Vervalt op '|t}} {{user.memberDueDate|date('d-m-Y')}}</p>
+            {% if renew %}
+                <p>{{'Verlengen kan eenvoudig door opnieuw te betalen.'|t}}</p>
+            {% endif %}
         </div>
     </div>
 {% endif %}
@@ -237,7 +241,7 @@
                 <div class="box__wrapper">
                     <div class="box__column box__column--4 box__column--flex-between">
                         <h3>{{'Lidkaarttype'|t}}</h3>
-                        {% if user.requestPrint and not user.payedPrintDate %}
+                        {% if user.requestPrint and ((renew and requestPrintInWindow) or noPrintStatus) %}
                             <form method="post" accept-charset="UTF-8" enctype="multipart/form-data">
                                 {{ csrfInput() }}
                                 {{ actionInput('users/save-user') }}
@@ -246,16 +250,19 @@
 
                                 <button class="box__function-btn box__function-btn--delete">{{'Fysieke lidkaart annuleren'|t}}</button>
                             </form>
-                        {% elseif not user.requestPrint and not user.payedPrintDate %}
+                        {% elseif (not user.requestPrint or (renew and not requestPrintInWindow) or noPrintStatus) %}
                             <form method="post" accept-charset="UTF-8" enctype="multipart/form-data">
                                 {{ csrfInput() }}
                                 {{ actionInput('users/save-user') }}
                                 {{ hiddenInput('userId', user.id) }}
                                 {{ hiddenInput('fields[requestPrint]', today) }}
+                                {{ hiddenInput('fields[printStatus]', false) }}
+                                {{ hiddenInput('fields[requestPrintSend]', false) }}
+                                {{ hiddenInput('fields[printStatus]', null) }}
 
                                 <button class="box__function-btn box__function-btn--save">{{'Aanvraag fysieke lidkaart'|t}}</button>
                             </form>
-                        {% elseif user.requestPrintSend %}
+                        {% elseif not noPrintStatus  %}
                             <a href="{{ craft.entries().section('forms').lostCard(true).one() ? craft.entries().section('forms').lostCard(true).one().url }}" class="box__function-btn box__function-btn--save">{{'Verloren lidkaart melden'|t}}</a>
                         {% endif %}
                     </div>  
@@ -266,7 +273,7 @@
                                 info: 'Online'|t
                             } %}
                             <p>{{'Je hebt een fysieke lidkaart aangevraagd op'|t}} {{user.requestPrint|date('d-m-Y')}}. {{'je aanvraag wordt verstuurd wanneer je hebt betaald.'|t}}</p>
-                        {% elseif user.requestPrint and user.payedPrintDate %}       
+                        {% elseif not noPrintStatus  %}       
                             {% include "components/info-box.twig" with {
                                 span: 4,
                                 info: 'Fysieke lidkaart & Online'|t
