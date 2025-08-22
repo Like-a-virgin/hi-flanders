@@ -27,7 +27,7 @@ class MembershipPayments extends BaseModule
 
     private function initializeMollie(): void
     {
-        $apiKey = getenv('MOLLIE_API_TEST_KEY');
+        $apiKey = getenv('MOLLIE_API_KEY');
 
         if (!$apiKey) {
             Craft::error('Mollie API key is not set in the enviroment file.', __METHOD__);
