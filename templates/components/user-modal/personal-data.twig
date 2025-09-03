@@ -72,7 +72,7 @@
         } %}
     {% endif %}
 </div>
-{% if selectedMember.inGroup('members') and isAdmin  %}
+{% if selectedMember.inGroup('members') %}
     <form x-show="editBday" class="edit" method="post" accept-charset="UTF-8" enctype="multipart/form-data">
         {{ csrfInput() }}
         {{ actionInput('users/save-user') }}
