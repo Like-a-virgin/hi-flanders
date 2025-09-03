@@ -20,7 +20,7 @@ class UserController extends Controller
         $request = Craft::$app->getRequest();
         $response = Craft::$app->getResponse();
         $origin = $request->getOrigin();
-        $allowedOrigins = ['http://localhost:4200', 'https://app.hiflanders.be', 'capacitor://localhost'];
+        $allowedOrigins = ['http://localhost:4200', 'https://app.hiflanders.be', 'capacitor://localhost', 'https://localhost'];
 
         if (in_array($origin, $allowedOrigins, true)) {
             $headers = $response->getHeaders();
