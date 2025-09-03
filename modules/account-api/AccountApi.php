@@ -48,6 +48,7 @@ class AccountApi extends BaseModule
         $allowedOrigins = [
             'http://localhost:4200',
             'https://app.hiflanders.be',
+            'capacitor://localhost'
         ];
 
         if (in_array($origin, $allowedOrigins, true)) {
