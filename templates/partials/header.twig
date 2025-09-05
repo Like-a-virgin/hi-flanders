@@ -1,6 +1,12 @@
 {% set user = user ?? currentUser %}
 {% set currentUrl = craft.app.request.pathInfo %}
-{% set activeUserMember = user.paymentDate and user.memberDueDate and (now <= user.memberDueDate) %}
+
+{% if currentUrl %}
+    {% set activeUserMember = user.paymentDate and user.memberDueDate and (now <= user.memberDueDate) %}
+{% else %}
+    {% set activeUserMember = false %}
+{% endif %}
+
 
 
 <header class="header" x-data="{openOptions: false}">
