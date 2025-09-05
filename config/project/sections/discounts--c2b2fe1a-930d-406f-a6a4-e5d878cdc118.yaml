@@ -1,0 +1,41 @@
+defaultPlacement: end
+enableVersioning: true
+entryTypes:
+  -
+    uid: 840ecdec-44d2-4106-aab6-2bcff857ed48 # discount
+handle: discounts
+maxAuthors: 1
+name: Kortingen
+previewTargets:
+  -
+    __assoc__:
+      -
+        - label
+        - 'Primary entry page'
+      -
+        - urlFormat
+        - '{url}'
+      -
+        - refresh
+        - '1'
+propagationMethod: all
+siteSettings:
+  359a39c5-8655-460f-a1b4-0c097ea0edb2: # Ledensysteem
+    enabledByDefault: true
+    hasUrls: false
+    template: null
+    uriFormat: null
+  d74da9d4-3821-46f5-8cf4-f7c4d12c04df: # Ledensysteem fr
+    enabledByDefault: true
+    hasUrls: false
+    template: null
+    uriFormat: null
+  dad48958-bcb3-4253-9f7e-868f67fa27b0: # Ledensysteem en
+    enabledByDefault: true
+    hasUrls: false
+    template: null
+    uriFormat: null
+structure:
+  maxLevels: 1
+  uid: 29a0bba1-c024-4fc5-8b8e-8a4757791c8a
+type: structure

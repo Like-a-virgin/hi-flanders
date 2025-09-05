@@ -1,0 +1,94 @@
+@use "../abstracts" as *;
+
+.discount {
+    height: 100%;
+    width: 100%;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 1rem;
+
+    &__title {
+        margin-bottom: $fs-h1;
+    }
+
+    &__text {
+        max-width: 50rem;
+    }
+
+    &__cards {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 1rem;
+        margin-top: 2rem;
+        
+        @include screen($screen-m) {
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+        }
+    }
+
+    &__card {
+        box-shadow: 0px 3px 6px 0px rgba(black, 0.16);
+        border-radius: $br;
+        overflow: hidden;
+
+        
+        &-head {
+            background-color: $clr-primary;
+            padding: 1rem 2rem;
+        }
+
+        &-title {
+            font-size: $fs-h2--mobile;
+
+            @include screen($screen-m) {
+                font-size: $fs-h2;
+            }
+        }
+
+        &-content {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1rem;
+            padding: 2rem;
+            
+            @include screen($screen-m) {
+                grid-template-columns: 1fr 1fr;
+                align-items: center;
+            }
+        }
+
+        &-img-box {
+            max-width: 10rem;
+            height: fit-content;
+            overflow: hidden;
+            
+            @include screen($screen-m) {
+                max-width: 15rem;
+            }
+        }
+
+        &-img {
+            height: 100%;
+            width: 100%;
+            object-fit: contain;
+        }
+
+        &-link {
+            display: block;
+            margin-top: 0.25rem;
+            color: $clr-secondary;
+        }
+
+        &-link:hover {
+            color: $clr-primary
+        }
+
+        &-discount, &-link {
+            font-weight: $fw-medium;
+            font-size: 1rem;
+        }
+    }
+}

@@ -1,5 +1,7 @@
 {% set user = user ?? currentUser %}
 {% set currentUrl = craft.app.request.pathInfo %}
+{% set activeUserMember = user.paymentDate and user.memberDueDate and (now <= user.memberDueDate) %}
+
 
 <header class="header" x-data="{openOptions: false}">
     <div class="header__container">    
@@ -20,6 +22,9 @@
                 {% endif %}
             {% endif %}
             {% if not user or user and user.inGroup('members') %}
+                {% if activeUserMember %}
+                    <a class="btn btn--prim " href="{{ discountPage.url }}">{{ discountPage.title }}</a>
+                {% endif %}
                 <a class="btn btn--prim " href="{{ craft.entries.section('mainWebsite').one().linkExtern }}">{{'Naar website'|t}}</a>
             {% endif %}
             

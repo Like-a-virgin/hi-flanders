@@ -1,0 +1,31 @@
+{% requireLogin %}
+
+{% extends "layouts/base" %}
+
+{% block content %}
+    {% set discounts = craft.entries().section('discounts').all() %}
+    <section class="discount">
+        <div class="container">
+            <h1 class="discount__title">{{ discountPage.textSingle }}</h1>
+            <div class="discount__text">{{ discountPage.textSimple }}</div>
+            <div class="discount__cards">
+                {% for item in discounts %}
+                    <div class="discount__card">
+                        <div class="discount__card-head">
+                            <h2 class="discount__card-title">{{ item.title }}</h2>
+                        </div>
+                        <div class="discount__card-content">
+                            <div class="discount__card-img-box">
+                                <img class="discount__card-img" src="{{ item.brandLogo.one().url }}" alt="{{ 'Logo'|t }} {{ item.title }}">
+                            </div>
+                            <div>
+                                <p class="discount__card-discount">{{ item.textSingle }}:</p>
+                                <a class="discount__card-link" href="{{ item.linkExtern }}" target="_blank">{{ item.textSingle2 }}</a>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+{% endblock %}

@@ -1,0 +1,85 @@
+color: null
+fieldLayouts:
+  e5dba749-6e67-4f2f-a565-fc86f6bf27e3:
+    tabs:
+      -
+        elementCondition: null
+        elements:
+          -
+            autocapitalize: true
+            autocomplete: false
+            autocorrect: true
+            class: null
+            dateAdded: '2025-09-05T10:08:36+00:00'
+            disabled: false
+            elementCondition: null
+            id: null
+            includeInCards: false
+            inputType: null
+            instructions: null
+            label: 'Pagina titel'
+            max: null
+            min: null
+            name: null
+            orientation: null
+            placeholder: null
+            providesThumbs: false
+            readonly: false
+            required: true
+            size: null
+            step: null
+            tip: null
+            title: null
+            type: craft\fieldlayoutelements\entries\EntryTitleField
+            uid: f41f0369-c0eb-46fe-8c16-1297f2fe86d0
+            userCondition: null
+            warning: null
+            width: 100
+          -
+            dateAdded: '2025-09-05T10:11:44+00:00'
+            editCondition: null
+            elementCondition: null
+            fieldUid: aa21d2ca-e34c-4497-a6fa-49b5a7cc7f58 # Title
+            handle: null
+            includeInCards: false
+            instructions: null
+            label: Titel
+            providesThumbs: false
+            required: false
+            tip: null
+            type: craft\fieldlayoutelements\CustomField
+            uid: b1bc55a6-93ad-4927-962b-d96212240ca2
+            userCondition: null
+            warning: null
+            width: 100
+          -
+            dateAdded: '2025-09-05T10:10:22+00:00'
+            editCondition: null
+            elementCondition: null
+            fieldUid: c1614bab-5fdd-4eae-8e0b-f4eb393c25dd # Tekst
+            handle: null
+            includeInCards: false
+            instructions: null
+            label: null
+            providesThumbs: false
+            required: false
+            tip: null
+            type: craft\fieldlayoutelements\CustomField
+            uid: 5dc36dd0-9180-416a-bdc6-b11765661548
+            userCondition: null
+            warning: null
+            width: 100
+        name: Content
+        uid: 2d3405e2-ef23-48b6-b119-887bc6b33da9
+        userCondition: null
+handle: discountPage
+hasTitleField: true
+icon: null
+name: Kortingspagina
+showSlugField: true
+showStatusField: true
+slugTranslationKeyFormat: null
+slugTranslationMethod: site
+titleFormat: null
+titleTranslationKeyFormat: null
+titleTranslationMethod: site
