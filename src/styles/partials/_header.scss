@@ -59,7 +59,7 @@
 
         transition: all 0.2s ease-in-out;
 
-        @include screen($screen-s) {
+        @include screen($screen-m) {
             flex-direction: row;
             width: fit-content;
             height: fit-content;
@@ -82,7 +82,7 @@
         right: 1.5rem;
         z-index: 10;
 
-        @include screen($screen-s) {
+        @include screen($screen-m) {
             display: none;
         }
     }
