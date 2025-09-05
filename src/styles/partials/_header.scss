@@ -154,8 +154,7 @@
     }
 
     .btn--prim-selected {
-
-        @include screen ($screen-s) {
+        @include screen ($screen-m) {
             background-color: $clr-secondary;
             color: $clr-primary;
             font-size: $fs-p;
@@ -163,7 +162,7 @@
     }
 
     .logout {
-        @include screen ($screen-s) {
+        @include screen ($screen-m) {
             margin-left: 1.75rem;
         }
     }
