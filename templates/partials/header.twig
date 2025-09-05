@@ -1,8 +1,8 @@
 {% set user = user ?? currentUser %}
 {% set currentUrl = craft.app.request.pathInfo %}
 
-{% if currentUrl %}
-    {% set activeUserMember = user.paymentDate and user.memberDueDate and (now <= user.memberDueDate) %}
+{% if currentUser %}
+    {% set activeUserMember = currentUser.paymentDate and currentUser.memberDueDate and (now <= currentUser.memberDueDate) %}
 {% else %}
     {% set activeUserMember = false %}
 {% endif %}
