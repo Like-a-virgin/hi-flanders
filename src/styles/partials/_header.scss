@@ -132,7 +132,7 @@
             fill: $clr-primary;
         }
 
-        @include screen ($screen-s) {
+        @include screen ($screen-m) {
             background-color: $clr-primary;
             color: $clr-secondary;
             font-size: $fs-p;
