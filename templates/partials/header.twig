@@ -7,8 +7,6 @@
     {% set activeUserMember = false %}
 {% endif %}
 
-
-
 <header class="header" x-data="{openOptions: false}">
     <div class="header__container">    
         <a href="{{ currentSite.baseUrl }}">
@@ -29,7 +27,8 @@
             {% endif %}
             {% if not user or user and user.inGroup('members') %}
                 {% if activeUserMember %}
-                    <a class="btn btn--prim " href="{{ discountPage.url }}">{{ discountPage.title }}</a>
+                    <a class="btn {{ currentUrl is same as '' ? 'btn--prim-selected' : 'btn--prim' }}" href="{{ currentSite.baseUrl }}">{{ 'Mijn lidmaatschap'|t }}</a>
+                    <a class="btn {{ currentUrl is same as discountPage.uri ? 'btn--prim-selected' : 'btn--prim' }}" href="{{ discountPage.url }}">{{ discountPage.title }}</a>
                 {% endif %}
                 <a class="btn btn--prim " href="{{ craft.entries.section('mainWebsite').one().linkExtern }}">{{'Naar website'|t}}</a>
             {% endif %}

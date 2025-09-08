@@ -59,7 +59,7 @@
 
         transition: all 0.2s ease-in-out;
 
-        @include screen($screen-m) {
+        @include screen($screen-l) {
             flex-direction: row;
             width: fit-content;
             height: fit-content;
@@ -82,7 +82,7 @@
         right: 1.5rem;
         z-index: 10;
 
-        @include screen($screen-m) {
+        @include screen($screen-l) {
             display: none;
         }
     }
@@ -132,7 +132,7 @@
             fill: $clr-primary;
         }
 
-        @include screen ($screen-m) {
+        @include screen ($screen-l) {
             background-color: $clr-primary;
             color: $clr-secondary;
             font-size: $fs-p;
@@ -154,7 +154,7 @@
     }
 
     .btn--prim-selected {
-        @include screen ($screen-m) {
+        @include screen ($screen-l) {
             background-color: $clr-secondary;
             color: $clr-primary;
             font-size: $fs-p;
@@ -162,7 +162,7 @@
     }
 
     .logout {
-        @include screen ($screen-m) {
+        @include screen ($screen-l) {
             margin-left: 1.75rem;
         }
     }
