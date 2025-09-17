@@ -178,7 +178,7 @@
                     <div></div>
                     <div class="box__row">
                         {% if "groupMembership" in selectedSubmission.form.handle and selectedSubmission.status is same as "new"   %}
-                            <a class="btn" href="{{ currentSite.baseUrl }}/register-group?submission={{ selectedSubmission.id }}">{{'Nieuw groep aanmaken'}}</a>
+                            <a class="btn" href="{{ currentSite.baseUrl }}/register-group?submission={{ selectedSubmission.id }}">{{'Nieuwe groep aanmaken'|t}}</a>
                         {% endif %}
                         <button sprig class="btn" s-val:submission-id="{{ null }}">{{'Terug naar overzicht'|t}}</button>
                     </div>
