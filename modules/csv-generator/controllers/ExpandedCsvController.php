@@ -3,8 +3,8 @@
 namespace modules\csvgenerator\controllers;
 
 use Craft;
+use craft\db\Query;
 use craft\elements\User;
-use craft\elements\Entry;
 use craft\web\Controller;
 use yii\web\Response;
 use yii\web\ForbiddenHttpException;
@@ -38,7 +38,7 @@ class ExpandedCsvController extends Controller
         $queryParams = Craft::$app->getRequest()->getQueryParams();
         unset($queryParams['page']);
 
-        $usersQuery = User::find();
+        $usersQuery = User::find()->with(['memberRate']);
 
         // Apply filters if present
         if (!empty($queryParams['search'])) {
@@ -70,77 +70,97 @@ class ExpandedCsvController extends Controller
         }
 
         $users = $usersQuery->group(['members', 'membersGroup'])->all();
-        $data = [[
-            'ID', 
+
+        $userIds = array_map(static fn(User $user) => $user->id, $users);
+        $extraMembersCounts = [];
+
+        if (!empty($userIds)) {
+            $extraMembersCounts = (new Query())
+                ->select(['relations.targetId', 'count' => 'COUNT(*)'])
+                ->from(['relations' => '{{%relations}}'])
+                ->innerJoin(['elements' => '{{%elements}}'], '[[elements.id]] = [[relations.sourceId]]')
+                ->innerJoin(['entries' => '{{%entries}}'], '[[entries.id]] = [[relations.sourceId]]')
+                ->innerJoin(['sections' => '{{%sections}}'], '[[sections.id]] = [[entries.sectionId]]')
+                ->where([
+                    'sections.handle' => 'extraMembers',
+                    'elements.dateDeleted' => null,
+                    'elements.draftId' => null,
+                    'elements.revisionId' => null,
+                    'relations.targetId' => $userIds,
+                ])
+                ->groupBy('relations.targetId')
+                ->indexBy('targetId')
+                ->column();
+        }
+
+        $handle = fopen('php://temp', 'r+');
+
+        fputcsv($handle, [
+            'ID',
             'Group/individual',
-            'Status', 
+            'Status',
             'FirstName/organisation',
-            'LastName/contactperson', 
-            'Birthday', 
-            'Email', 
-            'Country', 
-            'Street', 
-            'Street number', 
-            'Bus', 
-            'City', 
-            'Postalcode ', 
-            'Membertype', 
-            'Registration Date', 
-            'Renewed on', 
-            'Due date', 
-            'Children', 
-            'Total Payment', 
-            'Pay date', 
-            'Payment type', 
+            'LastName/contactperson',
+            'Birthday',
+            'Email',
+            'Country',
+            'Street',
+            'Street number',
+            'Bus',
+            'City',
+            'Postalcode ',
+            'Membertype',
+            'Registration Date',
+            'Renewed on',
+            'Due date',
+            'Children',
+            'Total Payment',
+            'Pay date',
+            'Payment type',
             'Card Type',
-            'Print request', 
+            'Print request',
             'Print payed',
             'Total print'
-        ]];
+        ]);
 
         foreach ($users as $user) {
             $memberRateEntry = $user->getFieldValue('memberRate')->one();
             $memberRateTitle = $memberRateEntry ? $memberRateEntry->title : '';
 
-            $customMemberId = $user->customMemberId; 
+            $customMemberId = $user->customMemberId;
 
             if (!empty($customMemberId)) {
                 $customMemberId = '(008) ' . number_format($customMemberId, 0, '', '');
             } else {
-                $customMemberId = '(008)'; 
+                $customMemberId = '(008)';
             }
 
-            $birthday = $user->birthday; 
-            $formattedBirthday = $birthday ? $birthday->format('d/m/Y') : ''; 
-            
-            $payDate = $user->paymentDate; 
+            $birthday = $user->birthday;
+            $formattedBirthday = $birthday ? $birthday->format('d/m/Y') : '';
+
+            $payDate = $user->paymentDate;
             $formattedPayDate = $payDate ? $payDate->format('d/m/Y') : '';
-            
-            $registerDate = $user->dateCreated; 
+
+            $registerDate = $user->dateCreated;
             $formattedRegisterDate = $registerDate ? $registerDate->format('d/m/Y') : '';
-            
-            $renewDate = $user->renewedDate; 
+
+            $renewDate = $user->renewedDate;
             $formattedRenewDate = $renewDate ? $renewDate->format('d/m/Y') : '';
-            
-            $dueDate = $user->memberDueDate; 
+
+            $dueDate = $user->memberDueDate;
             $formattedDueDate = $dueDate ? $dueDate->format('d/m/Y') : '';
 
             $prinRequest = $user->requestPrint;
             $formattedPrintRequest = $prinRequest ? $prinRequest->format('d-m-Y') : '';
-            
+
             $prinPayed = $user->payedPrintDate;
             $formattedPrintPayed = $prinPayed ? $prinPayed->format('d-m-Y') : '';
 
-            // Get related entries
-            $relatedEntries = Entry::find()
-                ->section('extraMembers') // Adjust section handle as needed
-                ->relatedTo($user)
-                ->all();
-
-            // Calculate related entries count and total payment
-            $relatedEntriesCount = count($relatedEntries);
+            $relatedEntriesCount = (int)($extraMembersCounts[$user->id] ?? 0);
 
             $groupHandle = null;
+            $firstName = '';
+            $lastName = '';
 
             // Get the first group handle if the user belongs to the 'members' or 'membersGroup' group
             foreach ($user->getGroups() as $group) {
@@ -159,8 +179,7 @@ class ExpandedCsvController extends Controller
                 }
             }
 
-
-            $data[] = [
+            fputcsv($handle, [
                 $customMemberId,
                 $groupHandle,
                 $user->customStatus,
@@ -174,7 +193,7 @@ class ExpandedCsvController extends Controller
                 $user->bus,
                 $user->city,
                 $user->postalCode,
-                $memberRateTitle, 
+                $memberRateTitle,
                 $formattedRegisterDate,
                 $formattedRenewDate,
                 $formattedDueDate,
@@ -186,12 +205,7 @@ class ExpandedCsvController extends Controller
                 $formattedPrintRequest,
                 $formattedPrintPayed,
                 $user->totalPayedPrint ? $user->totalPayedPrint->getAmount()/100 : 0,
-            ];
-        }
-
-        $handle = fopen('php://temp', 'r+');
-        foreach ($data as $row) {
-            fputcsv($handle, $row);
+            ]);
         }
 
         rewind($handle);
