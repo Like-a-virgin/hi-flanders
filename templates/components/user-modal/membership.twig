@@ -1,3 +1,5 @@
+{% set memberTypes = craft.entries().section('rates').id([318, 97]).all() %}
+
 <div class="box__wrapper" x-show="!editMembership">
     {% set active = selectedMember.paymentDate and selectedMember.memberDueDate and (now <= selectedMember.memberDueDate) %}
     {% if (selectedMember.inGroup('members') or selectedMember.inGroup('membersGroup')) and isAdmin %} 
@@ -40,7 +42,7 @@
     {% else %}
         {% include "components/info-box.twig" with {
             span: 4, 
-            info: 'Lidmaatschap is vervallen en nog niet vernieuwd'|t,
+            info: 'Lidmaatschap is vervallen en nog niet vernieuwd'|t, 
             error: true
         } %}
     {% endif %}
@@ -55,12 +57,23 @@
         subtitle: 'Lidmaatschap'|t
     } %}
 
-    {% include "components/info-box.twig" with {
-        span: 2, 
-        label: 'Type'|t,
-        info: selectedMember.memberRate.one().title, 
-        prim: true
-    } %}
+    {% if selectedMember.memberType.value is same as 'group' or selectedMember.memberType.value is same as 'groupYouth' %}
+        {{ hiddenInput('fields[memberRate][]', null) }}
+        <div class="edit__column--2">
+            <label class="edit__label" for="memberRate">{{'Type'|t}}</label>
+            <select name="fields[memberType]" id="memberRate" >
+                <option {{selectedMember.memberType.value is same as 'group' ? 'selected'}} value="group">{{ memberTypes|find(i => i.id is same as 97).title }}</option>
+                <option {{selectedMember.memberType.value is same as 'groupYouth' ? 'selected'}} value="groupYouth">{{ memberTypes|find(i => i.id is same as 318).title }}</option>
+            </select>
+        </div>
+    {% else %}
+        {% include "components/info-box.twig" with {
+            span: 2, 
+            label: 'Type'|t,
+            info: selectedMember.memberRate.one().title, 
+            prim: true
+        } %}
+    {% endif %}
     {% include "components/info-box.twig" with {
         span: 2, 
         label: 'Registratiedatum'|t, 

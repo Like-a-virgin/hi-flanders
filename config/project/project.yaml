@@ -1,4 +1,4 @@
-dateModified: 1757069833
+dateModified: 1758269430
 elementSources:
   craft\elements\Entry:
     -
@@ -215,6 +215,7 @@ meta:
     7ca5fc34-985a-44f3-bc43-3f333f9457f3: CustomId # CustomId
     9a41348d-b717-4688-9000-767870baae38: 'In aanvraag' # In aanvraag
     9b6463ce-f83c-4bd6-ad35-a79ab9818286: Users # Users
+    9e78752a-4bce-4158-b7a8-d244e0cfc7fd: 'Last edited by' # Last edited by
     9fa38d43-f532-46e6-a754-46a74621fb10: Branding # Branding
     21c22e0c-c629-4e07-9e19-a289ef81be37: Simple # Simple
     22e6beae-01af-4451-b3d5-29bf90a51e80: 'Reset wachtwoord' # Reset wachtwoord

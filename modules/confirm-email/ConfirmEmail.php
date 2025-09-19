@@ -66,6 +66,16 @@ class ConfirmEmail extends BaseModule
                         Craft::error("User save blocked: " . $user->email, __METHOD__);
                         return;
                     }
+
+                    $customMemberId = $user->getFieldValue('customMemberId') ?? $request->getBodyParam('fields.customMemberId');
+
+                    if (!empty($customMemberId) && $this->customMemberIdExists($customMemberId, $user->id)) {
+                        $user->addError('customMemberId', Craft::t('site', 'Lidkaartnummer is al in gebruik.'));
+                        $event->isValid = false;
+                        Craft::$app->getSession()->setError(Craft::t('site', 'Lidkaartnummer is al in gebruik. Gebruik een ander lidnummer.'));
+                        Craft::error("User save blocked by duplicate member number: {$customMemberId}", __METHOD__);
+                        return;
+                    }
                 }
             }
         );
@@ -78,5 +88,18 @@ class ConfirmEmail extends BaseModule
         }
         
         return Craft::$app->users->getUserByUsernameOrEmail($user->email) !== null;
+    }
+
+    private function customMemberIdExists(string $customMemberId, ?int $excludeUserId = null): bool
+    {
+        $query = User::find()
+            ->status(null)
+            ->customMemberId($customMemberId);
+
+        if ($excludeUserId) {
+            $query->id(['not', $excludeUserId]);
+        }
+
+        return (bool) $query->one();
     }
 }

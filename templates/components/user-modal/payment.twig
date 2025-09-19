@@ -22,12 +22,16 @@
             info: selectedMember.totalPayedMembers ? selectedMember.totalPayedMembers|money : '€ 0',
         } %}
     {% endif %}
+    {% if currentUser.isInGroup('membersAdminSuper') and selectedMember.lastEditedBy.one() %}
+        <p class="box__column--4">{{'Laatst bewerkt door'}} {{ selectedMember.lastEditedBy.one().fullName ? selectedMember.lastEditedBy.one().fullName : selectedMember.lastEditedBy.one().username }} ({{ selectedMember.lastEditedBy.one().email }})</p>
+    {% endif %}
 </div>
 <form x-show="editPayment" class="edit" method="post" accept-charset="UTF-8" enctype="multipart/form-data">
     {{ csrfInput() }}
     {{ actionInput('users/save-user') }}
     {{ hiddenInput('userId', selectedMember.id) }}
     {{ hiddenInput('fields[totalPayedMembers]', selectedMember.memberRate.one().price|money) }}
+    {{ hiddenInput('fields[lastEditedBy][]', currentUser.id) }}
     {{ redirectInput(currentSite.baseUrl ~ '?' ~ urlFilters) }}
 
     <div class="box__column box__column--4">

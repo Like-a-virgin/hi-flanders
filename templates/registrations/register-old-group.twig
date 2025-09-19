@@ -61,6 +61,9 @@
                 {% if user.getErrors('privacyPolicy') %}
                     <div class="formbox__error formbox__column--full"><p>{{ 'Je moet akkoord gaan met de privacy policy'|t }}</p></div>
                 {% endif %}
+                {% if user.getErrors('customMemberId') %}
+                    <div class="formbox__error formbox__column--full">{{ _self.errorList(user.getErrors('customMemberId')) }}</div>
+                {% endif %}
             {% endif %}
 
             <div class="formbox__column--full">
@@ -154,11 +157,11 @@
                 }) }}
             </div>
 
-            <div class="formbox__column--full"> 
+            <div class="formbox__column--full {{ user and user.getErrors('customMemberId') ? 'formbox__column--error' }}"> 
                 <label class="formbox__label" for="member-id">{{'Lidkaartnummer'|t}}</label>
-                {{ input('text', 'fields[customMemberId]', user.customMemberId ?? null, {
+                {{ input('text', 'fields[customMemberId]', craft.app.request.getBodyParam('fields[customMemberId]') ?? user.customMemberId ?? null, {
                     id: 'member-id',
-                    placeholder: 'Lidkaartnummer'|t,
+                    placeholder: 'Lidkaartnummer'|t ~ ' ' ~ '(zonder 008)'|t,
                     required: true
                 }) }}
             </div>

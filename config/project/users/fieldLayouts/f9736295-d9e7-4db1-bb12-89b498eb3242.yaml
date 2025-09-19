@@ -904,6 +904,23 @@ tabs:
         warning: null
         width: 100
       -
+        dateAdded: '2025-09-19T08:10:30+00:00'
+        editCondition: null
+        elementCondition: null
+        fieldUid: 9e78752a-4bce-4158-b7a8-d244e0cfc7fd # Last edited by
+        handle: null
+        includeInCards: false
+        instructions: null
+        label: null
+        providesThumbs: false
+        required: false
+        tip: null
+        type: craft\fieldlayoutelements\CustomField
+        uid: 10f06695-8418-4764-9ec5-7503822d46be
+        userCondition: null
+        warning: null
+        width: 100
+      -
         dateAdded: '2025-01-21T08:55:39+00:00'
         elementCondition: null
         heading: Print

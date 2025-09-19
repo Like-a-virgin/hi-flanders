@@ -23,5 +23,6 @@ return [
     'generate-csv-extra' => 'csv-generator/csv-extra/generate',
     'bulk-generate-eti' => 'eti-generator/bulk-eti/generate-all',
     'bulk-generate-csv' => 'csv-generator/bulk-csv/generate-all',
+    'expanded-generate-csv' => 'csv-generator/expanded-csv/users',
     'api' => 'graphql/api',
 ];
