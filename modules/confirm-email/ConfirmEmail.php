@@ -66,9 +66,11 @@ class ConfirmEmail extends BaseModule
                         Craft::error("User save blocked: " . $user->email, __METHOD__);
                         return;
                     }
-
+                }
+                
+                if ($event) {
                     $customMemberId = $user->getFieldValue('customMemberId') ?? $request->getBodyParam('fields.customMemberId');
-
+    
                     if (!empty($customMemberId) && $this->customMemberIdExists($customMemberId, $user->id)) {
                         $user->addError('customMemberId', Craft::t('site', 'Lidkaartnummer is al in gebruik.'));
                         $event->isValid = false;

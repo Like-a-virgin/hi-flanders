@@ -12,6 +12,14 @@
             subtitle: 'Lidmaatschap'|t
         } %}
     {% endif %}
+    {% if currentUser.isInGroup('membersAdminSuper') %}
+        {% include "components/info-box.twig" with {
+            span: 4, 
+            label: 'Lidnummer'|t ~ ' ' ~ '(Geef in zonder 008 en zonder spaties)'|t,
+            info: selectedMember.customMemberId, 
+            prim: true
+        } %}
+    {% endif %}
     {% include "components/info-box.twig" with {
         span: 2, 
         label: 'Type'|t,
@@ -56,6 +64,15 @@
     {% include "components/subtitle-box.twig" with {
         subtitle: 'Lidmaatschap'|t
     } %}
+
+    {% if currentUser.isInGroup('membersAdminSuper') %}
+        <div class="edit__column--4">
+            <label class="edit__label" for="customMemberId">{{'Lidnummer'|t}} {{ '(Geef in zonder 008 en zonder spaties)'|t }}</label>
+            {{ input('text', 'fields[customMemberId]', selectedMember.customMemberId ? selectedMember.customMemberId : '', {
+                id: 'customMemberId',
+            }) }}
+        </div>
+    {% endif %}
 
     {% if selectedMember.memberType.value is same as 'group' or selectedMember.memberType.value is same as 'groupYouth' %}
         {{ hiddenInput('fields[memberRate][]', null) }}
