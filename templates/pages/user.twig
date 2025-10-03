@@ -28,6 +28,8 @@
     {% set totalPrice = totalPrice ? totalPrice.add(userRate.price) : userRate.price %}
 {% endif %}
 
+{% set lifemember = user.memberType.value is same as 'life' %}
+
 {% requireLogin %}
 
 <div class="international">
@@ -44,7 +46,7 @@
             </div>
         {% endif %}
     </div>
-{% else %}
+{% elseif not lifemember %}
     <div class="box-valid">    
         <div class="box-valid__valid">
             <p>{{'Vervalt op '|t}} {{user.memberDueDate|date('d-m-Y')}}</p>
@@ -224,14 +226,14 @@
                             {% elseif not activeUserMember %}
                                 <div class="box__info box__info--error">
                                     <p>{{ user.memberRate.one().title }}</p>
-                                    {% if user.memberDueDate %}
+                                    {% if user.memberDueDate and not lifemember %}
                                         <p>{{'Vervallen op'|t}} {{user.memberDueDate|date('d-m-Y')}}</p>
                                     {% endif %}
                                 </div>
                             {% elseif activeUserMember %}
                                 <div class="box__info box__info--prim">
                                     <p>{{ user.memberRate.one().title }}</p>
-                                    {% if user.memberDueDate %}
+                                    {% if user.memberDueDate and not lifemember  %}
                                         <p>{{'Vervalt op'|t}} {{user.memberDueDate|date('d-m-Y')}}</p>
                                     {% endif %}
                                 </div>
