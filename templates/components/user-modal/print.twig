@@ -17,9 +17,7 @@
                     <button type="submit" class="box__function-btn box__function-btn--delete">{{'Kaart verloren'|t}}</button>
                 </form>
             {% endif %}
-            {% if selectedMember.requestPrint %}
-                <button class="box__function-btn" @click="editPrint = true">{{'Wijzigen'|t}} {{ svg("assets/icons/edit.svg")|attr({class: 'box__icon-option box__icon-edit' }) }}</button>
-            {% endif %}
+            <button class="box__function-btn" @click="editPrint = true">{{'Wijzigen'|t}} {{ svg("assets/icons/edit.svg")|attr({class: 'box__icon-option box__icon-edit' }) }}</button>
         </div>
     </div>
     {% include "components/info-box.twig" with {
@@ -68,17 +66,20 @@
         <h3>{{'Lidkaart'|t}}</h3>
     </div>
 
-    {% include "components/info-box.twig" with {
-        span: 4, 
-        label: selectedMember.requestPrint and selectedMember.payedPrintDate ? 'Type kaart'|t : null, 
-        info: not selectedMember.requestPrint and not selectedMember.payedPrintDate ? 'Online'|t : selectedMember.requestPrint and not selectedMember.payedPrintDate ? 'Fysieke lidkaart'|t ~ ' ' ~ 'Nog niet betaald'|t : 'Fysieke lidkaart en online'|t,
-        error: selectedMember.requestPrint and not selectedMember.payedPrintDate
-    } %}
+    <div class="edit__column--4">
+        <label class="edit__label" for="print-status">{{'Type kaart'|t}}</label>
+        <select name="fields[cardType]" id="print-status">
+            {% for item in cardType %}                        
+                <option value="{{item.value}}" {{ selectedMember.cardType.value is same as item.value ? 'selected'}}>{{ item.label }}</option>
+            {% endfor %}
+        </select>
+    </div>
     <div class="edit__column--2">
         <label class="edit__label" for="print-status">{{'Status Fysieke lidkaart'|t}}</label>
         <select name="fields[printStatus]" id="print-status">
+            <option value="">{{ 'Geen Print'|t }}</option>
             {% for item in printStatuses %}                        
-                <option value="{{item.value}}" {{craft.app.request.getBodyParam('fields[printStatus]') is same as item.value ? 'selected'}}>{{ item.label }}</option>
+                <option value="{{item.value}}" {{ selectedMember.printStatus.value is same as item.value ? 'selected'}}>{{ item.label }}</option>
             {% endfor %}
         </select>
     </div>

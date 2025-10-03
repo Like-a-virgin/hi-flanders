@@ -15,6 +15,12 @@ settings:
           - value
           - online
         -
+          - icon
+          - ''
+        -
+          - color
+          - ''
+        -
           - default
           - '1'
     -
@@ -25,6 +31,12 @@ settings:
         -
           - value
           - printed
+        -
+          - icon
+          - ''
+        -
+          - color
+          - ''
         -
           - default
           - ''

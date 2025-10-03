@@ -3,6 +3,7 @@
 {% set minDate = now|date_modify('-18 years')|date("Y-m-d") %}
 {% set priceCard = craft.entries.section('rates').slug('lidkaart').one() %}
 {% set printStatuses = [{value: 'send', label: 'Verstuurd'|t}, {value: 'requested' , label: 'Aangevraagd'|t}] %}
+{% set cardType = [{value: 'online', label: 'Online'|t}, {value: 'printed' , label: 'Fysieke lidkaart en online'|t}] %}
 
 <button sprig class="btn" s-method="post" s-val:member-id="{{ null }}" s-val:page="{{ page }}" class="modal-close">
     {{ svg('assets/icons/x.svg')|attr({class:"modal-close__icon"})}}

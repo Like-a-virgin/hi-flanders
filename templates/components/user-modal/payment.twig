@@ -32,6 +32,7 @@
     {{ hiddenInput('userId', selectedMember.id) }}
     {{ hiddenInput('fields[totalPayedMembers]', selectedMember.memberRate.one().price|money) }}
     {{ hiddenInput('fields[lastEditedBy][]', currentUser.id) }}
+    {{ hiddenInput('sourceForm', 'edit-user-payment-dashboard') }}
     {{ redirectInput(currentSite.baseUrl ~ '?' ~ urlFilters) }}
 
     <div class="box__column box__column--4">

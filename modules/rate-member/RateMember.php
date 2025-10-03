@@ -33,6 +33,15 @@ class RateMember extends BaseModule
                 $element = $event->element; 
 
                 if ($element instanceof User) {
+                    $request = Craft::$app->getRequest();
+                    $sourceForm = $request->getBodyParam('sourceForm') ?? $request->getParam('sourceForm');
+                    $memberTypeField = $element->getFieldValue('memberType');
+                    $memberType = is_object($memberTypeField) ? ($memberTypeField->value ?? null) : $memberTypeField;
+
+                    if ($memberType === 'individual' && $sourceForm === 'edit-user-payment-dashboard') {
+                        $this->editPaymentDate($element);
+                    }
+
                     $customStatus = $element->getFieldValue('customStatus')->value;
                     $memberRate = $element->getFieldValue('memberRate')->one();
                     $currentUser = (Craft::$app->user->identity && Craft::$app->user->identity->isInGroup('membersAdminSuper'));
@@ -165,9 +174,8 @@ class RateMember extends BaseModule
         }
         
         $currentDate = new DateTime();
-        $bodyPaymentDate = $request->getBodyParam('fields.paymentDate');
-        $expirationDate = $request->getBodyParam('fields.memberDueDate');
-
+        $bodyPaymentDate = $request->getBodyParam('fields.paymentDate') ?? $user->getFieldValue('paymentDate');
+        $expirationDate = $request->getBodyParam('fields.memberDueDate') ?? $user->getFieldValue('memberDueDate');
 
         if ($isEditedByAdmin && !empty($bodyPaymentDate)) {
             $paymentDate = $bodyPaymentDate;
@@ -281,5 +289,37 @@ class RateMember extends BaseModule
         } catch (\Throwable $e) {
             Craft::error("Failed to render/send renewal email to user: $email - " . $e->getMessage(), __METHOD__);
         }
+    }
+
+    private function editPaymentDate(User $user): void
+    {
+        $request = Craft::$app->getRequest();
+        $rawPaymentDate = $request->getBodyParam('fields.paymentDate');
+
+        if (empty($rawPaymentDate)) {
+            return;
+        }
+
+        try {
+            if ($rawPaymentDate instanceof \DateTimeInterface) {
+                $paymentDate = (clone $rawPaymentDate);
+            } elseif (is_array($rawPaymentDate) && isset($rawPaymentDate['date'])) {
+                $paymentDate = new DateTime(
+                    $rawPaymentDate['date'],
+                    new DateTimeZone($rawPaymentDate['timezone'] ?? 'UTC')
+                );
+            } else {
+                $paymentDate = new DateTime((string) $rawPaymentDate);
+            }
+        } catch (\Throwable $e) {
+            Craft::error('Invalid paymentDate value for user ID ' . $user->id . ': ' . $e->getMessage(), __METHOD__);
+            return;
+        }
+
+        $memberDueDate = (clone $paymentDate)->modify('+1 year');
+
+        $user->setFieldValue('paymentDate', $paymentDate->format('Y-m-d'));
+        $user->setFieldValue('memberDueDate', $memberDueDate->format('Y-m-d'));
+        $user->setDirtyFields(['paymentDate', 'memberDueDate']);
     }
 }
