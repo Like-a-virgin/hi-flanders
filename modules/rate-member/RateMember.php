@@ -38,7 +38,7 @@ class RateMember extends BaseModule
                     $memberTypeField = $element->getFieldValue('memberType');
                     $memberType = is_object($memberTypeField) ? ($memberTypeField->value ?? null) : $memberTypeField;
 
-                    if ($memberType === 'individual' && $sourceForm === 'edit-user-payment-dashboard') {
+                    if (($memberType === 'individual' || $memberType === 'group' || $memberType === 'groupYouth') && $sourceForm === 'edit-user-payment-dashboard') {
                         $this->editPaymentDate($element);
                     }
 

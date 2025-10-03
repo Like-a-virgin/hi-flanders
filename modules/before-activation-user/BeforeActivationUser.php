@@ -33,7 +33,7 @@ class BeforeActivationUser extends BaseModule
         }
 
         parent::init();
-        
+
         Event::on(
             Users::class,
             Users::EVENT_BEFORE_ACTIVATE_USER,
@@ -45,12 +45,12 @@ class BeforeActivationUser extends BaseModule
 
     public function handleStatus($event)
     {
-        $user = $event->user; 
+        $user = $event->user;
 
         // Ensure you're working with a valid user
         if ($user instanceof User) {
             $status = $user->getFieldValue('customStatus')->value;
-            $currentDate = new DateTime('now', new DateTimeZone('CET')); 
+            $currentDate = new DateTime('now', new DateTimeZone('CET'));
 
             $rateEntry = $user->getFieldValue('memberRate')->one();
             $ratePriceField = $rateEntry ? $rateEntry->getFieldValue('price') : null;
@@ -59,8 +59,8 @@ class BeforeActivationUser extends BaseModule
             if ($status === "new") {
                 if ($rateEntry && $ratePrice <= 0) {
                     $user->setFieldValue('customStatus', 'active');
-                } 
-                
+                }
+
                 $user->setFieldValue('statusChangeDate', $currentDate);
 
                 if (!Craft::$app->elements->saveElement($user)) {
@@ -68,7 +68,7 @@ class BeforeActivationUser extends BaseModule
                     Craft::error('Errors: ' . json_encode($user->getErrors()), __METHOD__);
                 } else {
                     Craft::info('Successfully set accountStatus to "renew" for user ID: ' . $user->id, __METHOD__);
-                } 
+                }
             }
 
             if ($status === "deactivated") {
@@ -83,7 +83,7 @@ class BeforeActivationUser extends BaseModule
                         $user->setFieldValue('customStatus', 'active');
                     } else {
                         $user->setFieldValue('customStatus', 'new');
-                    }                
+                    }
                 }
 
                 $user->setFieldValue('statusChangeDate', $currentDate);
@@ -93,43 +93,41 @@ class BeforeActivationUser extends BaseModule
                     Craft::error('Errors: ' . json_encode($user->getErrors()), __METHOD__);
                 } else {
                     Craft::info('Successfully set accountStatus to "renew" for user ID: ' . $user->id, __METHOD__);
-                } 
+                }
             }
 
             if ($status === "old" || $status === "oldRenew") {
                 if ($status === 'old') {
-                        $user->setFieldValue('customStatus', 'active');
-                    } else {
-                        $user->setFieldValue('customStatus', 'renew');
-                    }
+                    $user->setFieldValue('customStatus', 'active');
+                } else {
+                    $user->setFieldValue('customStatus', 'renew');
+                }
 
-                    $today = new \DateTime('now', new \DateTimeZone('CET'));
-                    $user->setFieldValue('statusChangeDate', $today);
+                $today = new \DateTime('now', new \DateTimeZone('CET'));
+                $user->setFieldValue('statusChangeDate', $today);
 
-                    $memberRate = $user->getFieldValue('memberRate')->one()->getFieldValue('price')->getAmount();
-                    $memberDueDate = $user->getFieldValue('memberDueDate');
-                    $dueDate = $memberDueDate instanceof DateTime ? $memberDueDate : new DateTime($memberDueDate);
-                    
-                    if ($memberRate == 0 and $dueDate < $today) {
-                        $user->setFieldValue('renewedDate', $today);
-                        $oneYearLater = clone $today;
-                        $oneYearLater->modify('+1 year');
-                        $user->setFieldValue('memberDueDate', $oneYearLater);
-                        $user->setFieldValue('totalPayedMembers', 0);
-                        $user->setFieldValue('paymentType', 'free');
-                        $user->setFieldValue('paymentDate', $today);
-                    }
+                $memberRate = $user->getFieldValue('memberRate')->one()->getFieldValue('price')->getAmount();
+                $memberDueDate = $user->getFieldValue('memberDueDate');
+                $dueDate = $memberDueDate instanceof DateTime ? $memberDueDate : new DateTime($memberDueDate);
 
-                    if (!Craft::$app->elements->saveElement($user)) {
-                        Craft::error("Failed to update user status to active for user {$user->email}", __METHOD__);
-                    } else {
-                        Craft::info("Updated user status to active for user {$user->email}", __METHOD__);
-                    }
+                if ($memberRate == 0 and $dueDate < $today) {
+                    $user->setFieldValue('renewedDate', $today);
+                    $oneYearLater = clone $today;
+                    $oneYearLater->modify('+1 year');
+                    $user->setFieldValue('memberDueDate', $oneYearLater);
+                    $user->setFieldValue('totalPayedMembers', 0);
+                    $user->setFieldValue('paymentType', 'free');
+                    $user->setFieldValue('paymentDate', $today);
+                }
+
+                if (!Craft::$app->elements->saveElement($user)) {
+                    Craft::error("Failed to update user status to active for user {$user->email}", __METHOD__);
+                } else {
+                    Craft::info("Updated user status to active for user {$user->email}", __METHOD__);
+                }
             }
-
         } else {
             Craft::error('Event did not provide a valid User object.', __METHOD__);
         }
     }
-
 }
