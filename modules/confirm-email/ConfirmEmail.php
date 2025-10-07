@@ -5,6 +5,7 @@ namespace modules\confirmemail;
 use Craft;
 use craft\elements\User;
 use craft\events\ModelEvent;
+use craft\web\Request as WebRequest;
 use yii\base\Event;
 use yii\base\Module as BaseModule;
 
@@ -68,16 +69,18 @@ class ConfirmEmail extends BaseModule
                     }
                 }
                 
-                if ($event) {
-                    $customMemberId = $user->getFieldValue('customMemberId') ?? $request->getBodyParam('fields.customMemberId');
-    
-                    if (!empty($customMemberId) && $this->customMemberIdExists($customMemberId, $user->id)) {
-                        $user->addError('customMemberId', Craft::t('site', 'Lidkaartnummer is al in gebruik.'));
-                        $event->isValid = false;
-                        Craft::$app->getSession()->setError(Craft::t('site', 'Lidkaartnummer is al in gebruik. Gebruik een ander lidnummer.'));
-                        Craft::error("User save blocked by duplicate member number: {$customMemberId}", __METHOD__);
-                        return;
-                    }
+                $customMemberId = $user->getFieldValue('customMemberId');
+
+                if ($customMemberId === null && $request instanceof WebRequest) {
+                    $customMemberId = $request->getBodyParam('fields.customMemberId');
+                }
+
+                if (!empty($customMemberId) && $this->customMemberIdExists($customMemberId, $user->id)) {
+                    $user->addError('customMemberId', Craft::t('site', 'Lidkaartnummer is al in gebruik.'));
+                    $event->isValid = false;
+                    Craft::$app->getSession()->setError(Craft::t('site', 'Lidkaartnummer is al in gebruik. Gebruik een ander lidnummer.'));
+                    Craft::error("User save blocked by duplicate member number: {$customMemberId}", __METHOD__);
+                    return;
                 }
             }
         );
