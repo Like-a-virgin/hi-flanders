@@ -43,7 +43,7 @@ class ConfirmEmail extends BaseModule
                 $user = $event->sender;
                 $request = Craft::$app->getRequest();
 
-                if ($request->getIsSiteRequest() && $request->getIsPost()) {
+                if ($request instanceof WebRequest && $request->getIsSiteRequest() && $request->getIsPost()) {
                     // Check if "confirmEmail" exists in the request (relevant for forms that include it)
                     $confirmEmail = $request->getBodyParam('confirmEmail');
     
