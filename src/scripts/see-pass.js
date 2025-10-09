@@ -1,4 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
+    console.log('loaded');
     const eye = document.querySelector('.formbox__see-pass-icon');
     const passwordInput = document.getElementById('password');
     const togglePasswordButton = document.getElementById('togglePassword');
