@@ -1,16 +1,18 @@
-document.addEventListener('DOMContentLoaded', () => {
-    console.log('loaded');
-    const eye = document.querySelector('.formbox__see-pass-icon');
-    const passwordInput = document.getElementById('password');
-    const togglePasswordButton = document.getElementById('togglePassword');
+const eye = document.querySelector('.formbox__see-pass-icon');
 
-    if (!eye || !passwordInput || !togglePasswordButton) return; // Prevent errors if elements are missing
+if (eye) {
+    document.addEventListener('DOMContentLoaded', () => {
+        const passwordInput = document.getElementById('password');
+        const togglePasswordButton = document.getElementById('togglePassword');
 
-    togglePasswordButton.addEventListener('click', () => {
-        const isPasswordVisible = passwordInput.type === 'text';
-        passwordInput.type = isPasswordVisible ? 'password' : 'text';
+        if (!passwordInput || !togglePasswordButton) return; // Prevent errors if elements are missing
 
-        // Toggle the eye icon class
-        eye.classList.toggle('show-eye');
+        togglePasswordButton.addEventListener('click', () => {
+            const isPasswordVisible = passwordInput.type === 'text';
+            passwordInput.type = isPasswordVisible ? 'password' : 'text';
+
+            // Toggle the eye icon class
+            eye.classList.toggle('show-eye');
+        });
     });
-});
+}
