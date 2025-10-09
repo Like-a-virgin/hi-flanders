@@ -39,7 +39,7 @@
     {% include "components/info-box.twig" with {
         span: 2, 
         label: 'Vervaldatum'|t, 
-        info: selectedMember.memberDueDate|date("d/m/Y")
+        info: selectedMember.memberDueDate ? selectedMember.memberDueDate|date("d/m/Y") : '-'
     } %}
     {% if active %}
         {% include "components/info-box.twig" with {
