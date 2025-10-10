@@ -50,17 +50,29 @@ class Flexmail extends BaseModule
     {
         $allowedGroups = ['members', 'membersGroup'];
 
-        $userGroup = Craft::$app->getRequest()->getBodyParam('groupHandle');
-    
-        if (!$userGroup) {
-            Craft::error('User group field is empty for user ID: ' . $user->id, __METHOD__);
-            return false;
+        $request = Craft::$app->getRequest();
+        $groupHandles = [];
+
+        if ($request instanceof \craft\web\Request) {
+            $bodyGroupHandle = $request->getBodyParam('groupHandle');
+            if ($bodyGroupHandle) {
+                $groupHandles[] = $bodyGroupHandle;
+            }
         }
-    
-        if (in_array($userGroup, $allowedGroups)) {
-            return true;
+
+        if (!$groupHandles) {
+            foreach ($user->getGroups() as $group) {
+                $groupHandles[] = $group->handle;
+            }
         }
-    
+
+        foreach ($groupHandles as $handle) {
+            if (in_array($handle, $allowedGroups, true)) {
+                return true;
+            }
+        }
+
+        Craft::info('Flexmail sync skipped: user not in allowed groups (user ID ' . $user->id . ').', __METHOD__);
         return false;
     }
 

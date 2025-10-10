@@ -7,6 +7,7 @@ use craft\elements\User;
 use craft\elements\Entry;
 use craft\events\ElementEvent;
 use craft\services\Elements;
+use craft\web\Request as WebRequest;
 use yii\base\Event;
 use DateTime;
 use DateTimeZone;
@@ -34,7 +35,14 @@ class RateMember extends BaseModule
 
                 if ($element instanceof User) {
                     $request = Craft::$app->getRequest();
-                    $sourceForm = $request->getBodyParam('sourceForm') ?? $request->getParam('sourceForm');
+                    $sourceForm = null;
+
+                    if ($request instanceof WebRequest) {
+                        $sourceForm = $request->getBodyParam('sourceForm') ?? $request->getParam('sourceForm');
+                    } else {
+                        $sourceForm = $request->getParam('sourceForm');
+                    }
+
                     $memberTypeField = $element->getFieldValue('memberType');
                     $memberType = is_object($memberTypeField) ? ($memberTypeField->value ?? null) : $memberTypeField;
 
@@ -76,15 +84,16 @@ class RateMember extends BaseModule
     private function assignMemberRate(User $user): void
     {
         $request = Craft::$app->getRequest();
-        $isConsole = $request->getIsConsoleRequest();
+        $isConsole = !$request instanceof WebRequest;
 
-        $birthday = $isConsole
-            ? $user->getFieldValue('birthday')
-            : ($request->getBodyParam("fields.birthday") ?? $user->getFieldValue('birthday'));
+        $birthday = $user->getFieldValue('birthday');
+        $memberTypeField = $user->getFieldValue('memberType');
+        $memberType = is_object($memberTypeField) ? ($memberTypeField->value ?? null) : $memberTypeField;
 
-        $memberType = $isConsole
-            ? $user->getFieldValue('memberType')->value ?? null
-            : ($request->getBodyParam('fields.memberType') ?? $user->getFieldValue('memberType')->value ?? null);
+        if (!$isConsole) {
+            $birthday = $request->getBodyParam("fields.birthday") ?? $birthday;
+            $memberType = $request->getBodyParam('fields.memberType') ?? $memberType;
+        }
 
         if ($memberType === 'individual' and empty($birthday)) {
             Craft::info("Skipping rate assignment: no birthday set for user ID {$user->id}", __METHOD__);
@@ -174,8 +183,13 @@ class RateMember extends BaseModule
         }
         
         $currentDate = new DateTime();
-        $bodyPaymentDate = $request->getBodyParam('fields.paymentDate') ?? $user->getFieldValue('paymentDate');
-        $expirationDate = $request->getBodyParam('fields.memberDueDate') ?? $user->getFieldValue('memberDueDate');
+        $bodyPaymentDate = $user->getFieldValue('paymentDate');
+        $expirationDate = $user->getFieldValue('memberDueDate');
+
+        if ($request instanceof WebRequest) {
+            $bodyPaymentDate = $request->getBodyParam('fields.paymentDate') ?? $bodyPaymentDate;
+            $expirationDate = $request->getBodyParam('fields.memberDueDate') ?? $expirationDate;
+        }
 
         if ($isEditedByAdmin && !empty($bodyPaymentDate)) {
             $paymentDate = $bodyPaymentDate;
@@ -185,7 +199,15 @@ class RateMember extends BaseModule
 
         $expirationDate = $currentDate->modify('+1 year')->format('Y-m-d');
 
-        $paymentType = $user->getFieldValue('paymentType')->value ?? $request->getBodyParam('fields.paymentType');
+        $paymentTypeField = $user->getFieldValue('paymentType');
+        $paymentType = is_object($paymentTypeField) ? ($paymentTypeField->value ?? null) : $paymentTypeField;
+
+        if ($request instanceof WebRequest) {
+            $requestPaymentType = $request->getBodyParam('fields.paymentType');
+            if ($requestPaymentType !== null) {
+                $paymentType = $requestPaymentType;
+            }
+        }
         
         if ($paymentType and $user->getFieldValue('customStatus') != 'renew') {
             $user->setFieldValue('paymentDate', $paymentDate);
@@ -294,6 +316,10 @@ class RateMember extends BaseModule
     private function editPaymentDate(User $user): void
     {
         $request = Craft::$app->getRequest();
+        if (!$request instanceof WebRequest) {
+            return;
+        }
+
         $rawPaymentDate = $request->getBodyParam('fields.paymentDate');
 
         if (empty($rawPaymentDate)) {
