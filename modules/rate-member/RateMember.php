@@ -39,8 +39,6 @@ class RateMember extends BaseModule
 
                     if ($request instanceof WebRequest) {
                         $sourceForm = $request->getBodyParam('sourceForm') ?? $request->getParam('sourceForm');
-                    } else {
-                        $sourceForm = $request->getParam('sourceForm');
                     }
 
                     $memberTypeField = $element->getFieldValue('memberType');
