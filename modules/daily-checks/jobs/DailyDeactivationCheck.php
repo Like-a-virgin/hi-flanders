@@ -7,11 +7,20 @@ use craft\queue\BaseJob;
 use craft\elements\User;
 use DateTime;
 use DateTimeZone;
+use modules\flexmail\Flexmail;
 
 class DailyDeactivationCheck extends BaseJob
 {
     public function execute($queue): void
     {
+        $flexmail = Flexmail::getInstance();
+        $suspendedHere = false;
+
+        if ($flexmail && !$flexmail->isSyncSuspended()) {
+            $flexmail->setSyncSuspended(true);
+            $suspendedHere = true;
+        }
+
         $now = new DateTime('now', new DateTimeZone('CET'));
         $oneYearAgo = (clone $now)->modify('-1 year')->format('Y-m-d');
 
@@ -34,8 +43,14 @@ class DailyDeactivationCheck extends BaseJob
 
         Craft::info('DailyDeactivationCheck: Found ' . count($usersToDeactivate) . ' users to deactivate.', __METHOD__);
 
-        foreach ($usersToDeactivate as $user) {
-            $this->deactivateUser($user);
+        try {
+            foreach ($usersToDeactivate as $user) {
+                $this->deactivateUser($user);
+            }
+        } finally {
+            if ($flexmail && $suspendedHere) {
+                $flexmail->setSyncSuspended(false);
+            }
         }
 
         // Reminder emails to users who are 357–358 days since statusChangeDate

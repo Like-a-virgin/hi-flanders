@@ -44,6 +44,6 @@ class DailyChecks extends BaseModule
         $queue->push(new DailyDeactivationCheck());
         $queue->push(new DailyExtrasCheck());
 
-        Craft::info('All payment reminder jobs have been added to the queue.', __METHOD__);
+        Craft::info('All jobs have been added to the queue.', __METHOD__);
     }
 }

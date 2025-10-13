@@ -23,12 +23,24 @@ use yii\base\Module as BaseModule;
  */
 class Flexmail extends BaseModule
 {
+    private bool $syncSuspended = false;
+
     public function init(): void
     {
         Craft::setAlias('@modules/flexmail', __DIR__);
 
         parent::init();
         $this->attachEventHandlers();
+    }
+
+    public function setSyncSuspended(bool $suspended): void
+    {
+        $this->syncSuspended = $suspended;
+    }
+
+    public function isSyncSuspended(): bool
+    {
+        return $this->syncSuspended;
     }
 
     private function attachEventHandlers(): void
@@ -39,8 +51,15 @@ class Flexmail extends BaseModule
             function (ElementEvent $event) {
                 $element = $event->element;
 
-                if ($element instanceof User && $this->shouldSyncUser($element)) {
-                    $this->syncToFlexmail($element);
+                if ($element instanceof User) {
+                    if ($this->syncSuspended) {
+                        Craft::info('Flexmail sync skipped: suspended during automated job (user ID ' . $element->id . ').', __METHOD__);
+                        return;
+                    }
+
+                    if ($this->shouldSyncUser($element)) {
+                        $this->syncToFlexmail($element);
+                    }
                 }
             }
         );
@@ -136,10 +155,21 @@ class Flexmail extends BaseModule
                     ]);
 
                     foreach ($interests as $interestId) {
-                        $client->post("$apiUrl/$contactId/interest-subscriptions", [
-                            'auth' => [$apiUsername, $apiPassword],
-                            'json' => ['interest_id' => $interestId],
-                        ]);
+                        try {
+                            $client->post("$apiUrl/$contactId/interest-subscriptions", [
+                                'auth' => [$apiUsername, $apiPassword],
+                                'json' => ['interest_id' => $interestId],
+                            ]);
+                        } catch (ClientException $e) {
+                            $statusCode = $e->getResponse() ? $e->getResponse()->getStatusCode() : null;
+
+                            if ($statusCode === 409) {
+                                Craft::info("Interest {$interestId} already attached for user {$user->email}.", __METHOD__);
+                                continue;
+                            }
+
+                            throw $e;
+                        }
                     }
                     
                     Craft::info("User {$user->email} updated in Flexmail.", __METHOD__);
@@ -175,10 +205,21 @@ class Flexmail extends BaseModule
             
             if ($contactId) {
                 foreach ($interests as $interestId) {
-                    $client->post("$apiUrl/$contactId/interest-subscriptions", [
-                        'auth' => [$apiUsername, $apiPassword],
-                        'json' => ['interest_id' => $interestId],
-                    ]);
+                    try {
+                        $client->post("$apiUrl/$contactId/interest-subscriptions", [
+                            'auth' => [$apiUsername, $apiPassword],
+                            'json' => ['interest_id' => $interestId],
+                        ]);
+                    } catch (ClientException $e) {
+                        $statusCode = $e->getResponse() ? $e->getResponse()->getStatusCode() : null;
+
+                        if ($statusCode === 409) {
+                            Craft::info("Interest {$interestId} already attached for user {$user->email}.", __METHOD__);
+                            continue;
+                        }
+
+                        throw $e;
+                    }
                 }
                 Craft::info("User {$user->email} created and subscribed to interests in Flexmail.", __METHOD__);
             }
