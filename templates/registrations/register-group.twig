@@ -127,7 +127,7 @@
             </div>
             <div class="formbox__column {{ user and user.getErrors('street') ? 'formbox__column--error' }}">
                 <label class="formbox__label" for="street">{{ 'Straat'|t }}</label>
-                {{ input('text', 'fields[street]', user and user.street ? user.street : selectedSubmission and selectedSubmission.country|lower is same as 'belgië' and selectedSubmission.street ? selectedSubmission.street : null, {
+                {{ input('text', 'fields[street]', user and user.street ? user.street : selectedSubmission and selectedSubmission.street ? selectedSubmission.street : null, {
                     id: 'street',
                     placeholder: 'Straat'|t,
                     required: true
@@ -135,7 +135,7 @@
             </div>
             <div class="formbox__column--1-4 {{ user and user.getErrors('streetNr') ? 'formbox__column--error' }}">
                 <label class="formbox__label" for="number">{{'Nr'|t}}</label>
-                {{ input('text', 'fields[streetNr]', user and user.streetNr ? user.streetNr : selectedSubmission and selectedSubmission.country|lower is same as 'belgië' and selectedSubmission.streetNr ? selectedSubmission.streetNr : null, {
+                {{ input('text', 'fields[streetNr]', user and user.streetNr ? user.streetNr : selectedSubmission and selectedSubmission.streetNr ? selectedSubmission.streetNr : null, {
                     id: 'number',
                     placeholder: 'Nr'|t,
                     required: true
@@ -143,14 +143,14 @@
             </div>
             <div class="formbox__column--1-4">
                 <label class="formbox__label" for="bus">{{ 'Bus'|t }}</label>
-                {{ input('text', 'fields[bus]', user and user.bus ? user.bus : selectedSubmission and selectedSubmission.country|lower is same as 'belgië' and selectedSubmission.bus ? selectedSubmission.bus : null, {
+                {{ input('text', 'fields[bus]', user and user.bus ? user.bus : selectedSubmission and selectedSubmission.bus ? selectedSubmission.bus : null, {
                     id: 'bus',
                     placeholder: 'Bus'|t
                 }) }}
             </div>
             <div class="formbox__column {{ user and user.getErrors('postalCode') ? 'formbox__column--error' }}">
                 <label class="formbox__label" for="postal-code">{{'Postcode'|t}}</label>
-                {{ input('text', 'fields[postalCode]', user and user.postalCode ? user.postalCode : selectedSubmission and selectedSubmission.country|lower is same as 'belgië' and selectedSubmission.postalCode ? selectedSubmission.postalCode : null, {
+                {{ input('text', 'fields[postalCode]', user and user.postalCode ? user.postalCode : selectedSubmission and selectedSubmission.postalCode ? selectedSubmission.postalCode : null, {
                     id: 'postal-code',
                     placeholder: 'Postcode'|t,
                     required: true
@@ -158,7 +158,7 @@
             </div>
             <div class="formbox__column {{ user and user.getErrors('city') ? 'formbox__column--error' }}">
                 <label class="formbox__label" for="city">{{'Stad'|t}}</label>
-                {{ input('text', 'fields[city]', user and user.city ? user.city : selectedSubmission and selectedSubmission.country|lower is same as 'belgië' and selectedSubmission.city ? selectedSubmission.city : null, {
+                {{ input('text', 'fields[city]', user and user.city ? user.city : selectedSubmission and selectedSubmission.city ? selectedSubmission.city : null, {
                     id: 'city',
                     placeholder: 'Stad'|t,
                     required: true

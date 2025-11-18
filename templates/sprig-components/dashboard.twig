@@ -1,9 +1,9 @@
 {% set paymentMethods = [{value: 'hostel', label: 'Hostel'|t}, {value: 'online', label: 'Online'|t}, {value: 'transfer', label: 'Overschrijving'|t}, {value: 'free', label: 'Gratis'|t}] %}
 {% set cardTypes = [{value: 'printed', label: 'Fysieke lidkaart'|t}, {value: 'online', label: 'Enkel online'|t}] %}
-{% set statusValues = [{value: 'active', label: 'Actief'|t}, {value: 'new', label: 'Nieuw'|t}, {value: 'renew', label: 'Vernieuw'|t}, {value: 'deactivated', label: 'Gedeactiveerd'|t},  {value: 'old', label: 'Oud systeem'|t}] %}
+{% set statusValues = [{value: 'active', label: 'Actief'|t}, {value: 'new', label: 'Nieuw'|t}, {value: 'renew', label: 'Vernieuw'|t}, {value: 'deactivated', label: 'Gedeactiveerd'|t}, {value: 'old', label: 'oud actief lid (voor 6/06/2025)'|t}, {value: 'oldRenew', label: 'oud niet actief lid (voor 6/06/2025)'|t}] %}
 {% set memberTypes = [{value: 'individual', label: 'Individueel'|t}, {value: 'group', label: 'Groep'|t}, {value: 'groupYouth', label: 'Jeugdgroep'|t},  {value: 'life', label: 'Life member'|t}] %}
 {% set printStatuses = [{value: 'send', label: 'Reeds verstuurd'|t}, {value: 'requested' , label: 'Aangevraagd'|t}] %}
-{% set limits = [{value: 10}, {value: 20}, {value: 30} , {value: 40}, {value: 50}, {value: 80}, {value: 100}, {value: 150}] %}
+{% set limits = [{value: 10}, {value: 20}, {value: 30} , {value: 40}, {value: 50}, {value: 80}, {value: 100}, {value: 150}] %} 
 {% set ageGroups = craft.entries.section('rates').memberType('individual').all() %}
 
 {% set search = search ?? null %}

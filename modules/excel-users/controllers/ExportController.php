@@ -68,7 +68,7 @@ class ExportController extends Controller
             $usersQuery->andWhere(['between', 'dateCreated', $queryParams['regMin'], $queryParams['regMax']]);
         }
         if (!empty($queryParams['payMin']) && !empty($queryParams['payMax'])) {
-            $usersQuery->andWhere(['between', 'fields.paymentDate', $queryParams['payMin'], $queryParams['payMax']]);
+            $usersQuery->andWhere(['between', 'paymentDate', $queryParams['payMin'], $queryParams['payMax']]);
         }
 
         $users = $usersQuery->group(['members', 'membersGroup'])->all();

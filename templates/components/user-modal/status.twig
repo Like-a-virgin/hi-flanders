@@ -1,7 +1,7 @@
 {% set fieldStatus = craft.app.fields.getFieldByHandle('customStatus') %}
 {% set optionsStatus = fieldStatus.options ?? [] %}
 {% set optionsStatus = optionsStatus|filter(i => i.value is not same as 'deactivated') %}
-{% set statusTranslations = [{value: 'new', label: 'new'|t}, {value: 'active', label: 'actief'|t}, {value: 'renew', label: 'verniew'|t}, {value: 'deactivated', label: 'gedeactiveerd'|t}, {value: 'old', label: 'oud actief lid'|t}, {value: 'oldRenew', label: 'oud niet actief lid'|t}] %}
+{% set statusTranslations = [{value: 'new', label: 'new'|t}, {value: 'active', label: 'actief'|t}, {value: 'renew', label: 'verniew'|t}, {value: 'deactivated', label: 'gedeactiveerd'|t}, {value: 'old', label: 'oud actief lid (voor 6/06/2025)'|t}, {value: 'oldRenew', label: 'oud niet actief lid (voor 6/06/2025)'|t}] %}
 {% set currentStatusLabel = statusTranslations|find(i => i.value is same as selectedMember.customStatus.value).label %}
 
 <div class="box__wrapper" x-show="!editStatus">
