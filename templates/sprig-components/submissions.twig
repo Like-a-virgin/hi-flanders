@@ -5,45 +5,83 @@
 {% set page = page ?? 1 %}
 {% set limit = limit ?? limits[limits|length - 2].value %}
 {% set status = status ?? '' %}
+{% set search = search ?? null %}
 
 {% set filters = {
     submissionId: submissionId,
 	status: status,
 	limit: limit,
+	search: search,
 } %}
 
 {% set submissionsQuery = craft.formie.submissions({
     orderBy: 'dateCreated DESC', 
 	statusId: status,
-    limit: limit
+    limit: limit,
 }) %}
 
-{% do sprig.pushUrl('?' ~ filters|merge({page: page})|url_encode ) %}
-{% set pageInfo = sprig.paginate(submissionsQuery, page) %}
-{% set entries = pageInfo.pageResults %}
-
 {% set submissionsAll = submissionsQuery.all() %}
+{% set filteredSubmissions = submissionsAll %}
+
+{% if search %}
+    {% set searchValue = search|lower|trim %}
+    {% if searchValue %}
+        {% set filteredSubmissions = submissionsAll|filter(submission =>
+            (
+                submission.getFieldByHandle('name') 
+                and searchValue in (((submission.getFieldValue('name') ?? '') ~ '')|lower)
+            )
+            or (
+                submission.getFieldByHandle('lastName') 
+                and searchValue in (((submission.getFieldValue('lastName') ?? '') ~ '')|lower)
+            )
+            or (
+                submission.getFieldByHandle('organisation') 
+                and searchValue in (((submission.getFieldValue('organisation') ?? '') ~ '')|lower)
+            )
+        ) %}
+    {% endif %}
+{% endif %}
+
+{% set totalSubmissions = filteredSubmissions|length %}
+{% set totalPagesComputed = totalSubmissions ? (totalSubmissions / limit)|round(0, 'ceil') : 1 %}
+{% set page = page > totalPagesComputed ? totalPagesComputed : page %}
+{% set page = page < 1 ? 1 : page %}
+{% set offset = (page - 1) * limit %}
+{% set entries = filteredSubmissions|slice(offset, limit) %}
+{% set currentLast = entries|length ? offset + entries|length : 0 %}
+{% set pageInfo = {
+    first: totalSubmissions ? offset + 1 : 0,
+    last: totalSubmissions ? min(currentLast, totalSubmissions) : 0,
+    total: totalSubmissions,
+    totalPages: totalSubmissions ? totalPagesComputed : 0
+} %}
+
+{% do sprig.pushUrl('?' ~ filters|merge({page: page})|url_encode ) %}
 {% set statuses = craft.formie.statuses %}
 
-<div class="box-container table">
-	<div class="table__heading">
-    	<h1>{{'Aanvragen'}}</h1>
-		<div class="table__options table__options--heading">
-			<div class="filter">
-				<select sprig  class="filter__limit" name="limit" id="">
-					{% for item in limits %}
-						<option class="filter__option" value="{{item.value}}" {{ limit == item.value ? 'selected'}}>{{item.value}}</option>
-					{% endfor %}
-				</select>
-			</div>
-			<div class="filter">
-				<select sprig  class="filter__status" name="status" id="">
-					<option class="filter__option" value="" {{ not status ? 'selected' }}>{{ 'Toon alle'|t }}</option>
-					{% for item in statuses %}
-						<option class="filter__option" value="{{ item.id }}" {{ status == item.id ? 'selected'}}>{{ item.name }}</option>
-					{% endfor %}
-				</select>
-			</div>
+<div class="box-container table">	
+    <h1>{{'Aanvragen'}}</h1>
+	<div class="table__options">
+        <div class="table__option-search">
+            {{ svg("assets/icons/search.svg")|attr({class: 'table__icon-search' }) }}
+            <input sprig type="text" class="table__search" name="search" value="{{search}}" placeholder="{{'Zoeken'|t}}">
+            <button sprig s-val:search="{{null}}" class="table__option-search-delete">{{ svg("assets/icons/x.svg")|attr({class: 'table__icon-search' }) }}</button>
+        </div>
+		<div class="filter">
+			<select sprig  class="filter__limit" name="limit" id="">
+				{% for item in limits %}
+					<option class="filter__option" value="{{item.value}}" {{ limit == item.value ? 'selected'}}>{{item.value}}</option>
+				{% endfor %}
+			</select>
+		</div>
+		<div class="filter">
+			<select sprig  class="filter__status" name="status" id="">
+				<option class="filter__option" value="" {{ not status ? 'selected' }}>{{ 'Toon alle'|t }}</option>
+				{% for item in statuses %}
+					<option class="filter__option" value="{{ item.id }}" {{ status == item.id ? 'selected'}}>{{ item.name }}</option>
+				{% endfor %}
+			</select>
 		</div>
 	</div>
     <div class="table__content" id="table-members">
@@ -76,7 +114,7 @@
             </tbody>
         </table>
     </div>
-    {% if submissionsAll %}
+    {% if filteredSubmissions %}
         <div class="pagination">
 			<p>
 				{{ pageInfo.first }}-{{ pageInfo.last }}

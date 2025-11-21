@@ -47,17 +47,26 @@ class ExportKidsController extends Controller
             'First Name',
             'Last Name',
             'Birthday',
+            'Age',
             'Member Rate',
+            'Linked parents',
             'Parent Name',
             'Parent Email',
             'Parent Custom Member ID', // Added column for parent's customMemberId
-        ]];
+        ]]; 
 
         foreach ($entries as $entry) {
             // Get first name, last name, and birthday
             $firstName = $entry->altFirstName;
             $lastName = $entry->altLastName;
-            $birthday = $entry->birthday ? $entry->birthday->format('d/m/Y') : '';
+            $birthDate = $entry->birthday;
+            $birthday = $birthDate ? $birthDate->format('d/m/Y') : '';
+            $age = '';
+
+            if ($birthDate) {
+                $now = new \DateTime('now', $birthDate->getTimezone());
+                $age = $birthDate->diff($now)->y;
+            }
 
             // Get the memberRate title
             $memberRateEntry = $entry->memberRate->one();
@@ -81,7 +90,9 @@ class ExportKidsController extends Controller
                 $firstName,
                 $lastName,
                 $birthday,
+                $age,
                 $memberRateTitle,
+                count($parentUsers->all()),
                 implode(', ', $parentNames),  // Combine multiple parent names into a single string
                 implode(', ', $parentEmails), // Combine multiple parent emails into a single string
                 implode(', ', $parentCustomMemberIds), // Combine multiple parent's customMemberIds into a single string
