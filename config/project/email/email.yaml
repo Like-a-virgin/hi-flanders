@@ -3,6 +3,5 @@ fromName: 'Hi Flanders'
 replyToEmail: null
 template: email/email.twig
 transportSettings:
-  messageStream: ''
-  token: $POSTMARK_API_KEY
-transportType: craftcms\postmark\Adapter
+  command: '/usr/local/bin/mailpit sendmail -t --smtp-addr 127.0.0.1:1025'
+transportType: craft\mail\transportadapters\Sendmail
