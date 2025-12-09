@@ -1,4 +1,4 @@
-dateModified: 1763737541
+dateModified: 1765293390
 elementSources:
   craft\elements\Entry:
     -
@@ -213,12 +213,14 @@ meta:
     6a50b531-3d13-4fe9-95fa-16d3ce0c27d1: 'Gerigistreerd door ' # Gerigistreerd door 
     7b5aa47e-5da6-461a-b6fc-a190a143d8d8: 'Activeer email' # Activeer email
     7ca5fc34-985a-44f3-bc43-3f333f9457f3: CustomId # CustomId
+    8bcc63cf-9af7-4534-9702-b0378527d880: Mailing # Mailing
     9a41348d-b717-4688-9000-767870baae38: 'In aanvraag' # In aanvraag
     9b6463ce-f83c-4bd6-ad35-a79ab9818286: Users # Users
     9e78752a-4bce-4158-b7a8-d244e0cfc7fd: 'Last edited by' # Last edited by
     9fa38d43-f532-46e6-a754-46a74621fb10: Branding # Branding
     21c22e0c-c629-4e07-9e19-a289ef81be37: Simple # Simple
     22e6beae-01af-4451-b3d5-29bf90a51e80: 'Reset wachtwoord' # Reset wachtwoord
+    22f01f7b-1f35-49ff-b066-aab90e321e96: 'Mail content' # Mail content
     26a45535-8ce1-455f-b5ed-13bc2228f792: Behandeld # Behandeld
     40f481eb-0ec0-4642-ae8d-142718436d91: Nummer # Nummer
     41bcf592-e8cf-43ee-8c4f-c83d185aee48: Formulieren # Formulieren
@@ -234,10 +236,12 @@ meta:
     115f3616-1f1d-4238-bbd6-a35c5b4e8f28: 'Lidkaart type' # Lidkaart type
     359a39c5-8655-460f-a1b4-0c097ea0edb2: Ledensysteem # Ledensysteem
     590f0cba-dbfa-4eda-882d-2fe3aac82a92: Prijs # Prijs
+    634a10b7-549a-49ff-b509-ef0bd57da039: Mailing # Mailing
     840ecdec-44d2-4106-aab6-2bcff857ed48: discount # discount
     996e7f91-0447-4498-addc-bf91c17465f9: Taal # Taal
     3935f25e-b3fe-4920-ba58-701ceaa8ee7e: 'Brand logo' # Brand logo
     5178f917-f380-440d-a326-c41e396ba39a: 'privacy policy' # privacy policy
+    5757c6a3-d504-4cc3-a807-71dee9564d5c: Mailings # Mailings
     6754b9ff-3f0c-41d6-914e-520590bd5d79: LinkExtern # LinkExtern
     8365fada-1ce2-4e0a-8a3f-f919c3c18208: 'max Leeftijd' # max Leeftijd
     24815bbb-0421-4b52-9edb-4d6aa36625dc: 'Beheerder Super' # Beheerder Super

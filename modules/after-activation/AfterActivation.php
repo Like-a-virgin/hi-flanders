@@ -8,6 +8,7 @@ use yii\base\Event;
 use craft\services\Users;
 use craft\elements\User;
 use craft\events\UserEvent;
+use craft\fields\data\SingleOptionFieldData;
 use DateTime;
 use DateTimeZone;
 
@@ -44,6 +45,8 @@ class AfterActivation extends BaseModule
             Users::EVENT_AFTER_ACTIVATE_USER,
             function (UserEvent $event) {
                 $user = $event->user;
+
+                $this->ensureCustomStatusForPaidAdmin($user);
 
                 if (Craft::$app->request->getIsPost() && Craft::$app->request->getPathInfo() === 'membership-payments/payment/webhook') {
                     Craft::info("Skipping activation email for user {$user->email} (triggered by payment webhook)", __METHOD__);
@@ -146,5 +149,56 @@ class AfterActivation extends BaseModule
         } catch (\Throwable $e) {
             Craft::error("Error sending custom activation email: " . $e->getMessage(), __METHOD__);
         }
+    }
+
+    private function ensureCustomStatusForPaidAdmin(User $user): void
+    {
+        $registeredBy = $this->getDropdownValue($user->getFieldValue('registeredBy'));
+
+        if ($registeredBy !== 'admin') {
+            return;
+        }
+
+        $paymentType = $this->getDropdownValue($user->getFieldValue('paymentType'));
+        $paymentDate = $user->getFieldValue('paymentDate');
+        $memberDueDate = $user->getFieldValue('memberDueDate');
+
+        if (
+            !$paymentType ||
+            !($paymentDate instanceof \DateTimeInterface) ||
+            !($memberDueDate instanceof \DateTimeInterface)
+        ) {
+            return;
+        }
+
+        $now = new DateTime('now', new DateTimeZone('CET'));
+
+        if ($memberDueDate < $now) {
+            return;
+        }
+
+        $currentStatus = $this->getDropdownValue($user->getFieldValue('customStatus'));
+
+        if ($currentStatus === 'active') {
+            return;
+        }
+
+        $user->setFieldValue('customStatus', 'active');
+        $user->setFieldValue('statusChangeDate', $now);
+
+        if (!Craft::$app->elements->saveElement($user, false)) {
+            Craft::error("Failed to auto-set customStatus to active for user {$user->email}. Errors: " . json_encode($user->getErrors()), __METHOD__);
+        } else {
+            Craft::info("customStatus set to active after activation for user {$user->email}.", __METHOD__);
+        }
+    }
+
+    private function getDropdownValue(mixed $fieldValue): ?string
+    {
+        if ($fieldValue instanceof SingleOptionFieldData) {
+            return $fieldValue->value ?: null;
+        }
+
+        return is_string($fieldValue) ? ($fieldValue !== '' ? $fieldValue : null) : null;
     }
 } 

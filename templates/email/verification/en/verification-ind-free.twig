@@ -1,6 +1,7 @@
 {% extends "email/base.twig" %}
 {% block content %}
     <p>Hi {{ name }},</p>
+    {{ craft.entries().section('mailings').slug('verification-ind-free').site('usersEn').one().mailing }}
     <p>Fireworks! From now on, traveling will be even more fun because you are now part of the Hi Flanders community! Welcome!</p>
     <p>
         <strong>What does this premium membership include?</strong><br>

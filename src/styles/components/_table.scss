@@ -209,6 +209,11 @@
             background-color: $clr-succes-bg;
             color: $clr-succes-text;
         }
+        
+        &--mid {
+            background-color: $clr-mid-bg;
+            color: $clr-mid-text;
+        }
     }
 
     &__status-icon {

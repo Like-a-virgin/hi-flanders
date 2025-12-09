@@ -104,7 +104,7 @@
 						<td>{{ submission.organisation ? submission.organisation : '-'  }}</td>
                         <td>{{ submission.dateCreated|date('d-m-Y') }}</td>
                         <td>
-							<div class="table__status {{ submission.statusId is same as 1 ? 'table__status--true' : 'table__status--disabled' }}">{{ statuses[submission.statusId - 1]|t }}</div>
+							<div class="table__status {{ submission.statusId is same as 1 ? 'table__status--true' : submission.statusId is same as 3 ? 'table__status--mid' : 'table__status--disabled' }}">{{ statuses[submission.statusId - 1]|t }}</div>
 						</td>
                         <td>
 							<button sprig class="table__more" s-val:submission-id="{{ submission.id }}">{{'Bekijk details'}}</button>

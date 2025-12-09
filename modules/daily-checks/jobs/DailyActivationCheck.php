@@ -57,7 +57,7 @@ class DailyActivationCheck extends BaseJob
                 } elseif ($lang === 'fr') {
                     $subject = 'Psst, rien oublié ? Activez votre adhésion à Hi Flanders';
                 } else {
-                    $subject = 'Psst, rien oublié ? Activez votre adhésion à Hi Flanders';
+                    $subject = 'Psst, niets vergeten? Activeer je lidmaatschap bij Hi Flanders';
                 }
             }
 

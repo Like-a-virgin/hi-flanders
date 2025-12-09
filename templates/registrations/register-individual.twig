@@ -15,6 +15,7 @@
     {% set paymentMethods = [{value: 'hostel', label: 'Hostel'|t}, {value: 'transfer', label: 'Overschrijving'|t}, {value: 'free', label: 'Gratis'|t}] %}
     {% set user = user ?? null %}
     {% set succesUrl = craft.entries.section('succesRegister').one().url %}
+    {% set selectedPaymentType = craft.app.request.getBodyParam('fields[paymentType]') ?? '' %}
     
     {% set previousUrl = craft.app.request.getReferrer() %}
     {% set segments = previousUrl|split('/') %}
@@ -34,7 +35,7 @@
         <div class="formbox__heading">
             <h1>{{'Registreer een individu'|t}}</h1>
         </div>
-        <form class="formbox__form" method="post" accept-charset="UTF-8" x-data="{ payed: $persist(false), payedMemberCard: $persist(false) }" x-init="{{ lastSegment is not same as 'register-individual' ? 'payed = false; payedMemberCard = false;' : ''}}">
+        <form class="formbox__form" method="post" accept-charset="UTF-8" x-data="{ paymentType: '{{ selectedPaymentType|e('js') }}', payed: $persist({{ selectedPaymentType and selectedPaymentType != 'free' ? 'true' : 'false' }}), payedMemberCard: $persist(false) }" x-init="{% if lastSegment is not same as 'register-individual' %}payed = false; payedMemberCard = false; paymentType = '';{% else %}payed = paymentType !== '' && paymentType !== 'free';{% endif %}">
             {{ csrfInput() }}
             {{ actionInput('users/save-user') }}
             {{ redirectInput(succesUrl) }}
@@ -152,7 +153,7 @@
             <div class="formbox__column--full">
                 {% set paymentMethodsFiltered = paymentMethods|filter(i => i.value is same as 'hostel') %}
                 <label class="formbox__label" for="payment-type">{{'Betaalmethode'|t}}</label>
-                <select name="fields[paymentType]" id="payment-type" @change="payed = $event.target.value !== '' && $event.target.value !== 'free'">
+                <select name="fields[paymentType]" id="payment-type" x-model="paymentType" @change="payed = paymentType !== '' && paymentType !== 'free'">
                     <option value="">{{'Nog niet betaald'|t}}</option>
                     {% if currentUser.inGroup('membersAdminSuper') %}
                         {% for item in paymentMethods %}
@@ -175,7 +176,7 @@
                     step: '0.01'
                 }) }}
             </div>
-            <div class="formbox__column--full" x-show="payed">                
+            <div class="formbox__column--full" x-show="payed || paymentType === 'free'">                
                 <label class="formbox__label" for="memberDueDate">{{'Vervaldatum'|t}}</label>
                 {{ input('text', 'fields[memberDueDate]', craft.app.request.getBodyParam('fields[memberDueDate]') ?? null, {
                     id: 'memberDueDate',

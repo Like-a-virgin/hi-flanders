@@ -1,12 +1,11 @@
 {% extends "email/base.twig" %}
 {% block content %}
+    {% set mailingContent = craft.entries().section('mailings').slug('verification-payment').site('default').one() %}
     <p>Hi {{ name }},</p>
-    <p>Bedankt voor je betaling! Hierbij bevestigen wij dat het openstaande bedrag succesvol is voldaan. Deze mail geldt als betalingsbewijs.</p>
-    <p><strong>Details van je betaling:</strong></p>
+    {{ mailingContent.mailing }}
     <ul>
         <li>Betaald bedrag: €{{ total }}</li>
         <li>Datum van betaling: {{ date }}</li>
     </ul>
-    <p style="margin-top: 30px">Met vriendelijke groet,</p>
-    <p><strong>Het Hi Flanders-team</strong></p>
+    {{ mailingContent.mailing2 }}
 {% endblock %}

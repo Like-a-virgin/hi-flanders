@@ -1,7 +1,8 @@
 {% extends "email/base.twig" %}
 {% block content %}
+    {% set mailingContent = craft.entries().section('mailings').slug('account-deactivated ').site('default').one() %}
     <p>Hi {{ name }},</p>
-    <p>Wat jammer dat je geen lid meer wil zijn van de Hi Flanders club! Jouw account werd bij deze verwijderd.</p>
-    <p style="margin-bottom: 30px">Mocht je in de toekomst toch weer graag bij ons verblijven en Premium lid willen worden, kan dat eenvoudig via deze knop.</p>
-    <a style="color: #102438;" class="button" href="{{ url }}">Ik wil toch terug lid worden!</a>
+    {{ mailingContent.mailing }}
+    <a style="color: #102438;" class="button" href="{{ url }}">{{ mailingContent.textSingle }}</a>
+    {{ mailingContent.mailing2 }}
 {% endblock %}

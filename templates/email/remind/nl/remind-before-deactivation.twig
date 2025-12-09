@@ -1,21 +1,9 @@
 {% extends "email/base.twig" %}
 {% block content %}
+    {% set mailingContent = craft.entries().section('mailings').slug('remind-before-deactivation').site('default').one() %}
+
     <p>Hi {{ name }},</p>
-    <p style="margin-bottom: 30px">We hebben je het voorbije jaar gemist! Daarom willen we je nog een laatste kans bieden om je lidmaatschap bij Hi Flanders te vernieuwen.</p>
-    <a class="button" href="{{ url }}">Ik wil lid blijven van Hi Flanders!</a>
-    <p style="margin-top: 40px"><strong>Welke voordelen zijn dat ook alweer? <br>Hi Flanders Premium, dat is:</strong></p>
-    <ul>
-        <li>Premium comfort tegen een minimumprijs</li>
-        <li><a style="color: #fac000;" href="https://www.hiflanders.be/nl/premium">Bijkomende kortingen</a> bovenop onze lage prijzen</li>
-        <li>Waardevolle inspiratie voor toekomstige verblijven op onze <a style="color: #fac000;" href="https://www.hiflanders.be/nl/belevingen">belevingspagina</a></li>
-        <li>Je bent automatisch ook lid van Hostelling International. Zo bespaar je ook in het buitenland op hostelverblijven. <a style="color: #fac000;" href="https://www.hiflanders.be/nl/hostelling-international">Vind hier inspiratie</a></li>
-        <li>Digitaal gemak: eenvoudig inloggen op onze site, en binnenkort ook met de Hi Flanders-app</li>
-    </ul>
-    <p><strong>Wat kost het?</strong></p>
-    <ul style="margin-bottom: 30px">
-        <li>Gratis voor leden van 30 jaar of jonger</li>
-        <li>Slechts € 10 per jaar vanaf 31 jaar – een bedrag dat je dubbel en dik terugverdient dankzij je 10% korting</li>
-    </ul>
-    <a class="button" href="{{ url }}">Ik wil geen enkel voordeel missen!</a>
-    <p style="margin-top: 40px">Je hebt nog 7 dagen de tijd om je lidmaatschap te activeren. Doe je dat niet, dan zal je account verwijderd worden.</p>
+    {{ mailingContent.mailing }}
+    <a class="button" href="{{ url }}">{{ mailingContent.textSingle }}</a>
+    {{ mailingContent.mailing2 }}
 {% endblock %}

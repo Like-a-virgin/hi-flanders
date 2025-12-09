@@ -1,6 +1,7 @@
 {% extends "email/base.twig" %}
 {% block content %}
     <p>Bonjour  {{ name }},</p>
+    {{ craft.entries().section('mailings').slug('verification-ind-free').site('usersFr').one().mailing }}
     <p>Feu d’artifice ! Voyager devient une fête, car vous faites désormais partie de la communauté Hi Flanders ! Bienvenue !</p>
     <p>
         <strong>Que comprend cette adhésion premium ?</strong><br>

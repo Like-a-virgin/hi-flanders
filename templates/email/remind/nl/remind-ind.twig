@@ -1,14 +1,9 @@
 {% extends "email/base.twig" %}
+
 {% block content %}
+    {% set mailingContent = craft.entries().section('mailings').slug('remind-ind').site('default').one() %}
     <p>Hi {{ name }},</p>
-    <p style="margin-bottom: 30px">
-        Vorige week vroegen we jou om je lidmaatschap te activeren door je mailadres te bevestigen. We denken dat je dit uit het oog verloren bent. Maar het is nog niet te laat.<br> 
-        Voltooi dit met 1 klik:
-    </p>
-    <a style="color: #102438;" class="button" href="{{ activationUrl }}">Ik bevestig mijn mailadres</a>
-    <p style="margin-top: 40px">Na bevestiging krijg je – tenzij je 30 of jonger bent - nog een mailtje met oproep tot betaling van het lidgeld (€ 10). Wanneer de betaling in orde is, kan je alle voordelen als Hi Flanders-lid eenvoudig online ontdekken: <a href="https://www.hiflanders.be/nl/premium">exclusieve voordelen, kortingen</a> en <a href="https://www.hiflanders.be/nl/belevingen">inspiratie </a>om er elke keer opnieuw een geweldige vakantie van te maken!</p>
-    <p>Heb je vragen of lukt het niet? Laat het ons weten via <a style="color: #fac000;" href="mailto:premium@hiflanders.be">premium@hiflanders.be</a> of bel <a style="color: #fac000;" href="tel:+3232327218">+32 3 232 72 18</a> tijdens de kantooruren.</p>
-    <p>Tot binnenkort in een van onze hostels?</p>
-    <p style="margin-top: 30px">Warme groet,</p>
-    <p><strong>Het Hi Flanders-team</strong></p>
+    {{ mailingContent.mailing }}
+    <a style="color: #102438;" class="button" href="{{ activationUrl }}">{{ mailingContent.textSingle }}</a>
+    {{ mailingContent.mailing }}
 {% endblock %}

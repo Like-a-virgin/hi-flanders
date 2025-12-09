@@ -1,0 +1,36 @@
+css: ".margin-top {\r\n  margin-top: 30px;\r\n}\r\n.margin-bottom {\r\n  margin-bottom: 30px;\r\n}\r\n.subtitle {\r\n    margin-top: 30px;\r\n}\r\n\r\n.button {\r\n  background-color: #FFCC22;\r\n  color: #102438;\r\n  font-weight: bold;\r\n  text-decoration: none;\r\n}\r\np {\r\n    color: #102438;\r\n}\r\na {\r\n    color: #fac000;\r\n}"
+headingLevels: false
+name: Mailing
+options:
+  style:
+    definitions:
+      -
+        classes:
+          - margin-top
+        element: p
+        name: 'Marge boven'
+      -
+        classes:
+          - margin-bottom
+        element: p
+        name: 'Marge onder'
+      -
+        classes:
+          - button
+        element: a
+        name: Knop
+      -
+        classes:
+          - subtitle
+        element: p
+        name: Subtitle
+toolbar:
+  - style
+  - heading
+  - '|'
+  - bulletedList
+  - bold
+  - italic
+  - underline
+  - link
+  - sourceEditing
