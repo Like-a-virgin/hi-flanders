@@ -1,19 +1,8 @@
 {% extends "email/base.twig" %}
 {% block content %}    
+    {% set mailingContent = craft.entries().section('mailings').slug('activation-ind-ad-payed').site('usersEn').one() %}
     <p>Hi {{ name }},</p>
-    <p>Welcome to Hi Flanders! A staff member at the hostel where you're staying has added you to our community.</p>
-    <p style="margin-bottom: 30px">This email confirms your membership. The only thing left to do is choose a password to activate your membership. Click the button below to proceed:</p>
-    <a style="color: #102438;" class="button" href="{{ activationUrl }}">Choose a password</a>
-    <p style="margin-top: 40px">Activate this within 7 days to ensure access to your account.</p>
-    <p><u>Extra info on your membership:</u></p>
-    <ul>
-        <li><strong>Why do I need to do this? </strong> We need this confirmation to complete your membership registration. This will make your future experience with Hi Flanders much more user-friendly.</li>
-        <li>As a Hi Flanders member, you’ll enjoy <a style="color: #fac000;" href="https://www.hiflanders.be/en/premium">exclusive benefits, discounts,</a> and <a style="color: #fac000;" href="https://www.hiflanders.be/en/experiences">inspiration</a> for future stays. But don’t worry, we won’t flood your inbox with emails. <strong>You stay in control</strong> and decide how often you hear from us.</li>
-        <li>We handle your data with the utmost <strong>confidentiality and security</strong>, in accordance with applicable privacy laws. Check our <a style="color: #fac000;" href="https://www.hiflanders.be/en/privacy-policy">privacy policy</a> for more details.</li>
-    </ul>
-    <p><u>Need help?</u></p>
-    <p>Do you have any questions or trouble activating your membership? Feel free to contact us, we’re happy to assist! Email us at <a style="color: #fac000;" href="mailto:premium@hiflanders.be">premium@hiflanders.be</a> or call <a style="color: #fac000;" href="tel:+3232327218">+32 3 232 72 18</a> during office hours.</p>
-    <p>Enjoy your stay, and hopefully, we’ll see you again at one of our hostels!</p>
-    <p style="margin-top: 30px">Warm regards,</p>
-    <p><strong>The Hi Flanders Team</strong></p>
+    {{ mailingContent.mailing }}
+    <a style="color: #102438; margin-top: 30px" class="button" href="{{ activationUrl }}">{{ mailingContent.textSingle }}</a>
+    {{ mailingContent.mailing2 }}
 {% endblock %}

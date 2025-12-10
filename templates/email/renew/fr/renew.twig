@@ -1,21 +1,8 @@
 {% extends "email/base.twig" %}
 {% block content %}
+    {% set mailingContent = craft.entries().section('mailings').slug('renew').site('usersFr').one() %}
     <p>Bonjour {{ name }},</p>
-    <p>Ton adhésion à Hi Flanders expire aujourd’hui.</p>
-    <p>Mais tu ne vas pas laisser faire ça, hein ? Renouvelle-la vite et continue à profiter de tous les avantages en tant que membre Premium !</p>
-    <p style="margin-bottom: 30px">Voor ieders gemak zijn we intussen volledig gedigitaliseerd, dus met enkele klikken is jouw premium lidmaatschap gefixt:</p>
-    <a class="button" href="{{ url }}">Je reste membre Premium !</a>
-    <p style="margin-top: 40px"><strong>Quels sont déjà tous ces avantages ?</strong></p>
-    <p><strong>Hi Flanders Premium, c’est :</strong></p>
-    <ul>
-        <li>Le confort Premium à un prix mini</li>
-        <li>Des <a style="color: #fac000;" href="https://www.hiflanders.be/fr/premium">réductions supplémentaires</a> en plus de nos prix déjà bas</li>
-        <li>Une <a style="color: #fac000;" href="https://www.hiflanders.be/nl/belevingen">source d’inspiration</a> pour tes prochains séjours sur notre page Expériences</li>
-        <li>Une adhésion automatique à Hostelling International. Tu économises aussi à l’étranger sur tes nuitées en auberge. <a style="color: #fac000;" href="https://www.hiflanders.be/nl/hostelling-international">Trouve l’inspiration ici.</a></li>
-        <li>Facilité digitale : connexion simple à notre site, et bientôt aussi via l’appli Hi Flanders</li>
-    </ul>
-    <p>N’hésite plus et reste membre de notre club !</p>
-    <p>Des questions ou des soucis pour renouveler ton adhésion ? N’hésite pas à nous contacter. On t’aide avec plaisir. Envoie un mail à <a style="color: #fac000;" href="mailto:premium@hiflanders.be">premium@hiflanders.be</a> ou appelle le <a style="color: #fac000;" href="tel:+3232327218">+32 3 232 72 18</a> pendant les heures de bureau.</p>
-    <p style="margin-top: 30px">Chaleureusement,</p>
-    <p>L’équipe Hi Flanders</p>
+    {{ mailingContent.mailing }}
+    <a class="button" href="{{ url }}">{{ mailingContent.textSingle }}</a>
+    {{ mailingContent.mailing2 }}
 {% endblock %}

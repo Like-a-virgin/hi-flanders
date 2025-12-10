@@ -109,7 +109,7 @@ class DailyActivationCheck extends BaseJob
                 if ($lang === 'en') {
                     $subject = 'Psst, forgot something? Activate your group membership at Hi Flanders';
                 } elseif ($lang === 'fr') {
-                    $subject = 'Psst, vous n\'oubliez rien ? Activez votre adhésion au groupe sur Hi Flanders';
+                    $subject = 'Psst, rien oublié ? Activez votre adhésion de groupe à Hi Flanders';
                 } else {
                     $subject = 'Psst, niets vergeten? Activeer je groepslidmaatschap bij Hi Flanders';
                 }

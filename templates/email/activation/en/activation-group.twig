@@ -1,8 +1,8 @@
 {% extends "email/base.twig" %}
 {% block content %}    
+    {% set mailingContent = craft.entries().section('mailings').slug('activation-group').site('usersEn').one() %}
     <p>Hi {{ name }},</p>
-    <p>Good news: your request to register a group has been approved.</p>
-    <p>To activate your membership, there are two steps left:</p>
+    {{ mailingContent.mailing }}
     <ol>
         <li>
             <div>Set a password to access your group account.</div><br> 
@@ -13,14 +13,5 @@
             <a style="color: #102438;" class="button" href="{{ url }}">Go to the payment page</a>
         </li>
     </ol>
-    <p style="margin-top: 25px">Please complete these steps within 7 days to ensure access to your group account.</p>
-    <p><u>Extra info on your membership:</u></p>
-    <ul>
-        <li>As a Hi Flanders member, your group will enjoy <a style="color: #d8a600;" href="https://www.hiflanders.be/en/premium">exclusive benefits, discounts</a> and <a style="color: #fac000;" href="https://www.hiflanders.be/en/experiences">inspiration</a> for upcoming trips. But don’t worry, we won’t flood your inbox with emails. <strong>You stay in control</strong> and decide how often you hear from us.</li>
-        <li>We handle your data confidentially and securely, in accordance with applicable privacy laws. Check our <a style="color: #d8a600;" href="https://www.hiflanders.be/en/privacy-policy">privacy policy</a> for more details.</li>
-    </ul>
-    <p><u>Need help?</u></p>
-    <p>Do you have any questions or trouble activating your membership? Feel free to contact us at <a style="color: #d8a600;" href="mailto:premium@hiflanders.be">premium@hiflanders.be</a> or call <a style="color: #d8a600;" href="tel:+3232327218">+32 3 232 72 18</a> during office hours.</p>
-    <p style="margin-top: 30px">Warm regards,</p>
-    <p><strong>The Hi Flanders Team</strong></p>
+    {{ mailingContent.mailing2 }}
 {% endblock %}

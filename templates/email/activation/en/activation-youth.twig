@@ -1,18 +1,8 @@
 {% extends "email/base.twig" %}
 {% block content %}
+    {% set mailingContent = craft.entries().section('mailings').slug('activation-youth').site('usersEn').one() %}
     <p>Hi {{ name }},</p>
-    <p>Good news: your request to register a group has been approved. Since this is a youth organization, your group is entitled to a FREE membership.</p>
-    <p style="margin-bottom: 30px">The only thing left to do is choose a password to activate your membership. Click the button below to continue:</p>
-    <a style="color:#102438" class="button" href="{{ activationUrl }}">Choose a password</a>
-    <p style="margin-top: 40px">Activate this within 7 days to ensure access to your group account.</p>
-    <p><u>Extra info on your membership:</u></p>
-    <ul>
-        <li><strong>Why is this necessary?  </strong> We need this confirmation to complete your group’s registration. This will make your future experience with Hi Flanders much more convenient.</li>
-        <li>As a Hi Flanders member, your group will enjoy <a style="color: #fac000;" href="https://www.hiflanders.be/en/premium">exclusive benefits, discounts</a> and <a style="color: #fac000;" href="https://www.hiflanders.be/en/experiences">inspiration</a> for upcoming trips. But don’t worry, we won’t flood your inbox with emails. <strong>You stay in control</strong> and decide how often you hear from us.</li>
-        <li>We handle your data confidentially and securely, in accordance with applicable privacy laws. Check our <a style="color: #fac000;" href="https://www.hiflanders.be/en/privacy-policy">privacy policy</a> for more details.</li>
-    </ul>
-    <p><u>Need help?</u></p>
-    <p>If you have any questions or encounter issues with the payment, don’t hesitate to reach out at <a style="color: #fac000;" href="mailto:premium@hiflanders.be">premium@hiflanders.be</a> or call <a style="color: #fac000;" href="tel:+3232327218">+32 3 232 72 18</a> during office hours.</p>
-    <p style="margin-top: 30px">Warm regards,</p>
-    <p><strong>The Hi Flanders Team</strong></p>
+    {{ mailingContent.mailing }}
+    <a style="color:#102438" class="button" href="{{ activationUrl }}">{{ mailingContent.textSingle }}</a>
+    {{ mailingContent.mailing2 }}
 {% endblock %}

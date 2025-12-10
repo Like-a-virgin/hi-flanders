@@ -1,21 +1,5 @@
 {% extends "email/base.twig" %}
 {% block content %}
     <p>Bonjour  {{ name }},</p>
-    <p>Feu d’artifice ! Voyager devient une fête, car vous faites désormais partie de la communauté Hi Flanders ! Bienvenue !</p>
-    <p>
-        <strong>Que comprend cette adhésion premium ?</strong><br>
-        En tant que membre de Hi Flanders, vous profitez <a style="color: #fac000;" href="https://www.hiflanders.be/fr/premium"><strong>d'avantages exclusifs, de réductions</strong></a> et <a style="color: #fac000;" href="https://www.hiflanders.be/fr/experiences"><strong>d'inspiration</strong></a> pour vos futurs séjours. Et ce n’est pas tout ! Votre adhésion vous ouvre aussi les portes du plus grand réseau d’auberges au monde : Hostelling International (HI). Dormez en toute sérénité et au tarif le plus avantageux dans le monde entier !<br>
-        <a style="color: #fac000;" href="https://www.hiflanders.be/fr/hostelling-international">Découvrez nos suggestions ici pour un voyage international ou une escapade citadine ?</a>
-    </p>
-    <p>
-        <strong>Plutôt une escapade près de chez vous ? </strong><br>
-        <a style="color: #fac000;" href="https://www.hiflanders.be/fr/destinations">Réservez votre séjour dans l’une de nos propres auberges en Flandre.</a> Envie d’activités autour de nos auberges ? Grâce à  <a style="color: #fac000;" href="https://www.hiflanders.be/fr/experiences">, vous n’aurez plus d’excuse pour vous ennuyer !</a>
-    </p>
-    <p>
-        <strong>Votre adhésion digitale</strong><br>
-        Pas de carte de membre physique ? Pas de problème ! Inscrivez-vous via premium.hiflanders.be et présentez ainsi votre adhésion à l’auberge où vous séjournez.
-    </p>
-    <p>À bientôt dans l’une de nos auberges !</p>
-    <p style="margin-top: 30px">Salutations ensoleillées,</p>
-    <p>L’équipe Hi Flanders</p>
+    {{ craft.entries().section('mailings').slug('verification-ind-payed').site('usersFr').one().mailing }}
 {% endblock %} 

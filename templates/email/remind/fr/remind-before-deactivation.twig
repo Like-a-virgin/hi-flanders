@@ -1,22 +1,9 @@
 {% extends "email/base.twig" %}
 {% block content %}
+    {% set mailingContent = craft.entries().section('mailings').slug('remind-before-deactivation').site('usersFr').one() %}
+    
     <p>Hi {{ name }},</p>
-    <p style="margin-bottom: 30px">Tu nous as manqué cette dernière année ! C’est pourquoi nous souhaitons t’offrir une dernière chance de renouveler ton adhésion chez Hi Flanders.</p>
-    <a class="button" href="{{ url }}">Je veux rester membre de Hi Flanders !</a>
-    <p style="margin-top: 40px"><strong>Quels sont déjà les avantages ?</strong></p>
-    <p><strong>Hi Flanders Premium, c’est :</strong></p>
-    <ul>
-        <li>Le confort Premium à un prix mini</li>
-        <li><a style="color: #fac000;" href="https://www.hiflanders.be/fr/premium"><strong>Des réductions supplémentaires</strong></a> en plus de nos prix déjà bas</li>
-        <li>Une source d’inspiration pour tes futurs séjours sur notre <a style="color: #fac000;" href="https://www.hiflanders.be/fr/experiences"><strong>page Expériences</strong></a></li>
-        <li>Une adhésion automatique à Hostelling International. Tu économises aussi à l’étranger sur tes nuitées en auberge. <a style="color: #fac000;" href="https://www.hiflanders.be/fr/hostelling-international"><strong>Inspire-toi ici.</strong></a></li>
-        <li>Une facilité digitale : connexion simple à notre site, et bientôt aussi via l’appli Hi Flanders</li>
-    </ul>
-    <p><strong>Combien cela coûte-t-il ?</strong></p>
-    <ul style="margin-bottom: 30px">
-        <li>Gratuit pour les membres de 30 ans ou moins</li>
-        <li>Seulement 10 € par an à partir de 31 ans – un montant vite rentabilisé grâce à ta réduction de 10 %</li>
-    </ul>
-    <a class="button" href="{{ url }}">Je ne veux manquer aucun avantage !</a>
-    <p style="margin-top: 40px">Tu as encore 7 jours pour réactiver ton adhésion. Passé ce délai, ton compte sera supprimé.</p>
+    {{ mailingContent.mailing }}
+    <a class="button" href="{{ url }}">{{ mailingContent.textSingle }}</a>
+    {{ mailingContent.mailing2 }}
 {% endblock %}

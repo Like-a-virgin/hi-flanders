@@ -1,20 +1,9 @@
 {% extends "email/base.twig" %}
 {% block content %}
-    <p>Hi {{ name }},</p>
-    <p>Your Hi Flanders membership expires today.</p>
-    <p style="margin-bottom: 30px">But you're not going to let that happen, right? Renew now and keep enjoying all the benefits of being a Premium member!</p>
-    <a class="button" href="{{ url }}">I’m staying Premium!</a>
-    <p style="margin-top: 40px"><strong>Need a refresher on those benefits?</strong></p>
-    <p><strong>Hi Flanders Premium means:</strong></p>
-    <ul>
-        <li>Premium comfort at a budget pricee</li>
-        <li><a style="color: #fac000;" href="https://www.hiflanders.be/en/premium">Extra discounts</a> on top of our already low prices</li>
-        <li>Great inspiration for your next trip via our <a style="color: #fac000;" href="https://www.hiflanders.be/en/experiences">Experience</a> page</li>
-        <li>Automatic membership with Hostelling International, giving you discounts on hostels abroad too. <a style="color: #fac000;" href="https://www.hiflanders.be/en/hostelling-international">Get inspired here</a></li>
-        <li>Digital ease: simple login to our site, and soon via the Hi Flanders app</li>
-    </ul>
-    <p>So don’t hesitate – stay part of our club!</p>
-    <p>Any questions or trouble renewing your membership? Feel free to reach out – we’re happy to help. Email <a style="color: #fac000;" href="mailto:premium@hiflanders.be">premium@hiflanders.be</a> or call <a style="color: #fac000;" href="tel:+3232327218">+32 3 232 72 18</a> during office hours.</p>
-    <p style="margin-top: 30px">Warm regards,</p>
-    <p><strong>The Hi Flanders Team</strong></p>
+	{% set mailingContent = craft.entries().section('mailings').slug('renew').site('usersEn').one() %}
+
+	<p>Hi {{ name }},</p>
+	{{ mailingContent.mailing }}
+	<a class="button" href="{{ url }}">{{ mailingContent.textSingle }}</a>
+	{{ mailingContent.mailing2 }}
 {% endblock %}

@@ -94,7 +94,7 @@ class AfterActivation extends BaseModule
                 if ($lang === 'en') {
                     $subject = 'Success! Your group is now a Hi Flanders member!';
                 } elseif ($lang === 'fr') {
-                    $subject = 'Succès : votre groupe est désormais membre de Hi Flanders !';
+                    $subject = 'C’est fait : votre groupe est désormais membre de Hi Flanders !';
                 } else {
                     $subject = 'Gelukt: jouw groep is nu lid van Hi Flanders!';
                 }
@@ -108,7 +108,7 @@ class AfterActivation extends BaseModule
                 if ($lang === 'en') {
                     $subject = 'You are now an official Hi Flanders member';
                 } elseif ($lang === 'fr') {
-                    $subject = 'Oui ! Vous êtes maintenant officiellement membre de Hi Flanders';
+                    $subject = 'Vous êtes officiellement membre de Hi Flanders';
                 } else {
                     $subject = 'Yes! Je bent nu officieel lid van Hi Flanders 😁';
                 }

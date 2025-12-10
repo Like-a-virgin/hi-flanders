@@ -1,17 +1,8 @@
 {% extends "email/base.twig" %}
 {% block content %}
+    {% set mailingContent = craft.entries().section('mailings').slug('remind-payment').site('usersFr').one() %}
     <p>Bonjour {{ name }},</p>
-    <p>La semaine dernière, nous vous avons demandé d’activer votre adhésion en choisissant un mot de passe et en effectuant le paiement. Nous pensons que cette dernière étape vous a peut-être échappé… Mais il n’est pas trop tard !</p>
-    <p style="margin-bottom: 30px">Réglez votre paiement en quelques clics :</p>
-    <a style="color: #102438;" class="button" href="{{ url }}">Je paie maintenant</a>
-    <p  style="margin-top: 30px">Activez votre adhésion dans les 7 jours afin de garantir l’accès à votre compte.</p>
-    <p><u>Infos utiles :</u></p>
-    <ul>
-        <li>En tant que membre de Hi Flanders, vous bénéficiez <a style="color: #fac000;" href="https://www.hiflanders.be/fr/premium">d’offres exclusives, de réductions</a> et <a style="color: #fac000;" href="https://www.hiflanders.be/fr/experiences">d’inspiration</a> pour vos futurs séjours. Mais rassurez-vous, nous ne vous enverrons pas trop d’e-mails. <strong>Vous gardez le contrôle</strong> et choisissez la fréquence de nos communications.</li>
-        <li>Nous traitons vos informations de manière confidentielle et conforme à la législation en vigueur. Consultez notre  <a style="color: #fac000;" href="https://www.hiflanders.be/fr/privacy-policy">politique de confidentialité</a> pour plus d’informations.</li>
-    </ul>
-    <p>Une question ? Un problème en ligne ? Contactez-nous à <a style="color: #fac000;" href="mailto:premium@hiflanders.be">premium@hiflanders.be</a> ou par téléphone au <a style="color: #fac000;" href="tel:+3232327218">+32 3 232 72 18</a> (pendant les heures de bureau). Nous sommes là pour vous aider.</p>
-    <p>À bientôt dans l’une de nos auberges !</p>
-    <p style="margin-top: 30px">Chaleureusement,</p>
-    <p><strong>L’équipe Hi Flanders</strong></p>
+    {{ mailingContent.mailing }}
+    <a style="color: #102438;" class="button" href="{{ url }}">{{ mailingContent.textSingle }}</a>
+    {{ mailingContent.mailing2 }}
 {% endblock %}

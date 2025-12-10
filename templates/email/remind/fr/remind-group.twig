@@ -1,17 +1,8 @@
 {% extends "email/base.twig" %}
 {% block content %}
-    <p>Bonjour  {{ name }},</p>
-    <p style="margin-bottom: 30px">La semaine dernière, nous vous avons demandé de confirmer l’adhésion de votre groupe en effectuant le paiement et en choisissant un mot de passe. Peut-être que cela vous a échappé… Mais il n’est pas trop tard ! Réglez et activez votre adhésion en quelques clics :</p>
-    <a style="color: #102438;" class="button" href="{{ activationUrl }}">Je choisis un mot de passe</a>
-    <a style="color: #102438;" class="button" href="{{ url }}">Mot de passe OK ! Je paie</a>
-    <p style="margin-top: 40px">Activez votre adhésion dans les 7 jours afin de garantir l’accès à votre compte de groupe.</p>
-    <p><u>Informations utiles :</u></p>
-    <ul>
-        <li>En tant que membre de Hi Flanders, votre groupe profite n <a style="color: #fac000;" href="https://www.hiflanders.be/fr/premium">d’offres exclusives, de réductions</a> en <a style="color: #fac000;" href="https://www.hiflanders.be/fr/experiences">d’inspiration</a> pour vos futurs séjours. Mais ne vous inquiétez pas, nous ne vous inonderons pas d’e-mails. <strong>Vous gardez le contrôle </strong> et choisissez la fréquence à laquelle vous souhaitez recevoir nos nouvelles.</li>
-        <li>Nous traitons vos informations de manière <strong>sécurisée et conforme à la législation</strong>en vigueur. Consultez notre <a style="color: #fac000;" href="https://www.hiflanders.be/fr/privacy-policy">politique de confidentialité</a> pour plus d’informations.</li>
-    </ul>
-    <p>Une question ? Un problème pour activer votre adhésion ? Contactez-nous à <a style="color:#FFCC22" href="mailto:premium@hiflanders.be">premium@hiflanders.be</a> ou par téléphone au <a style="color:#FFCC22" href="tel:+3232327218">+32 3 232 72 18</a> (pendant les heures de bureau).</p>
-    <p>À bientôt dans l’une de nos auberges !</p>
-    <p style="margin-top: 30px">Chaleureusement,</p>
-    <p><strong>L’équipe Hi Flanders</strong></p>
-{% endblock %}
+    {% set mailingContent = craft.entries().section('mailings').slug('remind-group').site('usersFr').one() %}
+    <p>Bonjour {{ name }},</p>
+    {{ mailingContent.mailing }}
+    <a style="color: #102438;" class="button" href="{{ activationUrl }}">{{ mailingContent.textSingle }}</a>
+    {{ mailingContent.mailing2 }}
+{% endblock %} 

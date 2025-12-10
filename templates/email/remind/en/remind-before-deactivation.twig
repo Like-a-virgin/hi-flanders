@@ -1,22 +1,9 @@
 {% extends "email/base.twig" %}
 {% block content %}
+    {% set mailingContent = craft.entries().section('mailings').slug('remind-before-deactivation').site('usersEn').one() %}
+
     <p>Hi {{ name }},</p>
-    <p style="margin-bottom: 30px">We’ve missed you this past year! That’s why we want to give you one last chance to renew your Hi Flanders membership.</p>
-    <a class="button" href="{{ url }}">I want to stay a Hi Flanders member!</a>
-    <p style="margin-top: 40px"><strong>Need a reminder of the benefits?</strong></p>
-    <p><strong>Hi Flanders Premium means:</strong></p>
-    <ul>
-        <li>Premium comfort at a budget pricee</li>
-        <li><a style="color: #fac000;" href="https://www.hiflanders.be/en/premium">Extra discounts</a> on top of our already low prices</li>
-        <li>Great inspiration for your next trip via our <a style="color: #fac000;" href="https://www.hiflanders.be/en/experiences">Experience</a> page</li>
-        <li>Automatic membership with Hostelling International, giving you discounts on hostels abroad too. <a style="color: #fac000;" href="https://www.hiflanders.be/en/hostelling-international">Get inspired here</a></li>
-        <li>Digital ease: simple login to our site, and soon via the Hi Flanders app</li>
-    </ul>
-    <p><strong>What does it cost?</strong></p>
-    <ul style="margin-bottom: 30px">
-        <li>Free for members aged 30 or younger</li>
-        <li>Just €10 per year from age 31 – easily earned back with your 10% discount</li>
-    </ul>
-    <a class="button" href="{{ url }}">I don’t want to miss out!</a>
-    <p style="margin-top: 40px">You still have 7 days to reactivate your membership. If you don’t, your account will be deleted.</p>
+    {{ mailingContent.mailing }}
+    <a class="button" href="{{ url }}">{{ mailingContent.textSingle }}</a>
+    {{ mailingContent.mailing2 }}
 {% endblock %}

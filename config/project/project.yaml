@@ -1,4 +1,4 @@
-dateModified: 1765295073
+dateModified: 1765297044
 elementSources:
   craft\elements\Entry:
     -
@@ -164,8 +164,22 @@ elementSources:
       tableAttributes: '-'
       type: custom
     -
-      heading: ''
+      heading: Mailing
       type: heading
+    -
+      defaultSort:
+        - postDate
+        - desc
+      defaultViewMode: ''
+      disabled: false
+      key: 'section:5757c6a3-d504-4cc3-a807-71dee9564d5c' # Mailings
+      tableAttributes:
+        - status
+        - postDate
+        - expiryDate
+        - authors
+        - link
+      type: native
 fs:
   branding:
     hasUrls: true

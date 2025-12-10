@@ -1,12 +1,11 @@
 {% extends "email/base.twig" %}
 {% block content %}
+    {% set mailingContent = craft.entries().section('mailings').slug('verification-payment').site('usersFr').one() %}
     <p>Bonjour  {{ name }},</p>
-    <p>Merci pour votre paiement ! Nous confirmons que le montant dû a été réglé avec succès. Cet e-mail fait office de reçu de paiement.</p>
-    <p><strong>Détails de votre paiement :</strong></p>
+    {{ mailingContent.mailing }}
     <ul>
         <li>Montant payé : €{{total}}</li>
         <li>Date du paiement : {{ date }}</li>
     </ul>
-    <p style="margin-top: 30px">Cordialement,</p>
-    <p><strong>L’équipe Hi Flanders</strong></p>
+    {{ mailingContent.mailing2 }}
 {% endblock %}

@@ -1,20 +1,8 @@
 {% extends "email/base.twig" %}
 {% block content %}
-    <p>Bonjour  {{ name }},</p>
-    <p style="margin-bottom: 30px">
-        La semaine dernière, nous vous avons demandé de confirmer l’adhésion de votre groupe en choisissant un mot de passe. Peut-être que cela vous a échappé… Mais il n’est pas trop tard !<br>
-        Activez-la en un seul clic :
-    </p>
-    <a style="color: #102438;" class="button" href="{{ activationUrl }}">Je choisis un mot de passe</a>
-    <p style="margin-top: 40px">Activeer je lidmaatschap binnen 7 dagen om zeker te zijn van toegang tot het account.</p>
-    <p><u>Informations utiles :</u></p>
-    <ul>
-        <li><strong>Pourquoi est-ce nécessaire ?</strong> Nous avons besoin de cette confirmation pour finaliser votre enregistrement en tant que groupe. Cela rendra votre expérience future chez Hi Flanders encore plus simple et agréable.</li>
-        <li>En tant que membre de Hi Flanders, vous bénéficiez <a style="color: #fac000;" href="https://www.hiflanders.be/fr/premium">d'avantages exclusifs, de réductions</a> et <a style="color: #fac000;" href="https://www.hiflanders.be/fr/experiences">d'inspiration</a> pour vos prochains séjours. Mais ne vous inquiétez pas, nous n'allons pas vous inonder d'e-mails. <strong>Vous gardez le contrôle</strong> et choisissez la fréquence à laquelle vous souhaitez recevoir de nos nouvelles.</li>
-        <li>Nous traitons vos données en toute <strong>confidentialité et sécurité</strong>, conformément à la législation en vigueur sur la protection de la vie privée. Consultez notre <a style="color: #fac000;" href="https://www.hiflanders.be/fr/privacy-policy">politique de confidentialité</a> pour en savoir plus.</li>
-    </ul>
-    <p>Une question ? Un problème pour activer votre adhésion ? Contactez-nous à <a style="color:#FFCC22" href="mailto:premium@hiflanders.be">premium@hiflanders.be</a> ou par téléphone au <a style="color:#FFCC22" href="tel:+3232327218">+32 3 232 72 18</a> (pendant les heures de bureau).</p>
-    <p>À bientôt dans l’une de nos auberges !</p>
-    <p style="margin-top: 30px">Chaleureusement,</p>
-    <p><strong>L’équipe Hi Flanders</strong></p>
+    {% set mailingContent = craft.entries().section('mailings').slug('remind-youth').site('usersFr').one() %}
+    <p>Bonjour {{ name }},</p>
+    {{ mailingContent.mailing }}
+    <a style="color: #102438;" class="button" href="{{ activationUrl }}"> {{ mailingContent.textSingle }}</a>
+    {{ mailingContent.mailing2 }}
 {% endblock %}

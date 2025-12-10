@@ -1,7 +1,9 @@
 {% extends "email/base.twig" %}
 {% block content %}
+   	{% set mailingContent = craft.entries().section('mailings').slug('renew').site('default').one() %}
+
     <p>Hi {{ name }},</p>
-    {{ craft.entries().section('mailings').slug('renew-at-age').site('default').one().mailing }}
-    <a class="button" href="{{ url }}">{{ craft.entries().section('mailings').slug('renew-at-age').site('default').one().textSingle }}</a>
-    {{ craft.entries().section('mailings').slug('renew-at-age').site('default').one().mailing }}
+    {{ mailingContent.mailing }}
+    <a class="button" href="{{ url }}">{{ mailingContent.textSingle }}</a>
+    {{ mailingContent.mailing2 }}
 {% endblock %}
